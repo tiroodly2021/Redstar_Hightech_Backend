@@ -1,35 +1,65 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:redstar_hightech_backend/app/modules/category/controllers/category_controller.dart';
-import 'package:redstar_hightech_backend/app/modules/category/models/category_model.dart';
-import 'package:redstar_hightech_backend/app/modules/home/controllers/home_controller.dart';
-import 'package:redstar_hightech_backend/app/modules/product/controllers/product_controller.dart';
-import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
-import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
-import 'package:redstar_hightech_backend/app/services/database_service.dart';
-import 'package:redstar_hightech_backend/app/services/storage_services.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:path/path.dart' as path;
-import 'dart:io';
 
-class NewProductView extends GetView<ProductController> {
+import '../../../services/database_service.dart';
+import '../../../services/storage_services.dart';
+import '../../category/controllers/category_controller.dart';
+import '../../category/models/category_model.dart';
+import '../controllers/product_controller.dart';
+import '../models/product_model.dart';
+
+class EditProductView extends GetView<ProductController> {
   StorageService storage = StorageService();
   DatabaseService databaseService = DatabaseService();
 
+  initEditItems(Product product) {
+    controller.newProduct
+        .update("id", (_) => product.id, ifAbsent: () => product.id);
+    controller.newProduct
+        .update("name", (_) => product.name, ifAbsent: () => product.name);
+    controller.newProduct.update("description", (_) => product.description,
+        ifAbsent: () => product.description);
+
+    controller.newProduct.update("category", (_) => product.category,
+        ifAbsent: () => product.category);
+
+    controller.newProduct.update("isPopular", (_) => product.isPopular,
+        ifAbsent: () => product.isPopular);
+    controller.newProduct.update("isRecommended", (_) => product.isRecommended,
+        ifAbsent: () => product.isRecommended);
+
+    controller.newProduct
+        .update("price", (_) => product.price, ifAbsent: () => product.price);
+
+    controller.newProduct.update("quantity", (_) => product.quantity,
+        ifAbsent: () => product.quantity);
+
+    if (product.imageUrl != null) {
+      controller.newProduct.update("imageUrl", (_) => product.imageUrl,
+          ifAbsent: () => product.imageUrl);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<String> categories =
-        controller.categories.map((category) => category.name).toList();
-    //["Smoothies", "Soft Drinks", "Alix Shoes"];
-
     CategoryController categoryController = Get.find<CategoryController>();
+    List<String> categories =
+        categoryController.categories.map((category) => category.name).toList();
+    //["Smoothies", "Soft Drinks", "Alix Shoes"];
+    // List<String> categories = controller.categoriesByName;
+
+    Product product = ModalRoute.of(context)!.settings.arguments as Product;
+
+    initEditItems(product);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Product'),
+        title: const Text('Edit Product'),
         centerTitle: true,
         backgroundColor: Colors.black,
       ),
@@ -56,18 +86,9 @@ class NewProductView extends GetView<ProductController> {
                                       style: TextStyle(
                                           fontSize: 16, color: Colors.red))));
                         } else {
-                          Directory appDocumentsDirectory =
-                              await getApplicationDocumentsDirectory(); // 1
-                          String appDocumentsPath = appDocumentsDirectory.path;
-
-                          var fileName = path.basename(_image.path); // 2
-
-                          String imageUrl = '$appDocumentsPath/' + fileName;
-
-                          print(imageUrl);
-
-                          await _image.saveTo('$appDocumentsPath/' + fileName);
-
+                          await storage.uploadImage(_image);
+                          var imageUrl =
+                              await storage.getDownloadURL(_image.name);
                           controller.newProduct.update(
                               "imageUrl", (_) => imageUrl,
                               ifAbsent: () => imageUrl);
@@ -98,8 +119,7 @@ class NewProductView extends GetView<ProductController> {
                   const SizedBox(
                     height: 10,
                   ),
-                  controller.newProduct['imageUrl'] == null ||
-                          controller.newProduct['imageUrl'] == ''
+                  product.imageUrl == null || product.imageUrl == ""
                       ? Container(
                           padding: const EdgeInsets.all(30),
                           decoration: const BoxDecoration(
@@ -138,6 +158,9 @@ class NewProductView extends GetView<ProductController> {
                   const SizedBox(
                     height: 20,
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8.0),
                     child: Text(
@@ -150,8 +173,9 @@ class NewProductView extends GetView<ProductController> {
                     height: 10,
                   ),
                   //   _buildTextFormField("Product ID", 'id'),
-                  _buildTextFormField("Product Name", 'name'),
-                  _buildTextFormField("Product Description", 'description'),
+                  _buildTextFormField("Product Name", 'name', product.name),
+                  _buildTextFormField("Product Description", 'description',
+                      product.description),
                   // _buildTextFormField("Product Category", 'category'),
                   Row(
                     children: [
@@ -160,12 +184,16 @@ class NewProductView extends GetView<ProductController> {
                         child: SizedBox(
                           width: 300,
                           child: DropdownButtonFormField(
+                              value: product.category,
                               iconSize: 20,
                               decoration:
                                   const InputDecoration(labelText: "Category"),
                               items: categories
                                   .map((category) => DropdownMenuItem(
-                                      value: category, child: Text(category)))
+                                      value: category,
+                                      child: Text(
+                                        category,
+                                      )))
                                   .toList(),
                               onChanged: (value) {
                                 controller.newProduct.update(
@@ -187,21 +215,28 @@ class NewProductView extends GetView<ProductController> {
                     ],
                   ),
                   const SizedBox(height: 10),
+                  _buildSlider("Price", 'price', controller.price, 0, 1000,
+                      1000, product.price),
                   _buildSlider(
-                      "Price", 'price', controller.price, 0, 1000, 1000),
-                  _buildSlider(
-                      "Quantity", 'quantity', controller.quantity, 0, 100, 100),
+                      "Quantity",
+                      'quantity',
+                      controller.quantity.toDouble(),
+                      0,
+                      100,
+                      100,
+                      product.quantity.toDouble()),
                   const SizedBox(height: 10),
-                  _buildCheckBox(
-                      "Recommended", 'isRecommended', controller.isRecommended),
-                  _buildCheckBox("Popular", 'isPopular', controller.isPopular),
+                  _buildCheckBox("Recommended", 'isRecommended',
+                      controller.isRecommended, product.isRecommended),
+                  _buildCheckBox("Popular", 'isPopular', controller.isPopular,
+                      product.isPopular),
                   Center(
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(primary: Colors.black),
                         onPressed: () {
                           print(controller.newProduct);
 
-                          databaseService.addProduct(Product(
+                          Product newProduct = Product(
                               id: controller.newProduct['id'],
                               name: controller.newProduct['name'],
                               description: controller.newProduct['description'],
@@ -214,8 +249,11 @@ class NewProductView extends GetView<ProductController> {
                                   controller.newProduct['isPopular'] ?? false,
                               price: controller.newProduct['price'],
                               quantity:
-                                  controller.newProduct['quantity'].toInt()));
-                          Navigator.pop(context);
+                                  controller.newProduct['quantity'].toInt());
+                          print(newProduct);
+
+                          //databaseService.addProduct();
+                          //Navigator.pop(context);
                         },
                         child: const Text(
                           "Save",
@@ -309,7 +347,8 @@ class NewProductView extends GetView<ProductController> {
         ]).show();
   }
 
-  Padding _buildCheckBox(String label, String name, bool? controllerValue) {
+  Padding _buildCheckBox(
+      String label, String name, bool? controllerValue, initialCheck) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
@@ -322,7 +361,7 @@ class NewProductView extends GetView<ProductController> {
             ),
           ),
           Checkbox(
-              value: (controllerValue ?? false),
+              value: (controllerValue ?? initialCheck),
               checkColor: Colors.black,
               activeColor: Colors.black12,
               onChanged: (value) {
@@ -335,7 +374,7 @@ class NewProductView extends GetView<ProductController> {
   }
 
   Padding _buildSlider(String title, String name, double? controllerValue,
-      double min, double max, int divisions) {
+      double min, double max, int divisions, initialValue) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
@@ -349,7 +388,7 @@ class NewProductView extends GetView<ProductController> {
           ),
           Expanded(
             child: Slider(
-              value: (controllerValue ?? 0),
+              value: (controllerValue ?? initialValue),
               onChanged: (value) {
                 controller.newProduct
                     .update(name, (_) => value, ifAbsent: () => value);
@@ -363,17 +402,18 @@ class NewProductView extends GetView<ProductController> {
           ),
           SizedBox(
             width: 100,
-            child: Text("${controller.newProduct[name] ?? 0}"),
+            child: Text("${controller.newProduct[name] ?? initialValue}"),
           )
         ],
       ),
     );
   }
 
-  Padding _buildTextFormField(String hintText, name) {
+  Padding _buildTextFormField(String hintText, name, initialValue) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: TextFormField(
+        initialValue: initialValue,
         decoration: InputDecoration(hintText: hintText),
         onChanged: (value) {
           controller.newProduct

@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
-import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/shared/list_not_found.sharedWidgets.dart';
 
-import '../controllers/product_controller.dart';
-import '../widgets/product_widget.dart';
+import '../controllers/category_controller.dart';
 
-class ProductView extends GetView<ProductController> {
+import 'package:flutter/material.dart';
+
+import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
+import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
+
+import '../widgets/category_widget.dart';
+
+class CategoryView extends GetView<CategoryController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Products'),
+          title: const Text('Categories'),
           centerTitle: true,
           backgroundColor: Colors.black,
         ),
@@ -25,7 +30,7 @@ class ProductView extends GetView<ProductController> {
                 height: 100,
                 child: InkWell(
                   onTap: () {
-                    Get.toNamed(AppPages.NEW_PRODUCT);
+                    Get.toNamed(AppPages.NEW_CATEGORY);
                   },
                   child: Card(
                     color: Colors.black,
@@ -35,14 +40,14 @@ class ProductView extends GetView<ProductController> {
                         IconButton(
                             onPressed: () {
                               print("Hello");
-                              Get.toNamed(AppPages.NEW_PRODUCT);
+                              Get.toNamed(AppPages.NEW_CATEGORY);
                             },
                             icon: const Icon(
                               Icons.add,
                               color: Colors.white,
                             )),
                         const Text(
-                          "Add New Product",
+                          "Add New Category",
                           style: TextStyle(fontSize: 22, color: Colors.white),
                         )
                       ],
@@ -50,7 +55,7 @@ class ProductView extends GetView<ProductController> {
                   ),
                 ),
               ),
-              SizedBox(
+              /*  SizedBox(
                 // width: MediaQuery.of(context).size.width,
                 height: 60,
                 child: Card(
@@ -60,7 +65,7 @@ class ProductView extends GetView<ProductController> {
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text("All Product",
+                          const Text("All Categories",
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold)),
                           IconButton(
@@ -71,30 +76,28 @@ class ProductView extends GetView<ProductController> {
                         ]),
                   ),
                 ),
-              ),
+              ), */
               Expanded(
                 child: Obx(() {
-                  print(controller.products);
-
-                  if (controller.products.isNotEmpty) {
+                  if (controller.categories.isNotEmpty) {
                     return ListView.builder(
-                        itemCount: controller.products.length,
+                        itemCount: controller.categories.length,
                         itemBuilder: ((context, index) {
                           return SizedBox(
-                            height: 300,
-                            child: ProductCard(
-                              product: controller.products[index],
+                            height: 230,
+                            child: CategoryCard(
+                              category: controller.categories[index],
                               index: index,
                             ),
                           );
                         }));
                   }
-
                   return ListNotFound(
-                      route: AppPages.INITIAL,
-                      message: "There are not product in the list",
-                      info: "Go Back",
-                      imageUrl: "assets/images/empty.png");
+                    imageUrl: "assets/images/empty.png",
+                    message: "No Category saved yet",
+                    info: "Go Back",
+                    route: AppPages.INITIAL,
+                  );
                 }),
               )
             ],

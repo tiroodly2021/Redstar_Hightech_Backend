@@ -1,8 +1,24 @@
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
+import 'package:redstar_hightech_backend/app/services/database_service.dart';
+import 'package:responsive_table/responsive_table.dart';
+
+import '../../category/models/category_model.dart';
 
 class ProductController extends GetxController {
-  List<Product> products = Product.products.obs;
+  DatabaseService database = DatabaseService();
+  var products = <Product>[].obs;
+  var newProduct = {}.obs;
+  var categories = <Category>[].obs;
+  var categoriesByName = <String>[].obs;
+  RxInt selectedIndex = 0.obs;
+
+  get price => newProduct['price'];
+  get quantity => newProduct['quantity'];
+
+  get isRecommended => newProduct['isRecommended'];
+
+  get isPopular => newProduct['isPopular'];
 
   void updateProductPrice(int index, Product product, double value) {
     product.price = value;
@@ -14,10 +30,22 @@ class ProductController extends GetxController {
     products[index] = product;
   }
 
-  final count = 0.obs;
+  void saveNewProductPrice(Product product, String field, double value) {
+    database.updateField(product, field, value);
+  }
+
+  void saveNewProductQuantity(Product product, String field, int value) {
+    database.updateField(product, field, value);
+  }
+
   @override
   void onInit() {
     super.onInit();
+    products.bindStream(database.getProducts());
+    categories.bindStream(database.getCategories());
+    // categoriesByName.bindStream(database.getCategoriesByName());
+//.map((category) => category.name)
+    //  .toList();
   }
 
   @override
@@ -27,5 +55,4 @@ class ProductController extends GetxController {
 
   @override
   void onClose() {}
-  void increment() => count.value++;
 }
