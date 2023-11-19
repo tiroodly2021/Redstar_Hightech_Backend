@@ -9,11 +9,12 @@ import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
 import 'package:redstar_hightech_backend/app/shared/list_not_found.sharedWidgets.dart';
 
+import '../../order/controllers/order_controller.dart';
+import '../../order/models/order_model.dart';
 import '../../product/models/product_model.dart';
-import '../controllers/order_controller.dart';
-import '../models/order_model.dart';
+import '../controllers/pending_order_controller.dart';
 
-class OrderView extends GetView<OrderController> {
+class PendingOrderView extends GetView<PendingOrderController> {
   DatabaseService database = DatabaseService();
   ProductController productController = Get.find<ProductController>();
 
@@ -21,7 +22,7 @@ class OrderView extends GetView<OrderController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Orders'),
+        title: const Text('Pending Orders'),
         centerTitle: true,
         backgroundColor: Colors.black,
       ),
@@ -29,27 +30,28 @@ class OrderView extends GetView<OrderController> {
         children: [
           Expanded(
             child: Obx(() {
-              if (controller.orders.isNotEmpty) {
+              if (controller.pendingOrders.isNotEmpty) {
                 return ListView.builder(
-                    itemCount: controller.orders.length,
+                    itemCount: controller.pendingOrders.length,
                     itemBuilder: (BuildContext context, index) {
                       var products = productController.products
                           .where((product) => controller
-                              .orders[index].productIds
+                              .pendingOrders[index].productIds
                               .contains(product.id))
                           .toList();
 
                       return OrderCard(
-                          order: controller.orders[index], products: products);
+                          order: controller.pendingOrders[index],
+                          products: products);
                     });
-              } else if (controller.orders.isEmpty) {
+              } else if (controller.pendingOrders.isEmpty) {
                 /* return const Center(
                   child: CircularProgressIndicator(),
                 ); */
 
                 return ListNotFound(
                     route: AppPages.INITIAL,
-                    message: "There's no orders",
+                    message: "There's no pending orders",
                     info: "Go Back",
                     imageUrl: "assets/images/empty.png");
               }
@@ -69,7 +71,8 @@ class OrderCard extends StatelessWidget {
       : super(key: key);
 
   Order order;
-  OrderController orderController = Get.find<OrderController>();
+  PendingOrderController pendingOrderController =
+      Get.find<PendingOrderController>();
   List<Product> products;
 
   @override
@@ -259,38 +262,40 @@ class OrderCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                /* order.isAccepted
-                    ? */
-                ElevatedButton(
-                    onPressed: () {
-                      orderController.updateOrder(order, 'isDelivered', false);
-                      orderController.updateOrder(order, 'isCancelled', false);
-                      orderController.updateOrder(order, 'isAccepted', false);
-                    },
-                    style: ElevatedButton.styleFrom(
-                        primary: Colors.black,
-                        minimumSize: const Size(150, 40)),
-                    child: const Text(
-                      "Pending",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    )),
-                /*  : ElevatedButton(
+                /*  order.isAccepted
+                    ? ElevatedButton(
                         onPressed: () {
-                          orderController.updateOrder(
-                              order, 'isAccepted', !order.isAccepted);
+                          pendingOrderController.updatePendingOrder(
+                              order, 'isDelivered', !order.isDelivered);
                         },
                         style: ElevatedButton.styleFrom(
                             primary: Colors.black,
                             minimumSize: const Size(150, 40)),
                         child: const Text(
-                          "Accept",
+                          "Deliver",
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
-                        )), */
+                        ))
+                    : */
                 ElevatedButton(
                     onPressed: () {
-                      orderController.updateOrder(order, 'isCancelled', true);
+                      pendingOrderController.updatePendingOrder(
+                          order, 'isAccepted', true);
+                      pendingOrderController.updatePendingOrder(
+                          order, 'isDelivered', true);
+                    },
+                    style: ElevatedButton.styleFrom(
+                        primary: Colors.black,
+                        minimumSize: const Size(150, 40)),
+                    child: const Text(
+                      "Accept & Deliver",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    )),
+                ElevatedButton(
+                    onPressed: () {
+                      pendingOrderController.updatePendingOrder(
+                          order, 'isCancelled', true);
                     },
                     style: ElevatedButton.styleFrom(
                         primary: Colors.black,

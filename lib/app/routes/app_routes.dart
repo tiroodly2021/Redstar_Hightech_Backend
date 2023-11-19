@@ -3,6 +3,7 @@ part of 'app_pages.dart';
 
 abstract class Routes {
   Routes._();
+  static const INITIAL = _Paths.SPLASH;
   static const HOME = _Paths.HOME;
   static const PRODUCT = _Paths.PRODUCT;
   static const NEW_PRODUCT = _Paths.NEW_PRODUCT;
@@ -12,10 +13,15 @@ abstract class Routes {
   static const NEW_CATEGORY = _Paths.NEW_CATEGORY;
   static const EDIT_CATEGORY = _Paths.EDIT_CATEGORY;
   static const EDIT_PRODUCT = _Paths.EDIT_PRODUCT;
+  static const PENDING_ORDER = _Paths.PENDING_ORDER;
+  static const CANCELLED_ORDER = _Paths.CANCELLED_ORDER;
+  static const ORDER_DELIVERED = _Paths.ORDER_DELIVERED;
+  static const ORDER_DELIVER_PENDING = _Paths.ORDER_DELIVER_PENDING;
 }
 
 abstract class _Paths {
   _Paths._();
+  static const SPLASH = "/initial";
   static const NEW_CATEGORY = "/category/new";
   static const HOME = '/home';
   static const PRODUCT = '/product';
@@ -25,4 +31,8 @@ abstract class _Paths {
   static const CATEGORY = '/category';
   static const EDIT_CATEGORY = "/category/edit";
   static const EDIT_PRODUCT = "/product/edit";
+  static const PENDING_ORDER = '/pending-order';
+  static const CANCELLED_ORDER = '/cancelled-order';
+  static const ORDER_DELIVERED = '/order-delivered';
+  static const ORDER_DELIVER_PENDING = '/order-deliver-pending';
 }

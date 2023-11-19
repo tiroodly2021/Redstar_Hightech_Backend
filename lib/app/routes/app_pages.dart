@@ -1,25 +1,35 @@
 import 'package:get/get.dart';
-import 'package:redstar_hightech_backend/app/modules/category/views/edit_category_view.dart';
-import 'package:redstar_hightech_backend/app/modules/category/views/new_category_view.dart';
-import 'package:redstar_hightech_backend/app/modules/product/views/edit_product_view.dart';
 
+import '../modules/cancelled_order/bindings/cancelled_order_binding.dart';
+import '../modules/cancelled_order/views/cancelled_order_view.dart';
 import '../modules/category/bindings/category_binding.dart';
 import '../modules/category/views/category_view.dart';
+import '../modules/category/views/edit_category_view.dart';
+import '../modules/category/views/new_category_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/order/bindings/order_binding.dart';
 import '../modules/order/views/order_view.dart';
+import '../modules/order_deliver_pending/bindings/order_deliver_pending_binding.dart';
+import '../modules/order_deliver_pending/views/order_deliver_pending_view.dart';
+import '../modules/order_delivered/bindings/order_delivered_binding.dart';
+import '../modules/order_delivered/views/order_delivered_view.dart';
+import '../modules/pending_order/bindings/pending_order_binding.dart';
+import '../modules/pending_order/views/pending_order_view.dart';
 import '../modules/product/bindings/product_binding.dart';
+import '../modules/product/views/edit_product_view.dart';
 import '../modules/product/views/new_product_view.dart';
 import '../modules/product/views/product_view.dart';
 import '../modules/product/views/products_list_view.dart';
+import '../splashscreen.dart';
 
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.HOME;
+  static const INITIAL = Routes.INITIAL;
+  static const HOME = Routes.HOME;
   static const PRODUCT = Routes.PRODUCT;
   static const NEW_PRODUCT = Routes.NEW_PRODUCT;
   static const PRODUCT_LIST = Routes.PRODUCT_LIST;
@@ -28,8 +38,12 @@ class AppPages {
   static const NEW_CATEGORY = Routes.NEW_CATEGORY;
   static const EDIT_CATEGORY = Routes.EDIT_CATEGORY;
   static const EDIT_PRODUCT = Routes.EDIT_PRODUCT;
+  static const PENDING_ORDER = Routes.PENDING_ORDER;
+  static const CANCELLED_ORDER = Routes.CANCELLED_ORDER;
+  static const ORDER_DELIVERED = Routes.ORDER_DELIVERED;
 
   static final routes = [
+    GetPage(name: _Paths.SPLASH, page: () => const SplashScreen()),
     GetPage(
       name: _Paths.HOME,
       page: () => HomeView(),
@@ -75,5 +89,47 @@ class AppPages {
       page: () => EditProductView(),
       binding: ProductBinding(),
     ),
+    GetPage(
+      name: _Paths.PENDING_ORDER,
+      page: () => PendingOrderView(),
+      binding: PendingOrderBinding(),
+    ),
+    GetPage(
+      name: _Paths.CANCELLED_ORDER,
+      page: () => CancelledOrderView(),
+      binding: CancelledOrderBinding(),
+    ),
+    GetPage(
+      name: _Paths.ORDER_DELIVERED,
+      page: () => OrderDeliveredView(),
+      binding: OrderDeliveredBinding(),
+    ),
+    GetPage(
+      name: _Paths.ORDER_DELIVER_PENDING,
+      page: () => OrderDeliverPendingView(),
+      binding: OrderDeliverPendingBinding(),
+    ),
   ];
+
+  @override
+  List<Object?> get props => [
+        INITIAL,
+        PRODUCT,
+        NEW_PRODUCT,
+        PRODUCT_LIST,
+        ORDER,
+        CATEGORY,
+        NEW_CATEGORY,
+        EDIT_CATEGORY,
+        EDIT_PRODUCT,
+        PENDING_ORDER,
+        CANCELLED_ORDER,
+        ORDER_DELIVERED,
+        routes
+      ];
+
+  @override
+  String toString() {
+    return 'AppPages{INITIAL=$INITIAL, PRODUCT=$PRODUCT, NEW_PRODUCT=$NEW_PRODUCT, PRODUCT_LIST=$PRODUCT_LIST, ORDER=$ORDER, CATEGORY=$CATEGORY, NEW_CATEGORY=$NEW_CATEGORY, EDIT_CATEGORY=$EDIT_CATEGORY, EDIT_PRODUCT=$EDIT_PRODUCT, PENDING_ORDER=$PENDING_ORDER, CANCELLED_ORDER=$CANCELLED_ORDER, ORDER_DELIVERED=$ORDER_DELIVERED, routes=$routes}';
+  }
 }

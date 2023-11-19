@@ -7,12 +7,14 @@ class CategoryController extends GetxController {
   DatabaseService database = DatabaseService();
   var categories = <Category>[].obs;
   var newCategory = {}.obs;
-  //RxString imageUrl = ''.obs;
+  var imageLocalPath = ''.obs;
+  var count = 0.obs;
 
   @override
   void onInit() {
     super.onInit();
     categories.bindStream(database.getCategories());
+    count.bindStream(database.getCount('categories', 'CategoryController'));
   }
 
   @override

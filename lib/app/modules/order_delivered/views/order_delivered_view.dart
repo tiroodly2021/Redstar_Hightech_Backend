@@ -9,11 +9,11 @@ import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
 import 'package:redstar_hightech_backend/app/shared/list_not_found.sharedWidgets.dart';
 
+import '../../order/models/order_model.dart';
 import '../../product/models/product_model.dart';
-import '../controllers/order_controller.dart';
-import '../models/order_model.dart';
+import '../controllers/order_delivered_controller.dart';
 
-class OrderView extends GetView<OrderController> {
+class OrderDeliveredView extends GetView<OrderDeliveredController> {
   DatabaseService database = DatabaseService();
   ProductController productController = Get.find<ProductController>();
 
@@ -69,7 +69,8 @@ class OrderCard extends StatelessWidget {
       : super(key: key);
 
   Order order;
-  OrderController orderController = Get.find<OrderController>();
+  OrderDeliveredController orderDeliveredController =
+      Get.find<OrderDeliveredController>();
   List<Product> products;
 
   @override
@@ -259,25 +260,23 @@ class OrderCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                /* order.isAccepted
-                    ? */
-                ElevatedButton(
-                    onPressed: () {
-                      orderController.updateOrder(order, 'isDelivered', false);
-                      orderController.updateOrder(order, 'isCancelled', false);
-                      orderController.updateOrder(order, 'isAccepted', false);
-                    },
-                    style: ElevatedButton.styleFrom(
-                        primary: Colors.black,
-                        minimumSize: const Size(150, 40)),
-                    child: const Text(
-                      "Pending",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    )),
-                /*  : ElevatedButton(
+                order.isAccepted
+                    ? ElevatedButton(
                         onPressed: () {
-                          orderController.updateOrder(
+                          orderDeliveredController.updateOrderDelivered(
+                              order, 'isDelivered', !order.isDelivered);
+                        },
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.black,
+                            minimumSize: const Size(150, 40)),
+                        child: const Text(
+                          "Deliver",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ))
+                    : ElevatedButton(
+                        onPressed: () {
+                          orderDeliveredController.updateOrderDelivered(
                               order, 'isAccepted', !order.isAccepted);
                         },
                         style: ElevatedButton.styleFrom(
@@ -287,10 +286,11 @@ class OrderCard extends StatelessWidget {
                           "Accept",
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
-                        )), */
+                        )),
                 ElevatedButton(
                     onPressed: () {
-                      orderController.updateOrder(order, 'isCancelled', true);
+                      orderDeliveredController.updateOrderDelivered(
+                          order, 'isCancelled', !order.isCancelled);
                     },
                     style: ElevatedButton.styleFrom(
                         primary: Colors.black,

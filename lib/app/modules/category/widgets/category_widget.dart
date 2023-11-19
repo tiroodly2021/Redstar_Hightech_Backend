@@ -88,7 +88,7 @@ class CategoryCard extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            category.imageUrl == null || category.imageUrl == ""
+            category.imageUrl == null || category.imageUrl == " "
                 ? SizedBox(
                     width: MediaQuery.of(context).size.width,
                     height: 150,
@@ -101,7 +101,38 @@ class CategoryCard extends StatelessWidget {
                       ),
                     ),
                   )
-                /* CircleAvatar(
+                : Image.network(
+                    category.imageUrl,
+                    errorBuilder: (context, exception, stackTrace) {
+                      if (exception.hashCode != 0) {
+                        return Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 150,
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage("assets/images/no_image.jpg"),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        );
+                      }
+
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 150,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage("assets/images/no_image.jpg"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      );
+                    },
+                    width: MediaQuery.of(context).size.width,
+                    height: 150,
+                    fit: BoxFit.cover,
+                  )
+            /* CircleAvatar(
                   
                     backgroundImage: FileImage(File(category.imageUrl)),
                     radius: 10,
@@ -112,7 +143,7 @@ class CategoryCard extends StatelessWidget {
                     height: 150,
                     fit: BoxFit.cover,
                   ) */
-                : Container(
+            /* : Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: FileImage(File(category.imageUrl)),
@@ -121,7 +152,7 @@ class CategoryCard extends StatelessWidget {
                     ),
                     width: MediaQuery.of(context).size.width,
                     height: 150,
-                  )
+                  ) */
           ],
         ),
       ),

@@ -7,8 +7,8 @@ import '../models/order_model.dart';
 class OrderController extends GetxController {
   DatabaseService database = DatabaseService();
   var orders = <Order>[].obs;
-  var pendingOrders = <Order>[].obs;
   var products = <Product>[].obs;
+  var count = 0.obs;
 
   Future<void> updateOrder(Order order, String field, bool value) {
     return database.updateOrder(order, field, value);
@@ -18,8 +18,7 @@ class OrderController extends GetxController {
   void onInit() {
     super.onInit();
     orders.bindStream(database.getOrders());
-    pendingOrders.bindStream(database.getPendingOrders());
-    // products.bindStream(database.getProductsOrders());
+    count.bindStream(database.getCount('orders', 'OrderController'));
   }
 
   @override
@@ -29,4 +28,7 @@ class OrderController extends GetxController {
 
   @override
   void onClose() {}
+
+  @override
+  List<Object?> get props => [database, orders, products, count];
 }

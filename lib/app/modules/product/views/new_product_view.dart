@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:redstar_hightech_backend/app/modules/category/controllers/category_controller.dart';
@@ -15,9 +17,13 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:path/path.dart' as path;
 import 'dart:io';
 
+import '../../../constants/const.dart';
+import '../../../services/image_upload_provider.dart';
+
 class NewProductView extends GetView<ProductController> {
   StorageService storage = StorageService();
   DatabaseService databaseService = DatabaseService();
+  late List? imageDataFile;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +50,7 @@ class NewProductView extends GetView<ProductController> {
                     height: 80,
                     child: InkWell(
                       onTap: () async {
-                        ImagePicker _picker = ImagePicker();
+                        /*                 ImagePicker _picker = ImagePicker();
                         final XFile? _image = await _picker.pickImage(
                             source: ImageSource.gallery);
 
@@ -71,8 +77,10 @@ class NewProductView extends GetView<ProductController> {
                           controller.newProduct.update(
                               "imageUrl", (_) => imageUrl,
                               ifAbsent: () => imageUrl);
-                          // print(controller.newProduct['imageUrl']);
-                        }
+                          print(controller.newProduct['imageUrl']); 
+                        }*/
+
+                        imageDataFile = await getImage(ImageSource.gallery);
                       },
                       child: Card(
                         color: Colors.black,
@@ -98,8 +106,9 @@ class NewProductView extends GetView<ProductController> {
                   const SizedBox(
                     height: 10,
                   ),
-                  controller.newProduct['imageUrl'] == null ||
-                          controller.newProduct['imageUrl'] == ''
+                  /*  controller.newProduct['imageUrl'] == null ||
+                          controller.newProduct['imageUrl'] == '' */
+                  controller.imageLocalPath == ''
                       ? Container(
                           padding: const EdgeInsets.all(30),
                           decoration: const BoxDecoration(
@@ -128,7 +137,7 @@ class NewProductView extends GetView<ProductController> {
                           decoration: BoxDecoration(
                             image: DecorationImage(
                               image: FileImage(
-                                  File(controller.newProduct['imageUrl'])),
+                                  File(controller.imageLocalPath.value)),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -199,7 +208,7 @@ class NewProductView extends GetView<ProductController> {
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(primary: Colors.black),
                         onPressed: () {
-                          print(controller.newProduct);
+                          print(imageDataFile);
 
                           databaseService.addProduct(Product(
                               id: controller.newProduct['id'],
@@ -215,6 +224,11 @@ class NewProductView extends GetView<ProductController> {
                               price: controller.newProduct['price'],
                               quantity:
                                   controller.newProduct['quantity'].toInt()));
+
+                          if (imageDataFile != null) {
+                            uploadImage(imageDataFile![0], imageDataFile![1]);
+                          }
+
                           Navigator.pop(context);
                         },
                         child: const Text(
@@ -381,5 +395,91 @@ class NewProductView extends GetView<ProductController> {
         },
       ),
     );
+  }
+
+  getAndUploadImageToFireStore(context, ImageSource source) async {
+    ImagePicker _picker = ImagePicker();
+    final XFile? _image = await _picker.pickImage(source: source);
+
+    if (_image == null) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("No Image Selected",
+              style: TextStyle(fontSize: 16, color: Colors.red))));
+    } else {
+      await storage.uploadImage(_image);
+      var imageUrl = await storage.getDownloadURL(_image.name);
+
+      controller.newProduct
+          .update("imageUrl", (_) => imageUrl, ifAbsent: () => imageUrl);
+      // print(controller.newProduct['imageUrl']);
+
+    }
+  }
+
+  Future<List<dynamic>?> getImage(ImageSource source) async {
+    final pickedImageFile = await ImagePicker().getImage(source: source);
+
+    if (pickedImageFile != null) {
+      final selectedImagePath = pickedImageFile.path;
+      final cropImageFile = await ImageCropper.platform.cropImage(
+          sourcePath: selectedImagePath,
+          maxHeight: 512,
+          maxWidth: 512,
+          compressFormat: ImageCompressFormat.jpg);
+      final croppedImagdePath = cropImageFile!.path;
+
+      final dir = await Directory.systemTemp;
+      final targetPath = dir.absolute.path + "/temp.jpg";
+
+      var compressedFile = await FlutterImageCompress.compressAndGetFile(
+          croppedImagdePath, targetPath,
+          quality: 90);
+
+      var fileName = path.basename(selectedImagePath);
+
+      final imageFile = File(targetPath);
+
+      String imageUrl = "${domainUrl}assets/images/uploads/" + fileName;
+
+      controller.newProduct
+          .update("imageUrl", (_) => imageUrl, ifAbsent: () => imageUrl);
+
+      controller.imageLocalPath.value = targetPath;
+
+      print("image path is : " + imageFile.path);
+
+      return [imageFile, fileName];
+    }
+  }
+
+  uploadImage(File compressedFile, String filename) {
+    /* Get.dialog(
+        const Center(
+          child: CircularProgressIndicator(),
+        ),
+        barrierDismissible: false); */
+
+    ImageUploadProvider().uploadImage(compressedFile, filename).then((resp) {
+      //Get.back();
+      var msg = resp[0].toString();
+      filename = resp[1].toString();
+
+      if (msg == "success") {
+        Get.snackbar("Success", "File Uploaded",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.green,
+            colorText: Colors.white);
+      } else if (msg == "fail") {
+        Get.snackbar("Error", "Failled to upload the image",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white);
+      } else {
+        Get.snackbar("Error", "Unknown Error",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white);
+      }
+    });
   }
 }

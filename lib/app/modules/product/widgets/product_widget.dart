@@ -114,7 +114,25 @@ class ProductCard extends StatelessWidget {
                     height: 150,
                     fit: BoxFit.cover,
                   ) */
-                        : SizedBox(
+                        : Image.network(
+                            product.imageUrl,
+                            errorBuilder: (context, exception, stackTrace) {
+                              return Container(
+                                width: 120,
+                                height: 100,
+                                decoration: const BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                        "assets/images/no_image.jpg"),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              );
+                            },
+                            width: 120,
+                            height: 100,
+                            fit: BoxFit.cover,
+                          ) /* SizedBox(
                             width: 100,
                             height: 100,
                             child: Container(
@@ -125,7 +143,7 @@ class ProductCard extends StatelessWidget {
                                 ),
                               ),
                             ),
-                          )
+                          ) */
                   ],
                 ),
                 const SizedBox(

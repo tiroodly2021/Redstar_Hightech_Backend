@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/modules/cancelled_order/controllers/cancelled_order_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/product/controllers/product_controller.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
 import 'package:redstar_hightech_backend/app/shared/list_not_found.sharedWidgets.dart';
 
+import '../../order/models/order_model.dart';
 import '../../product/models/product_model.dart';
-import '../controllers/order_controller.dart';
-import '../models/order_model.dart';
 
-class OrderView extends GetView<OrderController> {
+class CancelledOrderView extends GetView<CancelledOrderController> {
   DatabaseService database = DatabaseService();
   ProductController productController = Get.find<ProductController>();
 
@@ -21,7 +21,7 @@ class OrderView extends GetView<OrderController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Orders'),
+        title: const Text('Cancelled Orders'),
         centerTitle: true,
         backgroundColor: Colors.black,
       ),
@@ -29,27 +29,28 @@ class OrderView extends GetView<OrderController> {
         children: [
           Expanded(
             child: Obx(() {
-              if (controller.orders.isNotEmpty) {
+              if (controller.cancelledOrders.isNotEmpty) {
                 return ListView.builder(
-                    itemCount: controller.orders.length,
+                    itemCount: controller.cancelledOrders.length,
                     itemBuilder: (BuildContext context, index) {
                       var products = productController.products
                           .where((product) => controller
-                              .orders[index].productIds
+                              .cancelledOrders[index].productIds
                               .contains(product.id))
                           .toList();
 
                       return OrderCard(
-                          order: controller.orders[index], products: products);
+                          order: controller.cancelledOrders[index],
+                          products: products);
                     });
-              } else if (controller.orders.isEmpty) {
+              } else if (controller.cancelledOrders.isEmpty) {
                 /* return const Center(
                   child: CircularProgressIndicator(),
                 ); */
 
                 return ListNotFound(
                     route: AppPages.INITIAL,
-                    message: "There's no orders",
+                    message: "There's no Cancelled Orders",
                     info: "Go Back",
                     imageUrl: "assets/images/empty.png");
               }
@@ -69,7 +70,8 @@ class OrderCard extends StatelessWidget {
       : super(key: key);
 
   Order order;
-  OrderController orderController = Get.find<OrderController>();
+  CancelledOrderController cancelledController =
+      Get.find<CancelledOrderController>();
   List<Product> products;
 
   @override
@@ -259,44 +261,52 @@ class OrderCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                /* order.isAccepted
-                    ? */
+                /*  order.isAccepted
+                    ? ElevatedButton(
+                        onPressed: () {
+                          cancelledController.updateCancelledOrder(
+                              order, 'isDelivered', !order.isDelivered);
+                        },
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.black,
+                            minimumSize: const Size(150, 40)),
+                        child: const Text(
+                          "Deliver",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ))
+                    : */
                 ElevatedButton(
                     onPressed: () {
-                      orderController.updateOrder(order, 'isDelivered', false);
-                      orderController.updateOrder(order, 'isCancelled', false);
-                      orderController.updateOrder(order, 'isAccepted', false);
+                      cancelledController.updateCancelledOrder(
+                          order, 'isAccepted', true);
+                      cancelledController.updateCancelledOrder(
+                          order, 'isDelivered', true);
+                      cancelledController.updateCancelledOrder(
+                          order, 'isCancelled', false);
+                    },
+                    style: ElevatedButton.styleFrom(
+                        primary: Colors.black,
+                        minimumSize: const Size(150, 40)),
+                    child: const Text(
+                      "Accept & Deliver",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    )),
+                ElevatedButton(
+                    onPressed: () {
+                      cancelledController.updateCancelledOrder(
+                          order, 'isCancelled', false);
+                      cancelledController.updateCancelledOrder(
+                          order, 'isAccepted', false);
+                      cancelledController.updateCancelledOrder(
+                          order, 'isDelivered', false);
                     },
                     style: ElevatedButton.styleFrom(
                         primary: Colors.black,
                         minimumSize: const Size(150, 40)),
                     child: const Text(
                       "Pending",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    )),
-                /*  : ElevatedButton(
-                        onPressed: () {
-                          orderController.updateOrder(
-                              order, 'isAccepted', !order.isAccepted);
-                        },
-                        style: ElevatedButton.styleFrom(
-                            primary: Colors.black,
-                            minimumSize: const Size(150, 40)),
-                        child: const Text(
-                          "Accept",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        )), */
-                ElevatedButton(
-                    onPressed: () {
-                      orderController.updateOrder(order, 'isCancelled', true);
-                    },
-                    style: ElevatedButton.styleFrom(
-                        primary: Colors.black,
-                        minimumSize: const Size(150, 40)),
-                    child: const Text(
-                      "Cancel",
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     )),

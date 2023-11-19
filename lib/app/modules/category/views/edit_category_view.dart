@@ -1,25 +1,39 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:redstar_hightech_backend/app/modules/category/controllers/category_controller.dart';
 
+import '../../../constants/const.dart';
 import '../../../services/database_service.dart';
 import '../../../services/storage_services.dart';
 import '../models/category_model.dart';
 import 'package:path/path.dart' as path;
 
+import '../../../services/image_upload_provider.dart';
+
 class EditCategoryView extends GetView<CategoryController> {
   StorageService storage = StorageService();
   DatabaseService databaseService = DatabaseService();
   String doldOnwloadImageUrl = '';
-
+  late List? imageDataFile;
   @override
   Widget build(BuildContext context) {
     Category category = ModalRoute.of(context)!.settings.arguments as Category;
+
+    if (category.imageUrl != null) {
+      controller.imageLocalPath.value = category.imageUrl;
+      controller.newCategory.update("imageUrl", (_) => category.imageUrl,
+          ifAbsent: () => category.imageUrl);
+    }
+
+    controller.newCategory
+        .update("name", (_) => category.name, ifAbsent: () => category.name);
 
     return Scaffold(
       appBar: AppBar(
@@ -36,49 +50,53 @@ class EditCategoryView extends GetView<CategoryController> {
                 width: MediaQuery.of(context).size.width,
                 height: 210,
                 child: InkWell(
-                    onTap: () async {
-                      ImagePicker _picker = ImagePicker();
-                      final XFile? _image =
-                          await _picker.pickImage(source: ImageSource.gallery);
-
-                      if (_image == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text("No Image Selected",
-                                    style: TextStyle(
-                                        fontSize: 16, color: Colors.red))));
-                      } else {
-                        /*    await storage.uploadImage(_image);
-                        var imageUrl =
-                            await storage.getDownloadURL(_image.name);
- */
-
-                        Directory appDocumentsDirectory =
-                            await getApplicationDocumentsDirectory(); // 1
-                        String appDocumentsPath = appDocumentsDirectory.path;
-
-                        var fileName = path.basename(_image.path); // 2
-
-                        String imageUrl = '$appDocumentsPath/' + fileName;
-
-                        print(imageUrl);
-
-                        await _image.saveTo('$appDocumentsPath/' + fileName);
-
-                        controller.newCategory.update(
-                            "imageUrl", (_) => imageUrl,
-                            ifAbsent: () => imageUrl);
-                        // print(controller.newProduct['imageUrl']);
-                      }
-                    },
-                    child: /* Obx(() {
-                    return  */
-                        Card(
+                  onTap: () async {
+                    imageDataFile = await getImage(ImageSource.gallery);
+                  },
+                  child: Obx(() {
+                    return Card(
                       color: Colors.black,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          category.imageUrl == null || category.imageUrl == ""
+                          controller.imageLocalPath == ''
+                              ? Container(
+                                  padding: const EdgeInsets.all(30),
+                                  decoration: const BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                          "assets/images/add_image.png"),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  width: 150,
+                                  height: 150,
+                                )
+                              : (controller.imageLocalPath
+                                          .contains("https://") ||
+                                      controller.imageLocalPath
+                                          .contains("http://"))
+                                  ? Image.network(
+                                      controller.imageLocalPath.value,
+                                      width: 150,
+                                      height: 150,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Container(
+                                      padding: const EdgeInsets.all(20),
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: FileImage(File(
+                                              controller.imageLocalPath.value)),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      width: 150,
+                                      height: 150,
+                                    ),
+
+                          /*   controller.newCategory['imageUrl'] == null ||
+                                  controller.newCategory['imageUrl'] == ""
                               ? Container(
                                   padding: const EdgeInsets.all(30),
                                   decoration: const BoxDecoration(
@@ -91,19 +109,13 @@ class EditCategoryView extends GetView<CategoryController> {
                                   width: MediaQuery.of(context).size.width - 28,
                                   height: 150,
                                 )
-
-                              /* CircleAvatar(
-                  
-                    backgroundImage: FileImage(File(category.imageUrl)),
-                    radius: 10,
-                    backgroundColor: Colors.white,
-                  )  */ /* Image.network(
-                    category.imageUrl,
-                    width: MediaQuery.of(context).size.width,
-                    height: 150,
-                    fit: BoxFit.cover,
-                  ) */
-                              : Container(
+                              : Image.network(
+                                  controller.newCategory['imageUrl'],
+                                  width: MediaQuery.of(context).size.width - 30,
+                                  height: 140,
+                                  fit: BoxFit.cover,
+                                ) */
+                          /* : Container(
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
                                       image: FileImage(File(category.imageUrl)),
@@ -112,12 +124,12 @@ class EditCategoryView extends GetView<CategoryController> {
                                   ),
                                   width: MediaQuery.of(context).size.width - 28,
                                   height: 150,
-                                )
+                                ) */
                         ],
                       ),
-                    )
-                    //}),
-                    ),
+                    );
+                  }),
+                ),
               ),
               const SizedBox(
                 height: 20,
@@ -136,8 +148,13 @@ class EditCategoryView extends GetView<CategoryController> {
               Center(
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(primary: Colors.black),
-                    onPressed: () async {
+                    onPressed: () {
+                      var lastName = '';
                       print(controller.newCategory);
+
+                      if (category.imageUrl != null) {
+                        lastName = category.imageUrl.split("/").last;
+                      }
 
                       databaseService.updateCategory(
                         Category(
@@ -146,6 +163,12 @@ class EditCategoryView extends GetView<CategoryController> {
                           imageUrl: controller.newCategory['imageUrl'],
                         ),
                       );
+
+                      if (imageDataFile != null) {
+                        deleteAndUploadNewImage(
+                            lastName, imageDataFile![0], imageDataFile![1]);
+                      }
+
                       /*  var imageUrl =
                           await storage.getDownloadURL(category.imageUrl);
                       await storage.storage
@@ -179,5 +202,98 @@ class EditCategoryView extends GetView<CategoryController> {
         },
       ),
     );
+  }
+
+  Future<List<dynamic>?> getImage(ImageSource source) async {
+    var pickedImageFile = await ImagePicker().getImage(source: source);
+
+    if (pickedImageFile != null) {
+      final selectedImagePath = pickedImageFile.path;
+      final cropImageFile = await ImageCropper.platform.cropImage(
+          sourcePath: selectedImagePath,
+          maxHeight: 512,
+          maxWidth: 512,
+          compressFormat: ImageCompressFormat.jpg);
+      final croppedImagdePath = cropImageFile!.path;
+
+      final dir = await Directory.systemTemp;
+      final targetPath = dir.absolute.path + "/temp.jpg";
+
+      var compressedFile = await FlutterImageCompress.compressAndGetFile(
+          croppedImagdePath, targetPath,
+          quality: 90);
+
+      var fileName = path.basename(selectedImagePath);
+
+      final imageFile = File(targetPath);
+
+      //  uploadImage(imageFile, fileName);
+      String imageUrl = "${domainUrl}assets/images/uploads/" + fileName;
+
+      controller.newCategory
+          .update("imageUrl", (_) => imageUrl, ifAbsent: () => imageUrl);
+
+      controller.imageLocalPath.value = targetPath;
+
+      return [imageFile, fileName];
+    }
+  }
+
+  deleteAndUploadNewImage(
+      String oldFileName, File compressedFile, String newFileName) {
+    ImageUploadProvider()
+        .deleteAndUploadNewFile(oldFileName, compressedFile, newFileName)
+        .then((resp) {
+      var msg = resp.toString();
+      print("the message is: " + msg);
+
+      if (msg == "success") {
+        Get.snackbar("Success", "File Uploaded",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.green,
+            colorText: Colors.white);
+      } else if (msg == "fail") {
+        Get.snackbar("Error", "Failled to upload the image",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white);
+      } else {
+        Get.snackbar("Error", "Unknown Error",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white);
+      }
+    });
+  }
+
+  uploadImage(File compressedFile, String filename) {
+    Get.dialog(
+        const Center(
+          child: CircularProgressIndicator(),
+        ),
+        barrierDismissible: false);
+
+    ImageUploadProvider().uploadImage(compressedFile, filename).then((resp) {
+      Get.back();
+      var msg = resp[0].toString();
+      filename = resp[1].toString();
+
+      if (msg == "success") {
+        Get.snackbar("Success", "File Uploaded",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.green,
+            colorText: Colors.white);
+      } else if (msg == "fail") {
+        Get.snackbar("Error", "Failled to upload the image",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white);
+      } else {
+        Get.snackbar("Error", "Unknown Error",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white);
+      }
+    });
   }
 }

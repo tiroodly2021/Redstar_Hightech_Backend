@@ -8,10 +8,12 @@ import '../../category/models/category_model.dart';
 class ProductController extends GetxController {
   DatabaseService database = DatabaseService();
   var products = <Product>[].obs;
+  var imageLocalPath = ''.obs;
   var newProduct = {}.obs;
   var categories = <Category>[].obs;
   var categoriesByName = <String>[].obs;
   RxInt selectedIndex = 0.obs;
+  var count = 0.obs;
 
   get price => newProduct['price'];
   get quantity => newProduct['quantity'];
@@ -41,11 +43,10 @@ class ProductController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
     products.bindStream(database.getProducts());
     categories.bindStream(database.getCategories());
-    // categoriesByName.bindStream(database.getCategoriesByName());
-//.map((category) => category.name)
-    //  .toList();
+    count.bindStream(database.getCount('products', 'ProductController'));
   }
 
   @override

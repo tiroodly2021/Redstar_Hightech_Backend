@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/modules/cancelled_order/controllers/cancelled_order_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/category/controllers/category_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/order/controllers/order_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/order/models/order_stats_model.dart';
+import 'package:redstar_hightech_backend/app/modules/order_delivered/controllers/order_delivered_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/pending_order/controllers/pending_order_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/product/controllers/product_controller.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 
+import '../../../shared/menu_widget.dart';
 import '../../order/controllers/orderstat_controller.dart';
 import '../controllers/home_controller.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -12,13 +19,34 @@ import 'package:intl/intl.dart';
 class HomeView extends GetView<HomeController> {
   final OrderStatController orderStatController =
       Get.put(OrderStatController());
+  //Get.find<OrderStatController>();
+  final ProductController productController = Get.put(ProductController());
+  final OrderController orderController = Get.put(OrderController());
+  final PendingOrderController pendingOrderController =
+      Get.put(PendingOrderController());
+  final CategoryController categoryController = Get.put(CategoryController());
+  final CancelledOrderController cancelledOrderController =
+      Get.put(CancelledOrderController());
+  final OrderDeliveredController orderDeliveredController =
+      Get.put(OrderDeliveredController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const MenuWidget(),
+        actions: [
+          IconButton(
+              onPressed: () {
+                /*  showSearch(
+                      context: context, delegate: TransactionSearchDelegate()); */
+              },
+              tooltip: 'Search',
+              icon: const Icon(Icons.search))
+        ],
+
         title: const Text('Redstar Management'),
-        centerTitle: true,
+        // centerTitle: true,
         backgroundColor: Colors.black,
       ),
       body: Container(
@@ -63,39 +91,59 @@ class HomeView extends GetView<HomeController> {
                 ),
               ) */
               ,
-              Expanded(
-                child: GridView.count(
-                  primary: false,
-                  padding: const EdgeInsets.all(10),
-                  crossAxisSpacing: 1,
-                  mainAxisSpacing: 1,
-                  crossAxisCount: 2,
-                  children: [
-                    MainSectionService(
-                      title: "PRODUCTS",
-                      route: AppPages.PRODUCT,
-                      bgColor: const Color.fromARGB(255, 3, 19, 21),
-                      iconColor: const Color.fromARGB(255, 212, 188, 196),
-                      txtColor: Colors.white,
-                      representativeIcon: Icons.article_outlined,
-                    ),
-                    MainSectionService(
-                        title: "ORDERS",
-                        route: AppPages.ORDER,
-                        bgColor: Color.fromARGB(255, 200, 62, 31),
-                        iconColor: const Color.fromARGB(255, 212, 188, 196),
-                        txtColor: Colors.white,
-                        representativeIcon: Icons.sell_outlined),
-                    MainSectionService(
-                        title: "CATEGORY",
-                        route: AppPages.CATEGORY,
-                        bgColor: Color.fromARGB(255, 31, 163, 200),
-                        iconColor: const Color.fromARGB(255, 212, 188, 196),
-                        txtColor: Colors.white,
-                        representativeIcon: Icons.category)
-                  ],
-                ),
-              )
+              Obx(() {
+                return Expanded(
+                  child: GridView.count(
+                    primary: false,
+                    padding: const EdgeInsets.all(10),
+                    crossAxisSpacing: 1,
+                    mainAxisSpacing: 1,
+                    crossAxisCount: 2,
+                    children: [
+                      MainSectionService(
+                          title: "PRODUCTS",
+                          route: AppPages.PRODUCT,
+                          bgColor: const Color.fromARGB(255, 3, 19, 21),
+                          iconColor: const Color.fromARGB(255, 212, 188, 196),
+                          txtColor: Colors.white,
+                          representativeIcon: Icons.article_outlined,
+                          count: productController.count.toString()),
+                      MainSectionService(
+                          title: "COMPLETED\r\nORDERS",
+                          route: AppPages.ORDER,
+                          bgColor: Color.fromARGB(255, 31, 200, 84),
+                          iconColor: const Color.fromARGB(255, 212, 188, 196),
+                          txtColor: Colors.white,
+                          representativeIcon: Icons.sell_outlined,
+                          count: orderController.count.toString()),
+                      MainSectionService(
+                          title: "CATEGORY",
+                          route: AppPages.CATEGORY,
+                          bgColor: Color.fromARGB(255, 149, 200, 31),
+                          iconColor: const Color.fromARGB(255, 212, 188, 196),
+                          txtColor: Colors.white,
+                          representativeIcon: Icons.category,
+                          count: categoryController.count.toString()),
+                      MainSectionService(
+                          title: "PENDING\r\nORDERS",
+                          route: AppPages.PENDING_ORDER,
+                          bgColor: Color.fromARGB(255, 40, 57, 142),
+                          iconColor: Color.fromARGB(255, 248, 239, 242),
+                          txtColor: Colors.white,
+                          representativeIcon: Icons.sell_outlined,
+                          count: pendingOrderController.count.toString()),
+                      MainSectionService(
+                          title: "CANCELLED\r\nORDER",
+                          route: AppPages.CANCELLED_ORDER,
+                          bgColor: Color.fromARGB(255, 232, 92, 92),
+                          iconColor: const Color.fromARGB(255, 212, 188, 196),
+                          txtColor: Colors.white,
+                          representativeIcon: Icons.category,
+                          count: cancelledOrderController.count.toString()),
+                    ],
+                  ),
+                );
+              })
             ],
           ),
         ),
@@ -111,6 +159,7 @@ class MainSectionService extends StatelessWidget {
   Color iconColor;
   Color txtColor;
   IconData? representativeIcon;
+  String? count;
 
   MainSectionService(
       {Key? key,
@@ -119,7 +168,8 @@ class MainSectionService extends StatelessWidget {
       required this.bgColor,
       required this.iconColor,
       required this.txtColor,
-      this.representativeIcon})
+      this.representativeIcon,
+      this.count})
       : super(key: key);
 
   @override
@@ -137,19 +187,44 @@ class MainSectionService extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  representativeIcon,
-                  size: 40,
-                  color: iconColor,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Text(title,
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Icon(
+                    representativeIcon,
+                    size: 40,
+                    color: iconColor,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  title.contains("\r\n")
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(title.split("\r\n")[0],
+                                style: TextStyle(
+                                    color: txtColor,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold)),
+                            Text(title.split("\r\n")[1],
+                                style: TextStyle(
+                                    color: txtColor,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold))
+                          ],
+                        )
+                      : Text(title,
+                          style: TextStyle(
+                              color: txtColor,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold)),
+                  Text(
+                    "(" + count! + ")",
                     style: TextStyle(
                         color: txtColor,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold)),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
+                  )
+                ]),
               ],
             ),
           ),
