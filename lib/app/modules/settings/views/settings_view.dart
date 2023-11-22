@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../util.dart';
 import '../../../constants/strings copy.dart';
 import '../../../services/notification_service.dart';
+import '../../../shared/app_bar_widget.dart';
 import '../../../shared/menu_widget.dart';
 import 'edit_profile.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -56,10 +57,11 @@ class _SettingsViewState extends State<SettingsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: const MenuWidget(),
-        title: const Text('Settings'),
-        centerTitle: true,
+      appBar: AppBarWidget(
+        title: 'Settings',
+        icon: Icons.search,
+        bgColor: Colors.black,
+        tooltip: 'Search',
       ),
       body: SettingsList(
           contentPadding: const EdgeInsets.fromLTRB(15, 0, 15, 15),

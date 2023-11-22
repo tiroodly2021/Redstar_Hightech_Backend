@@ -14,6 +14,7 @@ import 'package:redstar_hightech_backend/app/modules/category/controllers/catego
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
 import 'package:redstar_hightech_backend/app/services/storage_services.dart';
 import 'package:path/path.dart' as path;
+import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
 import '../models/category_model.dart';
 import '../../../services/image_upload_provider.dart';
 
@@ -27,10 +28,11 @@ class NewCategoryView extends GetView<CategoryController> {
   Widget build(BuildContext context) {
     //List<String> categories = ["Smoothies", "Soft Drinks", "Alix Shoes"];
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('New Category'),
-        centerTitle: true,
-        backgroundColor: Colors.black,
+      appBar: AppBarWidget(
+        title: 'New Category',
+        icon: Icons.search,
+        bgColor: Colors.black,
+        tooltip: 'Search',
       ),
       body: SingleChildScrollView(
         child: Padding(

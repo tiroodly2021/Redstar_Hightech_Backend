@@ -13,6 +13,7 @@ import 'package:redstar_hightech_backend/app/modules/product/models/product_mode
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
 import 'package:redstar_hightech_backend/app/services/storage_services.dart';
+import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:path/path.dart' as path;
 import 'dart:io';
@@ -34,10 +35,15 @@ class NewProductView extends GetView<ProductController> {
     CategoryController categoryController = Get.find<CategoryController>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Product'),
-        centerTitle: true,
-        backgroundColor: Colors.black,
+      appBar: AppBarWidget(
+        title: 'Add Product',
+        icon: Icons.search,
+        bgColor: Colors.black,
+        onPressed: () {
+          /*  showSearch(
+                      context: context, delegate: TransactionSearchDelegate()); */
+        },
+        tooltip: 'Search',
       ),
       body: SingleChildScrollView(
         child: Padding(

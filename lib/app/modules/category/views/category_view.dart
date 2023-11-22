@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
 import 'package:redstar_hightech_backend/app/shared/list_not_found.sharedWidgets.dart';
 
 import '../controllers/category_controller.dart';
@@ -17,10 +18,11 @@ class CategoryView extends GetView<CategoryController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Categories'),
-          centerTitle: true,
-          backgroundColor: Colors.black,
+        appBar: AppBarWidget(
+          title: 'Categories',
+          icon: Icons.search,
+          bgColor: Colors.black,
+          tooltip: 'Search',
         ),
         body: Padding(
           padding: const EdgeInsets.all(10),

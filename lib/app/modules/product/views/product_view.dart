@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
+import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
 import 'package:redstar_hightech_backend/app/shared/list_not_found.sharedWidgets.dart';
 
 import '../controllers/product_controller.dart';
@@ -12,10 +13,15 @@ class ProductView extends GetView<ProductController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Products'),
-          centerTitle: true,
-          backgroundColor: Colors.black,
+        appBar: AppBarWidget(
+          title: 'Products',
+          icon: Icons.search,
+          bgColor: Colors.black,
+          onPressed: () {
+            /*  showSearch(
+                      context: context, delegate: TransactionSearchDelegate()); */
+          },
+          tooltip: 'Search',
         ),
         body: Padding(
           padding: const EdgeInsets.all(10),

@@ -6,6 +6,7 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../../constants/const.dart';
@@ -64,10 +65,15 @@ class EditProductView extends GetView<ProductController> {
     initEditItems(product);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Edit Product'),
-        centerTitle: true,
-        backgroundColor: Colors.black,
+      appBar: AppBarWidget(
+        title: 'Edit Product ' + product.name,
+        icon: Icons.search,
+        bgColor: Colors.black,
+        onPressed: () {
+          /*  showSearch(
+                      context: context, delegate: TransactionSearchDelegate()); */
+        },
+        tooltip: 'Search',
       ),
       body: SingleChildScrollView(
         child: Padding(

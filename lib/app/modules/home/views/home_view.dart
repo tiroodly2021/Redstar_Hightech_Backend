@@ -9,6 +9,7 @@ import 'package:redstar_hightech_backend/app/modules/order_delivered/controllers
 import 'package:redstar_hightech_backend/app/modules/pending_order/controllers/pending_order_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/product/controllers/product_controller.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
+import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
 
 import '../../../shared/menu_widget.dart';
 import '../../order/controllers/orderstat_controller.dart';
@@ -33,7 +34,18 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBarWidget(
+        title: 'Redstar Management',
+        icon: Icons.search,
+        bgColor: Colors.black,
+        onPressed: () {
+          /*  showSearch(
+                      context: context, delegate: TransactionSearchDelegate()); */
+        },
+        tooltip: 'Search',
+      )
+
+      /* AppBar(
         leading: const MenuWidget(),
         actions: [
           IconButton(
@@ -48,7 +60,8 @@ class HomeView extends GetView<HomeController> {
         title: const Text('Redstar Management'),
         // centerTitle: true,
         backgroundColor: Colors.black,
-      ),
+      ) */
+      ,
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(

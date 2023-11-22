@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:drawerbehavior/drawerbehavior.dart' as drawer;
 import 'package:redstar_hightech_backend/app/constants/app_theme.dart';
 import 'package:redstar_hightech_backend/app/databases/boxes.dart';
+import 'package:redstar_hightech_backend/app/modules/cancelled_order/views/cancelled_order_view.dart';
 import 'package:redstar_hightech_backend/app/modules/category/views/category_view.dart';
 import 'package:redstar_hightech_backend/app/modules/home/views/home_view.dart';
 import 'package:redstar_hightech_backend/app/modules/order/views/order_view.dart';
+import 'package:redstar_hightech_backend/app/modules/pending_order/views/pending_order_view.dart';
 import 'package:redstar_hightech_backend/app/modules/product/views/product_view.dart';
 import 'package:redstar_hightech_backend/app/modules/settings/views/settings_view.dart';
 import 'package:redstar_hightech_backend/util.dart';
@@ -38,6 +40,16 @@ class _HomeDrawerState extends State<HomeDrawer> {
         id: 'orders',
         icon: Icons.bar_chart,
         title: 'Orders',
+      ),
+      drawer.MenuItem(
+        id: 'pending_orders',
+        icon: Icons.pending,
+        title: 'Pending Orders',
+      ),
+      drawer.MenuItem(
+        id: 'cancelled_orders',
+        icon: Icons.cancel,
+        title: 'Cancelled Orders',
       ),
       drawer.MenuItem(id: 'settings', icon: Icons.settings, title: 'Settings')
     ],
@@ -122,6 +134,10 @@ class _HomeDrawerState extends State<HomeDrawer> {
         return OrderView();
       case 'settings':
         return const SettingsView();
+      case 'pending_orders':
+        return PendingOrderView();
+      case 'cancelled_orders':
+        return CancelledOrderView();
       default:
         return HomeView();
     }

@@ -8,6 +8,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:redstar_hightech_backend/app/modules/category/controllers/category_controller.dart';
+import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
 
 import '../../../constants/const.dart';
 import '../../../services/database_service.dart';
@@ -36,10 +37,12 @@ class EditCategoryView extends GetView<CategoryController> {
         .update("name", (_) => category.name, ifAbsent: () => category.name);
 
     return Scaffold(
-      appBar: AppBar(
-          title: Text('Edit Category ' + category.name),
-          centerTitle: true,
-          backgroundColor: Colors.black),
+      appBar: AppBarWidget(
+        title: 'Edit Category ' + category.name,
+        icon: Icons.search,
+        bgColor: Colors.black,
+        tooltip: 'Search',
+      ),
       body: SingleChildScrollView(
         child: Padding(
             padding: const EdgeInsets.all(10.0),

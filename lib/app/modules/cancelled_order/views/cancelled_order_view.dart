@@ -10,6 +10,7 @@ import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
 import 'package:redstar_hightech_backend/app/shared/list_not_found.sharedWidgets.dart';
 
+import '../../../shared/app_bar_widget.dart';
 import '../../order/models/order_model.dart';
 import '../../product/models/product_model.dart';
 
@@ -20,10 +21,11 @@ class CancelledOrderView extends GetView<CancelledOrderController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Cancelled Orders'),
-        centerTitle: true,
-        backgroundColor: Colors.black,
+      appBar: AppBarWidget(
+        title: 'Cancelled Orders',
+        icon: Icons.search,
+        bgColor: Colors.black,
+        tooltip: 'Search',
       ),
       body: Column(
         children: [
