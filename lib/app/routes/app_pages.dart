@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/modules/settings/views/edit_profile.dart';
 
 import '../modules/cancelled_order/bindings/cancelled_order_binding.dart';
 import '../modules/cancelled_order/views/cancelled_order_view.dart';
@@ -21,6 +22,8 @@ import '../modules/product/views/edit_product_view.dart';
 import '../modules/product/views/new_product_view.dart';
 import '../modules/product/views/product_view.dart';
 import '../modules/product/views/products_list_view.dart';
+import '../modules/settings/bindings/settings_binding.dart';
+import '../modules/settings/views/settings_view.dart';
 import '../splashscreen.dart';
 
 part 'app_routes.dart';
@@ -41,8 +44,10 @@ class AppPages {
   static const PENDING_ORDER = Routes.PENDING_ORDER;
   static const CANCELLED_ORDER = Routes.CANCELLED_ORDER;
   static const ORDER_DELIVERED = Routes.ORDER_DELIVERED;
+  static const EDIT_PROFILE = Routes.EDIT_PROFILE;
 
   static final routes = [
+    GetPage(name: _Paths.EDIT_PROFILE, page: () => const EditProfile()),
     GetPage(name: _Paths.SPLASH, page: () => const SplashScreen()),
     GetPage(
       name: _Paths.HOME,
@@ -109,11 +114,17 @@ class AppPages {
       page: () => OrderDeliverPendingView(),
       binding: OrderDeliverPendingBinding(),
     ),
+    GetPage(
+      name: _Paths.SETTINGS,
+      page: () =>const SettingsView(),
+      binding: SettingsBinding(),
+    ),
   ];
 
   @override
   List<Object?> get props => [
         INITIAL,
+        HOME,
         PRODUCT,
         NEW_PRODUCT,
         PRODUCT_LIST,
@@ -125,11 +136,12 @@ class AppPages {
         PENDING_ORDER,
         CANCELLED_ORDER,
         ORDER_DELIVERED,
+        EDIT_PROFILE,
         routes
       ];
 
   @override
   String toString() {
-    return 'AppPages{INITIAL=$INITIAL, PRODUCT=$PRODUCT, NEW_PRODUCT=$NEW_PRODUCT, PRODUCT_LIST=$PRODUCT_LIST, ORDER=$ORDER, CATEGORY=$CATEGORY, NEW_CATEGORY=$NEW_CATEGORY, EDIT_CATEGORY=$EDIT_CATEGORY, EDIT_PRODUCT=$EDIT_PRODUCT, PENDING_ORDER=$PENDING_ORDER, CANCELLED_ORDER=$CANCELLED_ORDER, ORDER_DELIVERED=$ORDER_DELIVERED, routes=$routes}';
+    return 'AppPages{INITIAL=$INITIAL, HOME=$HOME, PRODUCT=$PRODUCT, NEW_PRODUCT=$NEW_PRODUCT, PRODUCT_LIST=$PRODUCT_LIST, ORDER=$ORDER, CATEGORY=$CATEGORY, NEW_CATEGORY=$NEW_CATEGORY, EDIT_CATEGORY=$EDIT_CATEGORY, EDIT_PRODUCT=$EDIT_PRODUCT, PENDING_ORDER=$PENDING_ORDER, CANCELLED_ORDER=$CANCELLED_ORDER, ORDER_DELIVERED=$ORDER_DELIVERED, EDIT_PROFILE=$EDIT_PROFILE, routes=$routes}';
   }
 }

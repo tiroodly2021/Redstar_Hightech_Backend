@@ -3,6 +3,7 @@ part of 'app_pages.dart';
 
 abstract class Routes {
   Routes._();
+  static const EDIT_PROFILE = _Paths.EDIT_PROFILE;
   static const INITIAL = _Paths.SPLASH;
   static const HOME = _Paths.HOME;
   static const PRODUCT = _Paths.PRODUCT;
@@ -17,10 +18,12 @@ abstract class Routes {
   static const CANCELLED_ORDER = _Paths.CANCELLED_ORDER;
   static const ORDER_DELIVERED = _Paths.ORDER_DELIVERED;
   static const ORDER_DELIVER_PENDING = _Paths.ORDER_DELIVER_PENDING;
+  static const SETTINGS = _Paths.SETTINGS;
 }
 
 abstract class _Paths {
   _Paths._();
+  static const EDIT_PROFILE = "/edit-profile";
   static const SPLASH = "/initial";
   static const NEW_CATEGORY = "/category/new";
   static const HOME = '/home';
@@ -35,4 +38,5 @@ abstract class _Paths {
   static const CANCELLED_ORDER = '/cancelled-order';
   static const ORDER_DELIVERED = '/order-delivered';
   static const ORDER_DELIVER_PENDING = '/order-deliver-pending';
+  static const SETTINGS = '/settings';
 }

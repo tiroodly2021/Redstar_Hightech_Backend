@@ -9,7 +9,7 @@ class MenuWidget extends StatelessWidget {
     return IconButton(
         tooltip: 'Menu',
         onPressed: () {
-          // DrawerScaffold.currentController(context).toggle();
+          DrawerScaffold.currentController(context).toggle();
         },
         icon: const Icon(Icons.menu));
   }

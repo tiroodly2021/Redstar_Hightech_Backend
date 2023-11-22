@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:redstar_hightech_backend/app/modules/home/views/home_drawer.dart';
 import 'package:redstar_hightech_backend/app/modules/home/views/home_view.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:google_fonts/google_fonts.dart';
 
+import 'modules/settings/views/edit_profile.dart';
 import 'constants/app_theme.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -98,15 +101,21 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   checkInited(context) async {
-    //final prefs = await SharedPreferences.getInstance();
-    //final bool isInited = prefs.getBool('isInited') ?? false;
-    Timer(const Duration(seconds: 4), () {
+    final prefs = await SharedPreferences.getInstance();
+    final bool isInited = prefs.getBool('isInited') ?? false;
+    Timer(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => HomeView(),
+            builder: (context) => isInited
+                ? const HomeDrawer()
+                : const EditProfile(
+                    isFromInit: true,
+                  ),
             maintainState: true,
-            settings: const RouteSettings(name: AppPages.HOME),
+            settings: isInited
+                ? const RouteSettings(name: AppPages.INITIAL)
+                : const RouteSettings(name: AppPages.EDIT_PROFILE),
           ));
     });
   }
