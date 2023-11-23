@@ -25,12 +25,10 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       leading: const MenuWidget(),
       actions: [
         IconButton(
-            onPressed: () {
-              /*  showSearch(
-                      context: context, delegate: TransactionSearchDelegate()); */
-            },
+            color: Colors.white,
+            onPressed: onPressed,
             tooltip: tooltip,
-            icon: Icon(icon))
+            icon: Icon(icon, color: Colors.white))
       ],
 
       title: Text(title),
@@ -40,5 +38,5 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size(200, 60);
+  Size get preferredSize => const Size.fromHeight(60); //const Size(5, 60);
 }

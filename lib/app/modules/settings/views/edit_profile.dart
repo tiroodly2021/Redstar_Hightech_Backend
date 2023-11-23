@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:redstar_hightech_backend/app/modules/home/views/home_drawer.dart';
 import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
+import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -33,17 +34,16 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWidget(
-        title: widget.isFromInit ? 'Set Profile' : 'Profile',
-        icon: Icons.search,
-        bgColor: Colors.black,
-        onPressed: () {
-          /*  showSearch(
-                      context: context, delegate: TransactionSearchDelegate()); */
-        },
-        tooltip: 'Search',
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back)),
+        title: const Text("Edit Profile"),
+        backgroundColor: Colors.black,
       ),
-      resizeToAvoidBottomInset: false,
+      //  resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           SingleChildScrollView(

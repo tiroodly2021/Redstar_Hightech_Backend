@@ -127,7 +127,7 @@ class OrderCard extends StatelessWidget {
                 itemCount: products.length,
                 itemBuilder: ((context, index) {
                   return Padding(
-                    padding: const EdgeInsets.all(6.0),
+                    padding: const EdgeInsets.all(2.0),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

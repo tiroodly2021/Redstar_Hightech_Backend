@@ -10,6 +10,7 @@ import 'package:redstar_hightech_backend/app/modules/pending_order/controllers/p
 import 'package:redstar_hightech_backend/app/modules/product/controllers/product_controller.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
+import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
 
 import '../../../shared/menu_widget.dart';
 import '../../order/controllers/orderstat_controller.dart';
@@ -18,6 +19,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:intl/intl.dart';
 
 class HomeView extends GetView<HomeController> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final OrderStatController orderStatController =
       Get.put(OrderStatController());
   //Get.find<OrderStatController>();
@@ -39,8 +41,7 @@ class HomeView extends GetView<HomeController> {
         icon: Icons.search,
         bgColor: Colors.black,
         onPressed: () {
-          /*  showSearch(
-                      context: context, delegate: TransactionSearchDelegate()); */
+          showSearch(context: context, delegate: AppSearchDelegate());
         },
         tooltip: 'Search',
       )
@@ -62,6 +63,7 @@ class HomeView extends GetView<HomeController> {
         backgroundColor: Colors.black,
       ) */
       ,
+      key: _scaffoldKey,
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(

@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:redstar_hightech_backend/app/databases/boxes.dart';
+import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
+import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,6 +15,7 @@ import '../../../shared/app_bar_widget.dart';
 import '../../../shared/menu_widget.dart';
 import 'edit_profile.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:drawerbehavior/drawerbehavior.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({Key? key}) : super(key: key);
@@ -62,6 +65,9 @@ class _SettingsViewState extends State<SettingsView> {
         icon: Icons.search,
         bgColor: Colors.black,
         tooltip: 'Search',
+        onPressed: () {
+          showSearch(context: context, delegate: AppSearchDelegate());
+        },
       ),
       body: SettingsList(
           contentPadding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
@@ -87,10 +93,12 @@ class _SettingsViewState extends State<SettingsView> {
                       child: InkWell(
                         onTap: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const EditProfile())).whenComplete(() {
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const EditProfile(),
+                                      settings: const RouteSettings(
+                                          name: AppPages.EDIT_PROFILE)))
+                              .whenComplete(() {
                             setState(() {
                               userName = box.get('userName', defaultValue: '');
                               imageString =

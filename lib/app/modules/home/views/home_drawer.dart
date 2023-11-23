@@ -8,6 +8,7 @@ import 'package:redstar_hightech_backend/app/modules/home/views/home_view.dart';
 import 'package:redstar_hightech_backend/app/modules/order/views/order_view.dart';
 import 'package:redstar_hightech_backend/app/modules/pending_order/views/pending_order_view.dart';
 import 'package:redstar_hightech_backend/app/modules/product/views/product_view.dart';
+import 'package:redstar_hightech_backend/app/modules/settings/views/edit_profile.dart';
 import 'package:redstar_hightech_backend/app/modules/settings/views/settings_view.dart';
 import 'package:redstar_hightech_backend/util.dart';
 import 'package:hive/hive.dart';
@@ -138,10 +139,14 @@ class _HomeDrawerState extends State<HomeDrawer> {
         return PendingOrderView();
       case 'cancelled_orders':
         return CancelledOrderView();
+
       default:
         return HomeView();
     }
   }
+
+  @override
+  List<Object?> get props => [selectedMenuItemId, menu];
 }
 
 class HeaderView extends StatefulWidget {
@@ -178,11 +183,14 @@ class _HeaderViewState extends State<HeaderView> {
                                 spreadRadius: 0)
                           ],
                         ),
-                        child: CircleAvatar(
-                            radius: 50,
-                            backgroundColor: Colors.transparent,
-                            backgroundImage:
-                                Util.getAvatharImage(imageString))),
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Colors.transparent,
+                              backgroundImage:
+                                  Util.getAvatharImage(imageString)),
+                        )),
                     const SizedBox(height: 20),
                     Text(
                       userName,
