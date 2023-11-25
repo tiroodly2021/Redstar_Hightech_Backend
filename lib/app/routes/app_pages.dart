@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:redstar_hightech_backend/app/modules/settings/views/edit_profile.dart';
 
 import '../modules/cancelled_order/bindings/cancelled_order_binding.dart';
 import '../modules/cancelled_order/views/cancelled_order_view.dart';
@@ -9,6 +8,8 @@ import '../modules/category/views/edit_category_view.dart';
 import '../modules/category/views/new_category_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/login/bindings/login_binding.dart';
+import '../modules/login/views/login_view.dart';
 import '../modules/order/bindings/order_binding.dart';
 import '../modules/order/views/order_view.dart';
 import '../modules/order_deliver_pending/bindings/order_deliver_pending_binding.dart';
@@ -23,6 +24,7 @@ import '../modules/product/views/new_product_view.dart';
 import '../modules/product/views/product_view.dart';
 import '../modules/product/views/products_list_view.dart';
 import '../modules/settings/bindings/settings_binding.dart';
+import '../modules/settings/views/edit_profile.dart';
 import '../modules/settings/views/settings_view.dart';
 import '../splashscreen.dart';
 
@@ -116,8 +118,13 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.SETTINGS,
-      page: () =>const SettingsView(),
+      page: () => const SettingsView(),
       binding: SettingsBinding(),
+    ),
+    GetPage(
+      name: _Paths.LOGIN,
+      page: () => LoginView(),
+      binding: LoginBinding(),
     ),
   ];
 
