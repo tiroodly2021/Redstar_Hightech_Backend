@@ -66,11 +66,11 @@ class AppPages {
       page: () => NewProductView(),
       binding: ProductBinding(),
     ),
-    GetPage(
+    /*  GetPage(
       name: _Paths.PRODUCT_LIST,
       page: () => ProductsListView(),
       binding: ProductBinding(),
-    ),
+    ), */
     GetPage(
       name: _Paths.ORDER,
       page: () => OrderView(),

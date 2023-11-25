@@ -3,25 +3,39 @@ import 'package:flutter/material.dart';
 class AppSearchDelegate extends SearchDelegate {
   @override
   List<Widget>? buildActions(BuildContext context) {
-    // TODO: implement buildActions
-    throw UnimplementedError();
+    return [
+      Center(
+        child: Container(
+          child: const Text("Search handle: Not implemented yet"),
+        ),
+      )
+    ];
   }
 
   @override
   Widget? buildLeading(BuildContext context) {
-    // TODO: implement buildLeading
-    throw UnimplementedError();
+    return Center(
+      child: Container(
+        child: const Text("Search handle: Not implemented yet"),
+      ),
+    );
   }
 
   @override
   Widget buildResults(BuildContext context) {
-    // TODO: implement buildResults
-    throw UnimplementedError();
+    return Center(
+      child: Container(
+        child: const Text("Search handle: Not implemented yet"),
+      ),
+    );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    // TODO: implement buildSuggestions
-    throw UnimplementedError();
+    return Center(
+      child: Container(
+        child: const Text("Search handle: Not implemented yet"),
+      ),
+    );
   }
 }

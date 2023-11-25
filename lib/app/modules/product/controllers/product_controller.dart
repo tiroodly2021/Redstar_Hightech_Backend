@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
-import 'package:responsive_table/responsive_table.dart';
+//import 'package:responsive_table/responsive_table.dart';
 
 import '../../category/models/category_model.dart';
 

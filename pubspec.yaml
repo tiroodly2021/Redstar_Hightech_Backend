@@ -16,7 +16,7 @@ dependencies:
   firebase_core:
   firebase_storage:
   image_picker:  
-  responsive_table: ^0.2.0+2
+  #responsive_table: ^0.2.0+2
   rflutter_alert: ^1.0.3
   path_provider:
 

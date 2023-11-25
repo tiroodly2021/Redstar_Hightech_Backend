@@ -1,4 +1,4 @@
-import 'dart:math';
+/* import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/home/controllers/home_controller.dart';
@@ -13,7 +13,7 @@ class ProductsListView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     throw UnimplementedError();
   }
-}
+} */
 
 /*
 class ProductsListView extends StatefulWidget {
