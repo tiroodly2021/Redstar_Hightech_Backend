@@ -32,7 +32,12 @@ dependencies:
   hive: 
   hive_flutter:
   flutter_local_notifications: 
-  flutter_native_timezone:   
+  flutter_native_timezone:  
+  flutter_svg:
+  velocity_x:  
+  google_sign_in:
+
+
 
 dev_dependencies:
   flutter_test:

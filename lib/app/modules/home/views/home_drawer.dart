@@ -5,6 +5,7 @@ import 'package:redstar_hightech_backend/app/databases/boxes.dart';
 import 'package:redstar_hightech_backend/app/modules/cancelled_order/views/cancelled_order_view.dart';
 import 'package:redstar_hightech_backend/app/modules/category/views/category_view.dart';
 import 'package:redstar_hightech_backend/app/modules/home/views/home_view.dart';
+import 'package:redstar_hightech_backend/app/modules/login/views/login_view.dart';
 import 'package:redstar_hightech_backend/app/modules/order/views/order_view.dart';
 import 'package:redstar_hightech_backend/app/modules/pending_order/views/pending_order_view.dart';
 import 'package:redstar_hightech_backend/app/modules/product/views/product_view.dart';
@@ -31,6 +32,11 @@ class _HomeDrawerState extends State<HomeDrawer> {
         title: 'Home',
       ),
       drawer.MenuItem(
+        id: 'login',
+        icon: Icons.login,
+        title: 'Login',
+      ),
+      drawer.MenuItem(
           id: 'products', icon: Icons.shopping_cart, title: 'Products'),
       drawer.MenuItem(
         id: 'categories',
@@ -55,10 +61,10 @@ class _HomeDrawerState extends State<HomeDrawer> {
       drawer.MenuItem(id: 'settings', icon: Icons.settings, title: 'Settings')
     ],
   );
+
   @override
   void initState() {
     selectedMenuItemId = menu.items[0].id;
-
     super.initState();
   }
 
@@ -127,6 +133,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
     switch (currentItemId) {
       case 'home':
         return HomeView();
+      case 'login':
+        return LoginView();
       case 'products':
         return ProductView();
       case 'categories':
