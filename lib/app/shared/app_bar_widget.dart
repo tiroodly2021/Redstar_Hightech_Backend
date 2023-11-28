@@ -8,7 +8,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   String? tooltip;
   IconData? icon;
   Function()? onPressed;
-  Function()? onPressedLogin;
+  Function()? onPressedLoginState;
   String? userName;
 
   AppBarWidget(
@@ -18,7 +18,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       this.tooltip,
       this.icon,
       this.onPressed,
-      this.onPressedLogin,
+      this.onPressedLoginState,
       this.userName})
       : super(key: key);
 
@@ -35,7 +35,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         ElevatedButton(
             style: ElevatedButton.styleFrom(primary: Colors.transparent),
             child: Text(userName ?? 'Guest'),
-            onPressed: onPressedLogin)
+            onPressed: onPressedLoginState)
       ],
 
       title: Text(title),

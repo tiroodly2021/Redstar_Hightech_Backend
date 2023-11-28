@@ -50,9 +50,11 @@ class HomeView extends GetView<HomeController> {
         userName: Get.find<LoginController>().user != null
             ? loginController.user!.split("@")[0]
             : 'Guest',
-        onPressedLogin: () {
+        onPressedLoginState: () {
           if (Get.find<LoginController>().user != null) {
             loginController.signout();
+          } else {
+            Navigator.pushReplacementNamed(context, AppPages.LOGIN);
           }
         },
         tooltip: 'Search',

@@ -26,7 +26,7 @@ class LoginController extends GetxController {
 
   void signout() async {
     await _auth.signOut().then(
-        (value) => Get.offAll(() => LoginView()) /*Get.offAll(LoginView())*/
+        (value) => Get.offAll(() => HomeView()) /*Get.offAll(LoginView())*/
 
         );
   }
