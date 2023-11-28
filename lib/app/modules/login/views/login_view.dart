@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 class LoginView extends GetView<LoginController> {
   TextEditingController email = TextEditingController();
   TextEditingController pass = TextEditingController();
+  final LoginController loginController = Get.put(LoginController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +36,7 @@ class LoginView extends GetView<LoginController> {
                         height: 100,
                         width: 100,
                         child: SvgPicture.asset("assets/images/xing.svg")),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     //    const HeightBox(10),
@@ -63,7 +64,7 @@ class LoginView extends GetView<LoginController> {
                         style: const TextStyle(color: Colors.white),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     // const HeightBox(20),
@@ -75,11 +76,11 @@ class LoginView extends GetView<LoginController> {
                           hintText: 'Password',
                           hintStyle: const TextStyle(color: Colors.white),
                           enabledBorder: OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(10.0),
                             borderSide: const BorderSide(color: Colors.white),
                           ),
                           focusedBorder: OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(10.0),
+                              borderRadius: BorderRadius.circular(10.0),
                               borderSide: const BorderSide(color: Colors.blue)),
                           isDense: true, // Added this
                           contentPadding:
@@ -89,7 +90,7 @@ class LoginView extends GetView<LoginController> {
                         style: const TextStyle(color: Colors.white),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     // const HeightBox(20),
@@ -99,10 +100,10 @@ class LoginView extends GetView<LoginController> {
                       },
                       child: const Text(
                         "Forgot Password ? Reset Now",
-                        style: const TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     // const HeightBox(10),
@@ -111,7 +112,7 @@ class LoginView extends GetView<LoginController> {
                           print("Login Clicked Event");
                           _login();
                         },
-                        child: Text(
+                        child: const Text(
                             "Login") /* "Login"
                             .text
                             .white
@@ -151,7 +152,7 @@ class LoginView extends GetView<LoginController> {
                     text: 'New User?',
                     style: TextStyle(fontSize: 15.0, color: Colors.black),
                     children: <TextSpan>[
-                      const TextSpan(
+                      TextSpan(
                         text: ' Register Now',
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
@@ -167,7 +168,8 @@ class LoginView extends GetView<LoginController> {
   }
 
   void _login() {
-    controller.login(email.text, pass.text);
+    // var loginController = Get.find<LoginController>();
+    loginController.login(email.text, pass.text);
   }
 }
 

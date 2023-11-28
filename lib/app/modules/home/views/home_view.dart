@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/cancelled_order/controllers/cancelled_order_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/category/controllers/category_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/login/controllers/login_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/order/controllers/order_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/order/models/order_stats_model.dart';
 import 'package:redstar_hightech_backend/app/modules/order_delivered/controllers/order_delivered_controller.dart';
@@ -33,8 +34,11 @@ class HomeView extends GetView<HomeController> {
   final OrderDeliveredController orderDeliveredController =
       Get.put(OrderDeliveredController());
 
+  LoginController loginController = Get.put(LoginController());
+
   @override
   Widget build(BuildContext context) {
+    loginController = Get.find<LoginController>();
     return Scaffold(
       appBar: AppBarWidget(
         title: 'Redstar Management',
@@ -42,6 +46,14 @@ class HomeView extends GetView<HomeController> {
         bgColor: Colors.black,
         onPressed: () {
           showSearch(context: context, delegate: AppSearchDelegate());
+        },
+        userName: Get.find<LoginController>().user != null
+            ? loginController.user!.split("@")[0]
+            : 'Guest',
+        onPressedLogin: () {
+          if (Get.find<LoginController>().user != null) {
+            loginController.signout();
+          }
         },
         tooltip: 'Search',
       )

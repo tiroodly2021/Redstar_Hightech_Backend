@@ -47,6 +47,7 @@ class AppPages {
   static const CANCELLED_ORDER = Routes.CANCELLED_ORDER;
   static const ORDER_DELIVERED = Routes.ORDER_DELIVERED;
   static const EDIT_PROFILE = Routes.EDIT_PROFILE;
+  static const LOGIN = Routes.LOGIN;
 
   static final routes = [
     GetPage(name: _Paths.EDIT_PROFILE, page: () => const EditProfile()),
