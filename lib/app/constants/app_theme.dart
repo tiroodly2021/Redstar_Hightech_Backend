@@ -19,4 +19,7 @@ class AppTheme {
   static const Color richTextStyleColor = Colors.black;
   static const Color textRichSpanStyleColor = Color(0XFF4321F5);
   static const Color iconButtonColor = Colors.white;
+  static const Color buttonLoginBackgroundColor = Colors.white;
+
+  static const Color buttonTextDecorationColor = Color(0xFFa9d470);
 }

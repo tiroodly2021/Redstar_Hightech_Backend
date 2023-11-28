@@ -5,7 +5,6 @@ import 'package:redstar_hightech_backend/app/databases/boxes.dart';
 import 'package:redstar_hightech_backend/app/modules/cancelled_order/views/cancelled_order_view.dart';
 import 'package:redstar_hightech_backend/app/modules/category/views/category_view.dart';
 import 'package:redstar_hightech_backend/app/modules/home/views/home_view.dart';
-import 'package:redstar_hightech_backend/app/modules/login/views/login_view.dart';
 import 'package:redstar_hightech_backend/app/modules/order/views/order_view.dart';
 import 'package:redstar_hightech_backend/app/modules/pending_order/views/pending_order_view.dart';
 import 'package:redstar_hightech_backend/app/modules/product/views/product_view.dart';

@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 
 import 'menu_widget.dart';
 
@@ -9,7 +11,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   IconData? icon;
   Function()? onPressed;
   Function()? onPressedLoginState;
-  String? userName;
+  AuthenticationController? authenticationController;
 
   AppBarWidget(
       {Key? key,
@@ -19,7 +21,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       this.icon,
       this.onPressed,
       this.onPressedLoginState,
-      this.userName})
+      this.authenticationController})
       : super(key: key);
 
   @override
@@ -34,7 +36,49 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
             icon: Icon(icon, color: Colors.white)),
         ElevatedButton(
             style: ElevatedButton.styleFrom(primary: Colors.transparent),
-            child: Text(userName ?? 'Guest'),
+            child: (authenticationController!.user != null)
+                ? (authenticationController!.imageurl != null
+                    ? Image.network(
+                        authenticationController!.imageurl!,
+                        width: 40,
+                        height: 50,
+                      )
+                    : Container(
+                        width: 40,
+                        height: 50,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(
+                                "assets/images/person_connected.png"),
+                            fit: BoxFit.cover,
+                          ),
+                        )))
+                : Container(
+                    width: 40,
+                    height: 50,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image:
+                            AssetImage("assets/images/person_disconnected.png"),
+                        fit: BoxFit.cover,
+                      ),
+                    ))
+
+            /* 
+            
+                 ? (authenticationController.imageurl != null
+                ? Image.network(authenticationController.imageurl!)
+                : const AssetImage("assets/images/person_default.jpg"))
+            : const AssetImage("assets/images/person_default.jpg")
+
+            Container(
+                decoration: BoxDecoration(
+              image: DecorationImage(
+                image: userAvatar,
+                fit: BoxFit.cover,
+              ),
+            )) */
+            ,
             onPressed: onPressedLoginState)
       ],
 
@@ -46,4 +90,5 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(60); //const Size(5, 60);
+
 }

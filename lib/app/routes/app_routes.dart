@@ -20,6 +20,7 @@ abstract class Routes {
   static const ORDER_DELIVER_PENDING = _Paths.ORDER_DELIVER_PENDING;
   static const SETTINGS = _Paths.SETTINGS;
   static const LOGIN = _Paths.LOGIN;
+  static const REGISTRATION = _Paths.REGISTRATION;
 }
 
 abstract class _Paths {
@@ -41,4 +42,5 @@ abstract class _Paths {
   static const ORDER_DELIVER_PENDING = '/order-deliver-pending';
   static const SETTINGS = '/settings';
   static const LOGIN = '/login';
+  static const REGISTRATION = '/registration';
 }

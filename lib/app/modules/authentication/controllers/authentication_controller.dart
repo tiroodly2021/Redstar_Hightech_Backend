@@ -2,10 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:redstar_hightech_backend/app/modules/home/views/home_view.dart';
-import 'package:redstar_hightech_backend/app/modules/login/views/login_view.dart';
 
-class LoginController extends GetxController {
+import '../../home/views/home_view.dart';
+import '../views/login_view.dart';
+
+class AuthenticationController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['email']);
@@ -13,7 +14,8 @@ class LoginController extends GetxController {
   Rxn<User> _firebaseUser = Rxn<User>();
 
   String? get userFirstName => _firebaseUser.value?.displayName;
-  String? get user => _firebaseUser.value?.email;
+  String? get email => _firebaseUser.value?.email;
+  User? get user => _firebaseUser.value;
   String? get imageurl => _firebaseUser.value?.photoURL;
 
   void login(String email, String password) async {

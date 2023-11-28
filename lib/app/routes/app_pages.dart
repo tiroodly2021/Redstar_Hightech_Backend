@@ -1,5 +1,8 @@
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/login_view.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/registration_view.dart';
 
+import '../modules/authentication/bindings/authentication_binding.dart';
 import '../modules/cancelled_order/bindings/cancelled_order_binding.dart';
 import '../modules/cancelled_order/views/cancelled_order_view.dart';
 import '../modules/category/bindings/category_binding.dart';
@@ -8,8 +11,6 @@ import '../modules/category/views/edit_category_view.dart';
 import '../modules/category/views/new_category_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
-import '../modules/login/bindings/login_binding.dart';
-import '../modules/login/views/login_view.dart';
 import '../modules/order/bindings/order_binding.dart';
 import '../modules/order/views/order_view.dart';
 import '../modules/order_deliver_pending/bindings/order_deliver_pending_binding.dart';
@@ -48,6 +49,7 @@ class AppPages {
   static const ORDER_DELIVERED = Routes.ORDER_DELIVERED;
   static const EDIT_PROFILE = Routes.EDIT_PROFILE;
   static const LOGIN = Routes.LOGIN;
+  static const REGISTRATION = Routes.REGISTRATION;
 
   static final routes = [
     GetPage(name: _Paths.EDIT_PROFILE, page: () => const EditProfile()),
@@ -125,7 +127,12 @@ class AppPages {
     GetPage(
       name: _Paths.LOGIN,
       page: () => LoginView(),
-      binding: LoginBinding(),
+      binding: AuthenticationBinding(),
+    ),
+    GetPage(
+      name: _Paths.REGISTRATION,
+      page: () => RegistrationView(),
+      binding: AuthenticationBinding(),
     ),
   ];
 

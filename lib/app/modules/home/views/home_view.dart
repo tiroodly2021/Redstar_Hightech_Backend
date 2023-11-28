@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/cancelled_order/controllers/cancelled_order_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/category/controllers/category_controller.dart';
-import 'package:redstar_hightech_backend/app/modules/login/controllers/login_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/order/controllers/order_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/order/models/order_stats_model.dart';
 import 'package:redstar_hightech_backend/app/modules/order_delivered/controllers/order_delivered_controller.dart';
@@ -34,11 +34,12 @@ class HomeView extends GetView<HomeController> {
   final OrderDeliveredController orderDeliveredController =
       Get.put(OrderDeliveredController());
 
-  LoginController loginController = Get.put(LoginController());
+  AuthenticationController authenticationController =
+      Get.put(AuthenticationController());
 
   @override
   Widget build(BuildContext context) {
-    loginController = Get.find<LoginController>();
+    authenticationController = Get.find<AuthenticationController>();
     return Scaffold(
       appBar: AppBarWidget(
         title: 'Redstar Management',
@@ -47,12 +48,10 @@ class HomeView extends GetView<HomeController> {
         onPressed: () {
           showSearch(context: context, delegate: AppSearchDelegate());
         },
-        userName: Get.find<LoginController>().user != null
-            ? loginController.user!.split("@")[0]
-            : 'Guest',
+        authenticationController: Get.find<AuthenticationController>(),
         onPressedLoginState: () {
-          if (Get.find<LoginController>().user != null) {
-            loginController.signout();
+          if (Get.find<AuthenticationController>().user != null) {
+            authenticationController.signout();
           } else {
             Navigator.pushNamed(context, AppPages.LOGIN);
           }
