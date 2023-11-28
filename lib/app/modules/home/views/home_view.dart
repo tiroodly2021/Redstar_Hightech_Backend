@@ -54,7 +54,7 @@ class HomeView extends GetView<HomeController> {
           if (Get.find<LoginController>().user != null) {
             loginController.signout();
           } else {
-            Navigator.pushReplacementNamed(context, AppPages.LOGIN);
+            Navigator.pushNamed(context, AppPages.LOGIN);
           }
         },
         tooltip: 'Search',

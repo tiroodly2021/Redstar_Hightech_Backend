@@ -9,7 +9,8 @@ import 'package:settings_ui/settings_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../util.dart';
-import '../../../constants/strings copy.dart';
+
+import '../../../constants/strings.dart';
 import '../../../services/notification_service.dart';
 import '../../../shared/app_bar_widget.dart';
 import '../../../shared/menu_widget.dart';

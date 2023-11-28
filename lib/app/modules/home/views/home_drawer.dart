@@ -32,11 +32,6 @@ class _HomeDrawerState extends State<HomeDrawer> {
         title: 'Home',
       ),
       drawer.MenuItem(
-        id: 'login',
-        icon: Icons.login,
-        title: 'Login',
-      ),
-      drawer.MenuItem(
           id: 'products', icon: Icons.shopping_cart, title: 'Products'),
       drawer.MenuItem(
         id: 'categories',
@@ -133,8 +128,6 @@ class _HomeDrawerState extends State<HomeDrawer> {
     switch (currentItemId) {
       case 'home':
         return HomeView();
-      case 'login':
-        return LoginView();
       case 'products':
         return ProductView();
       case 'categories':
