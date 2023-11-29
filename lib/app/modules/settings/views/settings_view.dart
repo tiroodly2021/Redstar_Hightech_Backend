@@ -13,7 +13,9 @@ import '../../../../util.dart';
 import '../../../constants/strings.dart';
 import '../../../services/notification_service.dart';
 import '../../../shared/app_bar_widget.dart';
+import '../../../shared/button_optional_menu.dart';
 import '../../../shared/menu_widget.dart';
+import '../../authentication/controllers/authentication_controller.dart';
 import 'edit_profile.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:drawerbehavior/drawerbehavior.dart';
@@ -35,6 +37,8 @@ class _SettingsViewState extends State<SettingsView> {
   String imageString = '';
   late Box box;
   late NotificationService notificationService;
+  AuthenticationController authenticationController =
+      Get.put(AuthenticationController());
 
   @override
   void initState() {
@@ -62,6 +66,16 @@ class _SettingsViewState extends State<SettingsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(
+        title: 'Redstar Management',
+        icon: Icons.search,
+        bgColor: Colors.black,
+        onPressed: () {
+          showSearch(context: context, delegate: AppSearchDelegate());
+        },
+        authenticationController: Get.find<AuthenticationController>(),
+        menuActionButton: ButtonOptionalMenu(),
+        tooltip: 'Search',
+      ) /* AppBarWidget(
         title: 'Settings',
         icon: Icons.search,
         bgColor: Colors.black,
@@ -69,7 +83,8 @@ class _SettingsViewState extends State<SettingsView> {
         onPressed: () {
           showSearch(context: context, delegate: AppSearchDelegate());
         },
-      ),
+      ) */
+      ,
       body: SettingsList(
           contentPadding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
           platform: DevicePlatform.web,

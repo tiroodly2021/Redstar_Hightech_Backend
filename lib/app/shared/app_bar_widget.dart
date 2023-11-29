@@ -12,6 +12,9 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   Function()? onPressed;
   Function()? onPressedLoginState;
   AuthenticationController? authenticationController;
+  dynamic menuActionButton = Container(
+    child: Text('Hll'),
+  );
 
   AppBarWidget(
       {Key? key,
@@ -21,7 +24,8 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       this.icon,
       this.onPressed,
       this.onPressedLoginState,
-      this.authenticationController})
+      this.authenticationController,
+      this.menuActionButton})
       : super(key: key);
 
   @override
@@ -34,52 +38,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
             onPressed: onPressed,
             // tooltip: tooltip,
             icon: Icon(icon, color: Colors.white)),
-        ElevatedButton(
-            style: ElevatedButton.styleFrom(primary: Colors.transparent),
-            child: (authenticationController!.user != null)
-                ? (authenticationController!.imageurl != null
-                    ? Image.network(
-                        authenticationController!.imageurl!,
-                        width: 30,
-                        height: 30,
-                      )
-                    : Container(
-                        width: 30,
-                        height: 30,
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage(
-                                "assets/images/person_connected.png"),
-                            fit: BoxFit.cover,
-                          ),
-                        )))
-                : Container(
-                    width: 30,
-                    height: 30,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image:
-                            AssetImage("assets/images/person_disconnected.png"),
-                        fit: BoxFit.cover,
-                      ),
-                    ))
-
-            /* 
-            
-                 ? (authenticationController.imageurl != null
-                ? Image.network(authenticationController.imageurl!)
-                : const AssetImage("assets/images/person_default.jpg"))
-            : const AssetImage("assets/images/person_default.jpg")
-
-            Container(
-                decoration: BoxDecoration(
-              image: DecorationImage(
-                image: userAvatar,
-                fit: BoxFit.cover,
-              ),
-            )) */
-            ,
-            onPressed: onPressedLoginState)
+        menuActionButton
       ],
 
       title: Text(title),

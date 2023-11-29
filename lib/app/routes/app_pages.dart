@@ -50,6 +50,7 @@ class AppPages {
   static const EDIT_PROFILE = Routes.EDIT_PROFILE;
   static const LOGIN = Routes.LOGIN;
   static const REGISTRATION = Routes.REGISTRATION;
+  static const SETTINGS = Routes.SETTINGS;
 
   static final routes = [
     GetPage(name: _Paths.EDIT_PROFILE, page: () => const EditProfile()),

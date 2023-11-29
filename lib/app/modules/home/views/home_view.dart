@@ -9,10 +9,13 @@ import 'package:redstar_hightech_backend/app/modules/order/models/order_stats_mo
 import 'package:redstar_hightech_backend/app/modules/order_delivered/controllers/order_delivered_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/pending_order/controllers/pending_order_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/product/controllers/product_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/settings/views/edit_profile.dart';
+import 'package:redstar_hightech_backend/app/modules/settings/views/settings_view.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
 import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
 
+import '../../../shared/button_optional_menu.dart';
 import '../../../shared/menu_widget.dart';
 import '../../order/controllers/orderstat_controller.dart';
 import '../controllers/home_controller.dart';
@@ -49,13 +52,7 @@ class HomeView extends GetView<HomeController> {
           showSearch(context: context, delegate: AppSearchDelegate());
         },
         authenticationController: Get.find<AuthenticationController>(),
-        onPressedLoginState: () {
-          if (Get.find<AuthenticationController>().user != null) {
-            authenticationController.signout();
-          } else {
-            Navigator.pushNamed(context, AppPages.LOGIN);
-          }
-        },
+        menuActionButton: ButtonOptionalMenu(),
         tooltip: 'Search',
       ),
       key: _scaffoldKey,
@@ -160,6 +157,19 @@ class HomeView extends GetView<HomeController> {
       ),
     );
   }
+
+  @override
+  List<Object?> get props => [
+        _scaffoldKey,
+        orderStatController,
+        productController,
+        orderController,
+        pendingOrderController,
+        categoryController,
+        cancelledOrderController,
+        orderDeliveredController,
+        authenticationController
+      ];
 }
 
 class MainSectionService extends StatelessWidget {
