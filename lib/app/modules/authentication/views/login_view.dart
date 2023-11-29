@@ -189,7 +189,8 @@ class LoginView extends GetView<AuthenticationController> {
                                   GestureDetector(
                                       onTap: () {
                                         print("Login Clicked Event");
-                                        _login();
+                                        if (email.text != "" && pass.text != "")
+                                          _login();
                                       },
                                       child: Container(
                                         height: 40,

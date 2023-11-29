@@ -243,7 +243,10 @@ class RegistrationView extends GetView<AuthenticationController> {
                                   // const HeightBox(10),
                                   GestureDetector(
                                       onTap: () {
-                                        registerUser();
+                                        if (email.text != "" &&
+                                            firstn.text != "" &&
+                                            lastn.text != "" &&
+                                            pass.text != "") registerUser();
                                       },
                                       child: Container(
                                         height: 40,
