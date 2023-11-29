@@ -40,12 +40,12 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                 ? (authenticationController!.imageurl != null
                     ? Image.network(
                         authenticationController!.imageurl!,
-                        width: 40,
-                        height: 50,
+                        width: 30,
+                        height: 30,
                       )
                     : Container(
-                        width: 40,
-                        height: 50,
+                        width: 30,
+                        height: 30,
                         decoration: const BoxDecoration(
                           image: DecorationImage(
                             image: AssetImage(
@@ -54,8 +54,8 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                           ),
                         )))
                 : Container(
-                    width: 40,
-                    height: 50,
+                    width: 30,
+                    height: 30,
                     decoration: const BoxDecoration(
                       image: DecorationImage(
                         image:

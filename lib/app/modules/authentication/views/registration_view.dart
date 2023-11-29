@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../../../constants/app_theme.dart';
 import '../controllers/authentication_controller.dart';
+import '../widgets/social_sign_widget_row.dart';
 
 class RegistrationView extends GetView<AuthenticationController> {
   TextEditingController email = TextEditingController();
@@ -47,7 +48,7 @@ class RegistrationView extends GetView<AuthenticationController> {
               ),
               SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -70,8 +71,7 @@ class RegistrationView extends GetView<AuthenticationController> {
                         children: [
                           Expanded(
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 100),
+                              padding: const EdgeInsets.symmetric(vertical: 50),
                               child: Column(
                                 children: [
                                   Container(
@@ -87,9 +87,9 @@ class RegistrationView extends GetView<AuthenticationController> {
                                     padding:
                                         const EdgeInsets.fromLTRB(30, 0, 30, 0),
                                     child: TextField(
-                                      controller: email,
+                                      controller: firstn,
                                       decoration: InputDecoration(
-                                        hintText: 'Email',
+                                        hintText: 'First Name',
                                         hintStyle: const TextStyle(
                                             color: AppTheme.hintLoginColor),
                                         enabledBorder: OutlineInputBorder(
@@ -122,9 +122,9 @@ class RegistrationView extends GetView<AuthenticationController> {
                                     padding:
                                         const EdgeInsets.fromLTRB(30, 0, 30, 0),
                                     child: TextField(
-                                      controller: email,
+                                      controller: lastn,
                                       decoration: InputDecoration(
-                                        hintText: 'Email',
+                                        hintText: 'Last Name',
                                         hintStyle: const TextStyle(
                                             color: AppTheme.hintLoginColor),
                                         enabledBorder: OutlineInputBorder(
@@ -189,7 +189,7 @@ class RegistrationView extends GetView<AuthenticationController> {
                                   ),
 
                                   const SizedBox(
-                                    height: 20,
+                                    height: 10,
                                   ),
                                   // const HeightBox(20),
                                   Padding(
@@ -243,8 +243,7 @@ class RegistrationView extends GetView<AuthenticationController> {
                                   // const HeightBox(10),
                                   GestureDetector(
                                       onTap: () {
-                                        print("Login Clicked Event");
-                                        _login();
+                                        registerUser();
                                       },
                                       child: Container(
                                         height: 40,
@@ -267,7 +266,7 @@ class RegistrationView extends GetView<AuthenticationController> {
                                             ]),
                                         child: const Center(
                                           child: Text(
-                                            "Login",
+                                            "Register",
                                             style: TextStyle(
                                                 color:
                                                     AppTheme.richTextStyleColor,
@@ -306,7 +305,11 @@ class RegistrationView extends GetView<AuthenticationController> {
                                               const HeightBox(20),
                                               "Login with".text.white.makeCentered(), */
                                       // SocialSignWidgetRow()
-                                      )
+                                      ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  SocialSignWidgetRow()
                                 ],
                               ),
                             ),
@@ -351,8 +354,8 @@ class RegistrationView extends GetView<AuthenticationController> {
         ));
   }
 
-  void _login() {
-    // var loginController = Get.find<LoginController>();
-    authenticationController.login(email.text, pass.text);
+  void registerUser() {
+    authenticationController.createUser(
+        firstn.text, lastn.text, email.text, pass.text);
   }
 }

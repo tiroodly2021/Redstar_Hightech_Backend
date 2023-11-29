@@ -57,25 +57,7 @@ class HomeView extends GetView<HomeController> {
           }
         },
         tooltip: 'Search',
-      )
-
-      /* AppBar(
-        leading: const MenuWidget(),
-        actions: [
-          IconButton(
-              onPressed: () {
-                /*  showSearch(
-                      context: context, delegate: TransactionSearchDelegate()); */
-              },
-              tooltip: 'Search',
-              icon: const Icon(Icons.search))
-        ],
-
-        title: const Text('Redstar Management'),
-        // centerTitle: true,
-        backgroundColor: Colors.black,
-      ) */
-      ,
+      ),
       key: _scaffoldKey,
       body: Container(
         decoration: const BoxDecoration(

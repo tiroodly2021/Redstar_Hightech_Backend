@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/registration_view.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 //import 'package:velocity_x/velocity_x.dart';
 
@@ -20,6 +21,7 @@ import 'package:redstar_hightech_backend/app/modules/home/views/home_view.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../constants/app_theme.dart';
+import '../widgets/social_sign_widget_row.dart';
 
 //import 'package:google_fonts/google_fonts.dart';
 
@@ -249,7 +251,11 @@ class LoginView extends GetView<AuthenticationController> {
                                               const HeightBox(20),
                                               "Login with".text.white.makeCentered(), */
                                       // SocialSignWidgetRow()
-                                      )
+                                      ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  SocialSignWidgetRow()
                                 ],
                               ),
                             ),
@@ -270,8 +276,12 @@ class LoginView extends GetView<AuthenticationController> {
               padding: const EdgeInsets.only(bottom: 10.0),
               child: GestureDetector(
                   onTap: () {
-                    /*  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => RegistrationPage())); */
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RegistrationView(),
+                            settings: const RouteSettings(
+                                name: AppPages.REGISTRATION)));
                   },
                   child: RichText(
                       text: const TextSpan(

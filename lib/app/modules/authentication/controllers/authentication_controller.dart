@@ -55,17 +55,23 @@ class AuthenticationController extends GetxController {
   }
 
   void google_signIn() async {
-    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+    try {
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser!.authentication;
+      print(googleUser);
 
-    final AuthCredential credential = GoogleAuthProvider.credential(
-        idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser!.authentication;
 
-    final user = (await _auth
-        .signInWithCredential(credential)
-        .then((value) => Get.offAll(() => HomeView())));
+      final AuthCredential credential = GoogleAuthProvider.credential(
+          idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+
+      final user = (await _auth
+          .signInWithCredential(credential)
+          .then((value) => Get.offAll(() => HomeView())));
+    } on Exception catch (e) {
+      print(e);
+    }
   }
 
   void google_signOut() async {
