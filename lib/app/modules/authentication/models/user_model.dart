@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class User {
   final int buildNumber;
   final int createdAt;
@@ -55,4 +57,37 @@ class User {
         "name": name,
         "role": role,
       };
+
+  factory User.fromSnapShot(DocumentSnapshot snap) {
+    return User(
+      buildNumber: snap["build_number"],
+      createdAt: snap["created_at"],
+      email: snap["email"],
+      lastLogin: snap["last_login"],
+      name: snap["name"],
+      role: snap["role"],
+    );
+  }
+
+  factory User.fromMap(Map<String, dynamic> map) {
+    return User(
+      buildNumber: map["build_number"],
+      createdAt: map["created_at"],
+      email: map["email"],
+      lastLogin: map["last_login"],
+      name: map["name"],
+      role: map["role"],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "build_number": buildNumber,
+      "created_at": createdAt,
+      "email": email,
+      "last_login": lastLogin,
+      "name": name,
+      "role": role,
+    };
+  }
 }
