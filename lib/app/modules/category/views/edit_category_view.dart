@@ -50,15 +50,7 @@ class EditCategoryView extends GetView<CategoryController> {
         authenticationController: Get.find<AuthenticationController>(),
         menuActionButton: ButtonOptionalMenu(),
         tooltip: 'Search',
-      )
-
-      /* AppBarWidget(
-        title: 'Edit Category ' + category.name,
-        icon: Icons.search,
-        bgColor: Colors.black,
-        tooltip: 'Search',
-      ) */
-      ,
+      ),
       body: SingleChildScrollView(
         child: Padding(
             padding: const EdgeInsets.all(10.0),

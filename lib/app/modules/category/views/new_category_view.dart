@@ -41,15 +41,7 @@ class NewCategoryView extends GetView<CategoryController> {
         authenticationController: Get.find<AuthenticationController>(),
         menuActionButton: ButtonOptionalMenu(),
         tooltip: 'Search',
-      )
-
-      /* AppBarWidget(
-        title: 'New Category',
-        icon: Icons.search,
-        bgColor: Colors.black,
-        tooltip: 'Search',
-      ) */
-      ,
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10.0),

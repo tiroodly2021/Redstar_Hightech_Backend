@@ -34,15 +34,7 @@ class CancelledOrderView extends GetView<CancelledOrderController> {
         authenticationController: Get.find<AuthenticationController>(),
         menuActionButton: ButtonOptionalMenu(),
         tooltip: 'Search',
-      )
-
-      /* AppBarWidget(
-        title: 'Cancelled Orders',
-        icon: Icons.search,
-        bgColor: Colors.black,
-        tooltip: 'Search',
-      ) */
-      ,
+      ),
       body: Column(
         children: [
           Expanded(

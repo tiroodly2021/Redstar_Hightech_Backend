@@ -34,17 +34,7 @@ class OrderView extends GetView<OrderController> {
         authenticationController: Get.find<AuthenticationController>(),
         menuActionButton: ButtonOptionalMenu(),
         tooltip: 'Search',
-      ) /* AppBarWidget(
-        title: 'Orders',
-        icon: Icons.search,
-        bgColor: Colors.black,
-        onPressed: () {
-          /*  showSearch(
-                      context: context, delegate: TransactionSearchDelegate()); */
-        },
-        tooltip: 'Search',
-      ) */
-      ,
+      ),
       body: Column(
         children: [
           Expanded(

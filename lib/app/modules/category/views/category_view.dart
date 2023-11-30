@@ -31,15 +31,7 @@ class CategoryView extends GetView<CategoryController> {
           authenticationController: Get.find<AuthenticationController>(),
           menuActionButton: ButtonOptionalMenu(),
           tooltip: 'Search',
-        )
-
-        /* AppBarWidget(
-          title: 'Categories',
-          icon: Icons.search,
-          bgColor: Colors.black,
-          tooltip: 'Search',
-        ) */
-        ,
+        ),
         body: Padding(
           padding: const EdgeInsets.all(10),
           child: Column(

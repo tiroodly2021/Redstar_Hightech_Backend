@@ -48,19 +48,7 @@ class NewProductView extends GetView<ProductController> {
         authenticationController: Get.find<AuthenticationController>(),
         menuActionButton: ButtonOptionalMenu(),
         tooltip: 'Search',
-      )
-
-      /* AppBarWidget(
-        title: 'Add Product',
-        icon: Icons.search,
-        bgColor: Colors.black,
-        onPressed: () {
-          /*  showSearch(
-                      context: context, delegate: TransactionSearchDelegate()); */
-        },
-        tooltip: 'Search',
-      ) */
-      ,
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10.0),

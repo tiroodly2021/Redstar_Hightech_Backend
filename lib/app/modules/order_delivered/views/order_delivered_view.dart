@@ -34,19 +34,7 @@ class OrderDeliveredView extends GetView<OrderDeliveredController> {
         authenticationController: Get.find<AuthenticationController>(),
         menuActionButton: ButtonOptionalMenu(),
         tooltip: 'Search',
-      )
-
-      /* AppBarWidget(
-        title: 'Order Delivered',
-        icon: Icons.search,
-        bgColor: Colors.black,
-        onPressed: () {
-          /*  showSearch(
-                      context: context, delegate: TransactionSearchDelegate()); */
-        },
-        tooltip: 'Search',
-      ) */
-      ,
+      ),
       body: Column(
         children: [
           Expanded(
