@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
-  final int buildNumber;
-  final int createdAt;
+  final String buildNumber;
+  final String createdAt;
   final String email;
-  final int lastLogin;
+  final String lastLogin;
   final String name;
   final String role;
 
@@ -20,10 +20,10 @@ class User {
   });
 
   User copyWith({
-    int? buildNumber,
-    int? createdAt,
+    String? buildNumber,
+    String? createdAt,
     String? email,
-    int? lastLogin,
+    String? lastLogin,
     String? name,
     String? role,
   }) =>
@@ -41,52 +41,52 @@ class User {
   String toRawJson() => json.encode(toJson());
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        buildNumber: json["build_number"],
-        createdAt: json["created_at"],
+        buildNumber: json["buildNumber"],
+        createdAt: json["createdAt"],
         email: json["email"],
-        lastLogin: json["last_login"],
-        name: json["name"],
+        lastLogin: json["lastSignInTime"],
+        name: json["displayName"],
         role: json["role"],
       );
 
   Map<String, dynamic> toJson() => {
-        "build_number": buildNumber,
-        "created_at": createdAt,
+        "buildNumber": buildNumber,
+        "createdAt": createdAt,
         "email": email,
-        "last_login": lastLogin,
-        "name": name,
+        "lastSignInTime": lastLogin,
+        "displayName": name,
         "role": role,
       };
 
   factory User.fromSnapShot(DocumentSnapshot snap) {
     return User(
-      buildNumber: snap["build_number"],
-      createdAt: snap["created_at"],
+      buildNumber: snap["buildNumber"],
+      createdAt: snap["createdAt"],
       email: snap["email"],
-      lastLogin: snap["last_login"],
-      name: snap["name"],
+      lastLogin: snap["lastSignInTime"],
+      name: snap["displayName"],
       role: snap["role"],
     );
   }
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      buildNumber: map["build_number"],
-      createdAt: map["created_at"],
+      buildNumber: map["buildNumber"],
+      createdAt: map["createdAt"],
       email: map["email"],
-      lastLogin: map["last_login"],
-      name: map["name"],
+      lastLogin: map["lastSignInTime"],
+      name: map["displayName"],
       role: map["role"],
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      "build_number": buildNumber,
-      "created_at": createdAt,
+      "buildNumber": buildNumber,
+      "createdAt": createdAt,
       "email": email,
-      "last_login": lastLogin,
-      "name": name,
+      "lastSignInTime": lastLogin,
+      "displayName": name,
       "role": role,
     };
   }

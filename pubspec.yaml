@@ -36,7 +36,8 @@ dependencies:
   flutter_svg:
   velocity_x:  
   google_sign_in:
-
+  device_info_plus:
+  package_info_plus:
 
 
 dev_dependencies:

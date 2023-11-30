@@ -39,10 +39,17 @@ class HomeView extends GetView<HomeController> {
 
   AuthenticationController authenticationController =
       Get.put(AuthenticationController());
+  HomeController homeController = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
     authenticationController = Get.find<AuthenticationController>();
+    /*   homeController = Get.put(HomeController());
+
+    homeController.saveOrUpdateUser(); */
+
+    print(authenticationController.user);
+
     return Scaffold(
       appBar: AppBarWidget(
         title: 'Redstar Management',
