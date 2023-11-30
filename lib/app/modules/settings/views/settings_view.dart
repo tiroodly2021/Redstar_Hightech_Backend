@@ -66,7 +66,7 @@ class _SettingsViewState extends State<SettingsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(
-        title: 'Redstar Management',
+        title: 'Settings',
         icon: Icons.search,
         bgColor: Colors.black,
         onPressed: () {

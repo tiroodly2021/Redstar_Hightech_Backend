@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/product/controllers/product_controller.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
 import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
+import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
+import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
 import 'package:redstar_hightech_backend/app/shared/list_not_found.sharedWidgets.dart';
 
 import '../../product/models/product_model.dart';
@@ -26,11 +29,22 @@ class OrderView extends GetView<OrderController> {
         icon: Icons.search,
         bgColor: Colors.black,
         onPressed: () {
+          showSearch(context: context, delegate: AppSearchDelegate());
+        },
+        authenticationController: Get.find<AuthenticationController>(),
+        menuActionButton: ButtonOptionalMenu(),
+        tooltip: 'Search',
+      ) /* AppBarWidget(
+        title: 'Orders',
+        icon: Icons.search,
+        bgColor: Colors.black,
+        onPressed: () {
           /*  showSearch(
                       context: context, delegate: TransactionSearchDelegate()); */
         },
         tooltip: 'Search',
-      ),
+      ) */
+      ,
       body: Column(
         children: [
           Expanded(

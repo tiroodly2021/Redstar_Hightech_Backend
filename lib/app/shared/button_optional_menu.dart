@@ -103,11 +103,11 @@ class ButtonOptionalMenu extends StatelessWidget {
       case 0:
         print('Profile selected');
 
-        Navigator.pushReplacement(
+        Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => EditProfile(),
-                settings: const RouteSettings(name: AppPages.SETTINGS)));
+                settings: const RouteSettings(name: AppPages.EDIT_PROFILE)));
         break;
       case 1:
         print('Setting selected');

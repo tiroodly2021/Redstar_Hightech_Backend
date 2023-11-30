@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
+import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
+import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
 import 'package:redstar_hightech_backend/app/shared/list_not_found.sharedWidgets.dart';
 
 import '../controllers/category_controller.dart';
@@ -19,11 +22,24 @@ class CategoryView extends GetView<CategoryController> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBarWidget(
+          title: 'Redstar Management',
+          icon: Icons.search,
+          bgColor: Colors.black,
+          onPressed: () {
+            showSearch(context: context, delegate: AppSearchDelegate());
+          },
+          authenticationController: Get.find<AuthenticationController>(),
+          menuActionButton: ButtonOptionalMenu(),
+          tooltip: 'Search',
+        )
+
+        /* AppBarWidget(
           title: 'Categories',
           icon: Icons.search,
           bgColor: Colors.black,
           tooltip: 'Search',
-        ),
+        ) */
+        ,
         body: Padding(
           padding: const EdgeInsets.all(10),
           child: Column(

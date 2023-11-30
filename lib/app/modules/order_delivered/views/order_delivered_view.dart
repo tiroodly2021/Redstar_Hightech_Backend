@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/product/controllers/product_controller.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
 import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
+import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
+import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
 import 'package:redstar_hightech_backend/app/shared/list_not_found.sharedWidgets.dart';
 
 import '../../order/models/order_model.dart';
@@ -22,6 +25,18 @@ class OrderDeliveredView extends GetView<OrderDeliveredController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(
+        title: 'Orders Delivered',
+        icon: Icons.search,
+        bgColor: Colors.black,
+        onPressed: () {
+          showSearch(context: context, delegate: AppSearchDelegate());
+        },
+        authenticationController: Get.find<AuthenticationController>(),
+        menuActionButton: ButtonOptionalMenu(),
+        tooltip: 'Search',
+      )
+
+      /* AppBarWidget(
         title: 'Order Delivered',
         icon: Icons.search,
         bgColor: Colors.black,
@@ -30,7 +45,8 @@ class OrderDeliveredView extends GetView<OrderDeliveredController> {
                       context: context, delegate: TransactionSearchDelegate()); */
         },
         tooltip: 'Search',
-      ),
+      ) */
+      ,
       body: Column(
         children: [
           Expanded(

@@ -6,7 +6,10 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
+import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
+import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../../constants/const.dart';
@@ -70,11 +73,24 @@ class EditProductView extends GetView<ProductController> {
         icon: Icons.search,
         bgColor: Colors.black,
         onPressed: () {
+          showSearch(context: context, delegate: AppSearchDelegate());
+        },
+        authenticationController: Get.find<AuthenticationController>(),
+        menuActionButton: ButtonOptionalMenu(),
+        tooltip: 'Search',
+      )
+
+      /* AppBarWidget(
+        title: 'Edit Product ' + product.name,
+        icon: Icons.search,
+        bgColor: Colors.black,
+        onPressed: () {
           /*  showSearch(
                       context: context, delegate: TransactionSearchDelegate()); */
         },
         tooltip: 'Search',
-      ),
+      ) */
+      ,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10.0),

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/category/controllers/category_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/category/models/category_model.dart';
 import 'package:redstar_hightech_backend/app/modules/home/controllers/home_controller.dart';
@@ -14,6 +15,8 @@ import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
 import 'package:redstar_hightech_backend/app/services/storage_services.dart';
 import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
+import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
+import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:path/path.dart' as path;
 import 'dart:io';
@@ -40,11 +43,24 @@ class NewProductView extends GetView<ProductController> {
         icon: Icons.search,
         bgColor: Colors.black,
         onPressed: () {
+          showSearch(context: context, delegate: AppSearchDelegate());
+        },
+        authenticationController: Get.find<AuthenticationController>(),
+        menuActionButton: ButtonOptionalMenu(),
+        tooltip: 'Search',
+      )
+
+      /* AppBarWidget(
+        title: 'Add Product',
+        icon: Icons.search,
+        bgColor: Colors.black,
+        onPressed: () {
           /*  showSearch(
                       context: context, delegate: TransactionSearchDelegate()); */
         },
         tooltip: 'Search',
-      ),
+      ) */
+      ,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10.0),

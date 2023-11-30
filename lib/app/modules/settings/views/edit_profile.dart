@@ -43,6 +43,22 @@ class _EditProfileState extends State<EditProfile> {
         title: const Text("Edit Profile"),
         backgroundColor: Colors.black,
       ),
+      /* 
+      
+      AppBarWidget(
+        title: 'Redstar Management',
+        icon: Icons.search,
+        bgColor: Colors.black,
+        onPressed: () {
+          showSearch(context: context, delegate: AppSearchDelegate());
+        },
+        authenticationController: Get.find<AuthenticationController>(),
+        menuActionButton: ButtonOptionalMenu(),
+        tooltip: 'Search',
+      )
+
+
+       */
       //  resizeToAvoidBottomInset: false,
       body: Stack(
         children: [

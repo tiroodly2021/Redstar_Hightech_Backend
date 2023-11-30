@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/cancelled_order/controllers/cancelled_order_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/product/controllers/product_controller.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
+import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
+import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
 import 'package:redstar_hightech_backend/app/shared/list_not_found.sharedWidgets.dart';
 
 import '../../../shared/app_bar_widget.dart';
@@ -25,8 +28,21 @@ class CancelledOrderView extends GetView<CancelledOrderController> {
         title: 'Cancelled Orders',
         icon: Icons.search,
         bgColor: Colors.black,
+        onPressed: () {
+          showSearch(context: context, delegate: AppSearchDelegate());
+        },
+        authenticationController: Get.find<AuthenticationController>(),
+        menuActionButton: ButtonOptionalMenu(),
         tooltip: 'Search',
-      ),
+      )
+
+      /* AppBarWidget(
+        title: 'Cancelled Orders',
+        icon: Icons.search,
+        bgColor: Colors.black,
+        tooltip: 'Search',
+      ) */
+      ,
       body: Column(
         children: [
           Expanded(

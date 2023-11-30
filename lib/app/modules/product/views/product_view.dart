@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
+import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
+import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
 import 'package:redstar_hightech_backend/app/shared/list_not_found.sharedWidgets.dart';
 
 import '../controllers/product_controller.dart';
@@ -18,11 +21,24 @@ class ProductView extends GetView<ProductController> {
           icon: Icons.search,
           bgColor: Colors.black,
           onPressed: () {
+            showSearch(context: context, delegate: AppSearchDelegate());
+          },
+          authenticationController: Get.find<AuthenticationController>(),
+          menuActionButton: ButtonOptionalMenu(),
+          tooltip: 'Search',
+        )
+
+        /* AppBarWidget(
+          title: 'Products',
+          icon: Icons.search,
+          bgColor: Colors.black,
+          onPressed: () {
             /*  showSearch(
                       context: context, delegate: TransactionSearchDelegate()); */
           },
           tooltip: 'Search',
-        ),
+        ) */
+        ,
         body: Padding(
           padding: const EdgeInsets.all(10),
           child: Column(
