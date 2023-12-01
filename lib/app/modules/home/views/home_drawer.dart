@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:drawerbehavior/drawerbehavior.dart' as drawer;
 import 'package:redstar_hightech_backend/app/constants/app_theme.dart';
 import 'package:redstar_hightech_backend/app/databases/boxes.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/user_view.dart';
 import 'package:redstar_hightech_backend/app/modules/cancelled_order/views/cancelled_order_view.dart';
 import 'package:redstar_hightech_backend/app/modules/category/views/category_view.dart';
 import 'package:redstar_hightech_backend/app/modules/home/views/home_view.dart';
@@ -29,6 +30,11 @@ class _HomeDrawerState extends State<HomeDrawer> {
         id: 'home',
         icon: Icons.home,
         title: 'Home',
+      ),
+      drawer.MenuItem(
+        id: 'users',
+        icon: Icons.person,
+        title: 'Users',
       ),
       drawer.MenuItem(
           id: 'products', icon: Icons.shopping_cart, title: 'Products'),
@@ -127,6 +133,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
     switch (currentItemId) {
       case 'home':
         return HomeView();
+      case 'users':
+        return UserView();
       case 'products':
         return ProductView();
       case 'categories':

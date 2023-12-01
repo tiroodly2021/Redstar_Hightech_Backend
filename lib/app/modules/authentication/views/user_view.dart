@@ -20,7 +20,7 @@ class UserView extends GetView<UserController> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBarWidget(
-          title: 'Products',
+          title: 'Users',
           icon: Icons.search,
           bgColor: Colors.black,
           onPressed: () {
@@ -94,7 +94,7 @@ class UserView extends GetView<UserController> {
                         itemCount: controller.users.length,
                         itemBuilder: ((context, index) {
                           return SizedBox(
-                            height: 300,
+                            height: 200,
                             child: UserCard(
                               user: controller.users[index],
                               index: index,

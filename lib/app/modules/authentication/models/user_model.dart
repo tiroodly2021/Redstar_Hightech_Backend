@@ -10,6 +10,7 @@ class User {
   final String name;
   final String role;
   final String uid;
+  String? photoURL;
 
   User(
       {required this.buildNumber,
@@ -18,7 +19,8 @@ class User {
       required this.lastLogin,
       required this.name,
       required this.role,
-      required this.uid});
+      required this.uid,
+      this.photoURL});
 
   User copyWith(
           {String? buildNumber,
@@ -27,7 +29,8 @@ class User {
           String? lastLogin,
           String? name,
           String? role,
-          String? ui}) =>
+          String? uid,
+          String? photoURL}) =>
       User(
           buildNumber: buildNumber ?? this.buildNumber,
           createdAt: createdAt ?? this.createdAt,
@@ -35,21 +38,22 @@ class User {
           lastLogin: lastLogin ?? this.lastLogin,
           name: name ?? this.name,
           role: role ?? this.role,
-          uid: ui ?? this.uid);
+          uid: uid ?? this.uid,
+          photoURL: photoURL ?? this.photoURL);
 
   factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        buildNumber: json["buildNumber"],
-        createdAt: json["createdAt"],
-        email: json["email"],
-        lastLogin: json["lastSignInTime"],
-        name: json["displayName"],
-        role: json["role"],
-        uid: json["uid"],
-      );
+      buildNumber: json["buildNumber"],
+      createdAt: json["createdAt"],
+      email: json["email"],
+      lastLogin: json["lastSignInTime"],
+      name: json["displayName"],
+      role: json["role"],
+      uid: json["uid"],
+      photoURL: json["photoURL"]);
 
   Map<String, dynamic> toJson() => {
         "buildNumber": buildNumber,
@@ -58,7 +62,8 @@ class User {
         "lastSignInTime": lastLogin,
         "displayName": name,
         "role": role,
-        "uid": uid
+        "uid": uid,
+        "photoURL": photoURL
       };
 
   factory User.fromSnapShot(DocumentSnapshot snap) {
@@ -69,7 +74,8 @@ class User {
         lastLogin: snap["lastSignInTime"],
         name: snap["displayName"],
         role: snap["role"],
-        uid: snap.id);
+        uid: snap.id,
+        photoURL: snap["photoURL"]);
   }
 
   factory User.fromMap(Map<String, dynamic> map) {
@@ -80,7 +86,8 @@ class User {
         lastLogin: map["lastSignInTime"],
         name: map["displayName"],
         role: map["role"],
-        uid: map["uid"]);
+        uid: map["uid"],
+        photoURL: map["photoURL"]);
   }
 
   Map<String, dynamic> toMap() {
@@ -91,7 +98,8 @@ class User {
       "lastSignInTime": lastLogin,
       "displayName": name,
       "role": role,
-      "uid": uid
+      "uid": uid,
+      "photoURL": photoURL
     };
   }
 }
