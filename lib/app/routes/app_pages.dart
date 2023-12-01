@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/bindings/user_binding.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/login_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/registration_view.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/user_view.dart';
 
 import '../modules/authentication/bindings/authentication_binding.dart';
 import '../modules/cancelled_order/bindings/cancelled_order_binding.dart';
@@ -51,7 +54,7 @@ class AppPages {
   static const LOGIN = Routes.LOGIN;
   static const REGISTRATION = Routes.REGISTRATION;
   static const SETTINGS = Routes.SETTINGS;
-
+  static const USER = Routes.USER;
   static final routes = [
     GetPage(name: _Paths.EDIT_PROFILE, page: () => const EditProfile()),
     GetPage(name: _Paths.SPLASH, page: () => const SplashScreen()),
@@ -135,6 +138,7 @@ class AppPages {
       page: () => RegistrationView(),
       binding: AuthenticationBinding(),
     ),
+    GetPage(name: _Paths.USER, page: () => UserView(), binding: UserBinding())
   ];
 
   @override
@@ -158,6 +162,6 @@ class AppPages {
 
   @override
   String toString() {
-    return 'AppPages{INITIAL=$INITIAL, HOME=$HOME, PRODUCT=$PRODUCT, NEW_PRODUCT=$NEW_PRODUCT, PRODUCT_LIST=$PRODUCT_LIST, ORDER=$ORDER, CATEGORY=$CATEGORY, NEW_CATEGORY=$NEW_CATEGORY, EDIT_CATEGORY=$EDIT_CATEGORY, EDIT_PRODUCT=$EDIT_PRODUCT, PENDING_ORDER=$PENDING_ORDER, CANCELLED_ORDER=$CANCELLED_ORDER, ORDER_DELIVERED=$ORDER_DELIVERED, EDIT_PROFILE=$EDIT_PROFILE, routes=$routes}';
+    return 'AppPages{INITIAL=$INITIAL, HOME=$HOME, PRODUCT=$PRODUCT, NEW_PRODUCT=$NEW_PRODUCT, PRODUCT_LIST=$PRODUCT_LIST, ORDER=$ORDER, CATEGORY=$CATEGORY, NEW_CATEGORY=$NEW_CATEGORY, EDIT_CATEGORY=$EDIT_CATEGORY, EDIT_PRODUCT=$EDIT_PRODUCT, PENDING_ORDER=$PENDING_ORDER, CANCELLED_ORDER=$CANCELLED_ORDER, ORDER_DELIVERED=$ORDER_DELIVERED, EDIT_PROFILE=$EDIT_PROFILE, LOGIN=$LOGIN, REGISTRATION=$REGISTRATION, SETTINGS=$SETTINGS, USER=$USER, routes=$routes}';
   }
 }

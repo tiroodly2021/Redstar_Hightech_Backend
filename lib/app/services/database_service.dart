@@ -5,6 +5,7 @@ import 'package:redstar_hightech_backend/app/modules/order/models/order_stats_mo
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
 
 import '../../app/modules/order/models/order_model.dart';
+import '../modules/authentication/models/user_model.dart';
 
 class DatabaseService {
   final cloud_firestore.FirebaseFirestore _firebaseFirestore =
@@ -71,6 +72,11 @@ class DatabaseService {
         .update({field: newValue});
   }
 
+  Stream<List<User>> getUsers() {
+    return _firebaseFirestore.collection('users').snapshots().map((snapshot) =>
+        snapshot.docs.map((doc) => User.fromSnapShot(doc)).toList());
+  }
+
   Stream<List<Order>> getOrders() {
     return _firebaseFirestore
         .collection('orders')
@@ -84,6 +90,13 @@ class DatabaseService {
 
   Stream<int> getCount(String collectionPath, String controller) {
     switch (controller) {
+      case 'UserController':
+        return _firebaseFirestore.collection(collectionPath).snapshots().map(
+            (snapshot) => snapshot.docs
+                .map((doc) => User.fromSnapShot(doc))
+                .toList()
+                .length);
+
       case 'OrderController':
         return _firebaseFirestore
             .collection(collectionPath)

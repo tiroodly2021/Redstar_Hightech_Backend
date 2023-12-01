@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/cancelled_order/controllers/cancelled_order_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/category/controllers/category_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/order/controllers/order_controller.dart';
@@ -39,6 +40,9 @@ class HomeView extends GetView<HomeController> {
 
   AuthenticationController authenticationController =
       Get.put(AuthenticationController());
+
+  UserController userController = Get.put(UserController());
+
   HomeController homeController = Get.put(HomeController());
 
   @override
@@ -115,6 +119,14 @@ class HomeView extends GetView<HomeController> {
                     crossAxisCount: 2,
                     children: [
                       MainSectionService(
+                          title: "USERS",
+                          route: AppPages.USER,
+                          bgColor: Color.fromARGB(255, 210, 36, 143),
+                          iconColor: const Color.fromARGB(255, 212, 188, 196),
+                          txtColor: Colors.white,
+                          representativeIcon: Icons.person,
+                          count: userController.count.toString()),
+                      MainSectionService(
                           title: "PRODUCTS",
                           route: AppPages.PRODUCT,
                           bgColor: const Color.fromARGB(255, 3, 19, 21),
@@ -144,7 +156,7 @@ class HomeView extends GetView<HomeController> {
                           bgColor: Color.fromARGB(255, 40, 57, 142),
                           iconColor: Color.fromARGB(255, 248, 239, 242),
                           txtColor: Colors.white,
-                          representativeIcon: Icons.sell_outlined,
+                          representativeIcon: Icons.watch_later,
                           count: pendingOrderController.count.toString()),
                       MainSectionService(
                           title: "CANCELLED\r\nORDER",
@@ -152,7 +164,7 @@ class HomeView extends GetView<HomeController> {
                           bgColor: Color.fromARGB(255, 232, 92, 92),
                           iconColor: const Color.fromARGB(255, 212, 188, 196),
                           txtColor: Colors.white,
-                          representativeIcon: Icons.category,
+                          representativeIcon: Icons.cancel,
                           count: cancelledOrderController.count.toString()),
                     ],
                   ),
