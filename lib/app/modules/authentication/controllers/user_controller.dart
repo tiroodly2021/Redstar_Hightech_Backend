@@ -15,6 +15,9 @@ class UserController extends GetxController {
   var users = <User>[].obs;
   var count = 0.obs;
 
+  var imageLocalPath = ''.obs;
+  var newUser = {}.obs;
+
   UserController() {
     // collectionReference = _firebaseFirestore.collection('categories');
   }

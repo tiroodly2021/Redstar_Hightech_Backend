@@ -280,4 +280,8 @@ class DatabaseService {
         .doc(newProduct.id)
         .update(newProduct.toMap());
   }
+
+  Future<void> addUser(User user) {
+    return _firebaseFirestore.collection('users').add(user.toMap());
+  }
 }

@@ -87,8 +87,8 @@ class UserCard extends StatelessWidget {
 
                         switch (selectedValue) {
                           case 0:
-                            /*    Navigator.pushNamed(context, AppPages.EDIT_PRODUCT,
-                                arguments: user); */
+                            Navigator.pushNamed(context, AppPages.EDIT_USER,
+                                arguments: user);
                             break;
                           case 1:
                             break;

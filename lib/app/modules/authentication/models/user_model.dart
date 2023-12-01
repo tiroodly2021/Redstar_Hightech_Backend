@@ -9,8 +9,9 @@ class User {
   final String lastLogin;
   final String name;
   final String role;
-  final String uid;
+  final String? uid;
   String? photoURL;
+  String? password;
 
   User(
       {required this.buildNumber,
@@ -19,8 +20,9 @@ class User {
       required this.lastLogin,
       required this.name,
       required this.role,
-      required this.uid,
-      this.photoURL});
+      this.uid,
+      this.photoURL,
+      this.password});
 
   User copyWith(
           {String? buildNumber,
@@ -75,7 +77,8 @@ class User {
         name: snap["displayName"],
         role: snap["role"],
         uid: snap.id,
-        photoURL: snap["photoURL"]);
+        photoURL: snap["photoURL"],
+        password: snap["password"]);
   }
 
   factory User.fromMap(Map<String, dynamic> map) {
@@ -98,8 +101,8 @@ class User {
       "lastSignInTime": lastLogin,
       "displayName": name,
       "role": role,
-      "uid": uid,
-      "photoURL": photoURL
+      "photoURL": photoURL,
+      "password": password
     };
   }
 }

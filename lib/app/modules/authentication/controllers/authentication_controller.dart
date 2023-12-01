@@ -14,6 +14,9 @@ import 'package:redstar_hightech_backend/app/modules/authentication/models/user_
 import '../../home/views/home_view.dart';
 import '../views/login_view.dart';
 
+import 'package:crypto/crypto.dart' as crypto;
+import 'dart:convert';
+
 class AuthenticationController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -57,7 +60,9 @@ class AuthenticationController extends GetxController {
       "email": email,
       "lastSignInTime": DateTime.now().toString(),
       "displayName": firstname + ' ' + lastname,
-      "role": 'user'
+      "role": 'user',
+      "photoURL": "",
+      "password": generateMd5(password)
     };
 
     final ftLocalUser = await reference
@@ -200,5 +205,10 @@ class AuthenticationController extends GetxController {
     Random random = Random();
     return String.fromCharCodes(Iterable.generate(length,
         (_) => characters.codeUnitAt(random.nextInt(characters.length))));
+  }
+
+  ///Generate MD5 hash
+  String generateMd5(String input) {
+    return crypto.md5.convert(utf8.encode(input)).toString();
   }
 }

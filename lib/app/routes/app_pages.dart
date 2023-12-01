@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/bindings/user_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/edit_user_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/login_view.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/new_user_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/registration_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/user_view.dart';
 
@@ -55,6 +57,9 @@ class AppPages {
   static const REGISTRATION = Routes.REGISTRATION;
   static const SETTINGS = Routes.SETTINGS;
   static const USER = Routes.USER;
+  static const NEW_USER = Routes.NEW_USER;
+  static const EDIT_USER = Routes.EDIT_USER;
+
   static final routes = [
     GetPage(name: _Paths.EDIT_PROFILE, page: () => const EditProfile()),
     GetPage(name: _Paths.SPLASH, page: () => const SplashScreen()),
@@ -138,7 +143,15 @@ class AppPages {
       page: () => RegistrationView(),
       binding: AuthenticationBinding(),
     ),
-    GetPage(name: _Paths.USER, page: () => UserView(), binding: UserBinding())
+    GetPage(name: _Paths.USER, page: () => UserView(), binding: UserBinding()),
+    GetPage(
+        name: _Paths.NEW_USER,
+        page: () => NewUserView(),
+        binding: UserBinding()),
+    GetPage(
+        name: _Paths.EDIT_USER,
+        page: () => EditUserView(),
+        binding: UserBinding())
   ];
 
   @override

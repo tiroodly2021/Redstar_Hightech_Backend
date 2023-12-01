@@ -38,7 +38,7 @@ class UserView extends GetView<UserController> {
                 height: 100,
                 child: InkWell(
                   onTap: () {
-                    // Get.toNamed(AppPages.NEW_PRODUCT);
+                    Get.toNamed(AppPages.NEW_USER);
                   },
                   child: Card(
                     color: Colors.black,
@@ -48,7 +48,7 @@ class UserView extends GetView<UserController> {
                         IconButton(
                             onPressed: () {
                               print("Hello");
-                              //  Get.toNamed(AppPages.NEW_PRODUCT);
+                              Get.toNamed(AppPages.NEW_USER);
                             },
                             icon: const Icon(
                               Icons.add,
