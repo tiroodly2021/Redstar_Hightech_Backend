@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -7,6 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/models/user_model.dart'
+    as localModel;
 
 import '../../home/views/home_view.dart';
 import '../views/login_view.dart';
@@ -54,18 +57,23 @@ class AuthenticationController extends GetxController {
       "email": email,
       "lastSignInTime": DateTime.now().toString(),
       "displayName": firstname + ' ' + lastname,
-      "role": 'user',
+      "role": 'user'
     };
 
-    bool testUser =
-        await reference.where('email', isEqualTo: email).snapshots().isEmpty;
+    final ftLocalUser = await reference
+        .where('email', isEqualTo: email)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => localModel.User.fromSnapShot(doc))
+            .toList())
+        .first;
 
-    if (testUser) {
+    if (ftLocalUser.length == 0) {
       await _auth
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) {
-        reference.add(userdata).then((value) {
-          _saveDevice(user!);
+        reference.add(userdata).then((value) async {
+          await _saveDevice(user);
 
           Get.offAll(() => HomeView());
         });
@@ -74,20 +82,16 @@ class AuthenticationController extends GetxController {
             Get.snackbar("Error while creating account ", onError.message),
       );
     } else {
-      final userRef = reference.doc(user!.uid);
-
-      print('user exit = ' + (await userRef.get()).exists.toString());
+      final userRef = reference.doc(ftLocalUser.first.uid);
 
       if ((await userRef.get()).exists) {
-        print("User already exist!");
         await userRef.update({
-          "lastSignInTime":
-              user!.metadata.lastSignInTime!.microsecondsSinceEpoch.toString(),
+          "lastSignInTime": DateTime.now().toString(),
           "buildNumber": _packageInfo.buildNumber
         });
       }
 
-      _saveDevice(user!);
+      _saveDevice(ftLocalUser.first);
 
       Get.offAll(() => HomeView());
     }
@@ -96,8 +100,6 @@ class AuthenticationController extends GetxController {
   void google_signIn() async {
     try {
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-
-      print(googleUser);
 
       final GoogleSignInAuthentication googleAuth =
           await googleUser!.authentication;
@@ -140,15 +142,17 @@ class AuthenticationController extends GetxController {
     _packageInfo = await PackageInfo.fromPlatform();
   }
 
-  _saveDevice(User user) async {
+  _saveDevice(dynamic user) async {
     DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
     String deviceId = '';
     Map<String, dynamic> deviceData = {};
 
     if (Platform.isAndroid) {
       final deviceInfo = await deviceInfoPlugin.androidInfo;
-      deviceId =
-          deviceInfo.androidId != null ? deviceInfo.androidId! : 'unknown';
+
+      print('finger' + deviceInfo.hardware!);
+
+      deviceId = deviceInfo.hardware!;
       deviceData = {
         'os_version': deviceInfo.version.sdkInt.toString(),
         'platform': "android",
@@ -168,17 +172,19 @@ class AuthenticationController extends GetxController {
       };
     }
 
-    final nowMl = DateTime.now().millisecondsSinceEpoch.toString();
+    final nowMl = DateTime.now().toString();
+
     final deviceReference = FirebaseFirestore.instance
         .collection("users")
         .doc(user.uid)
-        .collection("devices")
-        .doc(deviceId);
+        .collection("devices");
 
-    if ((await deviceReference.get()).exists) {
-      await deviceReference.update({'updatedAt': nowMl, 'uninstalled': false});
+    if ((await deviceReference.doc(deviceId).get()).exists) {
+      await deviceReference
+          .doc(deviceId)
+          .update({'updatedAt': nowMl, 'uninstalled': false});
     } else {
-      deviceReference.set({
+      deviceReference.doc(deviceId).set({
         'updatedAt': nowMl,
         'createdAt': nowMl,
         'uninstalled': false,
@@ -186,5 +192,13 @@ class AuthenticationController extends GetxController {
         'deviceInfo': deviceData
       });
     }
+  }
+
+  String getRandomString(int length) {
+    const characters =
+        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz01234567890';
+    Random random = Random();
+    return String.fromCharCodes(Iterable.generate(length,
+        (_) => characters.codeUnitAt(random.nextInt(characters.length))));
   }
 }

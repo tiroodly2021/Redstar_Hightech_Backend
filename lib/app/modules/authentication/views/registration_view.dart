@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/login_view.dart';
+import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 
 import '../../../constants/app_theme.dart';
 import '../controllers/authentication_controller.dart';
@@ -333,17 +335,21 @@ class RegistrationView extends GetView<AuthenticationController> {
               padding: const EdgeInsets.only(bottom: 10.0),
               child: GestureDetector(
                   onTap: () {
-                    /*  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => RegistrationPage())); */
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => LoginView(),
+                            settings:
+                                const RouteSettings(name: AppPages.LOGIN)));
                   },
                   child: RichText(
                       text: const TextSpan(
-                    text: 'New User?',
+                    text: 'Already SignUp?',
                     style: TextStyle(
                         fontSize: 15.0, color: AppTheme.richTextStyleColor),
                     children: <TextSpan>[
                       TextSpan(
-                        text: ' Register Now',
+                        text: ' Login here',
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 18,
