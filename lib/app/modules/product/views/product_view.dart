@@ -44,7 +44,6 @@ class ProductView extends GetView<ProductController> {
                       children: [
                         IconButton(
                             onPressed: () {
-                              print("Hello");
                               Get.toNamed(AppPages.NEW_PRODUCT);
                             },
                             icon: const Icon(
@@ -84,8 +83,6 @@ class ProductView extends GetView<ProductController> {
               ),
               Expanded(
                 child: Obx(() {
-                  print(controller.products);
-
                   if (controller.products.isNotEmpty) {
                     return ListView.builder(
                         itemCount: controller.products.length,

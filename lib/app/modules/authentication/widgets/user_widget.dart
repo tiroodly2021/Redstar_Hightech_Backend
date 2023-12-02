@@ -6,6 +6,7 @@ import 'package:redstar_hightech_backend/app/modules/authentication/controllers/
 import 'package:redstar_hightech_backend/app/modules/authentication/models/user_model.dart';
 import 'package:redstar_hightech_backend/app/modules/product/controllers/product_controller.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
+import 'package:safe_url_check/safe_url_check.dart';
 
 import '../../../constants/app_theme.dart';
 import '../../../routes/app_pages.dart';
@@ -24,6 +25,7 @@ class UserCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserController userController = Get.find();
+
     //print(productController.products);
     return Card(
       shadowColor: Colors.blueGrey,

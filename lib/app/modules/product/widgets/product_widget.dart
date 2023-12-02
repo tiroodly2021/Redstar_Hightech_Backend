@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/product/controllers/product_controller.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
+import 'package:safe_url_check/safe_url_check.dart';
 
 import '../../../routes/app_pages.dart';
 import '../models/product_model.dart';
@@ -21,7 +22,7 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ProductController productController = Get.find();
-    //print(productController.products);
+
     return Card(
       margin: const EdgeInsets.only(top: 10),
       child: Padding(

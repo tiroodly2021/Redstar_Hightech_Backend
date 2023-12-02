@@ -14,8 +14,11 @@ import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
 import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
 import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
 import 'package:redstar_hightech_backend/app/shared/list_not_found.sharedWidgets.dart';
+import 'package:safe_url_check/safe_url_check.dart';
 
 class UserView extends GetView<UserController> {
+  var exists;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,8 +90,6 @@ class UserView extends GetView<UserController> {
               ),
               Expanded(
                 child: Obx(() {
-                  print(controller.users.length);
-
                   if (controller.users.isNotEmpty) {
                     return ListView.builder(
                         itemCount: controller.users.length,
