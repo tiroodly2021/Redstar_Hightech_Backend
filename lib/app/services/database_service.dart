@@ -284,4 +284,18 @@ class DatabaseService {
   Future<void> addUser(User user) {
     return _firebaseFirestore.collection('users').add(user.toMap());
   }
+
+  void deleteUser(User user) {
+    print(_firebaseFirestore
+        .collection('users')
+        .where('email', isEqualTo: user.email)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => User.fromSnapShot(doc))
+            .toList()
+            .map((category) => category.name)
+            .first));
+
+    //doc(user.uid).delete();
+  }
 }

@@ -91,6 +91,8 @@ class UserCard extends StatelessWidget {
                                 arguments: user);
                             break;
                           case 1:
+                            databaseService.deleteUser(user);
+
                             break;
 
                           default:
@@ -117,7 +119,7 @@ class UserCard extends StatelessWidget {
                               decoration: const BoxDecoration(
                                 image: DecorationImage(
                                   image:
-                                      AssetImage("assets/images/add_image.png"),
+                                      AssetImage("assets/images/no_image.jpg"),
                                   fit: BoxFit.cover,
                                 ),
                               ),

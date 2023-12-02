@@ -205,11 +205,11 @@ class NewUserView extends GetView<UserController> {
 
                           databaseService.addUser(user);
 
-                          /*    if (imageDataFile != null) {
+                          if (imageDataFile != null) {
                             uploadImage(imageDataFile![0], imageDataFile![1]);
                           }
 
-                          Navigator.pop(context);  */
+                          Navigator.pop(context);
                         },
                         child: const Text(
                           "Save",
