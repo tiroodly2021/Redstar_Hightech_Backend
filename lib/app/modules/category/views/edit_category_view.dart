@@ -25,7 +25,7 @@ class EditCategoryView extends GetView<CategoryController> {
   StorageService storage = StorageService();
   DatabaseService databaseService = DatabaseService();
   String doldOnwloadImageUrl = '';
-  late List? imageDataFile;
+  late List? imageDataFile = [];
   @override
   Widget build(BuildContext context) {
     Category category = ModalRoute.of(context)!.settings.arguments as Category;
@@ -171,11 +171,13 @@ class EditCategoryView extends GetView<CategoryController> {
                         Category(
                           id: category.id!,
                           name: controller.newCategory['name'],
-                          imageUrl: controller.newCategory['imageUrl'],
+                          imageUrl: imageDataFile!.isNotEmpty
+                              ? controller.newCategory['imageUrl']
+                              : category.imageUrl,
                         ),
                       );
 
-                      if (imageDataFile != null) {
+                      if (imageDataFile!.isNotEmpty) {
                         deleteAndUploadNewImage(
                             lastName, imageDataFile![0], imageDataFile![1]);
                       }

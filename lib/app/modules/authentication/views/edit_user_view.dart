@@ -31,6 +31,8 @@ class EditUserView extends GetView<UserController> {
   StorageService storage = StorageService();
   DatabaseService databaseService = DatabaseService();
   late List? imageDataFile = [];
+  UserController userController = Get.put(UserController());
+
   initEditItems(User user) {
     controller.newUser.update("uid", (_) => user.uid, ifAbsent: () => user.uid);
     controller.newUser
@@ -238,19 +240,22 @@ class EditUserView extends GetView<UserController> {
 
                           User newUser = User(
                               name: controller.newUser['name'],
-                              createdAt: DateTime.now().toString(),
+                              createdAt: user.createdAt,
                               buildNumber: user.buildNumber,
                               email: controller.newUser['email'],
                               lastLogin: user.lastLogin,
                               role: controller.newUser['role'],
-                              photoURL: controller.newUser['photoURL'],
+                              photoURL: imageDataFile!.isNotEmpty
+                                  ? controller.newUser['photoURL']
+                                  : user.photoURL,
                               uid: user.uid,
-                              password:
-                                  generateMd5(controller.newUser['password']));
+                              password: controller.newUser['password'] != ''
+                                  ? generateMd5(controller.newUser['password'])
+                                  : user.password);
 
                           databaseService.updateUser(newUser);
 
-                          if (imageDataFile != null) {
+                          if (imageDataFile!.isNotEmpty) {
                             deleteAndUploadNewImage(
                                 lastName, imageDataFile![0], imageDataFile![1]);
                           }

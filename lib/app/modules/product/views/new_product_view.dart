@@ -27,7 +27,7 @@ import '../../../services/image_upload_provider.dart';
 class NewProductView extends GetView<ProductController> {
   StorageService storage = StorageService();
   DatabaseService databaseService = DatabaseService();
-  late List? imageDataFile;
+  late List? imageDataFile = [];
 
   @override
   Widget build(BuildContext context) {
@@ -225,7 +225,9 @@ class NewProductView extends GetView<ProductController> {
                               name: controller.newProduct['name'],
                               description: controller.newProduct['description'],
                               category: controller.newProduct['category'],
-                              imageUrl: controller.newProduct['imageUrl'],
+                              imageUrl: imageDataFile!.isNotEmpty
+                                  ? controller.newProduct['imageUrl']
+                                  : '',
                               isRecommended:
                                   controller.newProduct['isRecommended'] ??
                                       false,
@@ -235,7 +237,7 @@ class NewProductView extends GetView<ProductController> {
                               quantity:
                                   controller.newProduct['quantity'].toInt()));
 
-                          if (imageDataFile != null) {
+                          if (imageDataFile!.isNotEmpty) {
                             uploadImage(imageDataFile![0], imageDataFile![1]);
                           }
 

@@ -25,7 +25,7 @@ import 'package:path/path.dart' as path;
 class EditProductView extends GetView<ProductController> {
   StorageService storage = StorageService();
   DatabaseService databaseService = DatabaseService();
-  late List? imageDataFile;
+  late List? imageDataFile = [];
   initEditItems(Product product) {
     controller.newProduct
         .update("id", (_) => product.id, ifAbsent: () => product.id);
@@ -260,7 +260,9 @@ class EditProductView extends GetView<ProductController> {
                               name: controller.newProduct['name'],
                               description: controller.newProduct['description'],
                               category: controller.newProduct['category'],
-                              imageUrl: controller.newProduct['imageUrl'],
+                              imageUrl: imageDataFile!.isNotEmpty
+                                  ? controller.newProduct['imageUrl']
+                                  : product.imageUrl,
                               isRecommended:
                                   controller.newProduct['isRecommended'] ??
                                       false,
@@ -272,7 +274,7 @@ class EditProductView extends GetView<ProductController> {
 
                           databaseService.updateProduct(newProduct);
 
-                          if (imageDataFile != null) {
+                          if (imageDataFile!.isNotEmpty) {
                             deleteAndUploadNewImage(
                                 lastName, imageDataFile![0], imageDataFile![1]);
                           }

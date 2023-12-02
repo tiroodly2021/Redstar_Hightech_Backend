@@ -33,7 +33,7 @@ import 'dart:convert';
 class NewUserView extends GetView<UserController> {
   StorageService storage = StorageService();
   DatabaseService databaseService = DatabaseService();
-  late List? imageDataFile;
+  late List? imageDataFile = [];
 
   @override
   Widget build(BuildContext context) {
@@ -199,7 +199,9 @@ class NewUserView extends GetView<UserController> {
                               email: controller.newUser['email'],
                               lastLogin: '',
                               role: 'user',
-                              photoURL: controller.newUser['photoURL'],
+                              photoURL: imageDataFile!.isNotEmpty
+                                  ? controller.newUser['photoURL']
+                                  : '',
                               password:
                                   generateMd5(controller.newUser['password']));
 

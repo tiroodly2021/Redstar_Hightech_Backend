@@ -177,10 +177,12 @@ class NewCategoryView extends GetView<CategoryController> {
                           databaseService.addCategory(Category(
                             id: controller.newCategory['id'],
                             name: controller.newCategory['name'],
-                            imageUrl: controller.newCategory['imageUrl'],
+                            imageUrl: imageDataFile!.isNotEmpty
+                                ? controller.newCategory['imageUrl']
+                                : '',
                           ));
 
-                          if (imageDataFile != null) {
+                          if (imageDataFile!.isNotEmpty) {
                             uploadImage(imageDataFile![0], imageDataFile![1]);
                           }
 
