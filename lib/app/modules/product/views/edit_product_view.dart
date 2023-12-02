@@ -274,9 +274,11 @@ class EditProductView extends GetView<ProductController> {
 
                           databaseService.updateProduct(newProduct);
 
-                          if (imageDataFile!.isNotEmpty) {
+                          if (lastName != '') {
                             deleteAndUploadNewImage(
                                 lastName, imageDataFile![0], imageDataFile![1]);
+                          } else {
+                            uploadImage(imageDataFile![0], imageDataFile![1]);
                           }
 
                           /*    var future =

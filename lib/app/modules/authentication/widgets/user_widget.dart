@@ -57,9 +57,6 @@ class UserCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text('Name: ',
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold)),
                       Text(
                         user.name,
                         style: const TextStyle(

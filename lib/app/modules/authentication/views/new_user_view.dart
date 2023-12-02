@@ -164,6 +164,8 @@ class NewUserView extends GetView<UserController> {
                                       value: role, child: Text(role)))
                                   .toList(),
                               onChanged: (value) {
+                                print(value);
+
                                 controller.newUser.update(
                                   "role",
                                   (_) => value,
@@ -198,7 +200,7 @@ class NewUserView extends GetView<UserController> {
                               buildNumber: '',
                               email: controller.newUser['email'],
                               lastLogin: '',
-                              role: 'user',
+                              role: controller.newUser['role'],
                               photoURL: imageDataFile!.isNotEmpty
                                   ? controller.newUser['photoURL']
                                   : '',
@@ -207,7 +209,7 @@ class NewUserView extends GetView<UserController> {
 
                           databaseService.addUser(user);
 
-                          if (imageDataFile != null) {
+                          if (imageDataFile!.isNotEmpty) {
                             uploadImage(imageDataFile![0], imageDataFile![1]);
                           }
 
