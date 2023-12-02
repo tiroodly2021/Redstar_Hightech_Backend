@@ -288,4 +288,11 @@ class DatabaseService {
   Future<void> deleteUser(User user) {
     return _firebaseFirestore.collection('users').doc(user.uid).delete();
   }
+
+  Future<void> updateUser(User user) {
+    return _firebaseFirestore
+        .collection('users')
+        .doc(user.uid)
+        .update(user.toMap());
+  }
 }
