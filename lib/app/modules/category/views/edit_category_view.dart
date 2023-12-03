@@ -30,18 +30,17 @@ class EditCategoryView extends GetView<CategoryController> {
   Widget build(BuildContext context) {
     Category category = ModalRoute.of(context)!.settings.arguments as Category;
 
-    if (category.imageUrl != null) {
-      controller.imageLocalPath.value = category.imageUrl;
-      controller.newCategory.update("imageUrl", (_) => category.imageUrl,
-          ifAbsent: () => category.imageUrl);
-    }
+    //controller.imageLocalPath.value = category.imageUrl;
+
+    controller.newCategory.update("imageUrl", (_) => category.imageUrl,
+        ifAbsent: () => category.imageUrl);
 
     controller.newCategory
         .update("name", (_) => category.name, ifAbsent: () => category.name);
 
     return Scaffold(
       appBar: AppBarWidget(
-        title: 'Edit Category ' + category.name,
+        title: category.name,
         icon: Icons.search,
         bgColor: Colors.black,
         onPressed: () {
@@ -177,11 +176,13 @@ class EditCategoryView extends GetView<CategoryController> {
                         ),
                       );
 
-                      if (lastName != '') {
-                        deleteAndUploadNewImage(
-                            lastName, imageDataFile![0], imageDataFile![1]);
-                      } else {
-                        uploadImage(imageDataFile![0], imageDataFile![1]);
+                      if (imageDataFile!.isNotEmpty) {
+                        if (lastName != '') {
+                          deleteAndUploadNewImage(
+                              lastName, imageDataFile![0], imageDataFile![1]);
+                        } else {
+                          uploadImage(imageDataFile![0], imageDataFile![1]);
+                        }
                       }
 
                       /*  var imageUrl =

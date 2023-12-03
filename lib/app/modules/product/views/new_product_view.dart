@@ -60,36 +60,6 @@ class NewProductView extends GetView<ProductController> {
                     height: 80,
                     child: InkWell(
                       onTap: () async {
-                        /*                 ImagePicker _picker = ImagePicker();
-                        final XFile? _image = await _picker.pickImage(
-                            source: ImageSource.gallery);
-
-                        if (_image == null) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text(
-                                      "No Image Selected",
-                                      style: TextStyle(
-                                          fontSize: 16, color: Colors.red))));
-                        } else {
-                          Directory appDocumentsDirectory =
-                              await getApplicationDocumentsDirectory(); // 1
-                          String appDocumentsPath = appDocumentsDirectory.path;
-
-                          var fileName = path.basename(_image.path); // 2
-
-                          String imageUrl = '$appDocumentsPath/' + fileName;
-
-                          print(imageUrl);
-
-                          await _image.saveTo('$appDocumentsPath/' + fileName);
-
-                          controller.newProduct.update(
-                              "imageUrl", (_) => imageUrl,
-                              ifAbsent: () => imageUrl);
-                          print(controller.newProduct['imageUrl']); 
-                        }*/
-
                         imageDataFile = await getImage(ImageSource.gallery);
                       },
                       child: Card(

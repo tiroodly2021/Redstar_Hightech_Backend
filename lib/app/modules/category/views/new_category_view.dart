@@ -53,38 +53,6 @@ class NewCategoryView extends GetView<CategoryController> {
                     height: 80,
                     child: InkWell(
                       onTap: () async {
-                        /*ImagePicker _picker = ImagePicker();
-                    final XFile? _image =
-                        await _picker.pickImage(source: ImageSource.gallery);
-
-                    if (_image == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text("No Image Selected",
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.red))));
-                    } else {
-                      var selectedImagePath = _image.path;
-
-                      Directory appDocumentsDirectory =
-                          await getApplicationDocumentsDirectory();
-                      String appDocumentsPath = appDocumentsDirectory.path;
-
-                      var fileName = path.basename(selectedImagePath);
-
-                      String imageUrl = '$appDocumentsPath/' + fileName;
-
-                      await _image.saveTo(imageUrl);
-
-                      final imageFile = File(imageUrl);
-
-                      uploadImage(imageFile, fileName);
-
-                      //  controller.newCategory.update("imageUrl", (_) => imageUrl,
-                      //  ifAbsent: () => imageUrl);
-
-                      // print(controller.newProduct['imageUrl']);
-                    }*/
-
                         imageDataFile = await getImage(ImageSource.gallery);
                       },
                       child: Card(
@@ -123,25 +91,41 @@ class NewCategoryView extends GetView<CategoryController> {
                 width: MediaQuery.of(context).size.width - 28,
                 height: 120,
               ), */
-                  controller.newCategory['imageUrl'] == null ||
-                          controller.newCategory['imageUrl'] == ""
+                  controller.imageLocalPath == ''
                       ? Container(
-                          margin: const EdgeInsets.symmetric(vertical: 20),
-                          //padding: const EdgeInsets.symmetric(vertical: 20),
+                          padding: const EdgeInsets.all(30),
                           decoration: const BoxDecoration(
                             image: DecorationImage(
                               image: AssetImage("assets/images/add_image.png"),
                               fit: BoxFit.cover,
                             ),
                           ),
-                          width: MediaQuery.of(context).size.width - 28,
-                          height: 120,
-                        )
-                      : Image.network(
-                          controller.newCategory['imageUrl'],
-                          width: MediaQuery.of(context).size.width,
+                          width: 150,
                           height: 150,
-                          fit: BoxFit.cover,
+                        )
+
+                      /* CircleAvatar(
+                  
+                    backgroundImage: FileImage(File(category.imageUrl)),
+                    radius: 10,
+                    backgroundColor: Colors.white,
+                  )  */ /* Image.network(
+                    category.imageUrl,
+                    width: MediaQuery.of(context).size.width,
+                    height: 150,
+                    fit: BoxFit.cover,
+                  ) */
+                      : Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: FileImage(
+                                  File(controller.imageLocalPath.value)),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          width: 150,
+                          height: 150,
                         )
                   /*    : Container(
                       decoration: BoxDecoration(
@@ -260,6 +244,8 @@ class NewCategoryView extends GetView<CategoryController> {
 
       controller.newCategory
           .update("imageUrl", (_) => imageUrl, ifAbsent: () => imageUrl);
+
+      controller.imageLocalPath.value = targetPath;
 
       return [imageFile, fileName];
 
