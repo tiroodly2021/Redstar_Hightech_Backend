@@ -48,11 +48,9 @@ class EditProductView extends GetView<ProductController> {
     controller.newProduct.update("quantity", (_) => product.quantity,
         ifAbsent: () => product.quantity);
 
-    if (product.imageUrl != null) {
-      controller.imageLocalPath.value = product.imageUrl;
-      controller.newProduct.update("imageUrl", (_) => product.imageUrl,
-          ifAbsent: () => product.imageUrl);
-    }
+    controller.imageLocalPath.value = product.imageUrl;
+    controller.newProduct.update("imageUrl", (_) => product.imageUrl,
+        ifAbsent: () => product.imageUrl);
   }
 
   @override

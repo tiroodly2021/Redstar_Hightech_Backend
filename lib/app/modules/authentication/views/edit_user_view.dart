@@ -263,6 +263,7 @@ class EditUserView extends GetView<UserController> {
                               uploadImage(imageDataFile![0], imageDataFile![1]);
                             }
                           }
+                          imageDataFile = [];
 
                           Navigator.pop(context);
                         },

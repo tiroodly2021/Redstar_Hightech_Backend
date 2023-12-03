@@ -36,6 +36,7 @@ class NewProductView extends GetView<ProductController> {
     //["Smoothies", "Soft Drinks", "Alix Shoes"];
 
     CategoryController categoryController = Get.find<CategoryController>();
+    print(categories);
 
     return Scaffold(
       appBar: AppBarWidget(

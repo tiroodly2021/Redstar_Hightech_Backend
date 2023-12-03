@@ -66,6 +66,8 @@ class NewUserView extends GetView<UserController> {
                     child: InkWell(
                       onTap: () async {
                         imageDataFile = await getImage(ImageSource.gallery);
+
+                        print(imageDataFile);
                       },
                       child: Card(
                         color: Colors.black,
@@ -207,11 +209,17 @@ class NewUserView extends GetView<UserController> {
                               password:
                                   generateMd5(controller.newUser['password']));
 
+                          print(user.toMap());
+
+                          print(imageDataFile);
+
                           databaseService.addUser(user);
 
                           if (imageDataFile!.isNotEmpty) {
                             uploadImage(imageDataFile![0], imageDataFile![1]);
                           }
+
+                          imageDataFile = [];
 
                           Navigator.pop(context);
                         },
@@ -400,7 +408,7 @@ class NewUserView extends GetView<UserController> {
   } */
 
   Future<List<dynamic>?> getImage(ImageSource source) async {
-    final pickedImageFile = await ImagePicker().getImage(source: source);
+    var pickedImageFile = await ImagePicker().getImage(source: source);
 
     if (pickedImageFile != null) {
       final selectedImagePath = pickedImageFile.path;
@@ -428,8 +436,6 @@ class NewUserView extends GetView<UserController> {
           .update("photoURL", (_) => imageUrl, ifAbsent: () => imageUrl);
 
       controller.imageLocalPath.value = targetPath;
-
-      print("image path is : " + imageFile.path);
 
       return [imageFile, fileName];
     }

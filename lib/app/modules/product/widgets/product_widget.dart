@@ -89,7 +89,7 @@ class ProductCard extends StatelessWidget {
               children: [
                 Column(
                   children: [
-                    (product.imageUrl == null || product.imageUrl == "")
+                    product.imageUrl.isEmpty || product.imageUrl == ""
                         ? SizedBox(
                             width: 100,
                             height: 100,
