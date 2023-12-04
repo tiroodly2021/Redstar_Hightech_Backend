@@ -65,12 +65,10 @@ class UserListController extends GetxController {
   }
 
   void toUpdateUserView() async {
-    print(addEmailController.text);
-
     Get.to(() => UpdateUserView());
   }
 
   void editUser(User user) async {
-    print(user.toMap());
+    databaseService.updateUser(user);
   }
 }

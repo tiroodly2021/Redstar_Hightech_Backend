@@ -73,8 +73,6 @@ class AddUserView extends GetView<UserListController> {
               child: InkWell(
                 onTap: () async {
                   imageDataFile = await getImage(ImageSource.gallery);
-
-                  print(imageDataFile);
                 },
                 child: Card(
                   color: Colors.black,
@@ -103,6 +101,7 @@ class AddUserView extends GetView<UserListController> {
               return controller.imageLink.value == '' &&
                       controller.imageLinkTemp.value == ''
                   ? Container(
+                      margin: const EdgeInsets.only(left: 6),
                       padding: const EdgeInsets.all(30),
                       decoration: const BoxDecoration(
                         image: DecorationImage(
@@ -114,30 +113,34 @@ class AddUserView extends GetView<UserListController> {
                       height: 150,
                     )
                   : controller.imageLink.value != ''
-                      ? Image.network(controller.imageLink.value,
-                          width: 150, height: 150, fit: BoxFit.cover,
-                          errorBuilder: (context, exception, stackTrace) {
-                          return Container(
-                            width: 120,
-                            height: 100,
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage("assets/images/no_image.jpg"),
-                                fit: BoxFit.cover,
+                      ? Container(
+                          margin: const EdgeInsets.only(left: 6),
+                          child: Image.network(controller.imageLink.value,
+                              width: 150, height: 150, fit: BoxFit.cover,
+                              errorBuilder: (context, exception, stackTrace) {
+                            return Container(
+                              width: 150,
+                              height: 150,
+                              decoration: const BoxDecoration(
+                                image: DecorationImage(
+                                  image:
+                                      AssetImage("assets/images/no_image.jpg"),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            ),
-                          );
-                        })
-                      : SizedBox(
-                          width: 100,
-                          height: 100,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: FileImage(
-                                    File(controller.imageLinkTemp.value)),
-                                fit: BoxFit.cover,
-                              ),
+                            );
+                          }),
+                        )
+                      : Container(
+                          padding: const EdgeInsets.all(30),
+                          margin: const EdgeInsets.only(left: 6),
+                          width: 150,
+                          height: 150,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: FileImage(
+                                  File(controller.imageLinkTemp.value)),
+                              fit: BoxFit.cover,
                             ),
                           ),
                         );

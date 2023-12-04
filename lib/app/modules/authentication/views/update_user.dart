@@ -39,7 +39,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 class UpdateUserView extends GetView<UserListController> {
   FirebaseStorage _storage = FirebaseStorage.instance;
 
-  late XFile? imageDataFile;
+  late XFile? imageDataFile = null;
   User? user;
 
   UpdateUserView({Key? key, this.user}) : super(key: key);
@@ -50,8 +50,6 @@ class UpdateUserView extends GetView<UserListController> {
 
   @override
   Widget build(BuildContext context) {
-    imageDataFile = XFile(controller.imageLink.value);
-
     return Scaffold(
       appBar: AppBarWidget(
         title: controller.user.value.name,
@@ -74,8 +72,7 @@ class UpdateUserView extends GetView<UserListController> {
               child: InkWell(
                 onTap: () async {
                   imageDataFile = await getImage(ImageSource.gallery);
-
-                  print(imageDataFile);
+                  controller.imageLink.value = '';
                 },
                 child: Card(
                   color: Colors.black,
@@ -104,6 +101,7 @@ class UpdateUserView extends GetView<UserListController> {
               return controller.imageLink.value == '' &&
                       controller.imageLinkTemp.value == ''
                   ? Container(
+                      margin: const EdgeInsets.only(left: 6),
                       padding: const EdgeInsets.all(30),
                       decoration: const BoxDecoration(
                         image: DecorationImage(
@@ -115,30 +113,34 @@ class UpdateUserView extends GetView<UserListController> {
                       height: 150,
                     )
                   : controller.imageLink.value != ''
-                      ? Image.network(controller.imageLink.value,
-                          width: 150, height: 150, fit: BoxFit.cover,
-                          errorBuilder: (context, exception, stackTrace) {
-                          return Container(
-                            width: 120,
-                            height: 100,
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage("assets/images/no_image.jpg"),
-                                fit: BoxFit.cover,
+                      ? Container(
+                          margin: const EdgeInsets.only(left: 6),
+                          child: Image.network(controller.imageLink.value,
+                              width: 150, height: 150, fit: BoxFit.cover,
+                              errorBuilder: (context, exception, stackTrace) {
+                            return Container(
+                              width: 150,
+                              height: 150,
+                              decoration: const BoxDecoration(
+                                image: DecorationImage(
+                                  image:
+                                      AssetImage("assets/images/no_image.jpg"),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            ),
-                          );
-                        })
-                      : SizedBox(
-                          width: 100,
-                          height: 100,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: FileImage(
-                                    File(controller.imageLinkTemp.value)),
-                                fit: BoxFit.cover,
-                              ),
+                            );
+                          }),
+                        )
+                      : Container(
+                          padding: const EdgeInsets.all(30),
+                          margin: const EdgeInsets.only(left: 6),
+                          width: 150,
+                          height: 150,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: FileImage(
+                                  File(controller.imageLinkTemp.value)),
+                              fit: BoxFit.cover,
                             ),
                           ),
                         );
@@ -177,8 +179,11 @@ class UpdateUserView extends GetView<UserListController> {
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(primary: Colors.black),
                   onPressed: () async {
-                    String imageLink =
-                        await uploadImageToFirestore(imageDataFile);
+                    String imageLink = '';
+
+                    if (!(imageDataFile == null)) {
+                      imageLink = await uploadImageToFirestore(imageDataFile);
+                    }
 
                     User user = User(
                         buildNumber: '',
@@ -190,11 +195,13 @@ class UpdateUserView extends GetView<UserListController> {
                             ? generateMd5(controller.addPasswordController.text)
                             : controller.user.value.password,
                         role: controller.roleSelected.value,
-                        photoURL: imageLink);
+                        photoURL: imageLink != ''
+                            ? imageLink
+                            : controller.imageLink.value);
 
                     _editUser(user);
 
-                    // Navigator.pop(context);
+                    Navigator.pop(context);
                   },
                   child: const Text(
                     "Update",
