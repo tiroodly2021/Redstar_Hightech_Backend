@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_list_controller.dart';
 
 import '../models/user_model.dart';
 
@@ -36,10 +35,10 @@ import 'dart:convert';
 
 import 'package:firebase_storage/firebase_storage.dart';
 
-class AddUserView extends GetView<UserListController> {
+class AddUserView extends GetView<UserController> {
   FirebaseStorage _storage = FirebaseStorage.instance;
 
-  late XFile? imageDataFile;
+  late XFile? imageDataFile = null;
 
   AddUserView({
     Key? key,
@@ -73,6 +72,7 @@ class AddUserView extends GetView<UserListController> {
               child: InkWell(
                 onTap: () async {
                   imageDataFile = await getImage(ImageSource.gallery);
+                  controller.imageLink.value = '';
                 },
                 child: Card(
                   color: Colors.black,
@@ -151,7 +151,7 @@ class AddUserView extends GetView<UserListController> {
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
-                "Product Information",
+                "User Information",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
@@ -179,8 +179,11 @@ class AddUserView extends GetView<UserListController> {
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(primary: Colors.black),
                   onPressed: () async {
-                    String imageLink =
-                        await uploadImageToFirestore(imageDataFile);
+                    String imageLink = '';
+
+                    if (!(imageDataFile == null)) {
+                      imageLink = await uploadImageToFirestore(imageDataFile);
+                    }
 
                     User user = User(
                         buildNumber: '',
@@ -191,34 +194,13 @@ class AddUserView extends GetView<UserListController> {
                         password:
                             generateMd5(controller.addPasswordController.text),
                         role: controller.roleSelected.value,
-                        photoURL: imageLink);
+                        photoURL: imageLink != ''
+                            ? imageLink
+                            : controller.imageLink.value);
 
                     _addUser(user);
 
-                    /*   User user = User(
-                              name: controller.newUser['name'],
-                              createdAt: DateTime.now().toString(),
-                              buildNumber: '',
-                              email: controller.newUser['email'],
-                              lastLogin: '',
-                              role: controller.newUser['role'],
-                              photoURL: imageDataFile!.isNotEmpty
-                                  ? controller.newUser['photoURL']
-                                  : '',
-                              password:
-                                  generateMd5(controller.newUser['password'])); */
-
-                    /*   print(user.toMap());
-
-                          print(imageDataFile);
-
-                          databaseService.addUser(user);
-
-                          if (imageDataFile!.isNotEmpty) {
-                            uploadImage(imageDataFile![0], imageDataFile![1]);
-                          }
-
-                          imageDataFile = []; */
+                    resetFields();
 
                     Navigator.pop(context);
                   },
@@ -455,72 +437,13 @@ class AddUserView extends GetView<UserListController> {
       ),
     );
   }
-}
 
-/* class AddUserPage extends StatelessWidget {
-  final UserListController userListController = Get.put(UserListController());
-
-  AddUserPage({
-    Key? key,
-  }) : super(key: key);
-  void _addUser(User user) {
-    userListController.addUser(user);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Container(
-          child: Column(
-            children: [
-              Text(
-                'User Information',
-                style: TextStyle(
-                    fontSize: 25,
-                    color: Colors.blueAccent,
-                    fontWeight: FontWeight.bold),
-              ),
-              TextField(
-                controller: userListController.addNameController,
-                decoration: InputDecoration(hintText: 'Name'),
-              ),
-              TextField(
-                controller: userListController.addEmailController,
-                decoration: InputDecoration(hintText: 'Email'),
-              ),
-              TextField(
-                controller: userListController.addPasswordController,
-                decoration: InputDecoration(hintText: 'Password'),
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  onPrimary: Colors.white,
-                  primary: Colors.blue,
-                  minimumSize: Size(88, 36),
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(2)),
-                  ),
-                ),
-                onPressed: () {
-                  User user = User(
-                      buildNumber: '',
-                      createdAt: DateTime.now().toString(),
-                      email: userListController.addEmailController.text,
-                      lastLogin: DateTime.now().toString(),
-                      name: userListController.addNameController.text,
-                      password: userListController.addPasswordController.text,
-                      role: 'user');
-                  _addUser(user);
-                },
-                child: const Text('Save'),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+  void resetFields() {
+    imageDataFile = null;
+    controller.imageLink.value = '';
+    controller.imageLinkTemp.value = '';
+    controller.addEmailController.text = '';
+    controller.addNameController.text = '';
+    controller.addPasswordController.text = '';
   }
 }
- */

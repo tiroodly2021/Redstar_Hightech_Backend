@@ -1,46 +1,80 @@
-import 'package:get/get.dart';
-import 'package:cloud_firestore/cloud_firestore.dart' as cloud_firestore;
+import 'dart:math';
 
-import '../../../services/database_service.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/update_user.dart';
+import 'package:redstar_hightech_backend/app/services/database_service.dart';
+
 import '../models/user_model.dart';
 
 class UserController extends GetxController {
-  final cloud_firestore.FirebaseFirestore _firebaseFirestore =
-      cloud_firestore.FirebaseFirestore.instance;
-
-  late cloud_firestore.CollectionReference<Map<String, dynamic>>
-      collectionReference;
+  DatabaseService databaseService = DatabaseService();
+  RxBool loading = false.obs;
+  Map<String, dynamic> body = {};
+  RxList<User> users = <User>[].obs;
+  RxString titleGame = ''.obs;
+  final List<IconData> iconData = <IconData>[Icons.call, Icons.school];
+  final Random r = Random();
 
   DatabaseService database = DatabaseService();
-  var users = <User>[].obs;
+
+  Rx<User> user = User(
+          buildNumber: '',
+          createdAt: '',
+          email: '',
+          lastLogin: '',
+          name: '',
+          role: '')
+      .obs;
+
+  Icon randomIcon2() => Icon(iconData[r.nextInt(iconData.length)]);
+
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descController = TextEditingController();
+  TextEditingController iconController = TextEditingController();
+
+  TextEditingController addNameController = TextEditingController();
+  TextEditingController addEmailController = TextEditingController();
+  TextEditingController addPasswordController = TextEditingController();
+
+  List<String> roles = ["user", "editor", "admin"].obs;
+  RxString roleSelected = ''.obs;
+  RxString imageLink = ''.obs;
+  RxString imageLinkTemp = ''.obs;
+
   var count = 0.obs;
-
-  var imageLocalPath = ''.obs;
-  var newUser = {}.obs;
-
-  UserController() {
-    // collectionReference = _firebaseFirestore.collection('categories');
-  }
-
-  /*  Stream<List<dynamic>> getUsers() {
-    return collectionReference.snapshots().map((snapshot) =>
-        snapshot.docs.map((doc) => User.fromSnapShot(doc)).toList());
-  } */
 
   @override
   void onInit() {
-    users.bindStream(database.getUsers());
+    super.onInit();
+    userList();
+  }
 
+  void userList() async {
     count.bindStream(database.getCount('users', 'UserController'));
 
-    super.onInit();
+    users.bindStream(database.getUsers());
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  void addUser(User user) async {
+    databaseService.addUser(user);
+
+    //  print(user.toMap());
   }
 
-  @override
-  void onClose() {}
+  void deleteUser(User user) async {
+    print('User to delete');
+    print(user.toMap());
+  }
+
+  void toUpdateUserView(User user) async {
+    Get.to(() => UpdateUserView(
+          currentUser: user,
+        ));
+  }
+
+  void editUser(User user) async {
+    databaseService.updateUser(user);
+  }
 }

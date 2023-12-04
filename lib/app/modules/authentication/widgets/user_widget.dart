@@ -18,15 +18,33 @@ class UserCard extends StatelessWidget {
   User user;
   final int index;
   DatabaseService databaseService = DatabaseService();
+  UserController userController;
 
-  UserCard({Key? key, required this.user, required this.index})
+  UserCard(
+      {Key? key,
+      required this.user,
+      required this.index,
+      required this.userController})
       : super(key: key);
+
+  Future<void> _onDeleteData(BuildContext context, User user) async {
+    userController.deleteUser(user);
+    //   Navigator.of(context).pop();
+  }
+
+  Future<void> _onEdit(User user) async {
+    userController.user.value = user;
+    userController.addEmailController.text = user.email;
+    userController.addNameController.text = user.name;
+    userController.roleSelected.value = user.role;
+    userController.imageLink.value = user.photoURL!;
+
+    userController.toUpdateUserView(user);
+  }
 
   @override
   Widget build(BuildContext context) {
     final UserController userController = Get.find();
-
-    //print(productController.products);
     return Card(
       shadowColor: Colors.blueGrey,
       elevation: 3,
@@ -37,7 +55,7 @@ class UserCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   boxShadow: [
                     BoxShadow(
                         color: Color.fromARGB(255, 189, 207, 216),
@@ -49,7 +67,8 @@ class UserCard extends StatelessWidget {
                     color:  Color.fromARGB(255, 232, 234, 239),
                   ), */
                   borderRadius: BorderRadius.horizontal(
-                      left: Radius.circular(4), right: Radius.circular(4))),
+                      left: const Radius.circular(4),
+                      right: const Radius.circular(4))),
               // color: Color.fromARGB(255, 232, 234, 239),
               padding: const EdgeInsets.only(left: 8),
               child: Row(
@@ -86,11 +105,13 @@ class UserCard extends StatelessWidget {
 
                         switch (selectedValue) {
                           case 0:
-                            Navigator.pushNamed(context, AppPages.EDIT_USER,
-                                arguments: user);
+                            /*  Navigator.pushNamed(context, AppPages.EDIT_USER,
+                                arguments: user); */
+                            _onEdit(user);
                             break;
                           case 1:
-                            databaseService.deleteUser(user);
+                            // databaseService.deleteUser(user);
+                            _onDeleteData(context, user);
 
                             break;
 
@@ -110,7 +131,7 @@ class UserCard extends StatelessWidget {
               children: [
                 Column(
                   children: [
-                    (user.photoURL == null || user.photoURL == "")
+                    user.photoURL == ""
                         ? SizedBox(
                             width: 100,
                             height: 100,
@@ -124,48 +145,21 @@ class UserCard extends StatelessWidget {
                               ),
                             ),
                           )
-
-                        /* CircleAvatar(
-                  
-                    backgroundImage: FileImage(File(category.imageUrl)),
-                    radius: 10,
-                    backgroundColor: Colors.white,
-                  )  */ /* Image.network(
-                    category.imageUrl,
-                    width: MediaQuery.of(context).size.width,
-                    height: 150,
-                    fit: BoxFit.cover,
-                  ) */
-                        : Image.network(
-                            user.photoURL!,
+                        : Image.network(user.photoURL!,
+                            width: 100, height: 100, fit: BoxFit.cover,
                             errorBuilder: (context, exception, stackTrace) {
-                              return Container(
-                                width: 120,
-                                height: 100,
-                                decoration: const BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                        "assets/images/no_image.jpg"),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              );
-                            },
-                            width: 120,
-                            height: 100,
-                            fit: BoxFit.cover,
-                          ) /* SizedBox(
-                            width: 100,
-                            height: 100,
-                            child: Container(
-                              decoration: BoxDecoration(
+                            return Container(
+                              width: 100,
+                              height: 100,
+                              decoration: const BoxDecoration(
                                 image: DecorationImage(
-                                  image: FileImage(File(product.imageUrl)),
+                                  image:
+                                      AssetImage("assets/images/no_image.jpg"),
                                   fit: BoxFit.cover,
                                 ),
                               ),
-                            ),
-                          ) */
+                            );
+                          })
                   ],
                 ),
                 const SizedBox(

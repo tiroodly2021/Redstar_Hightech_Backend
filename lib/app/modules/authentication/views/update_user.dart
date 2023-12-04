@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_list_controller.dart';
 
 import '../models/user_model.dart';
 
@@ -36,13 +35,13 @@ import 'dart:convert';
 
 import 'package:firebase_storage/firebase_storage.dart';
 
-class UpdateUserView extends GetView<UserListController> {
+class UpdateUserView extends GetView<UserController> {
   FirebaseStorage _storage = FirebaseStorage.instance;
 
   late XFile? imageDataFile = null;
-  User? user;
+  User? currentUser;
 
-  UpdateUserView({Key? key, this.user}) : super(key: key);
+  UpdateUserView({Key? key, this.currentUser}) : super(key: key);
 
   void _editUser(User user) {
     controller.editUser(user);
@@ -151,7 +150,7 @@ class UpdateUserView extends GetView<UserListController> {
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
-                "Product Information",
+                "User Information",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
@@ -186,8 +185,9 @@ class UpdateUserView extends GetView<UserListController> {
                     }
 
                     User user = User(
+                        uid: currentUser!.uid,
                         buildNumber: '',
-                        createdAt: DateTime.now().toString(),
+                        createdAt: currentUser!.createdAt,
                         email: controller.addEmailController.text,
                         lastLogin: '',
                         name: controller.addNameController.text,
@@ -200,6 +200,8 @@ class UpdateUserView extends GetView<UserListController> {
                             : controller.imageLink.value);
 
                     _editUser(user);
+
+                    resetFields();
 
                     Navigator.pop(context);
                   },
@@ -438,5 +440,14 @@ class UpdateUserView extends GetView<UserListController> {
             }),
       ),
     );
+  }
+
+  void resetFields() {
+    imageDataFile = null;
+    controller.imageLink.value = '';
+    controller.imageLinkTemp.value = '';
+    controller.addEmailController.text = '';
+    controller.addNameController.text = '';
+    controller.addPasswordController.text = '';
   }
 }

@@ -2,12 +2,10 @@ import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/bindings/user_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/add_user.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/views/edit_user_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/login_view.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/views/new_user_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/registration_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/update_user.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/views/user_list_crud.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/user_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/user_view.dart';
 
 import '../modules/authentication/bindings/authentication_binding.dart';
@@ -59,10 +57,8 @@ class AppPages {
   static const LOGIN = Routes.LOGIN;
   static const REGISTRATION = Routes.REGISTRATION;
   static const SETTINGS = Routes.SETTINGS;
+
   static const USER = Routes.USER;
-  static const NEW_USER = Routes.NEW_USER;
-  static const EDIT_USER = Routes.EDIT_USER;
-  static const USER_LIST = Routes.USER_LIST;
   static const ADD_USER = Routes.ADD_USER;
   static const UPDATE_USER = Routes.UPDATE_USER;
 
@@ -74,10 +70,6 @@ class AppPages {
     GetPage(
         name: _Paths.ADD_USER,
         page: () => AddUserView(),
-        binding: UserBinding()),
-    GetPage(
-        name: _Paths.USER_LIST,
-        page: () => UserListView(),
         binding: UserBinding()),
     GetPage(name: _Paths.EDIT_PROFILE, page: () => const EditProfile()),
     GetPage(name: _Paths.SPLASH, page: () => const SplashScreen()),
@@ -162,37 +154,5 @@ class AppPages {
       binding: AuthenticationBinding(),
     ),
     GetPage(name: _Paths.USER, page: () => UserView(), binding: UserBinding()),
-    GetPage(
-        name: _Paths.NEW_USER,
-        page: () => NewUserView(),
-        binding: UserBinding()),
-    GetPage(
-        name: _Paths.EDIT_USER,
-        page: () => EditUserView(),
-        binding: UserBinding())
   ];
-
-  @override
-  List<Object?> get props => [
-        INITIAL,
-        HOME,
-        PRODUCT,
-        NEW_PRODUCT,
-        PRODUCT_LIST,
-        ORDER,
-        CATEGORY,
-        NEW_CATEGORY,
-        EDIT_CATEGORY,
-        EDIT_PRODUCT,
-        PENDING_ORDER,
-        CANCELLED_ORDER,
-        ORDER_DELIVERED,
-        EDIT_PROFILE,
-        routes
-      ];
-
-  @override
-  String toString() {
-    return 'AppPages{INITIAL=$INITIAL, HOME=$HOME, PRODUCT=$PRODUCT, NEW_PRODUCT=$NEW_PRODUCT, PRODUCT_LIST=$PRODUCT_LIST, ORDER=$ORDER, CATEGORY=$CATEGORY, NEW_CATEGORY=$NEW_CATEGORY, EDIT_CATEGORY=$EDIT_CATEGORY, EDIT_PRODUCT=$EDIT_PRODUCT, PENDING_ORDER=$PENDING_ORDER, CANCELLED_ORDER=$CANCELLED_ORDER, ORDER_DELIVERED=$ORDER_DELIVERED, EDIT_PROFILE=$EDIT_PROFILE, LOGIN=$LOGIN, REGISTRATION=$REGISTRATION, SETTINGS=$SETTINGS, USER=$USER, routes=$routes}';
-  }
 }

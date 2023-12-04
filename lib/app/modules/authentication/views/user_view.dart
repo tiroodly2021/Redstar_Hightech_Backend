@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/add_user.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/widgets/user_widget.dart';
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
@@ -16,8 +17,14 @@ import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
 import 'package:redstar_hightech_backend/app/shared/list_not_found.sharedWidgets.dart';
 import 'package:safe_url_check/safe_url_check.dart';
 
+import '../models/user_model.dart';
+
 class UserView extends GetView<UserController> {
   var exists;
+
+  Future<void> _pullRefresh() async {
+    controller.userList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +48,8 @@ class UserView extends GetView<UserController> {
                 height: 100,
                 child: InkWell(
                   onTap: () {
-                    Get.toNamed(AppPages.NEW_USER);
+                    // Get.toNamed(AppPages.ADD_USER);
+                    Get.to(() => AddUserView());
                   },
                   child: Card(
                     color: Colors.black,
@@ -51,7 +59,7 @@ class UserView extends GetView<UserController> {
                         IconButton(
                             onPressed: () {
                               print("Hello");
-                              Get.toNamed(AppPages.NEW_USER);
+                              Get.toNamed(AppPages.ADD_USER);
                             },
                             icon: const Icon(
                               Icons.add,
@@ -97,9 +105,9 @@ class UserView extends GetView<UserController> {
                           return SizedBox(
                             height: 200,
                             child: UserCard(
-                              user: controller.users[index],
-                              index: index,
-                            ),
+                                user: controller.users[index],
+                                index: index,
+                                userController: controller),
                           );
                         }));
                   }
