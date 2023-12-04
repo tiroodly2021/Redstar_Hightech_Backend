@@ -7,14 +7,14 @@ import 'package:redstar_hightech_backend/app/modules/authentication/views/regist
 import 'package:redstar_hightech_backend/app/modules/authentication/views/update_user.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/user_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/user_view.dart';
+import 'package:redstar_hightech_backend/app/modules/category/views/update_category_view.dart';
 
 import '../modules/authentication/bindings/authentication_binding.dart';
 import '../modules/cancelled_order/bindings/cancelled_order_binding.dart';
 import '../modules/cancelled_order/views/cancelled_order_view.dart';
 import '../modules/category/bindings/category_binding.dart';
+import '../modules/category/views/add_category_view.dart';
 import '../modules/category/views/category_view.dart';
-import '../modules/category/views/edit_category_view.dart';
-import '../modules/category/views/new_category_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/order/bindings/order_binding.dart';
@@ -46,9 +46,11 @@ class AppPages {
   static const NEW_PRODUCT = Routes.NEW_PRODUCT;
   static const PRODUCT_LIST = Routes.PRODUCT_LIST;
   static const ORDER = Routes.ORDER;
+
   static const CATEGORY = Routes.CATEGORY;
-  static const NEW_CATEGORY = Routes.NEW_CATEGORY;
-  static const EDIT_CATEGORY = Routes.EDIT_CATEGORY;
+  static const ADD_CATEGORY = Routes.ADD_CATEGORY;
+  static const UPDATE_CATEGORY = Routes.UPDATE_CATEGORY;
+
   static const EDIT_PRODUCT = Routes.EDIT_PRODUCT;
   static const PENDING_ORDER = Routes.PENDING_ORDER;
   static const CANCELLED_ORDER = Routes.CANCELLED_ORDER;
@@ -104,13 +106,13 @@ class AppPages {
       binding: CategoryBinding(),
     ),
     GetPage(
-      name: _Paths.NEW_CATEGORY,
-      page: () => NewCategoryView(),
+      name: _Paths.ADD_CATEGORY,
+      page: () => AddCategoryView(),
       binding: CategoryBinding(),
     ),
     GetPage(
-      name: _Paths.EDIT_CATEGORY,
-      page: () => EditCategoryView(),
+      name: _Paths.UPDATE_CATEGORY,
+      page: () => UpdateCategoryView(),
       binding: CategoryBinding(),
     ),
     GetPage(

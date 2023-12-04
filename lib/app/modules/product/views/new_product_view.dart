@@ -171,7 +171,7 @@ class NewProductView extends GetView<ProductController> {
                               primary: Colors.black,
                               minimumSize: const Size(65, 44)),
                           onPressed: () {
-                            _openPopup(context, categoryController);
+                            // _openPopup(context, categoryController);
                           },
                           child: const Icon(Icons.add_circle))
                     ],
@@ -227,7 +227,7 @@ class NewProductView extends GetView<ProductController> {
     );
   }
 
-  _openPopup(context, CategoryController categoryController) {
+  /* _openPopup(context, CategoryController categoryController) {
     Alert(
         context: context,
         title: "NEW CATEGORY",
@@ -304,7 +304,7 @@ class NewProductView extends GetView<ProductController> {
             ),
           )
         ]).show();
-  }
+  } */
 
   Padding _buildCheckBox(String label, String name, bool? controllerValue) {
     return Padding(

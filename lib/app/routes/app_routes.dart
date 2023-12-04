@@ -11,8 +11,9 @@ abstract class Routes {
   static const PRODUCT_LIST = _Paths.PRODUCT_LIST;
   static const ORDER = _Paths.ORDER;
   static const CATEGORY = _Paths.CATEGORY;
-  static const NEW_CATEGORY = _Paths.NEW_CATEGORY;
-  static const EDIT_CATEGORY = _Paths.EDIT_CATEGORY;
+  static const ADD_CATEGORY = _Paths.ADD_CATEGORY;
+  static const UPDATE_CATEGORY = _Paths.UPDATE_CATEGORY;
+
   static const EDIT_PRODUCT = _Paths.EDIT_PRODUCT;
   static const PENDING_ORDER = _Paths.PENDING_ORDER;
   static const CANCELLED_ORDER = _Paths.CANCELLED_ORDER;
@@ -31,14 +32,17 @@ abstract class _Paths {
   _Paths._();
   static const EDIT_PROFILE = "/edit-profile";
   static const SPLASH = "/initial";
-  static const NEW_CATEGORY = "/category/new";
+
   static const HOME = '/home';
   static const PRODUCT = '/product';
   static const NEW_PRODUCT = '/product/new';
   static const PRODUCT_LIST = '/product/list';
   static const ORDER = '/order';
+
   static const CATEGORY = '/category';
-  static const EDIT_CATEGORY = "/category/edit";
+  static const ADD_CATEGORY = '/category/add';
+  static const UPDATE_CATEGORY = '/category/update';
+
   static const EDIT_PRODUCT = "/product/edit";
   static const PENDING_ORDER = '/pending-order';
   static const CANCELLED_ORDER = '/cancelled-order';

@@ -295,4 +295,19 @@ class DatabaseService {
         .doc(user.uid)
         .update(user.toMap());
   }
+
+  Stream<List<Product>> getProductsByCategory(Category category) {
+    return _firebaseFirestore
+        .collection('products')
+        .where('category', isEqualTo: category.name)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => Product.fromSnapShot(doc))
+            .toList()); /* .snapshots().map(
+        (snapshot) => snapshot.docs
+            .map((doc) => Product.fromSnapShot(doc))
+            .toList()
+            .map((product) => product.name)
+            .toList()); */
+  }
 }
