@@ -1,10 +1,13 @@
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/bindings/user_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/add_user.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/edit_user_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/login_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/new_user_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/registration_view.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/update_user.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/user_list_crud.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/user_view.dart';
 
 import '../modules/authentication/bindings/authentication_binding.dart';
@@ -59,8 +62,23 @@ class AppPages {
   static const USER = Routes.USER;
   static const NEW_USER = Routes.NEW_USER;
   static const EDIT_USER = Routes.EDIT_USER;
+  static const USER_LIST = Routes.USER_LIST;
+  static const ADD_USER = Routes.ADD_USER;
+  static const UPDATE_USER = Routes.UPDATE_USER;
 
   static final routes = [
+    GetPage(
+        name: _Paths.UPDATE_USER,
+        page: () => UpdateUserView(),
+        binding: UserBinding()),
+    GetPage(
+        name: _Paths.ADD_USER,
+        page: () => AddUserView(),
+        binding: UserBinding()),
+    GetPage(
+        name: _Paths.USER_LIST,
+        page: () => UserListView(),
+        binding: UserBinding()),
     GetPage(name: _Paths.EDIT_PROFILE, page: () => const EditProfile()),
     GetPage(name: _Paths.SPLASH, page: () => const SplashScreen()),
     GetPage(

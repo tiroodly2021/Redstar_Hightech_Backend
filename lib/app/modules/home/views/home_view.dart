@@ -120,7 +120,7 @@ class HomeView extends GetView<HomeController> {
                     children: [
                       MainSectionService(
                           title: "USERS",
-                          route: AppPages.USER,
+                          route: AppPages.USER_LIST,
                           bgColor: Color.fromARGB(255, 210, 36, 143),
                           iconColor: const Color.fromARGB(255, 212, 188, 196),
                           txtColor: Colors.white,
