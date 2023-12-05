@@ -44,16 +44,34 @@ class ProductController extends GetxController {
   Map checkList = {}.obs;
   Map slideList = {}.obs;
 
+  @override
+  void onInit() {
+    super.onInit();
+    productList();
+  }
+
   get isRecommended => checkList['isRecommended'];
   get isPopular => checkList['isPopular'];
 
   get price => slideList['price'];
   get quantity => slideList['quantity'];
 
-  @override
-  void onInit() {
-    super.onInit();
-    productList();
+  void updateProductPrice(int index, Product product, double value) {
+    product.price = value;
+    products[index] = product;
+  }
+
+  void updateProductQuantity(int index, Product product, int value) {
+    product.quantity = value;
+    products[index] = product;
+  }
+
+  void saveNewProductPrice(Product product, String field, double value) {
+    database.updateField(product, field, value);
+  }
+
+  void saveNewProductQuantity(Product product, String field, int value) {
+    database.updateField(product, field, value);
   }
 
   void productList() async {

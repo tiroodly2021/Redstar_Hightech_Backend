@@ -39,6 +39,10 @@ class ProductCard extends StatelessWidget {
     productController.addDescriptionController.text = product.description;
     productController.addNameController.text = product.name;
     productController.categorySelected.value = product.category;
+    productController.slideList['price'] = product.price.toDouble();
+    productController.slideList['quantity'] = product.quantity.toDouble();
+    productController.checkList['isPopular'] = product.isPopular;
+    productController.checkList['isRecommended'] = product.isRecommended;
     productController.imageLink.value = product.imageUrl;
 
     productController.toUpdateProductView(product);
@@ -197,12 +201,12 @@ class ProductCard extends StatelessWidget {
                           child: Slider(
                             value: product.price,
                             onChanged: (value) {
-                              /*   productController.updateProductPrice(
-                                  index, product, value); */
+                              productController.updateProductPrice(
+                                  index, product, value);
                             },
                             onChangeEnd: (value) {
-                              /* productController.saveNewProductPrice(
-                                  product, 'price', value); */
+                              productController.saveNewProductPrice(
+                                  product, 'price', value);
                             },
                             min: 0,
                             max: 1000,
@@ -236,12 +240,12 @@ class ProductCard extends StatelessWidget {
                           child: Slider(
                             value: product.quantity.toDouble(),
                             onChanged: (value) {
-                              /*  productController.updateProductQuantity(
-                                  index, product, value.toInt()); */
+                              productController.updateProductQuantity(
+                                  index, product, value.toInt());
                             },
                             onChangeEnd: (value) {
-                              /* productController.saveNewProductQuantity(
-                                  product, 'quantity', value.toInt()); */
+                              productController.saveNewProductQuantity(
+                                  product, 'quantity', value.toInt());
                             },
                             min: 0,
                             max: 100,
