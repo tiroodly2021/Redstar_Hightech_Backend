@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/role_controller.dart';
 
 import '../models/user_model.dart';
 
@@ -39,14 +40,21 @@ class AddUserView extends GetView<UserController> {
   FirebaseStorage _storage = FirebaseStorage.instance;
 
   late XFile? imageDataFile = null;
+  RoleController roleController = Get.put(RoleController());
 
   AddUserView({
     Key? key,
-  }) : super(key: key);
+  }) : super(key: key) {
+    resetFields();
+  }
 
   void _addUser(User user) {
     controller.addUser(user);
   }
+
+  /* void _addRole(Role role) {
+    roleController.addRole(role);
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +176,7 @@ class AddUserView extends GetView<UserController> {
                     style: ElevatedButton.styleFrom(
                         primary: Colors.black, minimumSize: const Size(65, 44)),
                     onPressed: () {
-                      // _openPopup(context, categoryController);
+                      // _openPopup(context, roleController);
                     },
                     child: const Icon(Icons.add_circle))
               ],
@@ -215,75 +223,28 @@ class AddUserView extends GetView<UserController> {
     );
   }
 
-  /* _openPopup(context, CategoryController categoryController) {
+/*   _openPopup(context, CategoryController categoryController) {
     Alert(
         context: context,
-        title: "NEW CATEGORY",
+        title: "NEW Role",
         content: Column(
           children: <Widget>[
-            TextField(
-              decoration: const InputDecoration(
-                //icon: Icon(Icons.account_circle),
-                labelText: 'Name',
-              ),
-              onChanged: (value) {
-                categoryController.newCategory
-                    .update('name', (_) => value, ifAbsent: () => value);
-              },
-            ),
-            const SizedBox(height: 4),
-            SizedBox(
-              height: 60,
-              child: InkWell(
-                onTap: () async {
-                  ImagePicker _picker = ImagePicker();
-                  final XFile? _image =
-                      await _picker.pickImage(source: ImageSource.gallery);
-
-                  if (_image == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text("No Image Selected",
-                            style:
-                                TextStyle(fontSize: 16, color: Colors.red))));
-                  } else {
-                    await storage.uploadImage(_image);
-                    var imageUrl = await storage.getDownloadURL(_image.name);
-                    categoryController.newCategory.update(
-                        "imageUrl", (_) => imageUrl,
-                        ifAbsent: () => imageUrl);
-                    // print(controller.newUser['imageUrl']);
-                  }
-                },
-                child: Card(
-                  color: Colors.black,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.add_circle,
-                            color: Colors.white,
-                          )),
-                      const Text(
-                        "Add Product Image",
-                        style: TextStyle(fontSize: 20, color: Colors.white),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            )
+            _buildTextFormField("Name", categoryController.addNameController),
           ],
         ),
         buttons: [
           DialogButton(
             color: Colors.black,
             height: 50,
-            onPressed: () {
-              databaseService.addCategory(Category(
-                  name: categoryController.newCategory['name'],
-                  imageUrl: categoryController.newCategory['imageUrl']));
+            onPressed: () async {
+              String imageLink = '';
+
+              Role category = Role(name: roleController.addNameController.text);
+
+              _addRole(role);
+
+              resetRoleFields();
+
               Navigator.pop(context);
             },
             child: const Text(
@@ -324,25 +285,6 @@ class AddUserView extends GetView<UserController> {
     }
   }
 
-  /*  getAndUploadImageToFireStore(context, ImageSource source) async {
-    ImagePicker _picker = ImagePicker();
-    final XFile? _image = await _picker.pickImage(source: source);
-
-    if (_image == null) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("No Image Selected",
-              style: TextStyle(fontSize: 16, color: Colors.red))));
-    } else {
-      await storage.uploadImage(_image);
-      var imageUrl = await storage.getDownloadURL(_image.name);
-
-      controller.newUser
-          .update("imageUrl", (_) => imageUrl, ifAbsent: () => imageUrl);
-      // print(controller.newUser['imageUrl']);
-
-    }
-  } */
-
   Future<XFile?> getImage(ImageSource source) async {
     var pickedImageFile = await ImagePicker().getImage(source: source);
 
@@ -366,37 +308,6 @@ class AddUserView extends GetView<UserController> {
 
       return compressedFile;
     }
-  }
-
-  uploadImage(File compressedFile, String filename) {
-    /* Get.dialog(
-        const Center(
-          child: CircularProgressIndicator(),
-        ),
-        barrierDismissible: false); */
-
-    ImageUploadProvider().uploadImage(compressedFile, filename).then((resp) {
-      //Get.back();
-      var msg = resp[0].toString();
-      filename = resp[1].toString();
-
-      if (msg == "success") {
-        Get.snackbar("Success", "File Uploaded",
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.green,
-            colorText: Colors.white);
-      } else if (msg == "fail") {
-        Get.snackbar("Error", "Failled to upload the image",
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.red,
-            colorText: Colors.white);
-      } else {
-        Get.snackbar("Error", "Unknown Error",
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.red,
-            colorText: Colors.white);
-      }
-    });
   }
 
   String generateMd5(String input) {
@@ -429,4 +340,9 @@ class AddUserView extends GetView<UserController> {
     controller.addNameController.text = '';
     controller.addPasswordController.text = '';
   }
+
+  /*  void resetCategoryFields() {
+ 
+    roleController.addNameController.text = '';
+  } */
 }

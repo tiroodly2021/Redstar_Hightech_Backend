@@ -40,7 +40,9 @@ class AddProductView extends GetView<ProductController> {
 
   AddProductView({
     Key? key,
-  }) : super(key: key);
+  }) : super(key: key) {
+    resetFields();
+  }
 
   void _addProduct(Product product) {
     controller.addProduct(product);
@@ -347,7 +349,7 @@ class AddProductView extends GetView<ProductController> {
           croppedImagdePath, targetPath,
           quality: 90);
 
-      if (isCategory) {
+      if (!isCategory) {
         controller.imageLinkTemp.value = targetPath;
       }
 

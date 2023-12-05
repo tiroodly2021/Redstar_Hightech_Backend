@@ -39,7 +39,9 @@ class AddCategoryView extends GetView<CategoryController> {
 
   AddCategoryView({
     Key? key,
-  }) : super(key: key);
+  }) : super(key: key) {
+    resetFields();
+  }
 
   void _addCategory(Category category) {
     controller.addCategory(category);

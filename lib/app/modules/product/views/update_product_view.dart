@@ -37,11 +37,17 @@ class UpdateProductView extends GetView<ProductController> {
 
   late XFile? imageDataFile = null;
   Product? currentProduct;
+  late XFile? imageCategoryDataFile = null;
+  CategoryController categoryController = Get.put(CategoryController());
 
   UpdateProductView({Key? key, this.currentProduct}) : super(key: key);
 
   void _editProduct(Product product) {
     controller.editProduct(product);
+  }
+
+  void _addCategory(Category category) {
+    categoryController.addCategory(category);
   }
 
   @override
@@ -167,7 +173,7 @@ class UpdateProductView extends GetView<ProductController> {
                                 primary: Colors.black,
                                 minimumSize: const Size(65, 44)),
                             onPressed: () {
-                              // _openPopup(context, categoryController);
+                              _openPopup(context, categoryController);
                             },
                             child: const Icon(Icons.add_circle))
                       ],
@@ -228,44 +234,20 @@ class UpdateProductView extends GetView<ProductController> {
     );
   }
 
-  /* _openPopup(context, CategoryController categoryController) {
+  _openPopup(context, CategoryController categoryController) {
     Alert(
         context: context,
         title: "NEW CATEGORY",
         content: Column(
           children: <Widget>[
-            TextField(
-              decoration: const InputDecoration(
-                //icon: Icon(Icons.account_circle),
-                labelText: 'Name',
-              ),
-              onChanged: (value) {
-                categoryController.newCategory
-                    .update('name', (_) => value, ifAbsent: () => value);
-              },
-            ),
+            _buildTextFormField("Name", categoryController.addNameController),
             const SizedBox(height: 4),
             SizedBox(
               height: 60,
               child: InkWell(
                 onTap: () async {
-                  ImagePicker _picker = ImagePicker();
-                  final XFile? _image =
-                      await _picker.pickImage(source: ImageSource.gallery);
-
-                  if (_image == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text("No Image Selected",
-                            style:
-                                TextStyle(fontSize: 16, color: Colors.red))));
-                  } else {
-                    await storage.uploadImage(_image);
-                    var imageUrl = await storage.getDownloadURL(_image.name);
-                    categoryController.newCategory.update(
-                        "imageUrl", (_) => imageUrl,
-                        ifAbsent: () => imageUrl);
-                    // print(controller.newUser['imageUrl']);
-                  }
+                  imageCategoryDataFile =
+                      await getImage(ImageSource.gallery, isCategory: true);
                 },
                 child: Card(
                   color: Colors.black,
@@ -279,7 +261,7 @@ class UpdateProductView extends GetView<ProductController> {
                             color: Colors.white,
                           )),
                       const Text(
-                        "Add Product Image",
+                        "Add Category Image",
                         style: TextStyle(fontSize: 20, color: Colors.white),
                       )
                     ],
@@ -293,10 +275,21 @@ class UpdateProductView extends GetView<ProductController> {
           DialogButton(
             color: Colors.black,
             height: 50,
-            onPressed: () {
-              databaseService.addCategory(Category(
-                  name: categoryController.newCategory['name'],
-                  imageUrl: categoryController.newCategory['imageUrl']));
+            onPressed: () async {
+              String imageLink = '';
+
+              if (!(imageCategoryDataFile == null)) {
+                imageLink = await uploadImageToFirestore(imageCategoryDataFile);
+              }
+
+              Category category = Category(
+                  name: categoryController.addNameController.text,
+                  imageUrl: imageLink != '' ? imageLink : '');
+
+              _addCategory(category);
+
+              resetCategoryFields();
+
               Navigator.pop(context);
             },
             child: const Text(
@@ -305,7 +298,7 @@ class UpdateProductView extends GetView<ProductController> {
             ),
           )
         ]).show();
-  } */
+  }
 
   Padding _buildTextFormField(
       String hintText, TextEditingController fieldEditingController) {
@@ -337,7 +330,7 @@ class UpdateProductView extends GetView<ProductController> {
     }
   }
 
-  Future<XFile?> getImage(ImageSource source) async {
+  Future<XFile?> getImage(ImageSource source, {bool isCategory = false}) async {
     var pickedImageFile = await ImagePicker().getImage(source: source);
 
     if (pickedImageFile != null) {
@@ -356,9 +349,11 @@ class UpdateProductView extends GetView<ProductController> {
           croppedImagdePath, targetPath,
           quality: 90);
 
-      controller.imageLinkTemp.value = targetPath;
+      if (!isCategory) {
+        controller.imageLinkTemp.value = targetPath;
+      }
 
-      return compressedFile; //[imageFile, fileName];
+      return compressedFile;
     }
   }
 
@@ -493,5 +488,10 @@ class UpdateProductView extends GetView<ProductController> {
     controller.addNameController.text = '';
     controller.slideList.clear();
     controller.checkList.clear();
+  }
+
+  void resetCategoryFields() {
+    imageCategoryDataFile = null;
+    categoryController.addNameController.text = '';
   }
 }
