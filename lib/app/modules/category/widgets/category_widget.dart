@@ -55,7 +55,9 @@ class CategoryCard extends StatelessWidget {
     return Card(
       shadowColor: Colors.blueGrey,
       elevation: 3,
-      margin: const EdgeInsets.only(top: 10),
+      margin: const EdgeInsets.only(
+        top: 10,
+      ),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
@@ -74,8 +76,7 @@ class CategoryCard extends StatelessWidget {
                     color:  Color.fromARGB(255, 232, 234, 239),
                   ), */
                   borderRadius: BorderRadius.horizontal(
-                      left: const Radius.circular(4),
-                      right: const Radius.circular(4))),
+                      left: Radius.circular(4), right: Radius.circular(4))),
               // color: Color.fromARGB(255, 232, 234, 239),
               padding: const EdgeInsets.only(left: 8),
               child: Row(
@@ -140,8 +141,8 @@ class CategoryCard extends StatelessWidget {
                   children: [
                     category.imageUrl == ""
                         ? SizedBox(
-                            width: 100,
-                            height: 100,
+                            width: MediaQuery.of(context).size.width - 50,
+                            height: 110,
                             child: Container(
                               decoration: const BoxDecoration(
                                 image: DecorationImage(
@@ -153,11 +154,13 @@ class CategoryCard extends StatelessWidget {
                             ),
                           )
                         : Image.network(category.imageUrl,
-                            width: 100, height: 100, fit: BoxFit.cover,
+                            width: MediaQuery.of(context).size.width - 50,
+                            height: 110,
+                            fit: BoxFit.cover,
                             errorBuilder: (context, exception, stackTrace) {
                             return Container(
-                              width: 100,
-                              height: 100,
+                              width: MediaQuery.of(context).size.width - 50,
+                              height: 110,
                               decoration: const BoxDecoration(
                                 image: DecorationImage(
                                   image:
@@ -175,16 +178,7 @@ class CategoryCard extends StatelessWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                        height: 100,
-                        width: 100,
-                        child: ListView.builder(
-                            itemCount: productsAssoc!.length,
-                            itemBuilder: ((context, index) {
-                              return Text(productsAssoc![index].name);
-                            })))
-                  ],
+                  children: const [],
                 )
               ],
             ),
