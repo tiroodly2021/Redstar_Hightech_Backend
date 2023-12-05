@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
@@ -108,7 +109,7 @@ class CategoryCard extends StatelessWidget {
                         _buildPopMenuItem(
                             "Delete", Icons.remove, Options.Delete.index),
                       ],
-                      onSelected: (value) {
+                      onSelected: (value) async {
                         int selectedValue = value as int;
 
                         switch (selectedValue) {
@@ -118,10 +119,12 @@ class CategoryCard extends StatelessWidget {
                             _onEdit(category);
                             break;
                           case 1:
-                            // databaseService.deleteUser(user);
-                            _onDeleteData(context, category);
+                            if (await confirm(context)) {
+                              _onDeleteData(context, category);
 
-                            break;
+                              return print('pressedOK');
+                            }
+                            return print('pressedCancel');
 
                           default:
                         }

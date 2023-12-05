@@ -65,7 +65,7 @@ class UserController extends GetxController {
 
   void deleteUser(User user) async {
     print('User to delete');
-    print(user.toMap());
+    databaseService.deleteUser(user);
   }
 
   void toUpdateUserView(User user) async {

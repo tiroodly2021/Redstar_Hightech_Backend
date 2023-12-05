@@ -57,7 +57,7 @@ class CategoryController extends GetxController {
 
   void deleteCategory(Category category) async {
     print('Category to delete');
-    print(category.toMap());
+    databaseService.deleteCategory(category);
   }
 
   void toUpdateCategoryView(Category category) async {
