@@ -26,8 +26,8 @@ import '../modules/order_delivered/views/order_delivered_view.dart';
 import '../modules/pending_order/bindings/pending_order_binding.dart';
 import '../modules/pending_order/views/pending_order_view.dart';
 import '../modules/product/bindings/product_binding.dart';
-import '../modules/product/views/edit_product_view.dart';
-import '../modules/product/views/new_product_view.dart';
+import '../modules/product/views/update_product_view.dart';
+import '../modules/product/views/add_product_view.dart';
 import '../modules/product/views/product_view.dart';
 import '../modules/product/views/products_list_view.dart';
 import '../modules/settings/bindings/settings_binding.dart';
@@ -43,7 +43,7 @@ class AppPages {
   static const INITIAL = Routes.INITIAL;
   static const HOME = Routes.HOME;
   static const PRODUCT = Routes.PRODUCT;
-  static const NEW_PRODUCT = Routes.NEW_PRODUCT;
+  static const ADD_PRODUCT = Routes.ADD_PRODUCT;
   static const PRODUCT_LIST = Routes.PRODUCT_LIST;
   static const ORDER = Routes.ORDER;
 
@@ -51,7 +51,7 @@ class AppPages {
   static const ADD_CATEGORY = Routes.ADD_CATEGORY;
   static const UPDATE_CATEGORY = Routes.UPDATE_CATEGORY;
 
-  static const EDIT_PRODUCT = Routes.EDIT_PRODUCT;
+  static const UPDATE_PRODUCT = Routes.UPDATE_PRODUCT;
   static const PENDING_ORDER = Routes.PENDING_ORDER;
   static const CANCELLED_ORDER = Routes.CANCELLED_ORDER;
   static const ORDER_DELIVERED = Routes.ORDER_DELIVERED;
@@ -86,8 +86,8 @@ class AppPages {
       binding: ProductBinding(),
     ),
     GetPage(
-      name: _Paths.NEW_PRODUCT,
-      page: () => NewProductView(),
+      name: _Paths.ADD_PRODUCT,
+      page: () => AddProductView(),
       binding: ProductBinding(),
     ),
     /*  GetPage(
@@ -116,8 +116,8 @@ class AppPages {
       binding: CategoryBinding(),
     ),
     GetPage(
-      name: _Paths.EDIT_PRODUCT,
-      page: () => EditProductView(),
+      name: _Paths.UPDATE_PRODUCT,
+      page: () => UpdateProductView(),
       binding: ProductBinding(),
     ),
     GetPage(

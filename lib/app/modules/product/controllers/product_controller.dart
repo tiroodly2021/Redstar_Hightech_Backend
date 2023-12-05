@@ -1,4 +1,92 @@
+import 'dart:math';
+
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:redstar_hightech_backend/app/modules/category/models/category_model.dart';
+import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
+import 'package:redstar_hightech_backend/app/services/database_service.dart';
+
+import '../views/update_product_view.dart';
+
+class ProductController extends GetxController {
+  DatabaseService databaseService = DatabaseService();
+  RxBool loading = false.obs;
+  Map<String, dynamic> body = {};
+  RxList<Product> products = <Product>[].obs;
+  RxString titleGame = ''.obs;
+  final List<IconData> iconData = <IconData>[Icons.call, Icons.school];
+  final Random r = Random();
+
+  DatabaseService database = DatabaseService();
+
+  Rx<Product> product = Product(
+          name: '',
+          description: '',
+          category: '',
+          imageUrl: '',
+          isRecommended: false,
+          isPopular: false)
+      .obs;
+
+  Icon randomIcon2() => Icon(iconData[r.nextInt(iconData.length)]);
+
+  TextEditingController addNameController = TextEditingController();
+  TextEditingController addDescriptionController = TextEditingController();
+
+  RxList<String> categories = <String>[].obs;
+  RxString categorySelected = ''.obs;
+  RxString imageLink = ''.obs;
+  RxString imageLinkTemp = ''.obs;
+
+  var count = 0.obs;
+
+  Map checkList = {}.obs;
+  Map slideList = {}.obs;
+
+  get isRecommended => checkList['isRecommended'];
+  get isPopular => checkList['isPopular'];
+
+  get price => slideList['price'];
+  get quantity => slideList['quantity'];
+
+  @override
+  void onInit() {
+    super.onInit();
+    productList();
+  }
+
+  void productList() async {
+    count.bindStream(database.getCount('products', 'ProductController'));
+    categories.bindStream(database.getCategoriesByName());
+    products.bindStream(database.getProducts());
+  }
+
+  void addProduct(Product product) async {
+    databaseService.addProduct(product);
+
+    //  print(product.toMap());
+  }
+
+  void deleteProduct(Product product) async {
+    print('Product to delete');
+    print(product.toMap());
+  }
+
+  void toUpdateProductView(Product product) async {
+    Get.to(() => UpdateProductView(
+          currentProduct: product,
+        ));
+  }
+
+  void editProduct(Product product) async {
+    databaseService.updateProduct(product);
+  }
+}
+
+
+
+/* import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
 //import 'package:responsive_table/responsive_table.dart';
@@ -57,3 +145,4 @@ class ProductController extends GetxController {
   @override
   void onClose() {}
 }
+ */

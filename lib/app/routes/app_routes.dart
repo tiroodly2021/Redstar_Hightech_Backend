@@ -7,14 +7,14 @@ abstract class Routes {
   static const INITIAL = _Paths.SPLASH;
   static const HOME = _Paths.HOME;
   static const PRODUCT = _Paths.PRODUCT;
-  static const NEW_PRODUCT = _Paths.NEW_PRODUCT;
+  static const ADD_PRODUCT = _Paths.ADD_PRODUCT;
   static const PRODUCT_LIST = _Paths.PRODUCT_LIST;
   static const ORDER = _Paths.ORDER;
   static const CATEGORY = _Paths.CATEGORY;
   static const ADD_CATEGORY = _Paths.ADD_CATEGORY;
   static const UPDATE_CATEGORY = _Paths.UPDATE_CATEGORY;
 
-  static const EDIT_PRODUCT = _Paths.EDIT_PRODUCT;
+  static const UPDATE_PRODUCT = _Paths.UPDATE_PRODUCT;
   static const PENDING_ORDER = _Paths.PENDING_ORDER;
   static const CANCELLED_ORDER = _Paths.CANCELLED_ORDER;
   static const ORDER_DELIVERED = _Paths.ORDER_DELIVERED;
@@ -34,16 +34,19 @@ abstract class _Paths {
   static const SPLASH = "/initial";
 
   static const HOME = '/home';
+
   static const PRODUCT = '/product';
-  static const NEW_PRODUCT = '/product/new';
+  static const ADD_PRODUCT = '/product/add';
+  static const UPDATE_PRODUCT = "/product/update";
+
   static const PRODUCT_LIST = '/product/list';
+
   static const ORDER = '/order';
 
   static const CATEGORY = '/category';
   static const ADD_CATEGORY = '/category/add';
   static const UPDATE_CATEGORY = '/category/update';
 
-  static const EDIT_PRODUCT = "/product/edit";
   static const PENDING_ORDER = '/pending-order';
   static const CANCELLED_ORDER = '/cancelled-order';
   static const ORDER_DELIVERED = '/order-delivered';
