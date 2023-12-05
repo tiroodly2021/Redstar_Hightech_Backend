@@ -104,12 +104,16 @@ class CategoryView extends GetView<CategoryController> {
                     return ListView.builder(
                         itemCount: controller.categories.length,
                         itemBuilder: ((context, index) {
+                          List<Product> products =
+                              controller.getProductByProduct(
+                                  controller.categories[index]);
                           return SizedBox(
                             height: 200,
                             child: CategoryCard(
                                 category: controller.categories[index],
                                 index: index,
-                                categoryController: controller),
+                                categoryController: controller,
+                                productsAssoc: products),
                           );
                         }));
                   }

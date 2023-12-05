@@ -23,12 +23,14 @@ class CategoryCard extends StatelessWidget {
   final int index;
   //DatabaseService databaseService = DatabaseService();
   CategoryController categoryController;
+  List<Product>? productsAssoc;
 
   CategoryCard(
       {Key? key,
       required this.category,
       required this.index,
-      required this.categoryController})
+      required this.categoryController,
+      this.productsAssoc})
       : super(key: key);
 
   Future<void> _onDeleteData(BuildContext context, Category category) async {
@@ -49,7 +51,6 @@ class CategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //final UserController userController = Get.find();
-    List<Product> products = categoryController.getProductByProduct(category);
 
     return Card(
       shadowColor: Colors.blueGrey,
@@ -175,21 +176,16 @@ class CategoryCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [Text('text1')],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [],
-                    )
+                    Container(
+                        height: 100,
+                        width: 100,
+                        child: Expanded(
+                          child: ListView.builder(
+                              itemCount: productsAssoc!.length,
+                              itemBuilder: ((context, index) {
+                                return Text(productsAssoc![index].name);
+                              })),
+                        ))
                   ],
                 )
               ],
