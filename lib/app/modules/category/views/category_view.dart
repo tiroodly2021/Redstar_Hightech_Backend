@@ -60,7 +60,6 @@ class CategoryView extends GetView<CategoryController> {
                       children: [
                         IconButton(
                             onPressed: () {
-                              print("Hello");
                               Get.toNamed(AppPages.ADD_CATEGORY);
                             },
                             icon: const Icon(
@@ -105,8 +104,10 @@ class CategoryView extends GetView<CategoryController> {
                         itemCount: controller.categories.length,
                         itemBuilder: ((context, index) {
                           List<Product> products =
-                              controller.getProductByProduct(
+                              controller.getProductByCategory(
                                   controller.categories[index]);
+                          print(products);
+
                           return SizedBox(
                             height: 200,
                             child: CategoryCard(
@@ -184,7 +185,7 @@ class CategoryView extends GetView<CategoryController> {
                       children: [
                         IconButton(
                             onPressed: () {
-                              print("Hello");
+                          
                               Get.toNamed(AppPages.NEW_CATEGORY);
                             },
                             icon: const Icon(

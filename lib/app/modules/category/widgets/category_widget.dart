@@ -176,16 +176,14 @@ class CategoryCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
+                    SizedBox(
                         height: 100,
                         width: 100,
-                        child: Expanded(
-                          child: ListView.builder(
-                              itemCount: productsAssoc!.length,
-                              itemBuilder: ((context, index) {
-                                return Text(productsAssoc![index].name);
-                              })),
-                        ))
+                        child: ListView.builder(
+                            itemCount: productsAssoc!.length,
+                            itemBuilder: ((context, index) {
+                              return Text(productsAssoc![index].name);
+                            })))
                   ],
                 )
               ],

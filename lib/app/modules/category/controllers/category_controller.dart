@@ -44,9 +44,9 @@ class CategoryController extends GetxController {
     categories.bindStream(database.getCategories());
   }
 
-  List<Product> getProductByProduct(Category category) {
+  List<Product> getProductByCategory(Category category) {
     products.bindStream(database.getProductsByCategory(category));
-    return products.value;
+    return products;
   }
 
   void addCategory(Category category) async {

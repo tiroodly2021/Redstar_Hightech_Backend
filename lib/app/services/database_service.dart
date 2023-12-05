@@ -297,17 +297,13 @@ class DatabaseService {
   }
 
   Stream<List<Product>> getProductsByCategory(Category category) {
+    String categoryName = 'No'; //category.name;
+
     return _firebaseFirestore
         .collection('products')
-        .where('category', isEqualTo: category.name)
+        .where('category', isEqualTo: categoryName)
         .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => Product.fromSnapShot(doc))
-            .toList()); /* .snapshots().map(
-        (snapshot) => snapshot.docs
-            .map((doc) => Product.fromSnapShot(doc))
-            .toList()
-            .map((product) => product.name)
-            .toList()); */
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Product.fromSnapShot(doc)).toList());
   }
 }
