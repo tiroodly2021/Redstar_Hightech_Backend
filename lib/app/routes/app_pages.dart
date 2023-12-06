@@ -2,6 +2,9 @@ import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/bindings/user_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/add_user.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/add_role_view.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/role_view.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/update_role_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/login_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/registration_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/update_user.dart';
@@ -10,6 +13,7 @@ import 'package:redstar_hightech_backend/app/modules/authentication/views/user_v
 import 'package:redstar_hightech_backend/app/modules/category/views/update_category_view.dart';
 
 import '../modules/authentication/bindings/authentication_binding.dart';
+import '../modules/authentication/bindings/role_binding.dart';
 import '../modules/cancelled_order/bindings/cancelled_order_binding.dart';
 import '../modules/cancelled_order/views/cancelled_order_view.dart';
 import '../modules/category/bindings/category_binding.dart';
@@ -64,7 +68,20 @@ class AppPages {
   static const ADD_USER = Routes.ADD_USER;
   static const UPDATE_USER = Routes.UPDATE_USER;
 
+  static const ROLE = Routes.ROLE;
+  static const ADD_ROLE = Routes.ADD_ROLE;
+  static const UPDATE_ROLE = Routes.UPDATE_ROLE;
+
   static final routes = [
+    GetPage(name: _Paths.ROLE, page: () => RoleView(), binding: RoleBinding()),
+    GetPage(
+        name: _Paths.UPDATE_ROLE,
+        page: () => UpdateRoleView(),
+        binding: RoleBinding()),
+    GetPage(
+        name: _Paths.ADD_ROLE,
+        page: () => AddRoleView(),
+        binding: RoleBinding()),
     GetPage(
         name: _Paths.UPDATE_USER,
         page: () => UpdateUserView(),

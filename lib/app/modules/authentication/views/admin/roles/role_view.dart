@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/add_user.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/role_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/widgets/user_widget.dart';
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
@@ -18,20 +17,22 @@ import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
 import 'package:redstar_hightech_backend/app/shared/list_not_found.sharedWidgets.dart';
 import 'package:safe_url_check/safe_url_check.dart';
 
-import '../models/user_model.dart';
+import '../../../controllers/role_controller.dart';
+import 'add_role_view.dart';
+import 'widgets/role_card.dart';
 
-class UserView extends GetView<UserController> {
+class RoleView extends GetView<RoleController> {
   var exists;
 
   Future<void> _pullRefresh() async {
-    controller.userList();
+    controller.roleList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBarWidget(
-          title: 'Users',
+          title: 'Roles',
           icon: Icons.search,
           bgColor: Colors.black,
           onPressed: () {
@@ -50,7 +51,7 @@ class UserView extends GetView<UserController> {
                 child: InkWell(
                   onTap: () {
                     // Get.toNamed(AppPages.ADD_USER);
-                    Get.to(() => AddUserView());
+                    Get.to(() => AddRoleView());
                   },
                   child: Card(
                     color: Colors.black,
@@ -59,15 +60,14 @@ class UserView extends GetView<UserController> {
                       children: [
                         IconButton(
                             onPressed: () {
-                              print("Hello");
-                              Get.toNamed(AppPages.ADD_USER);
+                              Get.toNamed(AppPages.ADD_CATEGORY);
                             },
                             icon: const Icon(
                               Icons.add,
                               color: Colors.white,
                             )),
                         const Text(
-                          "Add New User",
+                          "Add Role",
                           style: TextStyle(fontSize: 22, color: Colors.white),
                         )
                       ],
@@ -90,7 +90,7 @@ class UserView extends GetView<UserController> {
                                   fontSize: 16, fontWeight: FontWeight.bold)),
                           IconButton(
                               onPressed: () {
-                                Get.to(RoleView());
+                                // Get.toNamed(AppPages.PRODUCT_LIST);
                               },
                               icon: const Icon(Icons.list))
                         ]),
@@ -99,16 +99,16 @@ class UserView extends GetView<UserController> {
               ),
               Expanded(
                 child: Obx(() {
-                  if (controller.users.isNotEmpty) {
+                  if (controller.roles.isNotEmpty) {
                     return ListView.builder(
-                        itemCount: controller.users.length,
+                        itemCount: controller.roles.length,
                         itemBuilder: ((context, index) {
                           return SizedBox(
-                            height: 200,
-                            child: UserCard(
-                                user: controller.users[index],
+                            //  height: 50,
+                            child: RoleCard(
+                                role: controller.roles[index],
                                 index: index,
-                                userController: controller),
+                                roleController: controller),
                           );
                         }));
                   }

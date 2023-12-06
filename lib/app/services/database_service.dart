@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart' as cloud_firestore;
+import 'package:redstar_hightech_backend/app/modules/authentication/models/role_model.dart';
 import 'package:redstar_hightech_backend/app/modules/category/models/category_model.dart';
 import 'package:redstar_hightech_backend/app/modules/order/models/order_stats_model.dart';
 
@@ -305,5 +306,25 @@ class DatabaseService {
         .snapshots()
         .map((snapshot) =>
             snapshot.docs.map((doc) => Product.fromSnapShot(doc)).toList());
+  }
+
+  Stream<List<Role>> getRoles() {
+    return _firebaseFirestore.collection('roles').snapshots().map((snapshot) =>
+        snapshot.docs.map((doc) => Role.fromSnapShot(doc)).toList());
+  }
+
+  Future<void> addRole(Role role) {
+    return _firebaseFirestore.collection('roles').add(role.toMap());
+  }
+
+  Future<void> deleteRole(Role role) {
+    return _firebaseFirestore
+        .collection('roles')
+        .doc(role.id)
+        .update(role.toMap());
+  }
+
+  Future<void> updateRole(Role role) {
+    return _firebaseFirestore.collection('roles').doc(role.id).delete();
   }
 }
