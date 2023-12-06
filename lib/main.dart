@@ -10,6 +10,8 @@ import 'firebase_options.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'forms.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

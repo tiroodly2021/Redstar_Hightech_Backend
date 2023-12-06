@@ -41,6 +41,8 @@ dependencies:
   safe_url_check:
   confirm_dialog:
 
+  wave:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
