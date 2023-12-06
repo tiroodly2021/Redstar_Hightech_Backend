@@ -73,6 +73,8 @@ class UpdateRoleView extends GetView<RoleController> {
               height: 10,
             ),
             _buildTextFormField("Name", controller.addNameController),
+            _buildTextFormField(
+                "Description", controller.addDescriptionController),
             Row(
               children: [],
             ),
@@ -82,7 +84,9 @@ class UpdateRoleView extends GetView<RoleController> {
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(primary: Colors.black),
                   onPressed: () async {
-                    Role role = Role(name: controller.addNameController.text);
+                    Role role = Role(
+                        name: controller.addNameController.text,
+                        description: controller.addDescriptionController.text);
                     _editRole(role);
 
                     resetFields();
@@ -116,5 +120,6 @@ class UpdateRoleView extends GetView<RoleController> {
 
   void resetFields() {
     controller.addNameController.text = '';
+    controller.addDescriptionController.text = '';
   }
 }

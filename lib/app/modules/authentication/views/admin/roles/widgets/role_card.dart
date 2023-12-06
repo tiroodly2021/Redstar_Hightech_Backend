@@ -39,6 +39,7 @@ class RoleCard extends StatelessWidget {
     roleController.role.value = role;
 
     roleController.addNameController.text = role.name;
+    roleController.addDescriptionController.text = role.name;
 
     roleController.toUpdateRoleView(role);
   }
@@ -128,6 +129,33 @@ class RoleCard extends StatelessWidget {
                 ],
               ),
             ),
+            const SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 10),
+              child:
+                  Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Role Description",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                        width: MediaQuery.of(context).size.width - 50,
+                        child: Text(
+                          role.description,
+                          style: const TextStyle(color: Colors.black54),
+                        )),
+                  ],
+                )
+              ]),
+            )
           ],
         ),
       ),
@@ -145,4 +173,7 @@ class RoleCard extends StatelessWidget {
       value: index,
     );
   }
+
+  @override
+  List<Object?> get props => [role, index, roleController];
 }

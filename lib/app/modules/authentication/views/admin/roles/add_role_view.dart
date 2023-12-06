@@ -60,41 +60,49 @@ class AddRoleView extends GetView<RoleController> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(
-                "Role Information",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            _buildTextFormField("Name", controller.addNameController),
-            Row(
-              children: [],
-            ),
-            const SizedBox(height: 10),
-            const SizedBox(height: 10),
-            Center(
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(primary: Colors.black),
-                  onPressed: () async {
-                    Role role = Role(name: controller.addNameController.text);
-                    _addRole(role);
-
-                    resetFields();
-
-                    Navigator.pop(context);
-                  },
-                  child: const Text(
-                    "Save",
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text(
+                    "Role Information",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  )),
-            )
-          ]),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                _buildTextFormField("Name", controller.addNameController),
+                _buildTextFormField(
+                    "Description", controller.addDescriptionController),
+                Row(
+                  children: [],
+                ),
+                const SizedBox(height: 10),
+                const SizedBox(height: 10),
+                Center(
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(primary: Colors.black),
+                      onPressed: () async {
+                        Role role = Role(
+                            name: controller.addNameController.text,
+                            description:
+                                controller.addDescriptionController.text);
+                        _addRole(role);
+
+                        resetFields();
+
+                        Navigator.pop(context);
+                      },
+                      child: const Text(
+                        "Save",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      )),
+                )
+              ]),
         ),
       ),
     );
@@ -116,5 +124,6 @@ class AddRoleView extends GetView<RoleController> {
 
   void resetFields() {
     controller.addNameController.text = '';
+    controller.addDescriptionController.text = '';
   }
 }

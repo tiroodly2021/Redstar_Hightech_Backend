@@ -60,7 +60,8 @@ class RoleView extends GetView<RoleController> {
                       children: [
                         IconButton(
                             onPressed: () {
-                              Get.toNamed(AppPages.ADD_CATEGORY);
+                              // Get.toNamed(AppPages.ADD_CATEGORY);
+                              Get.to(() => AddRoleView());
                             },
                             icon: const Icon(
                               Icons.add,

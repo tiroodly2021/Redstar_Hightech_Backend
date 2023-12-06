@@ -19,11 +19,12 @@ class RoleController extends GetxController {
 
   DatabaseService database = DatabaseService();
 
-  Rx<Role> role = Role(name: '').obs;
+  Rx<Role> role = Role(name: '', description: '').obs;
 
   Icon randomIcon2() => Icon(iconData[r.nextInt(iconData.length)]);
 
   TextEditingController addNameController = TextEditingController();
+  TextEditingController addDescriptionController = TextEditingController();
 
   var count = 0.obs;
 

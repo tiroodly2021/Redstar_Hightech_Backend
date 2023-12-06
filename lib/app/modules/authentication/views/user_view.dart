@@ -90,7 +90,8 @@ class UserView extends GetView<UserController> {
                                   fontSize: 16, fontWeight: FontWeight.bold)),
                           IconButton(
                               onPressed: () {
-                                Get.to(RoleView());
+                                // Get.to(() => RoleView());
+                                Get.toNamed(AppPages.ROLE);
                               },
                               icon: const Icon(Icons.list))
                         ]),
