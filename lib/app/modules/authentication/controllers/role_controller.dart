@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/models/permission_model.dart';
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
 
@@ -55,4 +56,6 @@ class RoleController extends GetxController {
   void editRole(Role role) async {
     databaseService.updateRole(role);
   }
+
+  void setPermission(Permission permission) {}
 }

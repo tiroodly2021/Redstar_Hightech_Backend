@@ -8,6 +8,7 @@ import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/
 import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/permissions/update_permission_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/add_role_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/role_view.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/show_role_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/update_role_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/login_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/registration_view.dart';
@@ -79,12 +80,17 @@ class AppPages {
   static const ROLE = Routes.ROLE;
   static const ADD_ROLE = Routes.ADD_ROLE;
   static const UPDATE_ROLE = Routes.UPDATE_ROLE;
+  static const SHOW_ROLE = Routes.SHOW_ROLE;
 
   static const PERMISSION = Routes.PERMISSION;
   static const ADD_PERMISSION = Routes.ADD_PERMISSION;
   static const UPDATE_PERMISSION = Routes.UPDATE_PERMISSION;
 
   static final routes = [
+    GetPage(
+        name: _Paths.SHOW_ROLE,
+        page: () => ShowRoleView(),
+        binding: RoleBinding()),
     GetPage(
         name: _Paths.UPDATE_PERMISSION,
         page: () => UpdatePermissionView(),
