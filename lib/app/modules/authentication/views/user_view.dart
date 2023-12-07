@@ -10,6 +10,7 @@ import 'package:redstar_hightech_backend/app/modules/authentication/controllers/
 import 'package:redstar_hightech_backend/app/modules/authentication/views/add_user.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/role_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/widgets/user_widget.dart';
+import 'package:redstar_hightech_backend/app/modules/middleware/redict_to_login_middleware.dart';
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
@@ -22,6 +23,10 @@ import '../models/user_model.dart';
 
 class UserView extends GetView<UserController> {
   var exists;
+
+
+
+  UserView({Key? key}) : super(key: key);
 
   Future<void> _pullRefresh() async {
     controller.userList();

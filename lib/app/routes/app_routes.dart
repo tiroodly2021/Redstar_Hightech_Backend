@@ -56,6 +56,7 @@ abstract class _Paths {
   static const ORDER_DELIVERED = '/order-delivered';
   static const ORDER_DELIVER_PENDING = '/order-deliver-pending';
   static const SETTINGS = '/settings';
+
   static const LOGIN = '/login';
   static const REGISTRATION = '/registration';
 

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/bindings/user_binding.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/add_user.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/add_role_view.dart';
@@ -11,6 +12,7 @@ import 'package:redstar_hightech_backend/app/modules/authentication/views/update
 import 'package:redstar_hightech_backend/app/modules/authentication/views/user_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/user_view.dart';
 import 'package:redstar_hightech_backend/app/modules/category/views/update_category_view.dart';
+import 'package:redstar_hightech_backend/app/modules/middleware/redict_to_login_middleware.dart';
 
 import '../modules/authentication/bindings/authentication_binding.dart';
 import '../modules/authentication/bindings/role_binding.dart';
@@ -21,6 +23,8 @@ import '../modules/category/views/add_category_view.dart';
 import '../modules/category/views/category_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+
+import '../modules/middleware/second_middleware.dart';
 import '../modules/order/bindings/order_binding.dart';
 import '../modules/order/views/order_view.dart';
 import '../modules/order_deliver_pending/bindings/order_deliver_pending_binding.dart';
@@ -85,17 +89,23 @@ class AppPages {
     GetPage(
         name: _Paths.UPDATE_USER,
         page: () => UpdateUserView(),
-        binding: UserBinding()),
+        binding: UserBinding(),
+
+        middlewares: [RedirectToLoginMiddleware()]
+    ),
     GetPage(
         name: _Paths.ADD_USER,
         page: () => AddUserView(),
-        binding: UserBinding()),
+        binding: UserBinding(),
+        middlewares: [RedirectToLoginMiddleware()]
+    ),
     GetPage(name: _Paths.EDIT_PROFILE, page: () => const EditProfile()),
     GetPage(name: _Paths.SPLASH, page: () => const SplashScreen()),
     GetPage(
-      name: _Paths.HOME,
-      page: () => HomeView(),
-      binding: HomeBinding(),
+        name: _Paths.HOME,
+        page: () => HomeView(),
+        binding: HomeBinding()
+
     ),
     GetPage(
       name: _Paths.PRODUCT,
@@ -172,6 +182,10 @@ class AppPages {
       page: () => RegistrationView(),
       binding: AuthenticationBinding(),
     ),
-    GetPage(name: _Paths.USER, page: () => UserView(), binding: UserBinding()),
+    GetPage(name: _Paths.USER, page: () => UserView(), binding: UserBinding(),
+        middlewares: [RedirectToLoginMiddleware(
+
+        )]
+    ),
   ];
 }
