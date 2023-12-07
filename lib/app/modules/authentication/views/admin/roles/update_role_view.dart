@@ -35,9 +35,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 class UpdateRoleView extends GetView<RoleController> {
   Role? currentRole;
 
-  UpdateRoleView({Key? key, this.currentRole}) : super(key: key) {
-    resetFields();
-  }
+  UpdateRoleView({Key? key, this.currentRole}) : super(key: key);
 
   void _editRole(Role role) {
     controller.editRole(role);

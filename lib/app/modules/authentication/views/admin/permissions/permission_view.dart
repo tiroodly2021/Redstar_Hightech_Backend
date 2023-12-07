@@ -17,22 +17,23 @@ import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
 import 'package:redstar_hightech_backend/app/shared/list_not_found.sharedWidgets.dart';
 import 'package:safe_url_check/safe_url_check.dart';
 
+import '../../../controllers/permission_controller.dart';
 import '../../../controllers/role_controller.dart';
-import 'add_role_view.dart';
-import 'widgets/role_card.dart';
+import 'add_permission_view.dart';
+import 'widgets/permission_card.dart';
 
-class RoleView extends GetView<RoleController> {
+class PermissionView extends GetView<PermissionController> {
   var exists;
 
   Future<void> _pullRefresh() async {
-    controller.roleList();
+    controller.permissionList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBarWidget(
-          title: 'Roles',
+          title: 'Permissions',
           icon: Icons.search,
           bgColor: Colors.black,
           onPressed: () {
@@ -51,7 +52,7 @@ class RoleView extends GetView<RoleController> {
                 child: InkWell(
                   onTap: () {
                     // Get.toNamed(AppPages.ADD_USER);
-                    Get.to(() => AddRoleView());
+                    Get.to(() => AddPermissionView());
                   },
                   child: Card(
                     color: Colors.black,
@@ -61,14 +62,14 @@ class RoleView extends GetView<RoleController> {
                         IconButton(
                             onPressed: () {
                               // Get.toNamed(AppPages.ADD_CATEGORY);
-                              Get.to(() => AddRoleView());
+                              Get.to(() => AddPermissionView());
                             },
                             icon: const Icon(
                               Icons.add,
                               color: Colors.white,
                             )),
                         const Text(
-                          "Add Role",
+                          "Add Permission",
                           style: TextStyle(fontSize: 22, color: Colors.white),
                         )
                       ],
@@ -86,12 +87,12 @@ class RoleView extends GetView<RoleController> {
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text("Permissions",
+                          const Text("All Permissions",
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold)),
                           IconButton(
                               onPressed: () {
-                                Get.toNamed(AppPages.PERMISSION);
+                                // Get.toNamed(AppPages.PRODUCT_LIST);
                               },
                               icon: const Icon(Icons.list))
                         ]),
@@ -100,23 +101,23 @@ class RoleView extends GetView<RoleController> {
               ),
               Expanded(
                 child: Obx(() {
-                  if (controller.roles.isNotEmpty) {
+                  if (controller.permissions.isNotEmpty) {
                     return ListView.builder(
-                        itemCount: controller.roles.length,
+                        itemCount: controller.permissions.length,
                         itemBuilder: ((context, index) {
                           return SizedBox(
                             //  height: 50,
-                            child: RoleCard(
-                                role: controller.roles[index],
+                            child: PermissionCard(
+                                permission: controller.permissions[index],
                                 index: index,
-                                roleController: controller),
+                                permissionController: controller),
                           );
                         }));
                   }
 
                   return ListNotFound(
                       route: AppPages.INITIAL,
-                      message: "There are not user in the list",
+                      message: "There are not permissions in the list",
                       info: "Go Back",
                       imageUrl: "assets/images/empty.png");
                 }),

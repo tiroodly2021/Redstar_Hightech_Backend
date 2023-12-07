@@ -127,28 +127,7 @@ class AddProductView extends GetView<ProductController> {
                                       fit: BoxFit.cover,
                                     ),
                                   ),
-                                )
-
-                      /*  Card(
-                      color: Colors.black,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.add_circle,
-                                color: Colors.white,
-                              )),
-                          const Text(
-                            "Add Product Photo",
-                            style:
-                                TextStyle(fontSize: 22, color: Colors.white),
-                          )
-                        ],
-                      ),
-                    ), */
-                      ),
+                                )),
                   const SizedBox(
                     height: 10,
                   ),
@@ -165,7 +144,7 @@ class AddProductView extends GetView<ProductController> {
                   ),
                   _buildTextFormField("Name", controller.addNameController),
                   _buildTextFormField(
-                      "Descript", controller.addDescriptionController),
+                      "Description", controller.addDescriptionController),
                   Row(
                     children: [
                       DropDownWidgetList(

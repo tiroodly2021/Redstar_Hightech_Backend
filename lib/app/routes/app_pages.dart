@@ -3,6 +3,9 @@ import 'package:redstar_hightech_backend/app/modules/authentication/bindings/use
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/add_user.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/permissions/add_permission_view.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/permissions/permission_view.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/permissions/update_permission_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/add_role_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/role_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/update_role_view.dart';
@@ -15,6 +18,7 @@ import 'package:redstar_hightech_backend/app/modules/category/views/update_categ
 import 'package:redstar_hightech_backend/app/modules/middleware/redict_to_login_middleware.dart';
 
 import '../modules/authentication/bindings/authentication_binding.dart';
+import '../modules/authentication/bindings/permission_binding.dart';
 import '../modules/authentication/bindings/role_binding.dart';
 import '../modules/cancelled_order/bindings/cancelled_order_binding.dart';
 import '../modules/cancelled_order/views/cancelled_order_view.dart';
@@ -76,7 +80,25 @@ class AppPages {
   static const ADD_ROLE = Routes.ADD_ROLE;
   static const UPDATE_ROLE = Routes.UPDATE_ROLE;
 
+  static const PERMISSION = Routes.PERMISSION;
+  static const ADD_PERMISSION = Routes.ADD_PERMISSION;
+  static const UPDATE_PERMISSION = Routes.UPDATE_PERMISSION;
+
   static final routes = [
+    GetPage(
+        name: _Paths.UPDATE_PERMISSION,
+        page: () => UpdatePermissionView(),
+        binding: PermissionBinding()),
+    GetPage(
+        name: _Paths.ADD_PERMISSION,
+        page: () => AddPermissionView(),
+        binding: PermissionBinding()),
+    GetPage(
+      name: _Paths.PERMISSION,
+      page: () => PermissionView(),
+      binding:
+          PermissionBinding(), /*   middlewares: [RedirectToLoginMiddleware()] */
+    ),
     GetPage(name: _Paths.ROLE, page: () => RoleView(), binding: RoleBinding()),
     GetPage(
         name: _Paths.UPDATE_ROLE,
@@ -87,26 +109,20 @@ class AppPages {
         page: () => AddRoleView(),
         binding: RoleBinding()),
     GetPage(
-        name: _Paths.UPDATE_USER,
-        page: () => UpdateUserView(),
-        binding: UserBinding(),
-
-        middlewares: [RedirectToLoginMiddleware()]
+      name: _Paths.UPDATE_USER,
+      page: () => UpdateUserView(),
+      binding: UserBinding(), /*  middlewares: [RedirectToLoginMiddleware()] */
     ),
     GetPage(
         name: _Paths.ADD_USER,
         page: () => AddUserView(),
-        binding: UserBinding(),
-        middlewares: [RedirectToLoginMiddleware()]
-    ),
+        binding:
+            UserBinding() /* ,
+        middlewares: [RedirectToLoginMiddleware()] */
+        ),
     GetPage(name: _Paths.EDIT_PROFILE, page: () => const EditProfile()),
     GetPage(name: _Paths.SPLASH, page: () => const SplashScreen()),
-    GetPage(
-        name: _Paths.HOME,
-        page: () => HomeView(),
-        binding: HomeBinding()
-
-    ),
+    GetPage(name: _Paths.HOME, page: () => HomeView(), binding: HomeBinding()),
     GetPage(
       name: _Paths.PRODUCT,
       page: () => ProductView(),
@@ -182,10 +198,10 @@ class AppPages {
       page: () => RegistrationView(),
       binding: AuthenticationBinding(),
     ),
-    GetPage(name: _Paths.USER, page: () => UserView(), binding: UserBinding(),
-        middlewares: [RedirectToLoginMiddleware(
-
-        )]
+    GetPage(
+      name: _Paths.USER,
+      page: () => UserView(),
+      binding: UserBinding(), /*   middlewares: [RedirectToLoginMiddleware()] */
     ),
   ];
 }

@@ -30,6 +30,10 @@ abstract class Routes {
   static const ROLE = _Paths.ROLE;
   static const ADD_ROLE = _Paths.ADD_ROLE;
   static const UPDATE_ROLE = _Paths.ADD_ROLE;
+
+  static const PERMISSION = _Paths.PERMISSION;
+  static const ADD_PERMISSION = _Paths.ADD_PERMISSION;
+  static const UPDATE_PERMISSION = _Paths.ADD_PERMISSION;
 }
 
 abstract class _Paths {
@@ -67,4 +71,8 @@ abstract class _Paths {
   static const ROLE = '/role';
   static const ADD_ROLE = '/role/add';
   static const UPDATE_ROLE = '/role/update';
+
+  static const PERMISSION = '/permission';
+  static const ADD_PERMISSION = '/permission/add';
+  static const UPDATE_PERMISSION = '/permission/update';
 }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart' as cloud_firestore;
+import 'package:redstar_hightech_backend/app/modules/authentication/models/permission_model.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/models/role_model.dart';
 import 'package:redstar_hightech_backend/app/modules/category/models/category_model.dart';
 import 'package:redstar_hightech_backend/app/modules/order/models/order_stats_model.dart';
@@ -318,13 +319,46 @@ class DatabaseService {
   }
 
   Future<void> deleteRole(Role role) {
+    return _firebaseFirestore.collection('roles').doc(role.id).delete();
+  }
+
+  Future<void> updateRole(Role role) {
     return _firebaseFirestore
         .collection('roles')
         .doc(role.id)
         .update(role.toMap());
   }
 
-  Future<void> updateRole(Role role) {
-    return _firebaseFirestore.collection('roles').doc(role.id).delete();
+  Stream<List<Permission>> getPermissions() {
+    return _firebaseFirestore.collection('permissions').snapshots().map(
+        (snapshot) =>
+            snapshot.docs.map((doc) => Permission.fromSnapShot(doc)).toList());
+  }
+
+  Future<void> addPermission(Permission permission) {
+    return _firebaseFirestore.collection('permissions').add(permission.toMap());
+  }
+
+  Future<void> deletePermission(Permission permission) {
+    return _firebaseFirestore
+        .collection('permissions')
+        .doc(permission.id)
+        .delete();
+  }
+
+  Future<void> updatePermission(Permission permission) {
+    return _firebaseFirestore
+        .collection('permissions')
+        .doc(permission.id)
+        .update(permission.toMap());
+  }
+
+  Stream<List<String>> getRolesByName() {
+    return _firebaseFirestore.collection('roles').snapshots().map((snapshot) =>
+        snapshot.docs
+            .map((doc) => Role.fromSnapShot(doc))
+            .toList()
+            .map((role) => role.name)
+            .toList());
   }
 }
