@@ -41,9 +41,7 @@ class ShowRoleView extends GetView<RoleController> {
   List<Permission> permissions = <Permission>[];
   PermissionController permissionController = Get.put(PermissionController());
 
-  ShowRoleView({Key? key, this.role}) : super(key: key) {
-    permissions.addAll(permissionController.permissions.value);
-  }
+  ShowRoleView({Key? key, this.role}) : super(key: key) {}
 
   void _setPermission(Permission permission) {
     controller.setPermission(permission);
@@ -51,11 +49,12 @@ class ShowRoleView extends GetView<RoleController> {
 
   @override
   Widget build(BuildContext context) {
-    print(permissions);
+    permissionController = Get.find<PermissionController>();
+    permissions = permissionController.permissions.value;
 
     return Scaffold(
       appBar: AppBarWidget(
-        title: 'Add Category',
+        title: 'Permission Details',
         icon: Icons.search,
         bgColor: Colors.black,
         onPressed: () {
@@ -115,98 +114,167 @@ class ShowRoleView extends GetView<RoleController> {
                     height: 40,
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.only(left: 8.0, right: 8, bottom: 40),
-                    child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      padding: const EdgeInsets.only(
+                          left: 8.0, right: 8, bottom: 40),
+                      child: Column(
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
+                          Row(
+                            children: const [
+                              Text(
                                 "Role Description",
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
                               ),
-                              const SizedBox(
-                                height: 10,
-                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
                               SizedBox(
                                   width: MediaQuery.of(context).size.width - 50,
                                   child: Text(
                                     role!.description,
-                                    style:
-                                        const TextStyle(color: Colors.black54),
+                                    style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black54),
                                   )),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        primary: Colors.black),
-                                    onPressed: () async {
-                                      /*    _setPermissions(role);
+                            ],
+                          ),
+                          MyDivider(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            minimumSize: Size(
+                                                MediaQuery.of(context)
+                                                        .size
+                                                        .width -
+                                                    70,
+                                                40),
+                                            primary: Colors.black),
+                                        onPressed: () async {
+                                          /*    _setPermissions(role);
 
-                        resetFields();
+                            resetFields();
 
-                        Navigator.pop(context); */
-                                    },
-                                    child: const Text(
-                                      "Edit",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                    )),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        primary: Colors.black),
-                                    onPressed: () async {
-                                      Get.to(() => UpdateRoleView(
-                                            currentRole: role,
-                                          ));
-                                      /*    _setPermissions(role);
+                            Navigator.pop(context); */
+                                        },
+                                        child: Row(
+                                          children: const [
+                                            Icon(Icons.edit,
+                                                color: Colors.white),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              "Edit",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        )),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                          MyDivider(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            minimumSize: Size(
+                                                MediaQuery.of(context)
+                                                        .size
+                                                        .width -
+                                                    70,
+                                                40),
+                                            primary: Colors.black),
+                                        onPressed: () async {
+                                          /*    _setPermissions(role);
 
-                        resetFields();
+                            resetFields();
 
-                        Navigator.pop(context); */
-                                    },
-                                    child: const Text(
-                                      "Delete",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                    )),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        primary: Colors.black),
-                                    onPressed: () async {
-                                      Get.to(() => SetPermissionView(
-                                          currentRole: role!,
-                                          permissionList: permissions));
-                                      /*    _setPermissions(role);
-
-                        resetFields();
-
-                        Navigator.pop(context); */
-                                    },
-                                    child: const Text(
-                                      "Permissions",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                    )),
+                            Navigator.pop(context); */
+                                        },
+                                        child: Row(
+                                          children: const [
+                                            Icon(Icons.delete,
+                                                color: Colors.white),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              "Delete",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        )),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                          MyDivider(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            minimumSize: Size(
+                                                MediaQuery.of(context)
+                                                        .size
+                                                        .width -
+                                                    70,
+                                                40),
+                                            primary: Colors.black),
+                                        onPressed: () async {
+                                          Get.to(() => SetPermissionView(
+                                              currentRole: role!,
+                                              permissionList: permissions));
+                                        },
+                                        child: Row(
+                                          children: const [
+                                            Icon(Icons.perm_data_setting,
+                                                color: Colors.white),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              "Permissions",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        )),
+                                  )
+                                ],
                               )
                             ],
                           )
-                        ]),
-                  )
+                        ],
+                      ))
                 ],
               ),
             ),
@@ -257,6 +325,24 @@ class ShowRoleView extends GetView<RoleController> {
       ),
     );
   }
+
+  Column MyDivider() {
+    return Column(
+      children: const [
+        SizedBox(
+          height: 20,
+        ),
+        Divider(
+          thickness: 2,
+          color: Colors.black12,
+          height: 2,
+        ),
+        SizedBox(
+          height: 20,
+        ),
+      ],
+    );
+  }
 /* 
   Padding _buildTextFormField(
       String hintText, TextEditingController fieldEditingController) {
@@ -277,3 +363,104 @@ class ShowRoleView extends GetView<RoleController> {
     controller.addDescriptionController.text = '';
   } */
 }
+
+
+/* 
+
+Column(
+                      children: [
+                        const Text(
+                          "Role Description",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  SizedBox(
+                                      width: MediaQuery.of(context).size.width -
+                                          50,
+                                      child: Text(
+                                        role!.description,
+                                        style: const TextStyle(
+                                            color: Colors.black54),
+                                      )),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            primary: Colors.black),
+                                        onPressed: () async {
+                                          /*    _setPermissions(role);
+
+                            resetFields();
+
+                            Navigator.pop(context); */
+                                        },
+                                        child: const Text(
+                                          "Edit",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        )),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            primary: Colors.black),
+                                        onPressed: () async {
+                                          Get.to(() => UpdateRoleView(
+                                                currentRole: role,
+                                              ));
+                                          /*    _setPermissions(role);
+
+                            resetFields();
+
+                            Navigator.pop(context); */
+                                        },
+                                        child: const Text(
+                                          "Delete",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        )),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            primary: Colors.black),
+                                        onPressed: () async {
+                                          Get.to(() => SetPermissionView(
+                                              currentRole: role!,
+                                              permissionList: permissions));
+                                          /*    _setPermissions(role);
+
+                            resetFields();
+
+                            Navigator.pop(context); */
+                                        },
+                                        child: const Text(
+                                          "Permissions",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        )),
+                                  )
+                                ],
+                              )
+                            ]),
+                      ],
+                    ),
+             
+
+ */

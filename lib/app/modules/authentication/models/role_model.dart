@@ -2,12 +2,19 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'permission_model.dart';
+
 class Role {
   final String name;
   final String description;
   String? id;
+  List<Permission>? permissions;
 
-  Role({required this.name, this.id, required this.description});
+  Role(
+      {required this.name,
+      this.id,
+      required this.description,
+      this.permissions});
 
   Role copyWith({String? name, String? id, String? description}) => Role(
       id: id ?? this.id,
