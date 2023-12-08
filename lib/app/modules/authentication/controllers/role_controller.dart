@@ -22,6 +22,8 @@ class RoleController extends GetxController {
 
   Rx<Role> role = Role(name: '', description: '').obs;
 
+  var switchedList = {}.obs;
+
   Icon randomIcon2() => Icon(iconData[r.nextInt(iconData.length)]);
 
   TextEditingController addNameController = TextEditingController();
@@ -58,4 +60,20 @@ class RoleController extends GetxController {
   }
 
   void setPermission(Permission permission) {}
+
+  get checkedValue => switchedList['checkedValue'];
+
+  void updateRolePermissions(
+      int index, Permission permission, Role role, String s, bool value) {
+    if (value) {
+      role.permissionIds!.add(permission.id!);
+    } else {
+      role.permissionIds!.remove(permission.id!);
+    }
+    database.updateRolePermissions(role, s);
+
+    switchedList['checkedValue'] = value;
+
+    //roles[index]
+  }
 }

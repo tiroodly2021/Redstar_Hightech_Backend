@@ -52,6 +52,8 @@ class ShowRoleView extends GetView<RoleController> {
     permissionController = Get.find<PermissionController>();
     permissions = permissionController.permissions.value;
 
+    print(permissions);
+
     return Scaffold(
       appBar: AppBarWidget(
         title: 'Permission Details',
@@ -250,8 +252,7 @@ class ShowRoleView extends GetView<RoleController> {
                                             primary: Colors.black),
                                         onPressed: () async {
                                           Get.to(() => SetPermissionView(
-                                              currentRole: role!,
-                                              permissionList: permissions));
+                                              currentRole: role!));
                                         },
                                         child: Row(
                                           children: const [

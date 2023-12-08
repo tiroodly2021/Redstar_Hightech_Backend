@@ -8,18 +8,24 @@ class Role {
   final String name;
   final String description;
   String? id;
-  List<Permission>? permissions;
+  List<String>? permissionIds;
 
   Role(
       {required this.name,
       this.id,
       required this.description,
-      this.permissions});
+      this.permissionIds});
 
-  Role copyWith({String? name, String? id, String? description}) => Role(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      description: description ?? this.description);
+  Role copyWith(
+          {String? name,
+          String? id,
+          String? description,
+          List<String>? permissionIds}) =>
+      Role(
+          id: id ?? this.id,
+          name: name ?? this.name,
+          description: description ?? this.description,
+          permissionIds: permissionIds ?? this.permissionIds);
 
   factory Role.fromRawJson(String str) => Role.fromJson(json.decode(str));
 
@@ -31,15 +37,30 @@ class Role {
   Map<String, dynamic> toJson() => {"name": name, "description": description};
 
   factory Role.fromSnapShot(DocumentSnapshot snap) {
+    print(snap["permissionIds"]);
     return Role(
-        id: snap.id, name: snap["name"], description: snap["description"]);
+        id: snap.id,
+        name: snap["name"],
+        description: snap["description"],
+        permissionIds: List<String>.from(snap['permissionIds']
+            as List) /* snap["permissions"] as List<Permission>? */
+
+        );
   }
 
   factory Role.fromMap(Map<String, dynamic> map) {
-    return Role(name: map["name"], description: map["description"]);
+    return Role(
+      name: map["name"],
+      description: map["description"],
+      permissionIds: map["permissionIds"],
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return {"name": name, "description": description};
+    return {
+      "name": name,
+      "description": description,
+      "permissionIds": permissionIds
+    };
   }
 }

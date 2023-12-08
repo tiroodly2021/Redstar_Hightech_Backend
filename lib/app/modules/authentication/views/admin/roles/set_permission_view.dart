@@ -104,21 +104,20 @@ class SetPermissionView extends GetView<PermissionController> {
                 ),
               ),
               Expanded(
-                child: ListView.builder(
-                    itemCount: permissionList!.length,
-                    itemBuilder: ((context, index) {
-                      return SizedBox(
-                        //  height: 50,
-                        child: SetPermissionCard(
-                          permission: permissionList![index],
-                          index: index,
-                          role: currentRole,
-                        ),
-                      );
-                    }))
-                /* Obx(() {
-                  if (permissionList!.isNotEmpty) {
-                    return ;
+                child: Obx(() {
+                  if (controller.permissions.isNotEmpty) {
+                    return ListView.builder(
+                        itemCount: controller.permissions.length,
+                        itemBuilder: ((context, index) {
+                          return SizedBox(
+                            //  height: 50,
+                            child: SetPermissionCard(
+                              permission: controller.permissions[index],
+                              index: index,
+                              role: currentRole,
+                            ),
+                          );
+                        }));
                   }
 
                   return ListNotFound(
@@ -126,8 +125,7 @@ class SetPermissionView extends GetView<PermissionController> {
                       message: "There are not permissions in the list",
                       info: "Go Back",
                       imageUrl: "assets/images/empty.png");
-                }) */
-                ,
+                }),
               )
             ],
           ),

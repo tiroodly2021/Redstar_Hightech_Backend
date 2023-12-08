@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/permission_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/models/user_model.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/show_role_view.dart';
@@ -23,6 +24,7 @@ class SetPermissionCard extends StatelessWidget {
   Permission permission;
   Role role;
   final int index;
+  RoleController roleController = Get.put(RoleController());
   //DatabaseService databaseService = DatabaseService();
   /* RoleController roleController; */
 
@@ -63,6 +65,7 @@ class SetPermissionCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
+              height: 40,
               decoration: const BoxDecoration(
                   boxShadow: [
                     BoxShadow(
@@ -95,7 +98,7 @@ class SetPermissionCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  CircleAvatar(
+                  /* CircleAvatar(
                     backgroundColor: Colors.transparent,
                     child: PopupMenuButton(
                       icon: const Icon(Icons.more_vert_rounded),
@@ -133,20 +136,38 @@ class SetPermissionCard extends StatelessWidget {
                         }
                       },
                     ),
-                  ),
+                  ) */
                 ],
               ),
             ),
             const SizedBox(
               height: 10,
             ),
-            Switch(
-              // This bool value toggles the switch.
-              value: false,
-              activeColor: Colors.red,
-              onChanged: (bool value) {
-                // This is called when the user toggles the switch.
-              },
+            Row(
+              children: [
+                const SizedBox(
+                  width: 10,
+                ),
+                const Text(
+                  "Inactive",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                Switch(
+                  // This bool value toggles the switch.
+                  //
+                  value: role.permissionIds!.contains(permission.id),
+                  activeColor: Colors.red,
+                  onChanged: (bool value) {
+                    // This is called when the user toggles the switch.
+                    roleController.updateRolePermissions(
+                        index, permission, role, 'permissionIds', value);
+                  },
+                ),
+                const Text(
+                  "Active",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                )
+              ],
             )
             /*     Padding(
               padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 10),
