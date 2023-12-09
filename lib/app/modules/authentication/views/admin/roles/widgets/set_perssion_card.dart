@@ -25,6 +25,7 @@ class SetPermissionCard extends StatelessWidget {
   Role role;
   final int index;
   RoleController roleController = Get.put(RoleController());
+  PermissionController permissionController;
   //DatabaseService databaseService = DatabaseService();
   /* RoleController roleController; */
 
@@ -32,7 +33,8 @@ class SetPermissionCard extends StatelessWidget {
       {Key? key,
       required this.permission,
       required this.index,
-      required this.role})
+      required this.role,
+      required this.permissionController})
       : super(key: key);
 
 /*   Future<void> _onDeleteData(BuildContext context, Role role) async {
@@ -52,6 +54,10 @@ class SetPermissionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //final UserController userController = Get.find();
+
+    print("Permission.id : " + permission.id!);
+
+    print(role.permissionIds);
 
     return Card(
       shadowColor: Colors.blueGrey,
@@ -98,45 +104,6 @@ class SetPermissionCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  /* CircleAvatar(
-                    backgroundColor: Colors.transparent,
-                    child: PopupMenuButton(
-                      icon: const Icon(Icons.more_vert_rounded),
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(8),
-                              bottomRight: Radius.circular(8),
-                              topLeft: Radius.circular(8),
-                              topRight: Radius.circular(8))),
-                      offset: const Offset(0.0, 1),
-                      itemBuilder: (ctx) => [
-                        _buildPopMenuItem(
-                            "Edit", Icons.edit, Options.Edit.index),
-                        _buildPopMenuItem(
-                            "Delete", Icons.remove, Options.Delete.index),
-                      ],
-                      onSelected: (value) async {
-                        int selectedValue = value as int;
-
-                        switch (selectedValue) {
-                          case 0:
-                            /*  Navigator.pushNamed(context, AppPages.EDIT_USER,
-                                arguments: user); */
-                            //    _onEdit(role);
-                            break;
-                          case 1:
-                            if (await confirm(context)) {
-                              // _onDeleteData(context, role);
-
-                              return print('pressedOK');
-                            }
-                            return print('pressedCancel');
-
-                          default:
-                        }
-                      },
-                    ),
-                  ) */
                 ],
               ),
             ),
@@ -155,12 +122,14 @@ class SetPermissionCard extends StatelessWidget {
                 Switch(
                   // This bool value toggles the switch.
                   //
-                  value: role.permissionIds!.contains(permission.id),
+                  value: role.permissionIds!.contains(permission.id)
+                      ? true
+                      : false,
                   activeColor: Colors.red,
                   onChanged: (bool value) {
                     // This is called when the user toggles the switch.
-                    roleController.updateRolePermissions(
-                        index, permission, role, 'permissionIds', value);
+                    roleController.updateRolePermissions(index, permission,
+                        role, 'permissionIds', value, permissionController);
                   },
                 ),
                 const Text(

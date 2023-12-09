@@ -34,7 +34,9 @@ abstract class Routes {
 
   static const PERMISSION = _Paths.PERMISSION;
   static const ADD_PERMISSION = _Paths.ADD_PERMISSION;
-  static const UPDATE_PERMISSION = _Paths.ADD_PERMISSION;
+  // static const UPDATE_PERMISSION = _Paths.ADD_PERMISSION;
+
+  static const ACCESS_ERROR = _Paths.ACCESS_ERROR;
 }
 
 abstract class _Paths {
@@ -76,5 +78,7 @@ abstract class _Paths {
 
   static const PERMISSION = '/permission';
   static const ADD_PERMISSION = '/permission/add';
-  static const UPDATE_PERMISSION = '/permission/update';
+  // static const UPDATE_PERMISSION = '/permission/update';
+
+  static const ACCESS_ERROR = '/error';
 }

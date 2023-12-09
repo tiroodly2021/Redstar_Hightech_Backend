@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '../../routes/app_pages.dart';
 
-class SecondMiddleware extends GetMiddleware {
+class AccessAuthorizationMiddleware extends GetMiddleware {
   @override
   int? get priority => 4;
 
@@ -12,7 +12,7 @@ class SecondMiddleware extends GetMiddleware {
   @override
   RouteSettings? redirect(String? route) {
     if (isProfileSet == false) {
-      return const RouteSettings(name: Routes.PRODUCT);
+      return const RouteSettings(name: Routes.ACCESS_ERROR);
     }
   }
 }

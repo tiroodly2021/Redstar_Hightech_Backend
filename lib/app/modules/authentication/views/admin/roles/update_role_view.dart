@@ -45,7 +45,7 @@ class UpdateRoleView extends GetView<RoleController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(
-        title: 'Add Category',
+        title: 'Update Role' + controller.role.value.name,
         icon: Icons.search,
         bgColor: Colors.black,
         onPressed: () {
@@ -63,7 +63,7 @@ class UpdateRoleView extends GetView<RoleController> {
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
-                "Category Information",
+                "Role Details",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
@@ -83,8 +83,10 @@ class UpdateRoleView extends GetView<RoleController> {
                   style: ElevatedButton.styleFrom(primary: Colors.black),
                   onPressed: () async {
                     Role role = Role(
+                        id: currentRole!.id,
                         name: controller.addNameController.text,
-                        description: controller.addDescriptionController.text);
+                        description: controller.addDescriptionController.text,
+                        permissionIds: []);
                     _editRole(role);
 
                     resetFields();

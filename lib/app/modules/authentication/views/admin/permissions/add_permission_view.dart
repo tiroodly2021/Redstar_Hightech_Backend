@@ -52,6 +52,8 @@ class AddPermissionView extends GetView<PermissionController> {
 
   @override
   Widget build(BuildContext context) {
+    List<Permission> permAlreadySaved = controller.permissions.value;
+
     return Scaffold(
       appBar: AppBarWidget(
         title: 'Add Permission',
@@ -82,9 +84,12 @@ class AddPermissionView extends GetView<PermissionController> {
                   const SizedBox(
                     height: 10,
                   ),
-                  _buildTextFormField(
+                  /*    _buildTextFormField(
                       "Description", controller.addDescriptionController),
-                  Row(
+            */
+                  DropDownWidgetList(context, controller.routes, 'name',
+                      'Action Name', permAlreadySaved),
+                  /*     Row(
                     children: [
                       DropDownWidgetList(controller.roles, 'role', 'Role'),
                       ElevatedButton(
@@ -96,10 +101,11 @@ class AddPermissionView extends GetView<PermissionController> {
                           },
                           child: const Icon(Icons.add_circle))
                     ],
-                  ),
-                  _buildCheckBox("Read?", 'isRead', controller.isRead),
+                  ), */
+                  /*        _buildCheckBox("Read?", 'isRead', controller.isRead),
                   _buildCheckBox("Write?", 'isWrite', controller.isWrite),
                   _buildCheckBox("Delete?", 'isDelete', controller.isDelete),
+   */
                   const SizedBox(height: 10),
                   const SizedBox(height: 10),
                   Center(
@@ -107,12 +113,15 @@ class AddPermissionView extends GetView<PermissionController> {
                         style: ElevatedButton.styleFrom(primary: Colors.black),
                         onPressed: () async {
                           Permission permission = Permission(
-                              read: controller.checkList['isRead'] ?? false,
+                              /*   read: controller.checkList['isRead'] ?? false,
                               write: controller.checkList['isWrite'] ?? false,
                               delete: controller.checkList['isDelete'] ?? false,
-                              description:
-                                  controller.addDescriptionController.text,
-                              role: controller.roleSelected.value);
+                            */
+                              description: controller.routeNameSelected
+                                  .value /* controller.addDescriptionController
+                                  .text  */ /* ,
+                              role: controller.roleSelected.value */
+                              );
 
                           _addPermission(permission);
 
@@ -125,6 +134,48 @@ class AddPermissionView extends GetView<PermissionController> {
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         )),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: const [
+                        Text(
+                          "Permission created",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 6,
+                  ),
+                  SizedBox(
+                    height: 300,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: ListView.builder(
+                          itemCount: permAlreadySaved.length,
+                          itemBuilder: (context, index) {
+                            return Row(
+                              children: [
+                                const Icon(Icons.check),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  permAlreadySaved[index].description,
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            );
+                          }),
+                    ),
                   )
                 ]);
           }),
@@ -133,7 +184,7 @@ class AddPermissionView extends GetView<PermissionController> {
     );
   }
 
-  _openPopup(context, RoleController roleController) {
+  /*_openPopup(context, RoleController roleController) {
     Alert(
         context: context,
         title: "NEW ROLE",
@@ -168,9 +219,32 @@ class AddPermissionView extends GetView<PermissionController> {
             ),
           )
         ]).show();
+  }*/
+
+  Padding DropDownWidgetList(
+      context, List<String> dropLists, field, label, List<Permission> perms) {
+    perms.forEach((perm) {
+      dropLists.removeWhere((element) => element == perm.description);
+    });
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: DropdownButtonFormField(
+            iconSize: 20,
+            decoration: InputDecoration(labelText: label),
+            items: dropLists.map((drop) {
+              return DropdownMenuItem(value: drop, child: Text(drop));
+            }).toList(),
+            onChanged: (value) {
+              controller.routeNameSelected.value = value.toString();
+            }),
+      ),
+    );
   }
 
-  Padding DropDownWidgetList(dropLists, field, label) {
+/*   Padding DropDownWidgetList(dropLists, field, label) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: SizedBox(
@@ -186,7 +260,7 @@ class AddPermissionView extends GetView<PermissionController> {
             }),
       ),
     );
-  }
+  } */
   /*  Padding DropDownWidgetList(dropLists, field, label) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -228,7 +302,7 @@ class AddPermissionView extends GetView<PermissionController> {
     );
   }
 
-  Padding _buildCheckBox(String label, String name, bool? controllerValue) {
+  /*  Padding _buildCheckBox(String label, String name, bool? controllerValue) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
@@ -252,10 +326,10 @@ class AddPermissionView extends GetView<PermissionController> {
       ),
     );
   }
-
+ */
   void resetFields() {
     controller.addDescriptionController.text = '';
-    controller.checkList.clear();
+    //controller.checkList.clear();
   }
 
   void resetRoleFields() {

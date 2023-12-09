@@ -38,7 +38,7 @@ class PermissionCard extends StatelessWidget {
     //   Navigator.of(context).pop();
   }
 
-  Future<void> _onEdit(Permission permission) async {
+  /* Future<void> _onEdit(Permission permission) async {
     permissionController.permission.value = permission;
     permissionController.addDescriptionController.text = permission.description;
     permissionController.roleSelected.value = permission.role;
@@ -46,7 +46,7 @@ class PermissionCard extends StatelessWidget {
     permissionController.checkList['isWrite'] = permission.write;
     permissionController.checkList['isDelete'] = permission.delete;
     permissionController.toUpdatePermissionView(permission);
-  }
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -103,20 +103,21 @@ class PermissionCard extends StatelessWidget {
                               topRight: Radius.circular(8))),
                       offset: const Offset(0.0, 1),
                       itemBuilder: (ctx) => [
-                        _buildPopMenuItem(
-                            "Edit", Icons.edit, Options.Edit.index),
+                        /*  _buildPopMenuItem(
+                            "Edit", Icons.edit, Options.Edit.index), */
                         _buildPopMenuItem(
                             "Delete", Icons.remove, Options.Delete.index),
                       ],
                       onSelected: (value) async {
                         int selectedValue = value as int;
+                        print("selected menu :" + value.toString());
 
                         switch (selectedValue) {
-                          case 0:
+                          /*  case 0:
                             /*  Navigator.pushNamed(context, AppPages.EDIT_USER,
                                 arguments: user); */
-                            _onEdit(permission);
-                            break;
+                            //  _onEdit(permission);
+                            break; */
                           case 1:
                             if (await confirm(context)) {
                               _onDeleteData(context, permission);
@@ -161,7 +162,7 @@ class PermissionCard extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    Row(
+/*                     Row(
                       children: [
                         Column(children: [
                           Row(
@@ -210,6 +211,7 @@ class PermissionCard extends StatelessWidget {
                         ])
                       ],
                     )
+                */
                   ],
                 )
               ]),
@@ -232,10 +234,7 @@ class PermissionCard extends StatelessWidget {
     );
   }
 
-  @override
-  List<Object?> get props => [permission, index, permissionController];
-
-  Widget checkPermissions(bool? check, String champs) {
+/*   Widget checkPermissions(bool? check, String champs) {
     if (champs == "delete") {
       if (permission.delete!) {
         return Text("yes");
@@ -261,5 +260,5 @@ class PermissionCard extends StatelessWidget {
     }
 
     return Text("No");
-  }
+  } */
 }

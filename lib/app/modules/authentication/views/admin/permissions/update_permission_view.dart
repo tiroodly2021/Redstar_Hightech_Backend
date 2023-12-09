@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/* import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -82,7 +82,7 @@ class UpdatePermissionView extends GetView<PermissionController> {
                   ),
                   _buildTextFormField(
                       "Description", controller.addDescriptionController),
-                  Row(
+                  /*     Row(
                     children: [
                       DropDownWidgetList(controller.roles, 'role', 'Role'),
                       ElevatedButton(
@@ -94,7 +94,7 @@ class UpdatePermissionView extends GetView<PermissionController> {
                           },
                           child: const Icon(Icons.add_circle))
                     ],
-                  ),
+                  ) ,*/
                   _buildCheckBox("Read?", 'isRead', controller.isRead),
                   _buildCheckBox("Write?", 'isWrite', controller.isWrite),
                   _buildCheckBox("Delete?", 'isDelete', controller.isDelete),
@@ -112,9 +112,10 @@ class UpdatePermissionView extends GetView<PermissionController> {
                                   currentPermission!.write,
                               delete: controller.checkList['isDelete'] ??
                                   currentPermission!.delete,
-                              description:
-                                  controller.addDescriptionController.text,
-                              role: controller.roleSelected.value);
+                              description: controller.addDescriptionController
+                                  .text /* ,
+                              role: controller.roleSelected.value */
+                              );
 
                           _editPermission(permission);
 
@@ -240,3 +241,4 @@ class UpdatePermissionView extends GetView<PermissionController> {
     roleController.addDescriptionController.text = '';
   }
 }
+ */

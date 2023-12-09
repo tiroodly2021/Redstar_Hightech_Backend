@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
 
+import '../../../routes/app_pages.dart';
 import '../models/permission_model.dart';
 import '../models/role_model.dart';
 import '../views/admin/permissions/update_permission_view.dart';
@@ -21,22 +22,27 @@ class PermissionController extends GetxController {
 
   DatabaseService database = DatabaseService();
 
-  Rx<Permission> permission = Permission(description: '', role: '').obs;
+  Rx<Permission> permission = Permission(description: '').obs;
 
-  bool? get isRead => checkList['isRead'];
+  /* bool? get isRead => checkList['isRead'];
 
   bool? get isWrite => checkList['isWrite'];
 
   bool? get isDelete => checkList['isDelete'];
-
+ */
   Icon randomIcon2() => Icon(iconData[r.nextInt(iconData.length)]);
 
   TextEditingController addDescriptionController = TextEditingController();
 
   RxList<String> roles = <String>[].obs;
   RxString roleSelected = ''.obs;
+/* 
+  Map checkList = {}.obs; */
 
-  Map checkList = {}.obs;
+  var routeNameSelected = ''.obs;
+
+  List<String> routes =
+      AppPages.routes.map((e) => e.name.replaceAll("/", " ")).toList().obs;
 
   @override
   void onInit() {
@@ -58,11 +64,11 @@ class PermissionController extends GetxController {
     databaseService.deletePermission(permission);
   }
 
-  void toUpdatePermissionView(Permission permission) async {
+  /* void toUpdatePermissionView(Permission permission) async {
     Get.to(() => UpdatePermissionView(currentPermission: permission));
   }
-
-  void editPermission(Permission permission) async {
+ */
+  /* void editPermission(Permission permission) async {
     databaseService.updatePermission(permission);
-  }
+  } */
 }

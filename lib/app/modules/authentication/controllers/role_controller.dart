@@ -3,8 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/permission_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/models/permission_model.dart';
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
+import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
 
 import '../models/role_model.dart';
@@ -21,8 +23,6 @@ class RoleController extends GetxController {
   DatabaseService database = DatabaseService();
 
   Rx<Role> role = Role(name: '', description: '').obs;
-
-  var switchedList = {}.obs;
 
   Icon randomIcon2() => Icon(iconData[r.nextInt(iconData.length)]);
 
@@ -61,10 +61,8 @@ class RoleController extends GetxController {
 
   void setPermission(Permission permission) {}
 
-  get checkedValue => switchedList['checkedValue'];
-
-  void updateRolePermissions(
-      int index, Permission permission, Role role, String s, bool value) {
+  void updateRolePermissions(int index, Permission permission, Role role,
+      String s, bool value, PermissionController permissionController) {
     if (value) {
       role.permissionIds!.add(permission.id!);
     } else {
@@ -72,8 +70,6 @@ class RoleController extends GetxController {
     }
     database.updateRolePermissions(role, s);
 
-    switchedList['checkedValue'] = value;
-
-    //roles[index]
+    permissionController.permissions[index] = permission;
   }
 }

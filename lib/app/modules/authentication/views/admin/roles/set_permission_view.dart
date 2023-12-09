@@ -25,9 +25,8 @@ import 'widgets/set_perssion_card.dart';
 
 class SetPermissionView extends GetView<PermissionController> {
   final Role currentRole;
-  List<Permission>? permissionList;
 
-  SetPermissionView({required this.currentRole, this.permissionList});
+  SetPermissionView({required this.currentRole});
 
   Future<void> _pullRefresh() async {
     controller.permissionList();
@@ -51,36 +50,6 @@ class SetPermissionView extends GetView<PermissionController> {
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [
-              /* SizedBox(
-                height: 100,
-                child: InkWell(
-                  onTap: () {
-                    // Get.toNamed(AppPages.ADD_USER);
-                    Get.to(() => AddPermissionView());
-                  },
-                  child: Card(
-                    color: Colors.black,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              // Get.toNamed(AppPages.ADD_CATEGORY);
-                              Get.to(() => AddPermissionView());
-                            },
-                            icon: const Icon(
-                              Icons.add,
-                              color: Colors.white,
-                            )),
-                        const Text(
-                          "Add Permission",
-                          style: TextStyle(fontSize: 22, color: Colors.white),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ) */
               SizedBox(
                 // width: MediaQuery.of(context).size.width,
                 height: 60,
@@ -96,7 +65,7 @@ class SetPermissionView extends GetView<PermissionController> {
                                   fontSize: 16, fontWeight: FontWeight.bold)),
                           IconButton(
                               onPressed: () {
-                                // Get.toNamed(AppPages.PRODUCT_LIST);
+                                Get.toNamed(AppPages.PERMISSION);
                               },
                               icon: const Icon(Icons.list))
                         ]),
@@ -112,10 +81,10 @@ class SetPermissionView extends GetView<PermissionController> {
                           return SizedBox(
                             //  height: 50,
                             child: SetPermissionCard(
-                              permission: controller.permissions[index],
-                              index: index,
-                              role: currentRole,
-                            ),
+                                permission: controller.permissions[index],
+                                index: index,
+                                role: currentRole,
+                                permissionController: controller),
                           );
                         }));
                   }

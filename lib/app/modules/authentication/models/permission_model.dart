@@ -9,33 +9,39 @@ import 'model_action.dart';
 class Permission extends Equatable {
   String description;
   String? id;
-  bool? read;
+  /* bool? read;
   bool? write;
-  bool? delete;
-  String role;
+  bool? delete; */
+  //String role;
 
   Permission(
       {required this.description,
-      this.id,
+      this.id /* ,
       this.read = false,
       this.write = false,
-      this.delete = false,
-      required this.role});
+      this.delete = false */ /* ,
+      required this.role */
+      });
 
   Permission copyWith(
           {String? id,
-          String? description,
+          String?
+              description /* ,
           bool? read,
           bool? write,
           bool? delete,
-          String? role}) =>
+          String? role */
+          }) =>
       Permission(
           description: description ?? this.description,
-          id: id ?? this.id,
+          id: id ??
+              this.id /* ,
           read: read ?? this.read,
           write: write ?? this.write,
-          delete: delete ?? this.delete,
-          role: role ?? this.role);
+          delete:
+              delete ?? this.delete */ /* ,
+          role: role ?? this.role */
+          );
 
   factory Permission.fromRawJson(String str) =>
       Permission.fromJson(json.decode(str));
@@ -43,52 +49,55 @@ class Permission extends Equatable {
   String toRawJson() => json.encode(toJson());
 
   factory Permission.fromJson(Map<String, dynamic> json) => Permission(
-        description: json["description"],
-        read: json["read"],
-        write: json["write"],
-        delete: json["delete"],
-        role: json["role"],
+      description: json[
+          "description"] /* ,
+      read: json["read"],
+      write: json["write"],
+      delete: json["delete"] */ /* ,
+        role: json["role"], */
       );
 
   Map<String, dynamic> toJson() => {
         "description": description,
-        "role": role,
-        "read": read,
+        /*  "role": role, */
+        /*   "read": read,
         "write": write,
-        "delete": delete
+        "delete": delete */
       };
 
   factory Permission.fromSnapShot(DocumentSnapshot snap) {
     return Permission(
-      id: snap.id,
-      description: snap["description"],
-      read: snap["read"],
-      write: snap["write"],
-      delete: snap["delete"],
-      role: snap["role"],
-    );
+        id: snap.id,
+        description: snap[
+            "description"] /* ,
+        read: snap["read"],
+        write: snap["write"],
+        delete: snap["delete"] */ /* ,
+      role: snap["role"], */
+        );
   }
 
   factory Permission.fromMap(Map<String, dynamic> map) {
     return Permission(
-      description: map["description"],
-      read: map["read"],
-      write: map["write"],
-      delete: map["delete"],
-      role: map["role"],
-    );
+        description: map[
+            "description"] /*,
+        read: map["read"]  ,
+        write: map["write"],
+        delete: map["delete"] */ /* ,
+      role: map["role"], */
+        );
   }
 
   Map<String, dynamic> toMap() {
     return {
       "description": description,
-      "role": role,
-      "read": read,
+      /*    "role": role, */
+      /* "read": read,
       "write": write,
-      "delete": delete
+      "delete": delete */
     };
   }
 
   @override
-  List<Object?> get props => [read, write, delete];
+  List<Object?> get props => [description];
 }
