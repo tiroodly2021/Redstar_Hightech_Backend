@@ -48,6 +48,7 @@ class PermissionController extends GetxController {
   void onInit() {
     super.onInit();
     permissionList();
+    print('>>> PermissionController started');
     roles.bindStream(database.getRolesByName());
   }
 
@@ -60,7 +61,6 @@ class PermissionController extends GetxController {
   }
 
   void deletePermission(Permission permission) async {
-    print('Permission to delete');
     databaseService.deletePermission(permission);
   }
 

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/bindings/permission_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/category/bindings/category_binding.dart';
+import 'package:redstar_hightech_backend/app/modules/home/bindings/home_binding.dart';
+import 'package:redstar_hightech_backend/app/modules/home/controllers/home_controller.dart';
 
 import '../../routes/app_pages.dart';
 import '../authentication/views/login_view.dart';
@@ -10,20 +14,30 @@ class RedirectToLoginMiddleware extends GetMiddleware {
   @override
   int? get priority => 2;
 
-  static bool isAuthenticated = false;
+  final authController = Get.find<AuthenticationController>();
 
   @override
   RouteSettings? redirect(String? route) {
-    if (isAuthenticated == false) {
-      /// Get.to(() => LoginView());
-      return const RouteSettings(name: Routes.LOGIN);
-    }
+    return authController.authenticated || route== Routes.LOGIN
+        ? null
+        : const RouteSettings(name: Routes.LOGIN);
   }
 
   //This function will be called  before anything created we can use it to
   // change something about the page or give it new page
   @override
   GetPage? onPageCalled(GetPage? page) {
+    print('>>> Page ${page!.name} called');
+
+    print(
+        '>>> User ${authController.user != null ? authController.user!.email : ''} logged');
+
+    print('>>> Authenticated : ${authController.authenticated} ');
+
+    authController.user != null
+        ? page.copyWith(arguments: {'user': authController.user!.email})
+        : page;
+
     return super.onPageCalled(page);
   }
 
@@ -31,6 +45,7 @@ class RedirectToLoginMiddleware extends GetMiddleware {
   // Here we can change Bindings for this page.
   @override
   List<Bindings>? onBindingsStart(List<Bindings>? bindings) {
+    bindings = [CategoryBinding(), HomeBinding(), PermissionBinding()];
     return super.onBindingsStart(bindings);
   }
 
@@ -38,12 +53,15 @@ class RedirectToLoginMiddleware extends GetMiddleware {
   // Here we can do something after  bindings created and before creating the page widget.
   @override
   GetPageBuilder? onPageBuildStart(GetPageBuilder? page) {
+    print('Bindings of ${page.toString()} are ready');
+
     return super.onPageBuildStart(page);
   }
 
   // Page build and widgets of page will be shown
   @override
   Widget onPageBuilt(Widget page) {
+    print('Widget ${page.toStringShort()} will be showed');
     return super.onPageBuilt(page);
   }
 
@@ -51,6 +69,7 @@ class RedirectToLoginMiddleware extends GetMiddleware {
   // (Controllers, views, ...) of the page.
   @override
   void onPageDispose() {
+    print('PageDisposed');
     super.onPageDispose();
   }
 }

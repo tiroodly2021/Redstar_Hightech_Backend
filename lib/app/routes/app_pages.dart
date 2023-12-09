@@ -100,10 +100,10 @@ class AppPages {
         page: () => AddPermissionView(),
         binding: PermissionBinding()),
     GetPage(
-      name: _Paths.PERMISSION,
-      page: () => PermissionView(),
-      binding: PermissionBinding(), /*    */
-    ),
+        name: _Paths.PERMISSION,
+        page: () => PermissionView(),
+        binding: PermissionBinding(),
+        middlewares: [RedirectToLoginMiddleware()]),
     GetPage(name: _Paths.ROLE, page: () => RoleView(), binding: RoleBinding()),
     GetPage(
         name: _Paths.UPDATE_ROLE,
@@ -126,8 +126,14 @@ class AppPages {
         middlewares: [RedirectToLoginMiddleware()] */
         ),
     GetPage(name: _Paths.EDIT_PROFILE, page: () => const EditProfile()),
-    GetPage(name: _Paths.SPLASH, page: () => const SplashScreen()),
-    GetPage(name: _Paths.HOME, page: () => HomeView(), binding: HomeBinding()),
+    GetPage(
+      name: _Paths.SPLASH,
+      page: () => const SplashScreen(),
+    ),
+    GetPage(
+        name: _Paths.HOME,
+        page: () => HomeView(),
+        binding: HomeBinding()),
     GetPage(
       name: _Paths.PRODUCT,
       page: () => ProductView(),
@@ -194,10 +200,10 @@ class AppPages {
       binding: SettingsBinding(),
     ),
     GetPage(
-      name: _Paths.LOGIN,
-      page: () => LoginView(),
-      binding: AuthenticationBinding(),
-    ),
+        name: _Paths.LOGIN,
+        page: () => LoginView(),
+        binding: AuthenticationBinding(),
+        middlewares: [RedirectToLoginMiddleware()]),
     GetPage(
       name: _Paths.REGISTRATION,
       page: () => RegistrationView(),

@@ -92,8 +92,6 @@ class OrderCard extends StatelessWidget {
     // .where((product) => order.productIds.contains(product.id))
     // .toList();
 
-    print(products);
-
     return Card(
       margin: const EdgeInsets.all(10),
       child: Padding(

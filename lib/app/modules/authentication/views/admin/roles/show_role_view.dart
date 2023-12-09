@@ -52,8 +52,6 @@ class ShowRoleView extends GetView<RoleController> {
     permissionController = Get.find<PermissionController>();
     permissions = permissionController.permissions.value;
 
-    print(permissions);
-
     return Scaffold(
       appBar: AppBarWidget(
         title: 'Permission Details',

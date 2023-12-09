@@ -37,7 +37,6 @@ class Role {
   Map<String, dynamic> toJson() => {"name": name, "description": description};
 
   factory Role.fromSnapShot(DocumentSnapshot snap) {
-    print(snap["permissionIds"]);
     return Role(
         id: snap.id,
         name: snap["name"],

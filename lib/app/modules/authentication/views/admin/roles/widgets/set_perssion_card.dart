@@ -55,10 +55,6 @@ class SetPermissionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     //final UserController userController = Get.find();
 
-    print("Permission.id : " + permission.id!);
-
-    print(role.permissionIds);
-
     return Card(
       shadowColor: Colors.blueGrey,
       elevation: 3,

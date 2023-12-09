@@ -24,8 +24,6 @@ import '../models/user_model.dart';
 class UserView extends GetView<UserController> {
   var exists;
 
-
-
   UserView({Key? key}) : super(key: key);
 
   Future<void> _pullRefresh() async {
@@ -64,7 +62,6 @@ class UserView extends GetView<UserController> {
                       children: [
                         IconButton(
                             onPressed: () {
-                              print("Hello");
                               Get.toNamed(AppPages.ADD_USER);
                             },
                             icon: const Icon(

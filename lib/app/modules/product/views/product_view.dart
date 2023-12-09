@@ -58,7 +58,6 @@ class ProductView extends GetView<ProductController> {
                       children: [
                         IconButton(
                             onPressed: () {
-                              print("Hello");
                               Get.toNamed(AppPages.ADD_PRODUCT);
                             },
                             icon: const Icon(

@@ -47,7 +47,6 @@ class RoleController extends GetxController {
   }
 
   void deleteRole(Role role) async {
-    print('Role to delete');
     databaseService.deleteRole(role);
   }
 

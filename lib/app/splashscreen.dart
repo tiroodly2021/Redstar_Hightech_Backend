@@ -102,8 +102,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
   checkInited(context) async {
     final prefs = await SharedPreferences.getInstance();
+
     final bool isInited = prefs.getBool('isInited') ?? false;
-    Timer(const Duration(seconds: 3), () {
+
+    Timer(const Duration(seconds: 5), () {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -112,7 +114,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 : const EditProfile(
                     isFromInit: true,
                   ),
-            maintainState: true,
+            // maintainState: true,
             settings: isInited
                 ? const RouteSettings(name: AppPages.INITIAL)
                 : const RouteSettings(name: AppPages.EDIT_PROFILE),

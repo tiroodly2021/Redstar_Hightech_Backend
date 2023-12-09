@@ -43,16 +43,9 @@ class HomeView extends GetView<HomeController> {
 
   UserController userController = Get.put(UserController());
 
-  HomeController homeController = Get.put(HomeController());
-
   @override
   Widget build(BuildContext context) {
     authenticationController = Get.find<AuthenticationController>();
-    /*   homeController = Get.put(HomeController());
-
-    homeController.saveOrUpdateUser(); */
-
-    print(authenticationController.user);
 
     return Scaffold(
       appBar: AppBarWidget(

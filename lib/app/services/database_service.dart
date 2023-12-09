@@ -56,7 +56,6 @@ class DatabaseService {
 
   void editCategory(Category category) {
     //return _firebaseFirestore.collection('categories').doc('')
-    print(category);
   }
 
   Future<void> updateField(Product product, String field, dynamic newValue) {

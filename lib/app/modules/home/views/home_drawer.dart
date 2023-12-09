@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:drawerbehavior/drawerbehavior.dart' as drawer;
+import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/constants/app_theme.dart';
 import 'package:redstar_hightech_backend/app/databases/boxes.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/user_view.dart';
@@ -11,6 +12,7 @@ import 'package:redstar_hightech_backend/app/modules/pending_order/views/pending
 import 'package:redstar_hightech_backend/app/modules/product/views/product_view.dart';
 import 'package:redstar_hightech_backend/app/modules/settings/views/edit_profile.dart';
 import 'package:redstar_hightech_backend/app/modules/settings/views/settings_view.dart';
+import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/util.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';

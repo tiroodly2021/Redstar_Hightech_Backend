@@ -110,7 +110,6 @@ class PermissionCard extends StatelessWidget {
                       ],
                       onSelected: (value) async {
                         int selectedValue = value as int;
-                        print("selected menu :" + value.toString());
 
                         switch (selectedValue) {
                           /*  case 0:

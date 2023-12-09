@@ -30,12 +30,38 @@ class AuthenticationController extends GetxController {
       buildNumber: 'Unknown',
       buildSignature: 'Unknown');
 
+  final _authenticated = false.obs;
+  RxString _username = ''.obs;
+
   String? get userFirstName => _firebaseUser.value?.displayName;
+
   String? get email => _firebaseUser.value?.email;
-  User? get user => _firebaseUser.value;
+
+  User? get user =>
+      _auth.currentUser ?? _firebaseUser.value; //_firebaseUser.value;
+
   String? get imageurl => _firebaseUser.value?.photoURL;
 
-  User? get logonUser => _auth.currentUser;
+  bool get authenticated => user != null ? true : false;
+
+  set authenticated(value) => _authenticated.value = value;
+
+  @override
+  void onInit() {
+    _firebaseUser.bindStream(_auth.authStateChanges());
+
+    _initPackageInfo();
+
+    print(" Auth Change :   ${_auth.currentUser}");
+
+    /*    ever(_authenticated, (bool value) {
+      if (value) {
+        username = user!.email;
+      }
+    }); */
+
+    super.onInit();
+  }
 
   void login(String email, String password) async {
     await _auth
@@ -43,6 +69,10 @@ class AuthenticationController extends GetxController {
         .then((value) => Get.offAll(() => HomeView()))
         .catchError(
             (onError) => Get.snackbar("Error while sign in ", onError.message));
+
+    authenticated = true;
+
+    // loginController.authController.authenticated = true;
   }
 
   void signout() async {
@@ -127,17 +157,6 @@ class AuthenticationController extends GetxController {
   }
 
   @override
-  void onInit() {
-    _firebaseUser.bindStream(_auth.authStateChanges());
-
-    _initPackageInfo();
-
-    print(" Auth Change :   ${_auth.currentUser}");
-
-    super.onInit();
-  }
-
-  @override
   void onReady() {
     super.onReady();
   }
@@ -156,8 +175,6 @@ class AuthenticationController extends GetxController {
 
     if (Platform.isAndroid) {
       final deviceInfo = await deviceInfoPlugin.androidInfo;
-
-      print('finger' + deviceInfo.hardware!);
 
       deviceId = deviceInfo.hardware!;
       deviceData = {

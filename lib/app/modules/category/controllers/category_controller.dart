@@ -34,6 +34,7 @@ class CategoryController extends GetxController {
 
   @override
   void onInit() {
+    print('>>> CategoryController started');
     super.onInit();
     categoryList();
   }

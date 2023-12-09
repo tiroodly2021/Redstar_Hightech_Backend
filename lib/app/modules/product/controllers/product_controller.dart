@@ -87,8 +87,6 @@ class ProductController extends GetxController {
   }
 
   void deleteProduct(Product product) async {
-    print('Product to delete');
-    print(product.id);
     databaseService.deleteProduct(product);
   }
 

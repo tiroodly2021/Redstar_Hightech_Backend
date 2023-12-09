@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class HomeController extends GetxController {
   @override
   void onInit() {
+    print('>>> HomeController started');
     super.onInit();
   }
 
