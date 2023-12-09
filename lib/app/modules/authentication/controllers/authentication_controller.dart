@@ -35,6 +35,8 @@ class AuthenticationController extends GetxController {
   User? get user => _firebaseUser.value;
   String? get imageurl => _firebaseUser.value?.photoURL;
 
+  User? get logonUser => _auth.currentUser;
+
   void login(String email, String password) async {
     await _auth
         .signInWithEmailAndPassword(email: email, password: password)

@@ -38,7 +38,7 @@ class UserController extends GetxController {
   TextEditingController addEmailController = TextEditingController();
   TextEditingController addPasswordController = TextEditingController();
 
-  List<String> roles = ["user", "editor", "admin"].obs;
+  RxList<String> roles = <String>[].obs;
   RxString roleSelected = ''.obs;
   RxString imageLink = ''.obs;
   RxString imageLinkTemp = ''.obs;
@@ -55,6 +55,7 @@ class UserController extends GetxController {
     count.bindStream(database.getCount('users', 'UserController'));
 
     users.bindStream(database.getUsers());
+    roles.bindStream(database.getRolesByName());
   }
 
   void addUser(User user) async {

@@ -105,4 +105,14 @@ class User {
       "password": password
     };
   }
+
+  static Future<List<User>> getLocalUser(String email) async {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .where('email', isEqualTo: email)
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => User.fromSnapShot(doc)).toList())
+        .first;
+  }
 }

@@ -4,21 +4,9 @@ import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 
 import '../../routes/app_pages.dart';
-
+import '../authentication/views/login_view.dart';
 
 class RedirectToLoginMiddleware extends GetMiddleware {
-  AuthenticationController authenticationController= Get.put(AuthenticationController());
-
-
-  RedirectToLoginMiddleware(){
-    if(Get.find<AuthenticationController>().user==null){
-      isAuthenticated =false;
-    }else{
-      isAuthenticated = true;
-    }
-
-  }
-
   @override
   int? get priority => 2;
 
@@ -27,7 +15,7 @@ class RedirectToLoginMiddleware extends GetMiddleware {
   @override
   RouteSettings? redirect(String? route) {
     if (isAuthenticated == false) {
-     // Get.to(() => LoginView());
+      /// Get.to(() => LoginView());
       return const RouteSettings(name: Routes.LOGIN);
     }
   }

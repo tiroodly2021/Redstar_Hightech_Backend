@@ -358,12 +358,6 @@ class UpdateUserView extends GetView<UserController> {
                 .toList(),
             onChanged: (value) {
               controller.roleSelected.value = value.toString();
-
-              /*  controller.newUser.update(
-                field,
-                (_) => value,
-                ifAbsent: () => value,
-              ); */
             }),
       ),
     );

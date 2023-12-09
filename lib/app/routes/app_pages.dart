@@ -102,8 +102,7 @@ class AppPages {
     GetPage(
       name: _Paths.PERMISSION,
       page: () => PermissionView(),
-      binding:
-          PermissionBinding(), /*   middlewares: [RedirectToLoginMiddleware()] */
+      binding: PermissionBinding(), /*    */
     ),
     GetPage(name: _Paths.ROLE, page: () => RoleView(), binding: RoleBinding()),
     GetPage(
@@ -150,10 +149,10 @@ class AppPages {
       binding: OrderBinding(),
     ),
     GetPage(
-      name: _Paths.CATEGORY,
-      page: () => CategoryView(),
-      binding: CategoryBinding(),
-    ),
+        name: _Paths.CATEGORY,
+        page: () => CategoryView(),
+        binding: CategoryBinding(),
+        middlewares: [RedirectToLoginMiddleware()]),
     GetPage(
         name: _Paths.ADD_CATEGORY,
         page: () => AddCategoryView(),
