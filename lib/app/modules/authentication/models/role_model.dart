@@ -1,10 +1,11 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
 
 import 'permission_model.dart';
 
-class Role {
+class Role extends Equatable {
   final String name;
   final String description;
   String? id;
@@ -49,9 +50,10 @@ class Role {
 
   factory Role.fromMap(Map<String, dynamic> map) {
     return Role(
+      id: map['id'],
       name: map["name"],
       description: map["description"],
-      permissionIds: map["permissionIds"],
+      permissionIds: List<String>.from(map["permissionIds"]),
     );
   }
 
@@ -62,4 +64,7 @@ class Role {
       "permissionIds": permissionIds
     };
   }
+
+  @override
+  List<Object?> get props => [];
 }

@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
+import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 
 import 'menu_widget.dart';
 
@@ -33,6 +35,13 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       leading: const MenuWidget(),
       actions: [
+        IconButton(
+            color: Colors.white,
+            onPressed: () {
+              Get.toNamed(AppPages.HOME);
+            },
+            // tooltip: tooltip,
+            icon: const Icon(Icons.home, color: Colors.white)),
         IconButton(
             color: Colors.white,
             onPressed: onPressed,

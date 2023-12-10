@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/bindings/permission_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/permission_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/role_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/models/permission_model.dart';
 import 'package:redstar_hightech_backend/app/modules/category/bindings/category_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/home/bindings/home_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/home/controllers/home_controller.dart';
 
 import '../../routes/app_pages.dart';
 import '../authentication/controllers/user_controller.dart';
+import '../authentication/models/role_model.dart';
 import '../authentication/models/user_model.dart';
 import '../authentication/views/login_view.dart';
 
@@ -21,10 +25,58 @@ class RedirectToLoginMiddleware extends GetMiddleware {
 
   @override
   RouteSettings? redirect(String? route) {
-    return authController.authenticated || route == Routes.LOGIN
+    PermissionController permissionController = Get.put(PermissionController());
+    RoleController roleController = Get.put(RoleController());
+
+    //
+    List<Role> roles = authController.authenticated
+        ? roleController.roles
+            .where((role) =>
+                role.id ==
+                Role.fromMap(userController.users.value
+                        .where((user) =>
+                            user.email.toLowerCase() ==
+                            authController.user!.email!.toLowerCase())
+                        .toList()[0]
+                        .roles!)
+                    .id)
+            .toList()
+        : [];
+    Role role = roles.isNotEmpty
+        ? roles.first
+        : Role(id: "", description: '', name: '');
+
+    List<Permission> permissions = role.permissionIds == null
+        ? []
+        : permissionController.permissions.value
+            .where((permission) => permission.id == role.permissionIds![0])
+            .toList();
+
+    Permission permission = permissions.isNotEmpty
+        ? permissions.first
+        : Permission(description: '');
+
+    if (authController.authenticated ||
+        route == Routes.LOGIN ||
+        permission.description == route?.replaceAll("/", " ")) {
+      print("Page authorized");
+      return null;
+    } else {
+      print("Page not authorization");
+      return const RouteSettings(name: Routes.LOGIN);
+    }
+
+    /*  return authController.authenticated || route == Routes.LOGIN
         ? null
-        : const RouteSettings(name: Routes.LOGIN);
+        : const RouteSettings(name: Routes.LOGIN); */
   }
+
+  /*
+
+
+
+
+  */
 
   //This function will be called  before anything created we can use it to
   // change something about the page or give it new page
@@ -32,28 +84,10 @@ class RedirectToLoginMiddleware extends GetMiddleware {
   GetPage? onPageCalled(GetPage? page) {
     print('>>> Page ${page!.name} called');
 
-    print(
+    /* print(
         '>>> User ${authController.user != null ? authController.user!.email : ''} logged');
 
-    print('>>> Authenticated : ${authController.authenticated} ');
-
-    if (authController.user != null) {
-      List<User> userModel = userController.users.value
-          .where((user) =>
-              user.email.toLowerCase() ==
-              authController.user!.email!.toLowerCase())
-          .toList();
-
-      /* if (userModel != null) {
-        print("Role: " + userModel.role);
-      } 
- */
-      for (var user in userModel /* userController.users.value */) {
-        print(user.email);
-        print(user.name);
-        //print(user.role);
-      }
-    }
+    print('>>> Authenticated : ${authController.authenticated} ');*/
 
     authController.user != null
         ? page.copyWith(arguments: {'user': authController.user!.email})
