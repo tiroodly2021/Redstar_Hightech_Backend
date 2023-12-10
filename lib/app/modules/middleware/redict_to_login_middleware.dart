@@ -8,6 +8,8 @@ import 'package:redstar_hightech_backend/app/modules/home/bindings/home_binding.
 import 'package:redstar_hightech_backend/app/modules/home/controllers/home_controller.dart';
 
 import '../../routes/app_pages.dart';
+import '../authentication/controllers/user_controller.dart';
+import '../authentication/models/user_model.dart';
 import '../authentication/views/login_view.dart';
 
 class RedirectToLoginMiddleware extends GetMiddleware {
@@ -15,10 +17,11 @@ class RedirectToLoginMiddleware extends GetMiddleware {
   int? get priority => 2;
 
   final authController = Get.find<AuthenticationController>();
+  final userController = Get.put(UserController());
 
   @override
   RouteSettings? redirect(String? route) {
-    return authController.authenticated || route== Routes.LOGIN
+    return authController.authenticated || route == Routes.LOGIN
         ? null
         : const RouteSettings(name: Routes.LOGIN);
   }
@@ -33,6 +36,24 @@ class RedirectToLoginMiddleware extends GetMiddleware {
         '>>> User ${authController.user != null ? authController.user!.email : ''} logged');
 
     print('>>> Authenticated : ${authController.authenticated} ');
+
+    if (authController.user != null) {
+      List<User> userModel = userController.users.value
+          .where((user) =>
+              user.email.toLowerCase() ==
+              authController.user!.email!.toLowerCase())
+          .toList();
+
+      /* if (userModel != null) {
+        print("Role: " + userModel.role);
+      } 
+ */
+      for (var user in userModel /* userController.users.value */) {
+        print(user.email);
+        print(user.name);
+        print(user.role);
+      }
+    }
 
     authController.user != null
         ? page.copyWith(arguments: {'user': authController.user!.email})
