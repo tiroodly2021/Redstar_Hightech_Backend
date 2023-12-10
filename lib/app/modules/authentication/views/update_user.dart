@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controllers/role_controller.dart';
+import '../models/role_model.dart';
 import '../models/user_model.dart';
 
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -48,9 +49,9 @@ class UpdateUserView extends GetView<UserController> {
     controller.editUser(user);
   }
 
-  /*  void _addRole(Role role) {
+  void _addRole(Role role) {
     roleController.addRole(role);
-  } */
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,165 +70,181 @@ class UpdateUserView extends GetView<UserController> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            SizedBox(
-              height: 80,
-              child: InkWell(
-                onTap: () async {
-                  imageDataFile = await getImage(ImageSource.gallery);
-                  controller.imageLink.value = '';
-                },
-                child: Card(
-                  color: Colors.black,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.add_circle,
-                            color: Colors.white,
-                          )),
-                      const Text(
-                        "Edit User Photo",
-                        style: TextStyle(fontSize: 22, color: Colors.white),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Obx(() {
-              return controller.imageLink.value == '' &&
-                      controller.imageLinkTemp.value == ''
-                  ? Container(
-                      margin: const EdgeInsets.only(left: 6),
-                      padding: const EdgeInsets.all(30),
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage("assets/images/add_image.png"),
-                          fit: BoxFit.cover,
+          child: Obx(() {
+            return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 80,
+                    child: InkWell(
+                      onTap: () async {
+                        imageDataFile = await getImage(ImageSource.gallery);
+                        controller.imageLink.value = '';
+                      },
+                      child: Card(
+                        color: Colors.black,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                                onPressed: () {},
+                                icon: const Icon(
+                                  Icons.add_circle,
+                                  color: Colors.white,
+                                )),
+                            const Text(
+                              "Edit User Photo",
+                              style:
+                                  TextStyle(fontSize: 22, color: Colors.white),
+                            )
+                          ],
                         ),
                       ),
-                      width: 150,
-                      height: 150,
-                    )
-                  : controller.imageLink.value != ''
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  controller.imageLink.value == '' &&
+                          controller.imageLinkTemp.value == ''
                       ? Container(
                           margin: const EdgeInsets.only(left: 6),
-                          child: Image.network(controller.imageLink.value,
-                              width: 150, height: 150, fit: BoxFit.cover,
-                              errorBuilder: (context, exception, stackTrace) {
-                            return Container(
-                              width: 150,
-                              height: 150,
-                              decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                  image:
-                                      AssetImage("assets/images/no_image.jpg"),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            );
-                          }),
-                        )
-                      : Container(
                           padding: const EdgeInsets.all(30),
-                          margin: const EdgeInsets.only(left: 6),
-                          width: 150,
-                          height: 150,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             image: DecorationImage(
-                              image: FileImage(
-                                  File(controller.imageLinkTemp.value)),
+                              image: AssetImage("assets/images/add_image.png"),
                               fit: BoxFit.cover,
                             ),
                           ),
-                        );
-            }),
-            const SizedBox(
-              height: 20,
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(
-                "User Information",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            _buildTextFormField("Name", controller.addNameController),
-            _buildTextFormField("Email", controller.addEmailController),
-            _buildTextFormField("Password", controller.addPasswordController),
-            Row(
-              children: [
-                DropDownWidgetList(controller.roles, 'role', 'Role'),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        primary: Colors.black, minimumSize: const Size(65, 44)),
-                    onPressed: () {
-                      // _openPopup(context, categoryController);
-                    },
-                    child: const Icon(Icons.add_circle))
-              ],
-            ),
-            const SizedBox(height: 10),
-            const SizedBox(height: 10),
-            Center(
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(primary: Colors.black),
-                  onPressed: () async {
-                    String imageLink = '';
+                          width: 150,
+                          height: 150,
+                        )
+                      : controller.imageLink.value != ''
+                          ? Container(
+                              margin: const EdgeInsets.only(left: 6),
+                              child: Image.network(controller.imageLink.value,
+                                  width: 150,
+                                  height: 150,
+                                  fit: BoxFit.cover, errorBuilder:
+                                      (context, exception, stackTrace) {
+                                return Container(
+                                  width: 150,
+                                  height: 150,
+                                  decoration: const BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                          "assets/images/no_image.jpg"),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                );
+                              }),
+                            )
+                          : Container(
+                              padding: const EdgeInsets.all(30),
+                              margin: const EdgeInsets.only(left: 6),
+                              width: 150,
+                              height: 150,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: FileImage(
+                                      File(controller.imageLinkTemp.value)),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(
+                      "User Information",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  _buildTextFormField("Name", controller.addNameController),
+                  _buildTextFormField("Email", controller.addEmailController),
+                  _buildTextFormField(
+                      "Password", controller.addPasswordController),
+                  Row(
+                    children: [
+                      DropDownWidgetList(controller.roles, 'role', 'Role'),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.black,
+                              minimumSize: const Size(65, 44)),
+                          onPressed: () {
+                            // _openPopup(context, categoryController);
+                          },
+                          child: const Icon(Icons.add_circle))
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  const SizedBox(height: 10),
+                  Center(
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(primary: Colors.black),
+                        onPressed: () async {
+                          String imageLink = '';
 
-                    if (!(imageDataFile == null)) {
-                      imageLink = await uploadImageToFirestore(imageDataFile);
-                    }
+                          if (!(imageDataFile == null)) {
+                            imageLink =
+                                await uploadImageToFirestore(imageDataFile);
+                          }
 
-                    User user = User(
-                        uid: currentUser!.uid,
-                        buildNumber: '',
-                        createdAt: currentUser!.createdAt,
-                        email: controller.addEmailController.text,
-                        lastLogin: '',
-                        name: controller.addNameController.text,
-                        password: controller.addPasswordController.text != ''
-                            ? generateMd5(controller.addPasswordController.text)
-                            : controller.user.value.password,
-                        role: controller.roleSelected.value,
-                        photoURL: imageLink != ''
-                            ? imageLink
-                            : controller.imageLink.value);
+                          User user = User(
+                              uid: currentUser!.uid,
+                              buildNumber: '',
+                              createdAt: currentUser!.createdAt,
+                              email: controller.addEmailController.text,
+                              lastLogin: '',
+                              name: controller.addNameController.text,
+                              password:
+                                  controller.addPasswordController.text != ''
+                                      ? generateMd5(
+                                          controller.addPasswordController.text)
+                                      : controller.user.value.password,
+                              roles: controller.role.value.id != null
+                                  ? Map.castFrom(controller.role.value.toMap()
+                                    ..addAll({'id': controller.role.value.id}))
+                                  : currentUser!.roles,
+                              photoURL: imageLink != ''
+                                  ? imageLink
+                                  : controller.imageLink.value);
 
-                    _editUser(user);
+                          _editUser(user);
 
-                    resetFields();
+                          resetFields();
 
-                    Navigator.pop(context);
-                  },
-                  child: const Text(
-                    "Update",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  )),
-            )
-          ]),
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          "Update",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        )),
+                  )
+                ]);
+          }),
         ),
       ),
     );
   }
 
-/*   _openPopup(context, CategoryController roleController) {
+  _openPopup(context, RoleController roleController) {
     Alert(
         context: context,
         title: "NEW Role",
         content: Column(
           children: <Widget>[
             _buildTextFormField("Name", roleController.addNameController),
+            _buildTextFormField(
+                "Description", roleController.addDescriptionController),
           ],
         ),
         buttons: [
@@ -237,7 +254,10 @@ class UpdateUserView extends GetView<UserController> {
             onPressed: () async {
               String imageLink = '';
 
-              Role category = Role(name: roleController.addNameController.text);
+              Role role = Role(
+                  name: roleController.addNameController.text,
+                  description: roleController.addDescriptionController.text,
+                  permissionIds: []);
 
               _addRole(role);
 
@@ -251,7 +271,8 @@ class UpdateUserView extends GetView<UserController> {
             ),
           )
         ]).show();
-  } */
+  }
+
   Padding _buildTextFormField(
       String hintText, TextEditingController fieldEditingController) {
     return Padding(
@@ -342,7 +363,7 @@ class UpdateUserView extends GetView<UserController> {
     return crypto.md5.convert(utf8.encode(input)).toString();
   }
 
-  Padding DropDownWidgetList(dropLists, field, label) {
+  Padding DropDownWidgetList(RxList<Role> dropLists, field, label) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: SizedBox(
@@ -353,11 +374,15 @@ class UpdateUserView extends GetView<UserController> {
                 : '',
             iconSize: 20,
             decoration: InputDecoration(labelText: label),
-            items: (dropLists as List<String>)
-                .map((drop) => DropdownMenuItem(value: drop, child: Text(drop)))
+            items: dropLists
+                .map((drop) =>
+                    DropdownMenuItem(value: drop.id, child: Text(drop.name)))
                 .toList(),
             onChanged: (value) {
+              print(value);
               controller.roleSelected.value = value.toString();
+              controller.getRoleFromId(controller.roleSelected.value);
+              //controller.roleSelected.value = value.toString();
             }),
       ),
     );
@@ -370,10 +395,12 @@ class UpdateUserView extends GetView<UserController> {
     controller.addEmailController.text = '';
     controller.addNameController.text = '';
     controller.addPasswordController.text = '';
+    // controller.roles.clear();
   }
 
-  /*  void resetCategoryFields() {
- 
+  void resetRoleFields() {
     roleController.addNameController.text = '';
-  } */
+    roleController.addDescriptionController.text = '';
+    controller.roleSelected.value = '';
+  }
 }

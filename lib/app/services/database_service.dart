@@ -368,4 +368,12 @@ class DatabaseService {
         .doc(role.id)
         .update(role.toMap());
   }
+
+  Stream<Role> getRoleById(String value) {
+    return _firebaseFirestore
+        .collection('roles')
+        .doc(value)
+        .snapshots()
+        .map((role) => Role.fromSnapShot(role));
+  }
 }

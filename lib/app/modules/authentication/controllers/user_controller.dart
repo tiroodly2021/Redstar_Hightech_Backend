@@ -1,11 +1,10 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/update_user.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
 
+import '../models/role_model.dart';
 import '../models/user_model.dart';
 
 class UserController extends GetxController {
@@ -15,20 +14,16 @@ class UserController extends GetxController {
   RxList<User> users = <User>[].obs;
   RxString titleGame = ''.obs;
   final List<IconData> iconData = <IconData>[Icons.call, Icons.school];
-  final Random r = Random();
 
   DatabaseService database = DatabaseService();
 
   Rx<User> user = User(
-          buildNumber: '',
-          createdAt: '',
-          email: '',
-          lastLogin: '',
-          name: '',
-          role: '')
-      .obs;
-
-  Icon randomIcon2() => Icon(iconData[r.nextInt(iconData.length)]);
+      buildNumber: '',
+      createdAt: '',
+      email: '',
+      lastLogin: '',
+      name: '',
+      roles: {}).obs;
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
@@ -38,11 +33,11 @@ class UserController extends GetxController {
   TextEditingController addEmailController = TextEditingController();
   TextEditingController addPasswordController = TextEditingController();
 
-  RxList<String> roles = <String>[].obs;
+  RxList<Role> roles = <Role>[].obs;
   RxString roleSelected = ''.obs;
   RxString imageLink = ''.obs;
   RxString imageLinkTemp = ''.obs;
-
+  Rx<Role> role = Role(description: '', name: '').obs;
   var count = 0.obs;
 
   @override
@@ -55,7 +50,13 @@ class UserController extends GetxController {
     count.bindStream(database.getCount('users', 'UserController'));
 
     users.bindStream(database.getUsers());
-    roles.bindStream(database.getRolesByName());
+    roles.bindStream(database.getRoles());
+  }
+
+  getRoleFromId(String str) {
+    role.bindStream(database.getRoleById(str));
+
+    print(role.toJson());
   }
 
   void addUser(User user) async {

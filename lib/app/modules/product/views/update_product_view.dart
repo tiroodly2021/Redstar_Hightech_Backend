@@ -205,7 +205,10 @@ class UpdateProductView extends GetView<ProductController> {
                                 name: controller.addNameController.text,
                                 description:
                                     controller.addDescriptionController.text,
-                                category: controller.categorySelected.value,
+                                category:
+                                    controller.categorySelected.value != ''
+                                        ? controller.categorySelected.value
+                                        : currentProduct!.category,
                                 imageUrl: imageLink != ''
                                     ? imageLink
                                     : controller.imageLink.value,

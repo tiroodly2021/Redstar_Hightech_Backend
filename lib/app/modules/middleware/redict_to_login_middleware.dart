@@ -51,7 +51,7 @@ class RedirectToLoginMiddleware extends GetMiddleware {
       for (var user in userModel /* userController.users.value */) {
         print(user.email);
         print(user.name);
-        print(user.role);
+        //print(user.role);
       }
     }
 

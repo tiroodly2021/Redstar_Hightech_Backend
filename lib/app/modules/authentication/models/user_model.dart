@@ -2,27 +2,33 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'role_model.dart';
+
 class User {
   final String buildNumber;
   final String createdAt;
   final String email;
   final String lastLogin;
   final String name;
-  final String role;
+  /*  final String role; */
+  Map<String, dynamic>? roles;
+
   final String? uid;
   String? photoURL;
   String? password;
 
-  User(
-      {required this.buildNumber,
-      required this.createdAt,
-      required this.email,
-      required this.lastLogin,
-      required this.name,
-      required this.role,
-      this.uid,
-      this.photoURL,
-      this.password});
+  User({
+    required this.buildNumber,
+    required this.createdAt,
+    required this.email,
+    required this.lastLogin,
+    required this.name,
+    /*  required this.role, */
+    this.roles,
+    this.uid,
+    this.photoURL,
+    this.password,
+  });
 
   User copyWith(
           {String? buildNumber,
@@ -30,7 +36,8 @@ class User {
           String? email,
           String? lastLogin,
           String? name,
-          String? role,
+          /*  String? role, */
+          Map<String, dynamic>? roles,
           String? uid,
           String? photoURL}) =>
       User(
@@ -39,7 +46,7 @@ class User {
           email: email ?? this.email,
           lastLogin: lastLogin ?? this.lastLogin,
           name: name ?? this.name,
-          role: role ?? this.role,
+          roles: roles ?? this.roles,
           uid: uid ?? this.uid,
           photoURL: photoURL ?? this.photoURL);
 
@@ -53,7 +60,7 @@ class User {
       email: json["email"],
       lastLogin: json["lastSignInTime"],
       name: json["displayName"],
-      role: json["role"],
+      roles: json["roles"],
       uid: json["uid"],
       photoURL: json["photoURL"]);
 
@@ -63,7 +70,7 @@ class User {
         "email": email,
         "lastSignInTime": lastLogin,
         "displayName": name,
-        "role": role,
+        "roles": roles,
         "uid": uid,
         "photoURL": photoURL
       };
@@ -75,7 +82,8 @@ class User {
         email: snap["email"],
         lastLogin: snap["lastSignInTime"],
         name: snap["displayName"],
-        role: snap["role"],
+        roles:
+            snap["roles"], //List<Role>.from(snap['roles']), // snap["roles"],
         uid: snap.id,
         photoURL: snap["photoURL"],
         password: snap["password"]);
@@ -88,7 +96,7 @@ class User {
         email: map["email"],
         lastLogin: map["lastSignInTime"],
         name: map["displayName"],
-        role: map["role"],
+        roles: map["roles"],
         uid: map["uid"],
         photoURL: map["photoURL"]);
   }
@@ -100,19 +108,9 @@ class User {
       "email": email,
       "lastSignInTime": lastLogin,
       "displayName": name,
-      "role": role,
+      "roles": roles, //!.map((role) => role.id).toList(),
       "photoURL": photoURL,
       "password": password
     };
-  }
-
-  static Future<List<User>> getLocalUser(String email) async {
-    return FirebaseFirestore.instance
-        .collection('users')
-        .where('email', isEqualTo: email)
-        .snapshots()
-        .map((snapshot) =>
-            snapshot.docs.map((doc) => User.fromSnapShot(doc)).toList())
-        .first;
   }
 }

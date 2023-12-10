@@ -37,7 +37,7 @@ class UserCard extends StatelessWidget {
     userController.user.value = user;
     userController.addEmailController.text = user.email;
     userController.addNameController.text = user.name;
-    userController.roleSelected.value = user.role;
+    userController.roleSelected.value = user.roles!.values.toList()[2];
     userController.imageLink.value = user.photoURL!;
 
     userController.toUpdateUserView(user);
@@ -181,7 +181,7 @@ class UserCard extends StatelessWidget {
                           width: 10,
                         ),
                         Text(
-                          user.role,
+                          user.roles!.values.toList()[0],
                           //style: const TextStyle(fontWeight: FontWeight.bold),
                         )
                       ],
