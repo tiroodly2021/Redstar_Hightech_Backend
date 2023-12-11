@@ -1,3 +1,4 @@
+import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -43,8 +44,23 @@ class ShowRoleView extends GetView<RoleController> {
 
   ShowRoleView({Key? key, this.role}) : super(key: key) {}
 
-  void _setPermission(Permission permission) {
-    controller.setPermission(permission);
+  void _onEdit(Role role) {
+    controller.addNameController.text = role.name;
+    controller.addDescriptionController.text = role.description;
+
+    Get.to(() => UpdateRoleView(
+          currentRole: role,
+        ));
+  }
+
+  void _onDelete(context, Role role) async {
+    if (await confirm(context)) {
+      controller.deleteRole(role);
+      Get.back();
+      return print('pressedOK');
+    }
+
+    return print('pressedCancel');
   }
 
   @override
@@ -118,6 +134,9 @@ class ShowRoleView extends GetView<RoleController> {
                           left: 8.0, right: 8, bottom: 40),
                       child: Column(
                         children: [
+                          const SizedBox(
+                            height: 10,
+                          ),
                           Row(
                             children: const [
                               Text(
@@ -161,11 +180,7 @@ class ShowRoleView extends GetView<RoleController> {
                                                 40),
                                             primary: Colors.black),
                                         onPressed: () async {
-                                          /*    _setPermissions(role);
-
-                            resetFields();
-
-                            Navigator.pop(context); */
+                                          _onEdit(role!);
                                         },
                                         child: Row(
                                           children: const [
@@ -205,11 +220,7 @@ class ShowRoleView extends GetView<RoleController> {
                                                 40),
                                             primary: Colors.black),
                                         onPressed: () async {
-                                          /*    _setPermissions(role);
-
-                            resetFields();
-
-                            Navigator.pop(context); */
+                                          _onDelete(context, role!);
                                         },
                                         child: Row(
                                           children: const [

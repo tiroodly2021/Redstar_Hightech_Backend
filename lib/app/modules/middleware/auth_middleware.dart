@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -16,7 +18,7 @@ import '../authentication/models/role_model.dart';
 import '../authentication/models/user_model.dart';
 import '../authentication/views/login_view.dart';
 
-class RedirectToLoginMiddleware extends GetMiddleware {
+class AuthorizationMiddleware extends GetMiddleware {
   @override
   int? get priority => 2;
 
@@ -46,8 +48,9 @@ class RedirectToLoginMiddleware extends GetMiddleware {
         ? roles.first
         : Role(id: "", description: '', name: '');
 
-    List<Permission> permissions = role.permissionIds == null
+    List<Permission> permissions = role.permissionIds!.isEmpty
         ? []
+        // ignore: invalid_use_of_protected_member
         : permissionController.permissions.value
             .where((permission) => permission.id == role.permissionIds![0])
             .toList();
@@ -56,11 +59,15 @@ class RedirectToLoginMiddleware extends GetMiddleware {
         ? permissions.first
         : Permission(description: '');
 
-    if (authController.authenticated ||
-        route == Routes.LOGIN ||
-        permission.description == route?.replaceAll("/", " ")) {
-      print("Page authorized");
-      return null;
+    print(permission.description);
+
+    if (authController.authenticated || route == Routes.LOGIN) {
+      if (permission.description == route?.replaceAll("/", " ")) {
+        print("Page authorized");
+        return null;
+      } else {
+        return const RouteSettings(name: Routes.ACCESS_ERROR);
+      }
     } else {
       print("Page not authorization");
       return const RouteSettings(name: Routes.LOGIN);
@@ -127,4 +134,7 @@ class RedirectToLoginMiddleware extends GetMiddleware {
     print('PageDisposed');
     super.onPageDispose();
   }
+
+  @override
+  List<Object?> get props => [authController, userController];
 }

@@ -16,7 +16,6 @@ import 'package:redstar_hightech_backend/app/modules/authentication/views/update
 import 'package:redstar_hightech_backend/app/modules/authentication/views/user_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/user_view.dart';
 import 'package:redstar_hightech_backend/app/modules/category/views/update_category_view.dart';
-import 'package:redstar_hightech_backend/app/modules/middleware/redict_to_login_middleware.dart';
 
 import '../modules/authentication/bindings/authentication_binding.dart';
 import '../modules/authentication/bindings/permission_binding.dart';
@@ -30,6 +29,7 @@ import '../modules/category/views/category_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 
+import '../modules/middleware/auth_middleware.dart';
 import '../modules/order/bindings/order_binding.dart';
 import '../modules/order/views/order_view.dart';
 import '../modules/order_deliver_pending/bindings/order_deliver_pending_binding.dart';
@@ -103,7 +103,7 @@ class AppPages {
         name: _Paths.PERMISSION,
         page: () => PermissionView(),
         binding: PermissionBinding(),
-        middlewares: [RedirectToLoginMiddleware()]),
+        middlewares: [AuthorizationMiddleware()]),
     GetPage(name: _Paths.ROLE, page: () => RoleView(), binding: RoleBinding()),
     GetPage(
         name: _Paths.UPDATE_ROLE,
@@ -130,10 +130,7 @@ class AppPages {
       name: _Paths.SPLASH,
       page: () => const SplashScreen(),
     ),
-    GetPage(
-        name: _Paths.HOME,
-        page: () => HomeView(),
-        binding: HomeBinding()),
+    GetPage(name: _Paths.HOME, page: () => HomeView(), binding: HomeBinding()),
     GetPage(
       name: _Paths.PRODUCT,
       page: () => ProductView(),
@@ -158,17 +155,17 @@ class AppPages {
         name: _Paths.CATEGORY,
         page: () => CategoryView(),
         binding: CategoryBinding(),
-        middlewares: [RedirectToLoginMiddleware()]),
+        middlewares: [AuthorizationMiddleware()]),
     GetPage(
         name: _Paths.ADD_CATEGORY,
         page: () => AddCategoryView(),
         binding: CategoryBinding(),
-        middlewares: [RedirectToLoginMiddleware()]),
+        middlewares: [AuthorizationMiddleware()]),
     GetPage(
         name: _Paths.UPDATE_CATEGORY,
         page: () => UpdateCategoryView(),
         binding: CategoryBinding(),
-        middlewares: [RedirectToLoginMiddleware()]),
+        middlewares: [AuthorizationMiddleware()]),
     GetPage(
       name: _Paths.UPDATE_PRODUCT,
       page: () => UpdateProductView(),
@@ -203,7 +200,7 @@ class AppPages {
         name: _Paths.LOGIN,
         page: () => LoginView(),
         binding: AuthenticationBinding(),
-        middlewares: [RedirectToLoginMiddleware()]),
+        middlewares: [AuthorizationMiddleware()]),
     GetPage(
       name: _Paths.REGISTRATION,
       page: () => RegistrationView(),
