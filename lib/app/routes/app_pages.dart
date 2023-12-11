@@ -102,9 +102,15 @@ class AppPages {
     GetPage(
         name: _Paths.PERMISSION,
         page: () => PermissionView(),
-        binding: PermissionBinding(),
+        binding:
+            PermissionBinding() /* ,
+        middlewares: [AuthorizationMiddleware()] */
+        ),
+    GetPage(
+        name: _Paths.ROLE,
+        page: () => RoleView(),
+        binding: RoleBinding(),
         middlewares: [AuthorizationMiddleware()]),
-    GetPage(name: _Paths.ROLE, page: () => RoleView(), binding: RoleBinding()),
     GetPage(
         name: _Paths.UPDATE_ROLE,
         page: () => UpdateRoleView(),
@@ -130,17 +136,21 @@ class AppPages {
       name: _Paths.SPLASH,
       page: () => const SplashScreen(),
     ),
-    GetPage(name: _Paths.HOME, page: () => HomeView(), binding: HomeBinding()),
     GetPage(
-      name: _Paths.PRODUCT,
-      page: () => ProductView(),
-      binding: ProductBinding(),
+      name: _Paths.HOME,
+      page: () => HomeView(),
+      binding: HomeBinding(),
     ),
     GetPage(
-      name: _Paths.ADD_PRODUCT,
-      page: () => AddProductView(),
-      binding: ProductBinding(),
-    ),
+        name: _Paths.PRODUCT,
+        page: () => ProductView(),
+        binding: ProductBinding(),
+        middlewares: [AuthorizationMiddleware()]),
+    GetPage(
+        name: _Paths.ADD_PRODUCT,
+        page: () => AddProductView(),
+        binding: ProductBinding(),
+        middlewares: [AuthorizationMiddleware()]),
     /*  GetPage(
       name: _Paths.PRODUCT_LIST,
       page: () => ProductsListView(),
@@ -167,10 +177,10 @@ class AppPages {
         binding: CategoryBinding(),
         middlewares: [AuthorizationMiddleware()]),
     GetPage(
-      name: _Paths.UPDATE_PRODUCT,
-      page: () => UpdateProductView(),
-      binding: ProductBinding(),
-    ),
+        name: _Paths.UPDATE_PRODUCT,
+        page: () => UpdateProductView(),
+        binding: ProductBinding(),
+        middlewares: [AuthorizationMiddleware()]),
     GetPage(
       name: _Paths.PENDING_ORDER,
       page: () => PendingOrderView(),
@@ -199,8 +209,7 @@ class AppPages {
     GetPage(
         name: _Paths.LOGIN,
         page: () => LoginView(),
-        binding: AuthenticationBinding(),
-        middlewares: [AuthorizationMiddleware()]),
+        binding: AuthenticationBinding()),
     GetPage(
       name: _Paths.REGISTRATION,
       page: () => RegistrationView(),

@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:redstar_hightech_backend/app/modules/category/models/category_model.dart';
+import 'package:redstar_hightech_backend/app/modules/product/bindings/product_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
+import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
 
 import '../views/update_product_view.dart';
@@ -90,10 +92,13 @@ class ProductController extends GetxController {
     databaseService.deleteProduct(product);
   }
 
-  void toUpdateProductView(Product product) async {
-    Get.to(() => UpdateProductView(
-          currentProduct: product,
-        ));
+  void toUpdateProductView(Product product) {
+    Get.to(
+        () => UpdateProductView(
+              currentProduct: product,
+            ),
+        routeName: AppPages.UPDATE_PRODUCT,
+        binding: ProductBinding());
   }
 
   void editProduct(Product product) async {

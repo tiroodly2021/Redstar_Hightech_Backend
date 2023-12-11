@@ -48,8 +48,8 @@ class ProductView extends GetView<ProductController> {
                 height: 100,
                 child: InkWell(
                   onTap: () {
-                    // Get.toNamed(AppPages.ADD_USER);
-                    Get.to(() => AddProductView());
+                    Get.toNamed(AppPages.ADD_PRODUCT);
+                    // Get.to(() => AddProductView());
                   },
                   child: Card(
                     color: Colors.black,

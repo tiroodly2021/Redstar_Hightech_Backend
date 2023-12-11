@@ -30,7 +30,8 @@ class AuthorizationMiddleware extends GetMiddleware {
     PermissionController permissionController = Get.put(PermissionController());
     RoleController roleController = Get.put(RoleController());
 
-    //
+    List<String> allPermissions = [];
+
     List<Role> roles = authController.authenticated
         ? roleController.roles
             .where((role) =>
@@ -48,22 +49,21 @@ class AuthorizationMiddleware extends GetMiddleware {
         ? roles.first
         : Role(id: "", description: '', name: '');
 
-    List<Permission> permissions = role.permissionIds!.isEmpty
-        ? []
-        // ignore: invalid_use_of_protected_member
-        : permissionController.permissions.value
-            .where((permission) => permission.id == role.permissionIds![0])
-            .toList();
+    if (role.permissionIds != null) {
+      if (role.permissionIds!.isNotEmpty) {
+        for (var id in role.permissionIds!) {
+          permissionController.permissions.value.forEach((element) {
+            if (element.id == id) {
+              allPermissions.add(element.description);
+            }
+          });
+        }
+      }
+    }
 
-    Permission permission = permissions.isNotEmpty
-        ? permissions.first
-        : Permission(description: '');
-
-    print(permission.description);
-
-    if (authController.authenticated || route == Routes.LOGIN) {
-      if (permission.description == route?.replaceAll("/", " ")) {
-        print("Page authorized");
+    if (authController.authenticated == true && route != Routes.LOGIN) {
+      if (allPermissions.contains(route?.replaceAll("/", " "))) {
+        print("Page authorized route: ${route!}");
         return null;
       } else {
         return const RouteSettings(name: Routes.ACCESS_ERROR);
@@ -72,18 +72,7 @@ class AuthorizationMiddleware extends GetMiddleware {
       print("Page not authorization");
       return const RouteSettings(name: Routes.LOGIN);
     }
-
-    /*  return authController.authenticated || route == Routes.LOGIN
-        ? null
-        : const RouteSettings(name: Routes.LOGIN); */
   }
-
-  /*
-
-
-
-
-  */
 
   //This function will be called  before anything created we can use it to
   // change something about the page or give it new page
