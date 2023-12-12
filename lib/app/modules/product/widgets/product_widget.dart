@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/models/user_model.dart';
 import 'package:redstar_hightech_backend/app/modules/product/controllers/product_controller.dart';
@@ -13,6 +14,7 @@ import '../../../constants/app_theme.dart';
 import '../../../routes/app_pages.dart';
 import 'package:intl/intl.dart';
 
+import '../../middleware/auth_middleware.dart';
 import '../models/product_model.dart';
 
 enum Options { Edit, Delete }
@@ -31,8 +33,25 @@ class ProductCard extends StatelessWidget {
       : super(key: key);
 
   Future<void> _onDeleteData(BuildContext context, Product product) async {
-    productController.deleteProduct(product);
-    //   Navigator.of(context).pop();
+    if (AuthorizationMiddleware.checkPermission(
+        Get.find<AuthenticationController>(),
+        Get.find<UserController>(),
+        "/product/delete")) {
+      print("Check Delete route permission valid");
+      productController.deleteProduct(product);
+      //   Navigator.of(context).pop();
+    }
+    {
+      Get.snackbar(
+          "Delete product", "You don't have permission to delete product",
+          icon: const Icon(Icons.warning_amber),
+          margin: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
+          backgroundColor: Colors.red,
+          snackPosition: SnackPosition.BOTTOM);
+      print(
+        "Check Delete route permission not valid",
+      );
+    }
   }
 
   Future<void> _onEdit(Product product) async {

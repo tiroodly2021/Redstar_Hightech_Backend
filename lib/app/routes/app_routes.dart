@@ -81,4 +81,10 @@ abstract class _Paths {
   // static const UPDATE_PERMISSION = '/permission/update';
 
   static const ACCESS_ERROR = '/error';
+
+  static const DELETE_CATEGORY = '/category/delete';
+  static const DELETE_PRODUCT = '/product/delete';
+  static const DELETE_USER = '/user/delete';
+  static const DELETE_ROLE = '/role/delete';
+  static const DELETE_PERMISSION = '/permission/delete';
 }

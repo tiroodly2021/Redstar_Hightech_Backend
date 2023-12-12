@@ -25,6 +25,50 @@ class AuthorizationMiddleware extends GetMiddleware {
   final authController = Get.find<AuthenticationController>();
   final userController = Get.put(UserController());
 
+  static bool checkPermission(AuthenticationController authController,
+      UserController userController, String route) {
+    PermissionController permissionController = Get.put(PermissionController());
+    RoleController roleController = Get.put(RoleController());
+
+    List<String> allPermissions = [];
+
+    List<Role> roles = authController.authenticated
+        ? roleController.roles
+            .where((role) =>
+                role.id ==
+                Role.fromMap(userController.users.value
+                        .where((user) =>
+                            user.email.toLowerCase() ==
+                            authController.user!.email!.toLowerCase())
+                        .toList()[0]
+                        .roles!)
+                    .id)
+            .toList()
+        : [];
+    Role role = roles.isNotEmpty
+        ? roles.first
+        : Role(id: "", description: '', name: '');
+
+    if (role.permissionIds != null) {
+      if (role.permissionIds!.isNotEmpty) {
+        for (var id in role.permissionIds!) {
+          permissionController.permissions.value.forEach((element) {
+            if (element.id == id) {
+              allPermissions.add(element.description);
+            }
+          });
+        }
+      }
+    }
+
+    if (allPermissions.contains(route.replaceAll("/", " "))) {
+      print("Page authorized route: ${route}");
+      return true;
+    }
+
+    return false;
+  }
+
   @override
   RouteSettings? redirect(String? route) {
     PermissionController permissionController = Get.put(PermissionController());

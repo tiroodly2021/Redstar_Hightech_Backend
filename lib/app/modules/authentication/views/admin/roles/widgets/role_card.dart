@@ -11,6 +11,8 @@ import 'package:redstar_hightech_backend/app/modules/product/controllers/product
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
 import 'package:safe_url_check/safe_url_check.dart';
 
+import '../../../../../middleware/auth_middleware.dart';
+import '../../../../controllers/authentication_controller.dart';
 import '../../../../controllers/role_controller.dart';
 import '../../../../models/role_model.dart';
 
@@ -32,7 +34,26 @@ class RoleCard extends StatelessWidget {
   }) : super(key: key);
 
   Future<void> _onDeleteData(BuildContext context, Role role) async {
-    roleController.deleteRole(role);
+    if (AuthorizationMiddleware.checkPermission(
+        Get.find<AuthenticationController>(),
+        Get.find<UserController>(),
+        "/product/delete")) {
+      print("Check Delete route permission valid");
+      roleController.deleteRole(role);
+      //   Navigator.of(context).pop();
+    }
+    {
+      Get.snackbar(
+          "Delete product", "You don't have permission to delete product",
+          icon: const Icon(Icons.warning_amber),
+          margin: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
+          backgroundColor: Colors.red,
+          snackPosition: SnackPosition.BOTTOM);
+      print(
+        "Check Delete route permission not valid",
+      );
+    }
+
     //   Navigator.of(context).pop();
   }
 

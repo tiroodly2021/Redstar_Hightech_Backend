@@ -46,6 +46,7 @@ import '../modules/product/views/products_list_view.dart';
 import '../modules/settings/bindings/settings_binding.dart';
 import '../modules/settings/views/edit_profile.dart';
 import '../modules/settings/views/settings_view.dart';
+import '../shared/generic_delete_page.dart';
 import '../splashscreen.dart';
 
 part 'app_routes.dart';
@@ -86,7 +87,19 @@ class AppPages {
   static const ADD_PERMISSION = Routes.ADD_PERMISSION;
   //static const UPDATE_PERMISSION = Routes.UPDATE_PERMISSION;
 
+  static const DELETE_CATEGORY = _Paths.DELETE_CATEGORY;
+  static const DELETE_PRODUCT = _Paths.DELETE_PRODUCT;
+  static const DELETE_USER = _Paths.DELETE_USER;
+  static const DELETE_ROLE = _Paths.DELETE_ROLE;
+  static const DELETE_PERMISSION = _Paths.DELETE_PERMISSION;
+
   static final routes = [
+    GetPage(name: _Paths.DELETE_CATEGORY, page: () => const GeneriDeletePage()),
+    GetPage(name: _Paths.DELETE_PRODUCT, page: () => const GeneriDeletePage()),
+    GetPage(name: _Paths.DELETE_USER, page: () => const GeneriDeletePage()),
+    GetPage(name: _Paths.DELETE_ROLE, page: () => const GeneriDeletePage()),
+    GetPage(
+        name: _Paths.DELETE_PERMISSION, page: () => const GeneriDeletePage()),
     GetPage(
         name: _Paths.SHOW_ROLE,
         page: () => ShowRoleView(),
