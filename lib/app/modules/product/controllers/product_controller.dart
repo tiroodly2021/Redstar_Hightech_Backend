@@ -93,12 +93,7 @@ class ProductController extends GetxController {
   }
 
   void toUpdateProductView(Product product) {
-    Get.to(
-        () => UpdateProductView(
-              currentProduct: product,
-            ),
-        routeName: AppPages.UPDATE_PRODUCT,
-        binding: ProductBinding());
+    Get.toNamed(AppPages.UPDATE_PRODUCT, arguments: product);
   }
 
   void editProduct(Product product) async {

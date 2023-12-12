@@ -151,6 +151,11 @@ class AppPages {
         page: () => AddProductView(),
         binding: ProductBinding(),
         middlewares: [AuthorizationMiddleware()]),
+    GetPage(
+        name: _Paths.UPDATE_PRODUCT,
+        page: () => UpdateProductView(),
+        binding: ProductBinding(),
+        middlewares: [AuthorizationMiddleware()]),
     /*  GetPage(
       name: _Paths.PRODUCT_LIST,
       page: () => ProductsListView(),
@@ -175,11 +180,6 @@ class AppPages {
         name: _Paths.UPDATE_CATEGORY,
         page: () => UpdateCategoryView(),
         binding: CategoryBinding(),
-        middlewares: [AuthorizationMiddleware()]),
-    GetPage(
-        name: _Paths.UPDATE_PRODUCT,
-        page: () => UpdateProductView(),
-        binding: ProductBinding(),
         middlewares: [AuthorizationMiddleware()]),
     GetPage(
       name: _Paths.PENDING_ORDER,

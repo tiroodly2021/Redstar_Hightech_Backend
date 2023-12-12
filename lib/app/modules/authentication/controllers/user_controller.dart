@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/update_user.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
 
+import '../../../routes/app_pages.dart';
 import '../models/role_model.dart';
 import '../models/user_model.dart';
 
@@ -71,9 +72,7 @@ class UserController extends GetxController {
   }
 
   void toUpdateUserView(User user) async {
-    Get.to(() => UpdateUserView(
-          currentUser: user,
-        ));
+    Get.toNamed(AppPages.UPDATE_USER, arguments: user);
   }
 
   void editUser(User user) async {

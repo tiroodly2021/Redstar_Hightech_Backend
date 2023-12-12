@@ -51,7 +51,7 @@ class CategoryView extends GetView<CategoryController> {
                 child: InkWell(
                   onTap: () {
                     // Get.toNamed(AppPages.ADD_USER);
-                    Get.to(() => AddCategoryView());
+                    Get.toNamed(AppPages.ADD_CATEGORY);
                   },
                   child: Card(
                     color: Colors.black,

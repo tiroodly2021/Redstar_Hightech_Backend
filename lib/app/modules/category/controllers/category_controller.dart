@@ -3,8 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:redstar_hightech_backend/app/modules/category/bindings/category_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/category/models/category_model.dart';
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
+import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
 
 import '../views/update_category_view.dart';
@@ -62,9 +64,7 @@ class CategoryController extends GetxController {
   }
 
   void toUpdateCategoryView(Category category) async {
-    Get.to(() => UpdateCategoryView(
-          currentCategory: category,
-        ));
+    Get.toNamed(AppPages.UPDATE_CATEGORY, arguments: category);
   }
 
   void editCategory(Category category) async {

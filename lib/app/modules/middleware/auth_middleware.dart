@@ -62,6 +62,8 @@ class AuthorizationMiddleware extends GetMiddleware {
     }
 
     if (authController.authenticated == true && route != Routes.LOGIN) {
+      print("route : ${route}");
+      print(allPermissions);
       if (allPermissions.contains(route?.replaceAll("/", " "))) {
         print("Page authorized route: ${route!}");
         return null;
@@ -96,7 +98,7 @@ class AuthorizationMiddleware extends GetMiddleware {
   // Here we can change Bindings for this page.
   @override
   List<Bindings>? onBindingsStart(List<Bindings>? bindings) {
-    bindings = [CategoryBinding(), HomeBinding(), PermissionBinding()];
+    bindings = [HomeBinding(), PermissionBinding()];
     return super.onBindingsStart(bindings);
   }
 

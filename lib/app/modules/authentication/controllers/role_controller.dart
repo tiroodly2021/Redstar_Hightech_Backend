@@ -51,7 +51,7 @@ class RoleController extends GetxController {
   }
 
   void toUpdateRoleView(Role role) async {
-    Get.to(() => UpdateRoleView(currentRole: role));
+    Get.toNamed(AppPages.UPDATE_ROLE, arguments: role);
   }
 
   void editRole(Role role) async {
