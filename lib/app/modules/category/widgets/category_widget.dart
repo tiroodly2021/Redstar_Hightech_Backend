@@ -41,13 +41,11 @@ class CategoryCard extends StatelessWidget {
         Get.find<AuthenticationController>(),
         Get.find<UserController>(),
         "/category/delete")) {
-      print("Check Delete route permission valid");
       categoryController.deleteCategory(category);
-      //   Navigator.of(context).pop();
+      return print("Check Delete route permission valid");
     }
     {
-      Get.snackbar(
-          "Delete product", "You don't have permission to delete product",
+      Get.snackbar("Delete product", "You don't have permission",
           icon: const Icon(Icons.warning_amber),
           margin: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
           backgroundColor: Colors.red,

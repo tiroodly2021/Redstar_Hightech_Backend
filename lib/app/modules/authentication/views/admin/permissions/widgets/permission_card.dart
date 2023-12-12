@@ -40,20 +40,16 @@ class PermissionCard extends StatelessWidget {
         Get.find<AuthenticationController>(),
         Get.find<UserController>(),
         "/permission/delete")) {
-      print("Check Delete route permission valid");
       permissionController.deletePermission(permission);
+      return print("Check Delete route permission valid");
       //   Navigator.of(context).pop();
     }
     {
-      Get.snackbar(
-          "Delete product", "You don't have permission to delete product",
+      Get.snackbar("Delete product", "You don't have permission",
           icon: const Icon(Icons.warning_amber),
           margin: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
           backgroundColor: Colors.red,
           snackPosition: SnackPosition.BOTTOM);
-      print(
-        "Check Delete route permission not valid",
-      );
     }
 
     //   Navigator.of(context).pop();

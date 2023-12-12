@@ -24,7 +24,7 @@ import '../../../models/role_model.dart';
 import 'widgets/set_perssion_card.dart';
 
 class SetPermissionView extends GetView<PermissionController> {
-  final Role? currentRole;
+  Role? currentRole;
 
   SetPermissionView({this.currentRole});
 
@@ -34,9 +34,11 @@ class SetPermissionView extends GetView<PermissionController> {
 
   @override
   Widget build(BuildContext context) {
+    currentRole = ModalRoute.of(context)!.settings.arguments as Role;
+
     return Scaffold(
         appBar: AppBarWidget(
-          title: 'Permission for ' + currentRole!.name,
+          title: 'Permission for ',
           icon: Icons.search,
           bgColor: Colors.black,
           onPressed: () {

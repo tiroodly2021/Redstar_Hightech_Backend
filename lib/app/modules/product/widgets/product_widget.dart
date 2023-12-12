@@ -32,25 +32,20 @@ class ProductCard extends StatelessWidget {
       required this.productController})
       : super(key: key);
 
-  Future<void> _onDeleteData(BuildContext context, Product product) async {
+  void _onDeleteData(BuildContext context, Product product) {
     if (AuthorizationMiddleware.checkPermission(
         Get.find<AuthenticationController>(),
         Get.find<UserController>(),
         "/product/delete")) {
-      print("Check Delete route permission valid");
       productController.deleteProduct(product);
-      //   Navigator.of(context).pop();
+      return print("Check Delete route permission valid");
     }
     {
-      Get.snackbar(
-          "Delete product", "You don't have permission to delete product",
+      Get.snackbar("Delete product", "You don't have permission",
           icon: const Icon(Icons.warning_amber),
           margin: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
           backgroundColor: Colors.red,
           snackPosition: SnackPosition.BOTTOM);
-      print(
-        "Check Delete route permission not valid",
-      );
     }
   }
 

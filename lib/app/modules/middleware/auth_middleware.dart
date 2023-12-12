@@ -62,8 +62,18 @@ class AuthorizationMiddleware extends GetMiddleware {
       }
     }
 
+    print('all premission ${allPermissions}');
+    print('authenticated: ${authController.authenticated}');
+    print(
+        ' (Get.find<AuthenticationController>().user!.email == superUserEmail &&Get.find<AuthenticationController>().authenticated) : ' +
+            (Get.find<AuthenticationController>().user!.email!.toLowerCase() ==
+                        superUserEmail.toLowerCase() &&
+                    Get.find<AuthenticationController>().authenticated)
+                .toString());
+
     if (allPermissions.contains(route.replaceAll("/", " ")) ||
-        (Get.find<AuthenticationController>().user!.email == superUserEmail &&
+        (Get.find<AuthenticationController>().user!.email!.toLowerCase() ==
+                superUserEmail.toLowerCase() &&
             Get.find<AuthenticationController>().authenticated)) {
       print("Page authorized route: ${route}");
       return true;

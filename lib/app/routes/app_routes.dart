@@ -36,6 +36,9 @@ abstract class Routes {
   static const ADD_PERMISSION = _Paths.ADD_PERMISSION;
   static const SET_PERMISSIONS = _Paths.SET_PERMISSIONS;
 
+  static const DELETE_PRODUCT = _Paths.DELETE_PRODUCT;
+  static const DELETE_CATEGORY = _Paths.DELETE_CATEGORY;
+
   // static const UPDATE_PERMISSION = _Paths.ADD_PERMISSION;
 
   static const ACCESS_ERROR = _Paths.ACCESS_ERROR;
