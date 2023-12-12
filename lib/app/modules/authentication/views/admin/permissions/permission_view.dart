@@ -51,8 +51,7 @@ class PermissionView extends GetView<PermissionController> {
                 height: 100,
                 child: InkWell(
                   onTap: () {
-                    // Get.toNamed(AppPages.ADD_USER);
-                    Get.to(() => AddPermissionView());
+                    Get.toNamed(AppPages.ADD_PERMISSION);
                   },
                   child: Card(
                     color: Colors.black,
@@ -61,8 +60,7 @@ class PermissionView extends GetView<PermissionController> {
                       children: [
                         IconButton(
                             onPressed: () {
-                              // Get.toNamed(AppPages.ADD_CATEGORY);
-                              Get.to(() => AddPermissionView());
+                              Get.toNamed(AppPages.ADD_PERMISSION);
                             },
                             icon: const Icon(
                               Icons.add,

@@ -34,6 +34,8 @@ abstract class Routes {
 
   static const PERMISSION = _Paths.PERMISSION;
   static const ADD_PERMISSION = _Paths.ADD_PERMISSION;
+  static const SET_PERMISSIONS = _Paths.SET_PERMISSIONS;
+
   // static const UPDATE_PERMISSION = _Paths.ADD_PERMISSION;
 
   static const ACCESS_ERROR = _Paths.ACCESS_ERROR;
@@ -87,4 +89,6 @@ abstract class _Paths {
   static const DELETE_USER = '/user/delete';
   static const DELETE_ROLE = '/role/delete';
   static const DELETE_PERMISSION = '/permission/delete';
+
+  static const SET_PERMISSIONS = '/permission/set';
 }

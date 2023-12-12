@@ -50,6 +50,27 @@ class ButtonOptionalMenu extends StatelessWidget {
                   PopupMenuItem<int>(
                       value: 0,
                       child: Row(
+                        children: [
+                          const Text(
+                            "Hi!",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            Get.find<AuthenticationController>()
+                                .user!
+                                .email!
+                                .split(".")[0]
+                                .toLowerCase(),
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      )),
+                  PopupMenuItem<int>(
+                      value: 1,
+                      child: Row(
                         children: const [
                           Icon(
                             Icons.person,
@@ -62,7 +83,7 @@ class ButtonOptionalMenu extends StatelessWidget {
                         ],
                       )),
                   PopupMenuItem<int>(
-                    value: 1,
+                    value: 2,
                     child: Row(
                       children: const [
                         Icon(
@@ -77,7 +98,7 @@ class ButtonOptionalMenu extends StatelessWidget {
                     ),
                   ),
                   PopupMenuItem<int>(
-                    value: 2,
+                    value: 3,
                     child: Row(
                       children: const [
                         Icon(
@@ -101,6 +122,8 @@ class ButtonOptionalMenu extends StatelessWidget {
   selectedItem(BuildContext context, Object? item) {
     switch (item) {
       case 0:
+        return false;
+      case 1:
         print('Profile selected');
 
         Navigator.push(
@@ -109,7 +132,7 @@ class ButtonOptionalMenu extends StatelessWidget {
                 builder: (context) => EditProfile(),
                 settings: const RouteSettings(name: AppPages.EDIT_PROFILE)));
         break;
-      case 1:
+      case 2:
         print('Setting selected');
         Navigator.pushReplacement(
             context,
@@ -117,7 +140,7 @@ class ButtonOptionalMenu extends StatelessWidget {
                 builder: (context) => SettingsView(),
                 settings: const RouteSettings(name: AppPages.SETTINGS)));
         break;
-      case 2:
+      case 3:
         print('Logout selected');
         break;
 

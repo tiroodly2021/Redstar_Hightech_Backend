@@ -27,8 +27,10 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:path/path.dart' as path;
 import 'dart:io';
 
+import '../../../../middleware/auth_middleware.dart';
 import '../../../controllers/permission_controller.dart';
 import '../../../controllers/role_controller.dart';
+import '../../../controllers/user_controller.dart';
 import '../../../models/permission_model.dart';
 import '../../../models/role_model.dart';
 
@@ -48,14 +50,31 @@ class ShowRoleView extends GetView<RoleController> {
     controller.addNameController.text = role.name;
     controller.addDescriptionController.text = role.description;
 
-    Get.to(() => UpdateRoleView(
-          currentRole: role,
-        ));
+    controller.toUpdateRoleView(role);
   }
 
   void _onDelete(context, Role role) async {
     if (await confirm(context)) {
-      controller.deleteRole(role);
+      if (AuthorizationMiddleware.checkPermission(
+          Get.find<AuthenticationController>(),
+          Get.find<UserController>(),
+          "/role/delete")) {
+        print("Check Delete route permission valid");
+        controller.deleteRole(role);
+        //   Navigator.of(context).pop();
+      }
+      {
+        Get.snackbar(
+            "Delete product", "You don't have permission to delete product",
+            icon: const Icon(Icons.warning_amber),
+            margin: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
+            backgroundColor: Colors.red,
+            snackPosition: SnackPosition.BOTTOM);
+        print(
+          "Check Delete route permission not valid",
+        );
+      }
+
       Get.back();
       return print('pressedOK');
     }
@@ -260,8 +279,15 @@ class ShowRoleView extends GetView<RoleController> {
                                                 40),
                                             primary: Colors.black),
                                         onPressed: () async {
-                                          Get.to(() => SetPermissionView(
-                                              currentRole: role!));
+                                          Get.toNamed(AppPages.SET_PERMISSIONS,
+                                              arguments: role!);
+
+                                          /*  Get.to(
+                                              () => SetPermissionView(
+                                                    currentRole: role!,
+                                                  ),
+                                              routeName:
+                                                  AppPages.SET_PERMISSIONS); */
                                         },
                                         child: Row(
                                           children: const [

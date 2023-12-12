@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/constants/const.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/add_user.dart';
@@ -52,8 +53,7 @@ class UserView extends GetView<UserController> {
                 height: 100,
                 child: InkWell(
                   onTap: () {
-                    // Get.toNamed(AppPages.ADD_USER);
-                    Get.to(() => AddUserView());
+                    Get.toNamed(AppPages.ADD_USER);
                   },
                   child: Card(
                     color: Colors.black,
@@ -106,6 +106,29 @@ class UserView extends GetView<UserController> {
                     return ListView.builder(
                         itemCount: controller.users.length,
                         itemBuilder: ((context, index) {
+                          if (superUserEmail.toLowerCase() ==
+                                  controller.users[index].email.toLowerCase() &&
+                              Get.find<AuthenticationController>()
+                                  .authenticated) {
+                            if (Get.find<AuthenticationController>().user !=
+                                null) {
+                              if (Get.find<AuthenticationController>()
+                                      .user!
+                                      .email!
+                                      .toLowerCase() !=
+                                  superUserEmail.toLowerCase()) {
+                                return Container();
+                              }
+                            }
+                          }
+
+                          if (Get.find<AuthenticationController>().user ==
+                                  null &&
+                              superUserEmail.toLowerCase() ==
+                                  controller.users[index].email.toLowerCase()) {
+                            return Container();
+                          }
+
                           return SizedBox(
                             height: 200,
                             child: UserCard(

@@ -24,9 +24,9 @@ import '../../../models/role_model.dart';
 import 'widgets/set_perssion_card.dart';
 
 class SetPermissionView extends GetView<PermissionController> {
-  final Role currentRole;
+  final Role? currentRole;
 
-  SetPermissionView({required this.currentRole});
+  SetPermissionView({this.currentRole});
 
   Future<void> _pullRefresh() async {
     controller.permissionList();
@@ -36,7 +36,7 @@ class SetPermissionView extends GetView<PermissionController> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBarWidget(
-          title: 'Permission for ' + currentRole.name,
+          title: 'Permission for ' + currentRole!.name,
           icon: Icons.search,
           bgColor: Colors.black,
           onPressed: () {
@@ -83,7 +83,7 @@ class SetPermissionView extends GetView<PermissionController> {
                             child: SetPermissionCard(
                                 permission: controller.permissions[index],
                                 index: index,
-                                role: currentRole,
+                                role: currentRole!,
                                 permissionController: controller),
                           );
                         }));

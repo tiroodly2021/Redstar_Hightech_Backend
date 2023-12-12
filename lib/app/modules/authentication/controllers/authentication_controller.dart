@@ -8,10 +8,15 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:redstar_hightech_backend/app/constants/const.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/role_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/models/user_model.dart'
     as localModel;
 
+import '../../../routes/app_pages.dart';
 import '../../home/views/home_view.dart';
+import '../models/role_model.dart';
 import '../views/login_view.dart';
 
 import 'package:crypto/crypto.dart' as crypto;
@@ -64,15 +69,13 @@ class AuthenticationController extends GetxController {
   }
 
   void login(String email, String password) async {
+    var userController = Get.find<UserController>();
+    var authController = Get.find<AuthenticationController>();
     await _auth
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) => Get.offAll(() => HomeView()))
         .catchError(
             (onError) => Get.snackbar("Error while sign in ", onError.message));
-
-    authenticated = true;
-
-    // loginController.authController.authenticated = true;
   }
 
   void signout() async {

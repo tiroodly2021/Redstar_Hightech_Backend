@@ -37,7 +37,7 @@ class RoleCard extends StatelessWidget {
     if (AuthorizationMiddleware.checkPermission(
         Get.find<AuthenticationController>(),
         Get.find<UserController>(),
-        "/product/delete")) {
+        "/role/delete")) {
       print("Check Delete route permission valid");
       roleController.deleteRole(role);
       //   Navigator.of(context).pop();

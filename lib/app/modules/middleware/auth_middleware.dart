@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/constants/const.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/bindings/permission_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/permission_controller.dart';
@@ -61,7 +62,9 @@ class AuthorizationMiddleware extends GetMiddleware {
       }
     }
 
-    if (allPermissions.contains(route.replaceAll("/", " "))) {
+    if (allPermissions.contains(route.replaceAll("/", " ")) ||
+        (Get.find<AuthenticationController>().user!.email == superUserEmail &&
+            Get.find<AuthenticationController>().authenticated)) {
       print("Page authorized route: ${route}");
       return true;
     }
@@ -76,39 +79,45 @@ class AuthorizationMiddleware extends GetMiddleware {
 
     List<String> allPermissions = [];
 
-    List<Role> roles = authController.authenticated
-        ? roleController.roles
-            .where((role) =>
-                role.id ==
-                Role.fromMap(userController.users.value
-                        .where((user) =>
-                            user.email.toLowerCase() ==
-                            authController.user!.email!.toLowerCase())
-                        .toList()[0]
-                        .roles!)
-                    .id)
-            .toList()
-        : [];
-    Role role = roles.isNotEmpty
-        ? roles.first
-        : Role(id: "", description: '', name: '');
+    if (Get.find<AuthenticationController>().user != null) {
+      if (Get.find<AuthenticationController>().user!.email!.toLowerCase() !=
+          superUserEmail.toLowerCase()) {
+        List<Role> roles = authController.authenticated
+            ? roleController.roles
+                .where((role) =>
+                    role.id ==
+                    Role.fromMap(userController.users.value
+                            .where((user) =>
+                                user.email.toLowerCase() ==
+                                authController.user!.email!.toLowerCase())
+                            .toList()[0]
+                            .roles!)
+                        .id)
+                .toList()
+            : [];
+        Role role = roles.isNotEmpty
+            ? roles.first
+            : Role(id: "", description: '', name: '');
 
-    if (role.permissionIds != null) {
-      if (role.permissionIds!.isNotEmpty) {
-        for (var id in role.permissionIds!) {
-          permissionController.permissions.value.forEach((element) {
-            if (element.id == id) {
-              allPermissions.add(element.description);
+        if (role.permissionIds != null) {
+          if (role.permissionIds!.isNotEmpty) {
+            for (var id in role.permissionIds!) {
+              permissionController.permissions.value.forEach((element) {
+                if (element.id == id) {
+                  allPermissions.add(element.description);
+                }
+              });
             }
-          });
+          }
         }
       }
     }
 
     if (authController.authenticated == true && route != Routes.LOGIN) {
-      print("route : ${route}");
-      print(allPermissions);
-      if (allPermissions.contains(route?.replaceAll("/", " "))) {
+      if (allPermissions.contains(route?.replaceAll("/", " ")) ||
+          (Get.find<AuthenticationController>().user!.email!.toLowerCase() ==
+                  superUserEmail.toLowerCase() &&
+              Get.find<AuthenticationController>().authenticated)) {
         print("Page authorized route: ${route!}");
         return null;
       } else {

@@ -40,7 +40,7 @@ class CategoryCard extends StatelessWidget {
     if (AuthorizationMiddleware.checkPermission(
         Get.find<AuthenticationController>(),
         Get.find<UserController>(),
-        "/product/delete")) {
+        "/category/delete")) {
       print("Check Delete route permission valid");
       categoryController.deleteCategory(category);
       //   Navigator.of(context).pop();

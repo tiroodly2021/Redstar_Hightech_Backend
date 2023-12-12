@@ -8,6 +8,7 @@ import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/
 import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/permissions/update_permission_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/add_role_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/role_view.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/set_permission_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/show_role_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/update_role_view.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/login_view.dart';
@@ -52,6 +53,13 @@ import '../splashscreen.dart';
 part 'app_routes.dart';
 
 class AppPages {
+  /*
+
+SetPermissionView(
+                                              currentRole: role!)
+
+  */
+
   AppPages._();
 
   static const INITIAL = Routes.INITIAL;
@@ -93,6 +101,8 @@ class AppPages {
   static const DELETE_ROLE = _Paths.DELETE_ROLE;
   static const DELETE_PERMISSION = _Paths.DELETE_PERMISSION;
 
+  static const SET_PERMISSIONS = Routes.SET_PERMISSIONS;
+
   static final routes = [
     GetPage(name: _Paths.DELETE_CATEGORY, page: () => const GeneriDeletePage()),
     GetPage(name: _Paths.DELETE_PRODUCT, page: () => const GeneriDeletePage()),
@@ -103,22 +113,23 @@ class AppPages {
     GetPage(
         name: _Paths.SHOW_ROLE,
         page: () => ShowRoleView(),
-        binding: RoleBinding()),
-    /*  GetPage(
-        name: _Paths.UPDATE_PERMISSION,
-        page: () => UpdatePermissionView(),
-        binding: PermissionBinding()), */
+        binding: RoleBinding(),
+        middlewares: [AuthorizationMiddleware()]),
+    GetPage(
+        name: _Paths.SET_PERMISSIONS,
+        page: () => SetPermissionView(),
+        binding: PermissionBinding(),
+        middlewares: [AuthorizationMiddleware()]),
     GetPage(
         name: _Paths.ADD_PERMISSION,
         page: () => AddPermissionView(),
-        binding: PermissionBinding()),
+        binding: PermissionBinding(),
+        middlewares: [AuthorizationMiddleware()]),
     GetPage(
         name: _Paths.PERMISSION,
         page: () => PermissionView(),
-        binding:
-            PermissionBinding() /* ,
-        middlewares: [AuthorizationMiddleware()] */
-        ),
+        binding: PermissionBinding(),
+        middlewares: [AuthorizationMiddleware()]),
     GetPage(
         name: _Paths.ROLE,
         page: () => RoleView(),
@@ -127,23 +138,23 @@ class AppPages {
     GetPage(
         name: _Paths.UPDATE_ROLE,
         page: () => UpdateRoleView(),
-        binding: RoleBinding()),
+        binding: RoleBinding(),
+        middlewares: [AuthorizationMiddleware()]),
     GetPage(
         name: _Paths.ADD_ROLE,
         page: () => AddRoleView(),
-        binding: RoleBinding()),
+        binding: RoleBinding(),
+        middlewares: [AuthorizationMiddleware()]),
     GetPage(
-      name: _Paths.UPDATE_USER,
-      page: () => UpdateUserView(),
-      binding: UserBinding(), /*  middlewares: [RedirectToLoginMiddleware()] */
-    ),
+        name: _Paths.UPDATE_USER,
+        page: () => UpdateUserView(),
+        binding: UserBinding(),
+        middlewares: [AuthorizationMiddleware()]),
     GetPage(
         name: _Paths.ADD_USER,
         page: () => AddUserView(),
-        binding:
-            UserBinding() /* ,
-        middlewares: [RedirectToLoginMiddleware()] */
-        ),
+        binding: UserBinding(),
+        middlewares: [AuthorizationMiddleware()]),
     GetPage(name: _Paths.EDIT_PROFILE, page: () => const EditProfile()),
     GetPage(
       name: _Paths.SPLASH,
@@ -229,10 +240,10 @@ class AppPages {
       binding: AuthenticationBinding(),
     ),
     GetPage(
-      name: _Paths.USER,
-      page: () => UserView(),
-      binding: UserBinding(), /*   middlewares: [RedirectToLoginMiddleware()] */
-    ),
+        name: _Paths.USER,
+        page: () => UserView(),
+        binding: UserBinding(),
+        middlewares: [AuthorizationMiddleware()]),
     GetPage(name: _Paths.ACCESS_ERROR, page: () => AccessErrorView())
   ];
 }

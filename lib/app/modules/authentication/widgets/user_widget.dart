@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/constants/const.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/models/user_model.dart';
 import 'package:redstar_hightech_backend/app/modules/product/controllers/product_controller.dart';
@@ -36,7 +37,7 @@ class UserCard extends StatelessWidget {
     if (AuthorizationMiddleware.checkPermission(
         Get.find<AuthenticationController>(),
         Get.find<UserController>(),
-        "/product/delete")) {
+        "/user/delete")) {
       print("Check Delete route permission valid");
       userController.deleteUser(user);
       //   Navigator.of(context).pop();
@@ -80,6 +81,7 @@ class UserCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
+              height: 40,
               decoration: const BoxDecoration(
                   boxShadow: [
                     BoxShadow(
@@ -108,46 +110,53 @@ class UserCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  CircleAvatar(
-                    backgroundColor: Colors.transparent,
-                    child: PopupMenuButton(
-                      icon: const Icon(Icons.more_vert_rounded),
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(8),
-                              bottomRight: Radius.circular(8),
-                              topLeft: Radius.circular(8),
-                              topRight: Radius.circular(8))),
-                      offset: const Offset(0.0, 1),
-                      itemBuilder: (ctx) => [
-                        _buildPopMenuItem(
-                            "Edit", Icons.edit, Options.Edit.index),
-                        _buildPopMenuItem(
-                            "Delete", Icons.remove, Options.Delete.index),
-                      ],
-                      onSelected: (value) async {
-                        int selectedValue = value as int;
+                  Get.find<AuthenticationController>().user != null
+                      ? (superUserEmail.toLowerCase() ==
+                                  user.email.toLowerCase() &&
+                              Get.find<AuthenticationController>()
+                                  .authenticated)
+                          ? Container()
+                          : CircleAvatar(
+                              backgroundColor: Colors.transparent,
+                              child: PopupMenuButton(
+                                icon: const Icon(Icons.more_vert_rounded),
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(8),
+                                        bottomRight: Radius.circular(8),
+                                        topLeft: Radius.circular(8),
+                                        topRight: Radius.circular(8))),
+                                offset: const Offset(0.0, 1),
+                                itemBuilder: (ctx) => [
+                                  _buildPopMenuItem(
+                                      "Edit", Icons.edit, Options.Edit.index),
+                                  _buildPopMenuItem("Delete", Icons.remove,
+                                      Options.Delete.index),
+                                ],
+                                onSelected: (value) async {
+                                  int selectedValue = value as int;
 
-                        switch (selectedValue) {
-                          case 0:
-                            /*  Navigator.pushNamed(context, AppPages.EDIT_USER,
+                                  switch (selectedValue) {
+                                    case 0:
+                                      /*  Navigator.pushNamed(context, AppPages.EDIT_USER,
                                 arguments: user); */
-                            _onEdit(user);
-                            break;
-                          case 1:
-                            if (await confirm(context)) {
-                              _onDeleteData(context, user);
+                                      _onEdit(user);
+                                      break;
+                                    case 1:
+                                      if (await confirm(context)) {
+                                        _onDeleteData(context, user);
 
-                              return print('pressedOK');
-                            }
+                                        return print('pressedOK');
+                                      }
 
-                            return print('pressedCancel');
+                                      return print('pressedCancel');
 
-                          default:
-                        }
-                      },
-                    ),
-                  ),
+                                    default:
+                                  }
+                                },
+                              ),
+                            )
+                      : Container()
                 ],
               ),
             ),

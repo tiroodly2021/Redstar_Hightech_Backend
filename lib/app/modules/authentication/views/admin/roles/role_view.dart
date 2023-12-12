@@ -50,8 +50,7 @@ class RoleView extends GetView<RoleController> {
                 height: 100,
                 child: InkWell(
                   onTap: () {
-                    // Get.toNamed(AppPages.ADD_USER);
-                    Get.to(() => AddRoleView());
+                    Get.toNamed(AppPages.ADD_ROLE);
                   },
                   child: Card(
                     color: Colors.black,
@@ -60,8 +59,7 @@ class RoleView extends GetView<RoleController> {
                       children: [
                         IconButton(
                             onPressed: () {
-                              // Get.toNamed(AppPages.ADD_CATEGORY);
-                              Get.to(() => AddRoleView());
+                              Get.toNamed(AppPages.ADD_ROLE);
                             },
                             icon: const Icon(
                               Icons.add,

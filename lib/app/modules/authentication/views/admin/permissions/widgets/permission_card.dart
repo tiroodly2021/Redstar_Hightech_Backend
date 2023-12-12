@@ -39,7 +39,7 @@ class PermissionCard extends StatelessWidget {
     if (AuthorizationMiddleware.checkPermission(
         Get.find<AuthenticationController>(),
         Get.find<UserController>(),
-        "/product/delete")) {
+        "/permission/delete")) {
       print("Check Delete route permission valid");
       permissionController.deletePermission(permission);
       //   Navigator.of(context).pop();
