@@ -279,13 +279,6 @@ class ShowRoleView extends GetView<RoleController> {
                                         onPressed: () async {
                                           Get.toNamed(AppPages.SET_PERMISSIONS,
                                               arguments: role!);
-
-                                          /*  Get.to(
-                                              () => SetPermissionView(
-                                                    currentRole: role!,
-                                                  ),
-                                              routeName:
-                                                  AppPages.SET_PERMISSIONS); */
                                         },
                                         child: Row(
                                           children: const [
@@ -313,48 +306,6 @@ class ShowRoleView extends GetView<RoleController> {
               ),
             ),
           ),
-
-          /* Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text(
-                    "Role Details",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                /*  _buildTextFormField("Name", controller.addNameController),
-                _buildTextFormField(
-                    "Description", controller.addDescriptionController), */
-                Text(role!.name),
-                const SizedBox(height: 20),
-                Row(
-                  children: [],
-                ),
-                const SizedBox(height: 10),
-                Text(role!.description),
-                Center(
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(primary: Colors.black),
-                      onPressed: () async {
-                        /*    _setPermissions(role);
-
-                        resetFields();
-
-                        Navigator.pop(context); */
-                      },
-                      child: const Text(
-                        "Set Permissions",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      )),
-                )
-              ]), */
         ),
       ),
     );
@@ -377,124 +328,4 @@ class ShowRoleView extends GetView<RoleController> {
       ],
     );
   }
-/* 
-  Padding _buildTextFormField(
-      String hintText, TextEditingController fieldEditingController) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: TextFormField(
-        controller: fieldEditingController,
-        decoration: InputDecoration(hintText: hintText),
-        /* onChanged: (value) {
-          controller.newUser.update(name, (_) => value, ifAbsent: () => value);
-        }, */
-      ),
-    );
-  }
-
-  void resetFields() {
-    controller.addNameController.text = '';
-    controller.addDescriptionController.text = '';
-  } */
 }
-
-
-/* 
-
-Column(
-                      children: [
-                        const Text(
-                          "Role Description",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  SizedBox(
-                                      width: MediaQuery.of(context).size.width -
-                                          50,
-                                      child: Text(
-                                        role!.description,
-                                        style: const TextStyle(
-                                            color: Colors.black54),
-                                      )),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            primary: Colors.black),
-                                        onPressed: () async {
-                                          /*    _setPermissions(role);
-
-                            resetFields();
-
-                            Navigator.pop(context); */
-                                        },
-                                        child: const Text(
-                                          "Edit",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
-                                        )),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            primary: Colors.black),
-                                        onPressed: () async {
-                                          Get.to(() => UpdateRoleView(
-                                                currentRole: role,
-                                              ));
-                                          /*    _setPermissions(role);
-
-                            resetFields();
-
-                            Navigator.pop(context); */
-                                        },
-                                        child: const Text(
-                                          "Delete",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
-                                        )),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            primary: Colors.black),
-                                        onPressed: () async {
-                                          Get.to(() => SetPermissionView(
-                                              currentRole: role!,
-                                              permissionList: permissions));
-                                          /*    _setPermissions(role);
-
-                            resetFields();
-
-                            Navigator.pop(context); */
-                                        },
-                                        child: const Text(
-                                          "Permissions",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
-                                        )),
-                                  )
-                                ],
-                              )
-                            ]),
-                      ],
-                    ),
-             
-
- */

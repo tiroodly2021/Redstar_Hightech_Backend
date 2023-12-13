@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/constants/const.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/add_user.dart';
@@ -38,7 +39,7 @@ class SetPermissionView extends GetView<PermissionController> {
 
     return Scaffold(
         appBar: AppBarWidget(
-          title: 'Permission for ',
+          title: 'Permission for ' + currentRole!.name,
           icon: Icons.search,
           bgColor: Colors.black,
           onPressed: () {
@@ -76,10 +77,28 @@ class SetPermissionView extends GetView<PermissionController> {
               ),
               Expanded(
                 child: Obx(() {
+                  List<String>? permissionIds = currentRole!.permissionIds;
+
                   if (controller.permissions.isNotEmpty) {
                     return ListView.builder(
                         itemCount: controller.permissions.length,
                         itemBuilder: ((context, index) {
+                          if (Get.find<AuthenticationController>()
+                              .authenticated) {
+                            if (permissionIds != null) {
+                              if (permissionIds.contains(
+                                          controller.permissions[index].id) ==
+                                      false &&
+                                  (Get.find<AuthenticationController>()
+                                          .user!
+                                          .email!
+                                          .toLowerCase() !=
+                                      superUserEmail.toLowerCase())) {
+                                return Container();
+                              }
+                            }
+                          }
+
                           return SizedBox(
                             //  height: 50,
                             child: SetPermissionCard(

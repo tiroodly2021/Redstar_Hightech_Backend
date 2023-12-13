@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/constants/const.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/permission_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/models/user_model.dart';
@@ -122,10 +124,44 @@ class SetPermissionCard extends StatelessWidget {
                       ? true
                       : false,
                   activeColor: Colors.red,
-                  onChanged: (bool value) {
+                  onChanged: (bool value) async {
                     // This is called when the user toggles the switch.
-                    roleController.updateRolePermissions(index, permission,
-                        role, 'permissionIds', value, permissionController);
+
+                    if (value == false) {
+                      if (Get.find<AuthenticationController>().user != null) {
+                        if (Get.find<AuthenticationController>()
+                                .user!
+                                .email!
+                                .toLowerCase() !=
+                            superUserEmail) {
+                          if (await confirm(context,
+                              title: const Text("Info"),
+                              content: const Text(
+                                  "By switch off this option, it is possible that you will not to switch it on"))) {
+                            roleController.updateRolePermissions(
+                                index,
+                                permission,
+                                role,
+                                'permissionIds',
+                                value,
+                                permissionController);
+
+                            return print('pressedOK');
+                          }
+                        } else {
+                          roleController.updateRolePermissions(
+                              index,
+                              permission,
+                              role,
+                              'permissionIds',
+                              value,
+                              permissionController);
+                        }
+                      }
+                    } else {
+                      roleController.updateRolePermissions(index, permission,
+                          role, 'permissionIds', value, permissionController);
+                    }
                   },
                 ),
                 const Text(
