@@ -88,23 +88,29 @@ class AuthorizationMiddleware extends GetMiddleware {
     RoleController roleController = Get.put(RoleController());
 
     List<String> allPermissions = [];
+    List<User> usersList = [];
+    List<Role> allRoles = [];
+    Role roleToTest = Role(id: '', name: '', description: '');
 
     if (Get.find<AuthenticationController>().user != null) {
       if (Get.find<AuthenticationController>().user!.email!.toLowerCase() !=
           superUserEmail.toLowerCase()) {
+        usersList = userController.users.value
+            .where((user) =>
+                user.email.toLowerCase() ==
+                authController.user!.email!.toLowerCase())
+            .toList();
+
+        if (usersList.isNotEmpty) {
+          roleToTest = Role.fromMap(usersList[0].roles!);
+        }
+
         List<Role> roles = authController.authenticated
             ? roleController.roles
-                .where((role) =>
-                    role.id ==
-                    Role.fromMap(userController.users.value
-                            .where((user) =>
-                                user.email.toLowerCase() ==
-                                authController.user!.email!.toLowerCase())
-                            .toList()[0]
-                            .roles!)
-                        .id)
+                .where((role) => role.id == roleToTest.id)
                 .toList()
             : [];
+
         Role role = roles.isNotEmpty
             ? roles.first
             : Role(id: "", description: '', name: '');

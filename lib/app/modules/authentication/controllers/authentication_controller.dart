@@ -89,13 +89,20 @@ class AuthenticationController extends GetxController {
       String firstname, String lastname, String email, String password) async {
     final reference = FirebaseFirestore.instance.collection("users");
 
-    Map<String, String> userdata = {
+    Map<String, dynamic> mmp = {
+      "description": "Simple user",
+      "id": "any",
+      "name": "Staff",
+      "permissionIds": []
+    };
+
+    Map<String, dynamic> userdata = {
       "buildNumber": _packageInfo.buildNumber,
       "createdAt": DateTime.now().toString(),
       "email": email,
       "lastSignInTime": DateTime.now().toString(),
       "displayName": firstname + ' ' + lastname,
-      "role": 'user',
+      "roles": Map.castFrom(mmp),
       "photoURL": "",
       "password": generateMd5(password)
     };

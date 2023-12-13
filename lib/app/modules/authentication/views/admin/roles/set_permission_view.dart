@@ -39,7 +39,7 @@ class SetPermissionView extends GetView<PermissionController> {
 
     return Scaffold(
         appBar: AppBarWidget(
-          title: 'Permission for ' + currentRole!.name,
+          title: currentRole!.name,
           icon: Icons.search,
           bgColor: Colors.black,
           onPressed: () {
