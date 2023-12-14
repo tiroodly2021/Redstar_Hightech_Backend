@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart' as cloud_firestore;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/models/permission_model.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/models/role_model.dart';
 import 'package:redstar_hightech_backend/app/modules/category/models/category_model.dart';
@@ -93,8 +94,6 @@ class DatabaseService {
   Future<List<Device>?> getDeviceByUser(User user) async {
     final userCollection = _firebaseFirestore.collection('users');
 
-    print('user.name: ${user.name} user.uid: ${user.uid}');
-
     cloud_firestore.QuerySnapshot<Map<String, dynamic>> devicesQuerySnap =
         await userCollection.doc(user.uid).collection('devices').get();
 
@@ -103,6 +102,18 @@ class DatabaseService {
         .toList();
 
     return devices;
+  }
+
+  Future<List<Role>?> getRoleByUser(User user) async {
+    final userCollection = _firebaseFirestore.collection('users');
+
+    cloud_firestore.QuerySnapshot<Map<String, dynamic>> devicesQuerySnap =
+        await userCollection.doc(user.uid).collection('roles').get();
+
+    List<Role> roles =
+        devicesQuerySnap.docs.map((role) => Role.fromSnapShot(role)).toList();
+
+    return roles;
   }
 
   Stream<int> getCount(String collectionPath, String controller) {
@@ -298,8 +309,22 @@ class DatabaseService {
         .update(newProduct.toMap());
   }
 
-  Future<void> addUser(User user) {
-    return _firebaseFirestore.collection('users').add(user.toMap());
+  Future<DocumentReference<Map<String, dynamic>>?> addUserRole(
+      User user, Role role) async {
+    String uid =
+        (await _firebaseFirestore.collection('users').add(user.toMap())).id;
+
+    print(user.toMap());
+
+    if (role.name != "" && role.description != "") {
+      return _firebaseFirestore
+          .collection('users')
+          .doc(uid)
+          .collection('roles')
+          .add(role.toMap());
+    } else {
+      return null;
+    }
   }
 
   Future<void> deleteUser(User user) {

@@ -42,6 +42,7 @@ class AddUserView extends GetView<UserController> {
 
   late XFile? imageDataFile = null;
   RoleController roleController = Get.put(RoleController());
+  Role roleToAttach = Role(name: '', description: '');
 
   AddUserView({
     Key? key,
@@ -49,8 +50,8 @@ class AddUserView extends GetView<UserController> {
     resetFields();
   }
 
-  void _addUser(User user) {
-    controller.addUser(user);
+  void _addUserRole(User user, Role role) {
+    controller.addUserRole(user, role);
   }
 
   void _addRole(Role role) {
@@ -221,7 +222,13 @@ class AddUserView extends GetView<UserController> {
 
                           //  print(user.toMap());
 
-                          _addUser(user);
+                          Role role = Role(
+                              name: roleController.addNameController.text,
+                              description:
+                                  roleController.addDescriptionController.text,
+                              permissionIds: []);
+
+                          _addUserRole(user, roleToAttach);
 
                           resetFields();
 
@@ -351,7 +358,9 @@ class AddUserView extends GetView<UserController> {
             onChanged: (value) {
               print(value);
               controller.roleSelected.value = value.toString();
-              controller.getRoleFromId(controller.roleSelected.value);
+              roleToAttach =
+                  controller.getRoleFromId(controller.roleSelected.value);
+
               //controller.roleSelected.value = value.toString();
             }),
       ),

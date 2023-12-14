@@ -64,14 +64,21 @@ class UserController extends GetxController {
     return listDevices;
   }
 
-  getRoleFromId(String str) {
-    role.bindStream(database.getRoleById(str));
+  Future<List<Role>?> getRoleByUser(User user) {
+    // devices.bindStream(Stream.fromFuture(database.getDeviceByUser(user)));
+    final listRoles = databaseService.getRoleByUser(user);
 
-    print(role.toJson());
+    return listRoles;
   }
 
-  void addUser(User user) async {
-    databaseService.addUser(user);
+  Role getRoleFromId(String str) {
+    role.bindStream(database.getRoleById(str));
+
+    return role.value;
+  }
+
+  void addUserRole(User user, Role role) async {
+    databaseService.addUserRole(user, role);
 
     //  print(user.toMap());
   }

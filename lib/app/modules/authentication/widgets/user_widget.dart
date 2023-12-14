@@ -18,6 +18,7 @@ import 'package:intl/intl.dart';
 import '../../middleware/auth_middleware.dart';
 import '../controllers/authentication_controller.dart';
 import '../models/device_model.dart';
+import '../models/role_model.dart';
 
 enum Options { Edit, Delete }
 
@@ -72,6 +73,7 @@ class UserCard extends StatelessWidget {
   Widget build(BuildContext context) {
     Future<List<Device>?> futureListDevice =
         userController.getDeviceByUser(user);
+    Future<List<Role>?> futureListRole = userController.getRoleByUser(user);
 
     return Card(
       shadowColor: Colors.blueGrey,
@@ -208,7 +210,7 @@ class UserCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
+                    /* Row(
                       children: [
                         const Text("Role: ",
                             style: TextStyle(fontWeight: FontWeight.bold)),
@@ -220,7 +222,7 @@ class UserCard extends StatelessWidget {
                           //style: const TextStyle(fontWeight: FontWeight.bold),
                         )
                       ],
-                    ),
+                    ), */
                     const SizedBox(
                       height: 10,
                     ),
@@ -264,6 +266,58 @@ class UserCard extends StatelessWidget {
                             children: const [
                               SizedBox(
                                 width: 60,
+                                child: Text("Roles: ",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              SizedBox(
+                                width: 150,
+                                child: FutureBuilder(
+                                    future: futureListRole,
+                                    builder: (context, snap) {
+                                      if (snap.hasError) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      }
+
+                                      if (snap.connectionState ==
+                                          ConnectionState.done) {
+                                        List<Role>? roles =
+                                            snap.data as List<Role>;
+
+                                        return ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: roles.length,
+                                            itemBuilder: (context, index) {
+                                              return Text(roles[index].name);
+                                            });
+                                      }
+
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    }),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Column(
+                            children: const [
+                              SizedBox(
+                                width: 60,
                                 child: Text("Devices: ",
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold)),
@@ -274,7 +328,7 @@ class UserCard extends StatelessWidget {
                             children: [
                               SizedBox(
                                 width: 150,
-                                height: 100,
+                                height: 30,
                                 child: FutureBuilder(
                                     future: futureListDevice,
                                     builder: (context, snap) {
@@ -291,11 +345,9 @@ class UserCard extends StatelessWidget {
 
                                         print(devices);
                                         return ListView.builder(
+                                            shrinkWrap: true,
                                             itemCount: devices.length,
                                             itemBuilder: (context, index) {
-                                              print('user : ${user.name}  ' +
-                                                  devices[index]
-                                                      .deviceInfo!["device"]);
                                               return Text(devices[index]
                                                   .deviceInfo!["device"]);
                                             });
