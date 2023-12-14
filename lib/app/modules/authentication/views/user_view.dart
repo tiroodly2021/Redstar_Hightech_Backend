@@ -20,6 +20,7 @@ import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
 import 'package:redstar_hightech_backend/app/shared/list_not_found.sharedWidgets.dart';
 import 'package:safe_url_check/safe_url_check.dart';
 
+import '../models/device_model.dart';
 import '../models/user_model.dart';
 
 class UserView extends GetView<UserController> {
@@ -33,6 +34,8 @@ class UserView extends GetView<UserController> {
 
   @override
   Widget build(BuildContext context) {
+    controller.userList();
+
     return Scaffold(
         appBar: AppBarWidget(
           title: 'Users',
@@ -106,8 +109,12 @@ class UserView extends GetView<UserController> {
                     return ListView.builder(
                         itemCount: controller.users.length,
                         itemBuilder: ((context, index) {
+                          User user = controller.users[index];
+
+                          //   controller.getDeviceByUser(user);
+
                           if (superUserEmail.toLowerCase() ==
-                                  controller.users[index].email.toLowerCase() &&
+                                  user.email.toLowerCase() &&
                               Get.find<AuthenticationController>()
                                   .authenticated) {
                             if (Get.find<AuthenticationController>().user !=
@@ -130,11 +137,16 @@ class UserView extends GetView<UserController> {
                           }
 
                           return SizedBox(
-                            height: 200,
+                            height: 300,
                             child: UserCard(
-                                user: controller.users[index],
+                                user: user,
                                 index: index,
-                                userController: controller),
+                                userController:
+                                    controller /* ,
+                              devices: controller.devices.value != <Device>[]
+                                  ? controller.devices
+                                  : [], */
+                                ),
                           );
                         }));
                   }

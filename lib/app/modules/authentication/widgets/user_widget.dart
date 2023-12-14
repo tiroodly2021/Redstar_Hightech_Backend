@@ -17,6 +17,7 @@ import 'package:intl/intl.dart';
 
 import '../../middleware/auth_middleware.dart';
 import '../controllers/authentication_controller.dart';
+import '../models/device_model.dart';
 
 enum Options { Edit, Delete }
 
@@ -25,12 +26,14 @@ class UserCard extends StatelessWidget {
   final int index;
   DatabaseService databaseService = DatabaseService();
   UserController userController;
+  List<Device>? devices;
 
   UserCard(
       {Key? key,
       required this.user,
       required this.index,
-      required this.userController})
+      required this.userController,
+      this.devices})
       : super(key: key);
 
   Future<void> _onDeleteData(BuildContext context, User user) async {
@@ -67,7 +70,8 @@ class UserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserController userController = Get.find();
+    Future<List<Device>?> futureListDevice =
+        userController.getDeviceByUser(user);
 
     return Card(
       shadowColor: Colors.blueGrey,
@@ -249,7 +253,64 @@ class UserCard extends StatelessWidget {
                           //style: const TextStyle(fontWeight: FontWeight.bold),
                         )
                       ],
-                    )
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Column(
+                            children: const [
+                              SizedBox(
+                                width: 60,
+                                child: Text("Devices: ",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              SizedBox(
+                                width: 150,
+                                height: 100,
+                                child: FutureBuilder(
+                                    future: futureListDevice,
+                                    builder: (context, snap) {
+                                      if (snap.hasError) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      }
+
+                                      if (snap.connectionState ==
+                                          ConnectionState.done) {
+                                        List<Device>? devices =
+                                            snap.data as List<Device>;
+
+                                        print(devices);
+                                        return ListView.builder(
+                                            itemCount: devices.length,
+                                            itemBuilder: (context, index) {
+                                              print('user : ${user.name}  ' +
+                                                  devices[index]
+                                                      .deviceInfo!["device"]);
+                                              return Text(devices[index]
+                                                  .deviceInfo!["device"]);
+                                            });
+                                      }
+
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    }),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
                   ],
                 )
               ],
@@ -289,4 +350,8 @@ class UserCard extends StatelessWidget {
       value: index,
     );
   }
+
+  @override
+  List<Object?> get props =>
+      [user, index, databaseService, userController, devices];
 }

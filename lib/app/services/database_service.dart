@@ -7,6 +7,7 @@ import 'package:redstar_hightech_backend/app/modules/order/models/order_stats_mo
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
 
 import '../../app/modules/order/models/order_model.dart';
+import '../modules/authentication/models/device_model.dart';
 import '../modules/authentication/models/user_model.dart';
 
 class DatabaseService {
@@ -87,6 +88,21 @@ class DatabaseService {
         .snapshots()
         .map((snapshot) =>
             snapshot.docs.map((doc) => Order.fromSnapShot(doc)).toList());
+  }
+
+  Future<List<Device>?> getDeviceByUser(User user) async {
+    final userCollection = _firebaseFirestore.collection('users');
+
+    print('user.name: ${user.name} user.uid: ${user.uid}');
+
+    cloud_firestore.QuerySnapshot<Map<String, dynamic>> devicesQuerySnap =
+        await userCollection.doc(user.uid).collection('devices').get();
+
+    List<Device> devices = devicesQuerySnap.docs
+        .map((device) => Device.fromSnapShot(device))
+        .toList();
+
+    return devices;
   }
 
   Stream<int> getCount(String collectionPath, String controller) {

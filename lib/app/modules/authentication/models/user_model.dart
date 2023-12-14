@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'device_model.dart';
 import 'role_model.dart';
 
 class User {
@@ -13,22 +14,24 @@ class User {
   /*  final String role; */
   Map<String, dynamic>? roles;
 
+  List<Device>? devices;
+
   final String? uid;
   String? photoURL;
   String? password;
 
-  User({
-    required this.buildNumber,
-    required this.createdAt,
-    required this.email,
-    required this.lastLogin,
-    required this.name,
-    /*  required this.role, */
-    this.roles,
-    this.uid,
-    this.photoURL,
-    this.password,
-  });
+  User(
+      {required this.buildNumber,
+      required this.createdAt,
+      required this.email,
+      required this.lastLogin,
+      required this.name,
+      /*  required this.role, */
+      this.roles,
+      this.uid,
+      this.photoURL,
+      this.password,
+      this.devices});
 
   User copyWith(
           {String? buildNumber,
@@ -97,6 +100,7 @@ class User {
         lastLogin: map["lastSignInTime"],
         name: map["displayName"],
         roles: map["roles"],
+        password: map["password"],
         uid: map["uid"],
         photoURL: map["photoURL"]);
   }
@@ -110,7 +114,8 @@ class User {
       "displayName": name,
       "roles": roles, //!.map((role) => role.id).toList(),
       "photoURL": photoURL,
-      "password": password
+      "password": password,
+      "uid": uid
     };
   }
 }

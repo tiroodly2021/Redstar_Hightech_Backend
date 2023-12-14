@@ -5,6 +5,7 @@ import 'package:redstar_hightech_backend/app/modules/authentication/views/update
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
 
 import '../../../routes/app_pages.dart';
+import '../models/device_model.dart';
 import '../models/role_model.dart';
 import '../models/user_model.dart';
 
@@ -41,6 +42,8 @@ class UserController extends GetxController {
   Rx<Role> role = Role(description: '', name: '').obs;
   var count = 0.obs;
 
+  RxList<Device> devices = <Device>[].obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -52,6 +55,13 @@ class UserController extends GetxController {
 
     users.bindStream(database.getUsers());
     roles.bindStream(database.getRoles());
+  }
+
+  Future<List<Device>?> getDeviceByUser(User user) {
+    // devices.bindStream(Stream.fromFuture(database.getDeviceByUser(user)));
+    final listDevices = databaseService.getDeviceByUser(user);
+
+    return listDevices;
   }
 
   getRoleFromId(String str) {
