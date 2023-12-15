@@ -116,6 +116,19 @@ class DatabaseService {
     return roles;
   }
 
+  Future<List<Permission>?> getPermissionByRole(Role role) async {
+    final userCollection = _firebaseFirestore.collection('roles');
+
+    cloud_firestore.QuerySnapshot<Map<String, dynamic>> devicesQuerySnap =
+        await userCollection.doc(role.id).collection('permissions').get();
+
+    List<Permission> permissions = devicesQuerySnap.docs
+        .map((permission) => Permission.fromSnapShot(permission))
+        .toList();
+
+    return permissions;
+  }
+
   Stream<int> getCount(String collectionPath, String controller) {
     switch (controller) {
       case 'UserController':
@@ -309,21 +322,17 @@ class DatabaseService {
         .update(newProduct.toMap());
   }
 
-  Future<DocumentReference<Map<String, dynamic>>?> addUserRole(
-      User user, Role role) async {
+  Future<void> addUserRole(User user, Role role) async {
     String uid =
         (await _firebaseFirestore.collection('users').add(user.toMap())).id;
-
-    print(user.toMap());
 
     if (role.name != "" && role.description != "") {
       return _firebaseFirestore
           .collection('users')
           .doc(uid)
           .collection('roles')
-          .add(role.toMap());
-    } else {
-      return null;
+          .doc(role.id)
+          .set(role.toMap());
     }
   }
 
@@ -410,6 +419,29 @@ class DatabaseService {
         .update(role.toMap());
   }
 
+  Future<void> addPermissionbyRole(Role role, Permission permission) async {
+    final permssionReference = FirebaseFirestore.instance
+        .collection("roles")
+        .doc(role.id)
+        .collection("devices");
+
+    return _firebaseFirestore
+        .collection('roles')
+        .doc(role.id)
+        .collection('permissions')
+        .doc(permission.id)
+        .set(permission.toMap());
+  }
+
+  Future<void> removePermissionbyRole(Role role, Permission permission) {
+    return _firebaseFirestore
+        .collection('roles')
+        .doc(role.id)
+        .collection('permissions')
+        .doc(permission.id)
+        .delete();
+  }
+
   Stream<Role> getRoleById(String value) {
     return _firebaseFirestore
         .collection('roles')
@@ -417,4 +449,8 @@ class DatabaseService {
         .snapshots()
         .map((role) => Role.fromSnapShot(role));
   }
+
+  /*  void loadPermissionByRole(Role role) {
+    
+  } */
 }

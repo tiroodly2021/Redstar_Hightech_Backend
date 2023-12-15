@@ -10,12 +10,14 @@ class Role extends Equatable {
   final String description;
   String? id;
   List<String>? permissionIds;
+  List<Permission>? permissions;
 
   Role(
       {required this.name,
       this.id,
       required this.description,
-      this.permissionIds});
+      this.permissionIds,
+      this.permissions});
 
   Role copyWith(
           {String? name,

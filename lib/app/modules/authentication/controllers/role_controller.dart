@@ -42,6 +42,11 @@ class RoleController extends GetxController {
     roles.bindStream(database.getRoles());
   }
 
+  Future<List<Permission>?> getPermissionByRole(Role role) {
+    final listPermissions = databaseService.getPermissionByRole(role);
+    return listPermissions;
+  }
+
   void addRole(Role role) async {
     databaseService.addRole(role);
   }
@@ -60,15 +65,22 @@ class RoleController extends GetxController {
 
   void setPermission(Permission permission) {}
 
-  void updateRolePermissions(int index, Permission permission, Role role,
-      String s, bool value, PermissionController permissionController) {
+  updateRolePermissions(int index, Permission permission, Role role, String s,
+      bool value, PermissionController permissionController) {
+    print(value);
+
     if (value) {
-      role.permissionIds!.add(permission.id!);
-    } else {
-      role.permissionIds!.remove(permission.id!);
+      database.addPermissionbyRole(role, permission);
+    } else if (!value) {
+      database.removePermissionbyRole(role, permission);
     }
-    database.updateRolePermissions(role, s);
 
     permissionController.permissions[index] = permission;
+  }
+
+  Future<List<Permission>?> loadPermissionByRole(Role role) {
+    final listPermissions = databaseService.getPermissionByRole(role);
+
+    return listPermissions;
   }
 }

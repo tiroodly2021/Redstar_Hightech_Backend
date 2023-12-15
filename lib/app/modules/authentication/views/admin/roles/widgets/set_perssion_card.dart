@@ -28,16 +28,17 @@ class SetPermissionCard extends StatelessWidget {
   final int index;
   RoleController roleController = Get.put(RoleController());
   PermissionController permissionController;
+
   //DatabaseService databaseService = DatabaseService();
   /* RoleController roleController; */
 
-  SetPermissionCard(
-      {Key? key,
-      required this.permission,
-      required this.index,
-      required this.role,
-      required this.permissionController})
-      : super(key: key);
+  SetPermissionCard({
+    Key? key,
+    required this.permission,
+    required this.index,
+    required this.role,
+    required this.permissionController,
+  }) : super(key: key);
 
 /*   Future<void> _onDeleteData(BuildContext context, Role role) async {
     roleController.deleteRole(role);
@@ -117,53 +118,94 @@ class SetPermissionCard extends StatelessWidget {
                   "Inactive",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-                Switch(
-                  // This bool value toggles the switch.
-                  //
-                  value: role.permissionIds!.contains(permission.id)
-                      ? true
-                      : false,
-                  activeColor: Colors.red,
-                  onChanged: (bool value) async {
-                    // This is called when the user toggles the switch.
-
-                    if (value == false) {
-                      if (Get.find<AuthenticationController>().user != null) {
-                        if (Get.find<AuthenticationController>()
-                                .user!
-                                .email!
-                                .toLowerCase() !=
-                            superUserEmail) {
-                          if (await confirm(context,
-                              title: const Text("Info"),
-                              content: const Text(
-                                  "By switch off this option, it is possible that you will not to switch it on"))) {
-                            roleController.updateRolePermissions(
-                                index,
-                                permission,
-                                role,
-                                'permissionIds',
-                                value,
-                                permissionController);
-
-                            return print('pressedOK');
-                          }
-                        } else {
-                          roleController.updateRolePermissions(
-                              index,
-                              permission,
-                              role,
-                              'permissionIds',
-                              value,
-                              permissionController);
-                        }
+                FutureBuilder(
+                    future: roleController.loadPermissionByRole(role),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return const Center(child: Text("Unknow Error "));
                       }
-                    } else {
-                      roleController.updateRolePermissions(index, permission,
-                          role, 'permissionIds', value, permissionController);
-                    }
-                  },
-                ),
+
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        List<Permission>? permissions =
+                            snapshot.data as List<Permission>;
+                        bool trouve = false;
+
+                        permissions.forEach((localPerm) {
+                          /*   print(
+                              "********* local: [${localPerm.description}] perm in list : [${permission.description}] ************ "); */
+
+                          if (localPerm.description
+                                  .toString()
+                                  .toLowerCase()
+                                  .trim() ==
+                              permission.description
+                                  .toString()
+                                  .toLowerCase()
+                                  .trim()) {
+                            /*   print(
+                                "Trouve! local: ${localPerm.description} perm in list : ${permission.description}  "); */
+                            trouve = true;
+                          } else {
+                            /* print(
+                                "Fail! local: ${localPerm.description} perm in list : ${permission.description}  "); */
+                          }
+                        });
+
+                        return Switch(
+                          value: trouve ? true : false,
+                          activeColor: Colors.red,
+                          onChanged: (bool value) async {
+                            // This is called when the user toggles the switch.
+
+                            if (value == false) {
+                              if (Get.find<AuthenticationController>().user !=
+                                  null) {
+                                if (Get.find<AuthenticationController>()
+                                        .user!
+                                        .email!
+                                        .toLowerCase() !=
+                                    superUserEmail.toLowerCase()) {
+                                  if (await confirm(context,
+                                      title: const Text("Info"),
+                                      content: const Text(
+                                          "By switch off this option, it is possible that you will not to switch it on"))) {
+                                    roleController.updateRolePermissions(
+                                        index,
+                                        permission,
+                                        role,
+                                        'permissionIds',
+                                        value,
+                                        permissionController);
+
+                                    return print('pressedOK');
+                                  }
+                                } else {
+                                  roleController.updateRolePermissions(
+                                      index,
+                                      permission,
+                                      role,
+                                      'permissionIds',
+                                      value,
+                                      permissionController);
+                                }
+                              }
+                            } else {
+                              roleController.updateRolePermissions(
+                                  index,
+                                  permission,
+                                  role,
+                                  'permissionIds',
+                                  value,
+                                  permissionController);
+                            }
+                          },
+                        );
+                      }
+
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }),
                 const Text(
                   "Active",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),

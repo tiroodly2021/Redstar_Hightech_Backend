@@ -83,7 +83,7 @@ class SetPermissionView extends GetView<PermissionController> {
                     return ListView.builder(
                         itemCount: controller.permissions.length,
                         itemBuilder: ((context, index) {
-                          if (Get.find<AuthenticationController>()
+                          /*    if (Get.find<AuthenticationController>()
                               .authenticated) {
                             if (permissionIds != null) {
                               if (permissionIds.contains(
@@ -97,7 +97,7 @@ class SetPermissionView extends GetView<PermissionController> {
                                 return Container();
                               }
                             }
-                          }
+                          } */
 
                           return SizedBox(
                             //  height: 50,

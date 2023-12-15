@@ -4,6 +4,7 @@ import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/models/permission_model.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/models/user_model.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/show_role_view.dart';
 import 'package:redstar_hightech_backend/app/modules/category/models/category_model.dart';
@@ -66,7 +67,8 @@ class RoleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final UserController userController = Get.find();
+    Future<List<Permission>?> futureListPermission =
+        roleController.getPermissionByRole(role);
 
     return GestureDetector(
       onTap: (() => Get.to(() => ShowRoleView(role: role))),
@@ -178,6 +180,80 @@ class RoleCard extends StatelessWidget {
                         ],
                       )
                     ]),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8, bottom: 10, top: 10.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Column(
+                      children: const [
+                        SizedBox(
+                          //  width: 100,
+                          child: Text("Permission: ",
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        SizedBox(
+                          width: 150,
+                          child: FutureBuilder(
+                              future: futureListPermission,
+                              builder: (context, snap) {
+                                if (snap.hasError) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+
+                                if (snap.connectionState ==
+                                    ConnectionState.done) {
+                                  List<Permission>? permissions =
+                                      snap.data as List<Permission>;
+
+                                  return ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: permissions.length,
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(
+                                            bottom: 8.0,
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              const SizedBox(
+                                                width: 4,
+                                              ),
+                                              const Text(
+                                                "-",
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              const SizedBox(
+                                                width: 4,
+                                              ),
+                                              Text(permissions[index]
+                                                  .description),
+                                            ],
+                                          ),
+                                        );
+                                      });
+                                }
+
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }),
+                        )
+                      ],
+                    )
+                  ],
+                ),
               )
             ],
           ),

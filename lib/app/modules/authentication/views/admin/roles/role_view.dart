@@ -30,6 +30,8 @@ class RoleView extends GetView<RoleController> {
 
   @override
   Widget build(BuildContext context) {
+    _pullRefresh();
+
     return Scaffold(
         appBar: AppBarWidget(
           title: 'Roles',
