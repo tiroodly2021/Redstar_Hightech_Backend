@@ -203,32 +203,29 @@ class AddUserView extends GetView<UserController> {
                           }
 
                           User user = User(
-                              buildNumber: '',
-                              createdAt: DateTime.now().toString(),
-                              email: controller.addEmailController.text,
-                              lastLogin: '',
-                              name: controller.addNameController.text,
-                              password: generateMd5(
-                                  controller.addPasswordController.text),
-                              photoURL: imageLink != ''
-                                  ? imageLink
-                                  : controller.imageLink.value,
-                              roles: Map.castFrom(controller.role.value.toMap()
+                            buildNumber: '',
+                            createdAt: DateTime.now().toString(),
+                            email: controller.addEmailController.text,
+                            lastLogin: '',
+                            name: controller.addNameController.text,
+                            password: generateMd5(
+                                controller.addPasswordController.text),
+                            photoURL: imageLink != ''
+                                ? imageLink
+                                : controller.imageLink.value,
+                            /* roles: Map.castFrom(controller.role.value.toMap()
                                 ..addAll({
                                   'id': controller.role.value.id
-                                })) /* List.castFrom([controller.role.value]) */);
+                                })) */
+                          );
 
-                          //user.roles?.addAll([controller.role.value]);
-
-                          //  print(user.toMap());
-
-                          Role role = Role(
-                              name: roleController.addNameController.text,
-                              description:
-                                  roleController.addDescriptionController.text,
-                              permissionIds: []);
-
-                          _addUserRole(user, roleToAttach);
+                          if (controller.role.value.name == "" &&
+                              controller.role.value.description == "") {
+                            _addUserRole(user, Role(name: '', description: ''));
+                          }
+                          {
+                            _addUserRole(user, controller.role.value);
+                          }
 
                           resetFields();
 
@@ -358,10 +355,17 @@ class AddUserView extends GetView<UserController> {
             onChanged: (value) {
               print(value);
               controller.roleSelected.value = value.toString();
-              roleToAttach =
-                  controller.getRoleFromId(controller.roleSelected.value);
 
-              //controller.roleSelected.value = value.toString();
+              controller.roles.forEach((rl) {
+                if (rl.id!.toString().toLowerCase().trim() ==
+                    value.toString().toLowerCase().trim()) {
+                  controller.role.update((val) {
+                    val!.name = rl.name;
+                    val.id = rl.id;
+                    val.description = rl.description;
+                  });
+                }
+              });
             }),
       ),
     );
@@ -374,7 +378,11 @@ class AddUserView extends GetView<UserController> {
     controller.addEmailController.text = '';
     controller.addNameController.text = '';
     controller.addPasswordController.text = '';
-    // controller.roles.clear();
+    controller.role.update((val) {
+      val!.name = "";
+      val.id = "";
+      val.description = "";
+    });
   }
 
   void resetRoleFields() {

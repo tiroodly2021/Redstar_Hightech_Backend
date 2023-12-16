@@ -52,6 +52,7 @@ class UpdateProductView extends GetView<ProductController> {
 
   @override
   Widget build(BuildContext context) {
+    currentProduct = ModalRoute.of(context)!.settings.arguments as Product;
     return Scaffold(
       appBar: AppBarWidget(
         title: controller.product.value.name,

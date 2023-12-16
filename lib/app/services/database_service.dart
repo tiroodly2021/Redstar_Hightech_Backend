@@ -340,7 +340,21 @@ class DatabaseService {
     return _firebaseFirestore.collection('users').doc(user.uid).delete();
   }
 
-  Future<void> updateUser(User user) {
+  Future<void> updateUser(User user, Role role) async {
+    await _firebaseFirestore
+        .collection('users')
+        .doc(user.uid)
+        .update(user.toMap());
+
+    if (role.name != "" && role.description != "") {
+      return _firebaseFirestore
+          .collection('users')
+          .doc(user.uid)
+          .collection('roles')
+          .doc(role.id)
+          .set(role.toMap());
+    }
+
     return _firebaseFirestore
         .collection('users')
         .doc(user.uid)
@@ -442,12 +456,13 @@ class DatabaseService {
         .delete();
   }
 
-  Stream<Role> getRoleById(String value) {
-    return _firebaseFirestore
+  Future<Role> getRoleById(String value) async {
+    return await _firebaseFirestore
         .collection('roles')
         .doc(value)
         .snapshots()
-        .map((role) => Role.fromSnapShot(role));
+        .map((role) => Role.fromSnapShot(role))
+        .first;
   }
 
   /*  void loadPermissionByRole(Role role) {

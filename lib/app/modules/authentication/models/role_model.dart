@@ -6,8 +6,8 @@ import 'package:equatable/equatable.dart';
 import 'permission_model.dart';
 
 class Role extends Equatable {
-  final String name;
-  final String description;
+  String name;
+  String description;
   String? id;
   List<String>? permissionIds;
   List<Permission>? permissions;

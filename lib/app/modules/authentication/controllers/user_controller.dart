@@ -52,7 +52,6 @@ class UserController extends GetxController {
 
   void userList() async {
     count.bindStream(database.getCount('users', 'UserController'));
-
     users.bindStream(database.getUsers());
     roles.bindStream(database.getRoles());
   }
@@ -71,10 +70,10 @@ class UserController extends GetxController {
     return listRoles;
   }
 
-  Role getRoleFromId(String str) {
-    role.bindStream(database.getRoleById(str));
+  Future<Role> getRoleFromId(String str) {
+    Future<Role> futureRole = database.getRoleById(str);
 
-    return role.value;
+    return futureRole;
   }
 
   void addUserRole(User user, Role role) async {
@@ -92,7 +91,14 @@ class UserController extends GetxController {
     Get.toNamed(AppPages.UPDATE_USER, arguments: user);
   }
 
-  void editUser(User user) async {
-    databaseService.updateUser(user);
+  void editUser(User user, {Role? role}) async {
+    print(user.toMap());
+    print(
+        "***********************************************************************");
+    if (role != null) {
+      print(role.toMap());
+    }
+
+    //databaseService.updateUser(user, role);
   }
 }

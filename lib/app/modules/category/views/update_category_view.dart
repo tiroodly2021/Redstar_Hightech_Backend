@@ -46,6 +46,7 @@ class UpdateCategoryView extends GetView<CategoryController> {
 
   @override
   Widget build(BuildContext context) {
+    currentCategory = ModalRoute.of(context)!.settings.arguments as Category;
     return Scaffold(
       appBar: AppBarWidget(
         title: controller.category.value.name,

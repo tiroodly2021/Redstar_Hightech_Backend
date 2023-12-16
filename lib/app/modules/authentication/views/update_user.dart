@@ -42,11 +42,12 @@ class UpdateUserView extends GetView<UserController> {
   RoleController roleController = Get.put(RoleController());
   late XFile? imageDataFile = null;
   User? currentUser;
+  Role roleToAttach = Role(name: '', description: '');
 
   UpdateUserView({Key? key, this.currentUser}) : super(key: key);
 
-  void _editUser(User user) {
-    controller.editUser(user);
+  void _editUser(User user, {Role? role}) {
+    controller.editUser(user, role: role);
   }
 
   void _addRole(Role role) {
@@ -55,6 +56,8 @@ class UpdateUserView extends GetView<UserController> {
 
   @override
   Widget build(BuildContext context) {
+    currentUser = ModalRoute.of(context)!.settings.arguments as User;
+
     return Scaffold(
       appBar: AppBarWidget(
         title: controller.user.value.name,
@@ -209,15 +212,20 @@ class UpdateUserView extends GetView<UserController> {
                                       ? generateMd5(
                                           controller.addPasswordController.text)
                                       : controller.user.value.password,
-                              roles: controller.role.value.id != null
+                              /* roles: controller.role.value.id != null
                                   ? Map.castFrom(controller.role.value.toMap()
                                     ..addAll({'id': controller.role.value.id}))
-                                  : currentUser!.roles,
+                                  : currentUser!.roles, */
                               photoURL: imageLink != ''
                                   ? imageLink
                                   : controller.imageLink.value);
 
-                          _editUser(user);
+                          if (controller.role.value.name == "" &&
+                              controller.role.value.description == "") {
+                            _editUser(user);
+                          } else {
+                            _editUser(user, role: controller.role.value);
+                          }
 
                           resetFields();
 
@@ -370,7 +378,7 @@ class UpdateUserView extends GetView<UserController> {
         width: 300,
         child: DropdownButtonFormField(
             value: controller.roleSelected.value != ""
-                ? controller.roleSelected.value
+                ? controller.role.value.id
                 : '',
             iconSize: 20,
             decoration: InputDecoration(labelText: label),
@@ -379,10 +387,18 @@ class UpdateUserView extends GetView<UserController> {
                     DropdownMenuItem(value: drop.id, child: Text(drop.name)))
                 .toList(),
             onChanged: (value) {
-              print(value);
               controller.roleSelected.value = value.toString();
-              controller.getRoleFromId(controller.roleSelected.value);
-              //controller.roleSelected.value = value.toString();
+
+              controller.roles.forEach((rl) {
+                if (rl.id!.toString().toLowerCase().trim() ==
+                    value.toString().toLowerCase().trim()) {
+                  controller.role.update((val) {
+                    val!.name = rl.name;
+                    val.id = rl.id;
+                    val.description = rl.description;
+                  });
+                }
+              });
             }),
       ),
     );
@@ -395,7 +411,11 @@ class UpdateUserView extends GetView<UserController> {
     controller.addEmailController.text = '';
     controller.addNameController.text = '';
     controller.addPasswordController.text = '';
-    // controller.roles.clear();
+    controller.role.update((val) {
+      val!.name = "";
+      val.id = "";
+      val.description = "";
+    });
   }
 
   void resetRoleFields() {
