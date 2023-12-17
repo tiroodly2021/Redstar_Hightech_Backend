@@ -77,7 +77,9 @@ class SetPermissionView extends GetView<PermissionController> {
               ),
               Expanded(
                 child: Obx(() {
-                  List<String>? permissionIds = currentRole!.permissionIds;
+                  List<String>? permissionIds = currentRole!.permissions!
+                      .map((e) => e.id!)
+                      .toList(); //currentRole!.permissionIds;
 
                   if (controller.permissions.isNotEmpty) {
                     return ListView.builder(

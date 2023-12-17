@@ -213,19 +213,9 @@ class AddUserView extends GetView<UserController> {
                             photoURL: imageLink != ''
                                 ? imageLink
                                 : controller.imageLink.value,
-                            /* roles: Map.castFrom(controller.role.value.toMap()
-                                ..addAll({
-                                  'id': controller.role.value.id
-                                })) */
                           );
 
-                          if (controller.role.value.name == "" &&
-                              controller.role.value.description == "") {
-                            _addUserRole(user, Role(name: '', description: ''));
-                          }
-                          {
-                            _addUserRole(user, controller.role.value);
-                          }
+                          _addUserRole(user, controller.role.value);
 
                           resetFields();
 
@@ -264,8 +254,7 @@ class AddUserView extends GetView<UserController> {
 
               Role role = Role(
                   name: roleController.addNameController.text,
-                  description: roleController.addDescriptionController.text,
-                  permissionIds: []);
+                  description: roleController.addDescriptionController.text);
 
               _addRole(role);
 
@@ -353,7 +342,6 @@ class AddUserView extends GetView<UserController> {
                     DropdownMenuItem(value: drop.id, child: Text(drop.name)))
                 .toList(),
             onChanged: (value) {
-              print(value);
               controller.roleSelected.value = value.toString();
 
               controller.roles.forEach((rl) {
@@ -378,6 +366,7 @@ class AddUserView extends GetView<UserController> {
     controller.addEmailController.text = '';
     controller.addNameController.text = '';
     controller.addPasswordController.text = '';
+    controller.roleSelected.value = '';
     controller.role.update((val) {
       val!.name = "";
       val.id = "";
@@ -388,6 +377,5 @@ class AddUserView extends GetView<UserController> {
   void resetRoleFields() {
     roleController.addNameController.text = '';
     roleController.addDescriptionController.text = '';
-    controller.roleSelected.value = '';
   }
 }

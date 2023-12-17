@@ -100,8 +100,7 @@ class AddRoleView extends GetView<RoleController> {
                         Role role = Role(
                             name: controller.addNameController.text,
                             description:
-                                controller.addDescriptionController.text,
-                            permissionIds: []);
+                                controller.addDescriptionController.text);
                         _addRole(role);
 
                         resetFields();

@@ -25,7 +25,7 @@ class UserController extends GetxController {
       email: '',
       lastLogin: '',
       name: '',
-      roles: {}).obs;
+      roles: []).obs;
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
@@ -77,6 +77,13 @@ class UserController extends GetxController {
   }
 
   void addUserRole(User user, Role role) async {
+    /*  print(user.toMap());
+
+    print(
+        "***************************************************************************************************");
+
+    print(role.toMap()..addAll({"id": role.id})); */
+
     databaseService.addUserRole(user, role);
 
     //  print(user.toMap());
@@ -88,17 +95,18 @@ class UserController extends GetxController {
   }
 
   void toUpdateUserView(User user) async {
+    print(roleSelected.value);
     Get.toNamed(AppPages.UPDATE_USER, arguments: user);
   }
 
-  void editUser(User user, {Role? role}) async {
-    print(user.toMap());
+  void editUser(User user, Role role) async {
+   /*  print(user.toMap());
     print(
         "***********************************************************************");
     if (role != null) {
       print(role.toMap());
-    }
+    } */
 
-    //databaseService.updateUser(user, role);
+    databaseService.updateUser(user, role);
   }
 }

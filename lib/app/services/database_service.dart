@@ -323,16 +323,29 @@ class DatabaseService {
   }
 
   Future<void> addUserRole(User user, Role role) async {
-    String uid =
-        (await _firebaseFirestore.collection('users').add(user.toMap())).id;
+    String roleId = role.id!;
+    String roleName = role.name;
+    String roleDescription = role.description;
+    Map<String, dynamic> roleMap = {
+      'name': roleName,
+      'description': roleDescription
+    };
 
-    if (role.name != "" && role.description != "") {
-      return _firebaseFirestore
-          .collection('users')
-          .doc(uid)
-          .collection('roles')
-          .doc(role.id)
-          .set(role.toMap());
+    if (roleId != "") {
+      if (roleId != "" && roleName != "" && roleDescription != "") {
+        String uid =
+            (await _firebaseFirestore.collection('users').add(user.toMap())).id;
+
+        return _firebaseFirestore
+            .collection('users')
+            .doc(uid)
+            .collection('roles')
+            .doc(roleId)
+            .set(roleMap);
+      }
+    } else {
+      String uid =
+          (await _firebaseFirestore.collection('users').add(user.toMap())).id;
     }
   }
 
@@ -341,24 +354,66 @@ class DatabaseService {
   }
 
   Future<void> updateUser(User user, Role role) async {
+    String uid = user.uid!;
+    String roleId = role.id!;
+    String roleName = role.name;
+    String roleDescription = role.description;
+    Map<String, dynamic> roleMap = {
+      'name': roleName,
+      'description': roleDescription
+    };
+
     await _firebaseFirestore
         .collection('users')
         .doc(user.uid)
         .update(user.toMap());
 
-    if (role.name != "" && role.description != "") {
-      return _firebaseFirestore
+    if (roleId != "" && roleName != "" && roleDescription != "") {
+      await _firebaseFirestore
           .collection('users')
-          .doc(user.uid)
+          .doc(uid)
           .collection('roles')
-          .doc(role.id)
-          .set(role.toMap());
-    }
+          .get()
+          .then((value) {
+        value.docs.forEach((element) {
+          _firebaseFirestore
+              .collection('users')
+              .doc(uid)
+              .collection('roles')
+              .doc(element.id)
+              .delete()
+              .then((value) {
+            print("success");
+          });
+        });
+      });
 
-    return _firebaseFirestore
-        .collection('users')
-        .doc(user.uid)
-        .update(user.toMap());
+      return await _firebaseFirestore
+          .collection('users')
+          .doc(uid)
+          .collection('roles')
+          .doc(roleId)
+          .set(roleMap);
+    } else {
+      await _firebaseFirestore
+          .collection('users')
+          .doc(uid)
+          .collection('roles')
+          .get()
+          .then((value) {
+        value.docs.forEach((element) {
+          _firebaseFirestore
+              .collection('users')
+              .doc(uid)
+              .collection('roles')
+              .doc(element.id)
+              .delete()
+              .then((value) {
+            print("success");
+          });
+        });
+      });
+    }
   }
 
   Stream<List<Product>> getProductsByCategory(Category category) {

@@ -28,7 +28,7 @@ class AuthorizationMiddleware extends GetMiddleware {
 
   static bool checkPermission(AuthenticationController authController,
       UserController userController, String route) {
-    PermissionController permissionController = Get.put(PermissionController());
+    /* PermissionController permissionController = Get.put(PermissionController());
     RoleController roleController = Get.put(RoleController());
 
     List<String> allPermissions = [];
@@ -77,14 +77,14 @@ class AuthorizationMiddleware extends GetMiddleware {
             Get.find<AuthenticationController>().authenticated)) {
       print("Page authorized route: ${route}");
       return true;
-    }
+    } */
 
-    return false;
+    return true;
   }
 
   @override
   RouteSettings? redirect(String? route) {
-    PermissionController permissionController = Get.put(PermissionController());
+    /* PermissionController permissionController = Get.put(PermissionController());
     RoleController roleController = Get.put(RoleController());
 
     List<String> allPermissions = [];
@@ -142,7 +142,9 @@ class AuthorizationMiddleware extends GetMiddleware {
     } else {
       print("Page not authorization");
       return const RouteSettings(name: Routes.LOGIN);
-    }
+    } */
+
+    return null;
   }
 
   //This function will be called  before anything created we can use it to

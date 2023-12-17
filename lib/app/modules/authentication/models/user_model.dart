@@ -11,8 +11,7 @@ class User {
   final String email;
   final String lastLogin;
   final String name;
-  /*  final String role; */
-  Map<String, dynamic>? roles;
+  List<Role>? roles;
 
   List<Device>? devices;
 
@@ -26,7 +25,6 @@ class User {
       required this.email,
       required this.lastLogin,
       required this.name,
-      /*  required this.role, */
       this.roles,
       this.uid,
       this.photoURL,
@@ -39,8 +37,6 @@ class User {
           String? email,
           String? lastLogin,
           String? name,
-          /*  String? role, */
-          Map<String, dynamic>? roles,
           String? uid,
           String? photoURL}) =>
       User(
@@ -49,7 +45,6 @@ class User {
           email: email ?? this.email,
           lastLogin: lastLogin ?? this.lastLogin,
           name: name ?? this.name,
-          roles: roles ?? this.roles,
           uid: uid ?? this.uid,
           photoURL: photoURL ?? this.photoURL);
 
@@ -63,7 +58,6 @@ class User {
       email: json["email"],
       lastLogin: json["lastSignInTime"],
       name: json["displayName"],
-      roles: json["roles"],
       uid: json["uid"],
       photoURL: json["photoURL"]);
 
@@ -73,7 +67,6 @@ class User {
         "email": email,
         "lastSignInTime": lastLogin,
         "displayName": name,
-        "roles": roles,
         "uid": uid,
         "photoURL": photoURL
       };
@@ -85,8 +78,6 @@ class User {
         email: snap["email"],
         lastLogin: snap["lastSignInTime"],
         name: snap["displayName"],
-        roles:
-            snap["roles"], //List<Role>.from(snap['roles']), // snap["roles"],
         uid: snap.id,
         photoURL: snap["photoURL"],
         password: snap["password"]);
@@ -99,7 +90,6 @@ class User {
         email: map["email"],
         lastLogin: map["lastSignInTime"],
         name: map["displayName"],
-        roles: map["roles"],
         password: map["password"],
         uid: map["uid"],
         photoURL: map["photoURL"]);
@@ -112,7 +102,6 @@ class User {
       "email": email,
       "lastSignInTime": lastLogin,
       "displayName": name,
-      "roles": roles, //!.map((role) => role.id).toList(),
       "photoURL": photoURL,
       "password": password,
       "uid": uid

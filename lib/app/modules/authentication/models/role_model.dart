@@ -9,26 +9,19 @@ class Role extends Equatable {
   String name;
   String description;
   String? id;
-  List<String>? permissionIds;
+
   List<Permission>? permissions;
 
   Role(
       {required this.name,
       this.id,
       required this.description,
-      this.permissionIds,
       this.permissions});
 
-  Role copyWith(
-          {String? name,
-          String? id,
-          String? description,
-          List<String>? permissionIds}) =>
-      Role(
-          id: id ?? this.id,
-          name: name ?? this.name,
-          description: description ?? this.description,
-          permissionIds: permissionIds ?? this.permissionIds);
+  Role copyWith({String? name, String? id, String? description}) => Role(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      description: description ?? this.description);
 
   factory Role.fromRawJson(String str) => Role.fromJson(json.decode(str));
 
@@ -41,30 +34,16 @@ class Role extends Equatable {
 
   factory Role.fromSnapShot(DocumentSnapshot snap) {
     return Role(
-        id: snap.id,
-        name: snap["name"],
-        description: snap["description"],
-        permissionIds: List<String>.from(snap['permissionIds']
-            as List) /* snap["permissions"] as List<Permission>? */
-
-        );
+        id: snap.id, name: snap["name"], description: snap["description"]);
   }
 
   factory Role.fromMap(Map<String, dynamic> map) {
     return Role(
-      id: map['id'],
-      name: map["name"],
-      description: map["description"],
-      permissionIds: List<String>.from(map["permissionIds"]),
-    );
+        id: map['id'], name: map["name"], description: map["description"]);
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      "name": name,
-      "description": description,
-      "permissionIds": permissionIds
-    };
+    return {"name": name, "description": description};
   }
 
   @override

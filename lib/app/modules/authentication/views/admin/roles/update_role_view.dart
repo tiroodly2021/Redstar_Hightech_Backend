@@ -96,8 +96,7 @@ class UpdateRoleView extends GetView<RoleController> {
                     Role role = Role(
                         id: currentRole!.id,
                         name: controller.addNameController.text,
-                        description: controller.addDescriptionController.text,
-                        permissionIds: []);
+                        description: controller.addDescriptionController.text);
                     _editRole(role);
 
                     resetFields();

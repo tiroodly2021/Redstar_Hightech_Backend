@@ -46,8 +46,8 @@ class UpdateUserView extends GetView<UserController> {
 
   UpdateUserView({Key? key, this.currentUser}) : super(key: key);
 
-  void _editUser(User user, {Role? role}) {
-    controller.editUser(user, role: role);
+  void _editUser(User user, Role role) {
+    controller.editUser(user, role);
   }
 
   void _addRole(Role role) {
@@ -212,21 +212,20 @@ class UpdateUserView extends GetView<UserController> {
                                       ? generateMd5(
                                           controller.addPasswordController.text)
                                       : controller.user.value.password,
-                              /* roles: controller.role.value.id != null
-                                  ? Map.castFrom(controller.role.value.toMap()
-                                    ..addAll({'id': controller.role.value.id}))
-                                  : currentUser!.roles, */
                               photoURL: imageLink != ''
                                   ? imageLink
                                   : controller.imageLink.value);
 
-                          if (controller.role.value.name == "" &&
+                          /*  if (controller.role.value.id == "" &&
+                              controller.role.value.name == "" &&
                               controller.role.value.description == "") {
-                            _editUser(user);
+                           
+                            print("Role empty");
                           } else {
-                            _editUser(user, role: controller.role.value);
+                            print("ooo  " + controller.role.value.description);
                           }
-
+ */
+                          _editUser(user, controller.role.value);
                           resetFields();
 
                           Navigator.pop(context);
@@ -264,8 +263,7 @@ class UpdateUserView extends GetView<UserController> {
 
               Role role = Role(
                   name: roleController.addNameController.text,
-                  description: roleController.addDescriptionController.text,
-                  permissionIds: []);
+                  description: roleController.addDescriptionController.text);
 
               _addRole(role);
 
@@ -372,14 +370,19 @@ class UpdateUserView extends GetView<UserController> {
   }
 
   Padding DropDownWidgetList(RxList<Role> dropLists, field, label) {
+    RxList<Role> ll = <Role>[].obs;
+
+    ll.add(Role(id: '', name: '', description: ''));
+
+    dropLists = ll + dropLists;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: SizedBox(
         width: 300,
         child: DropdownButtonFormField(
-            value: controller.roleSelected.value != ""
-                ? controller.role.value.id
-                : '',
+            value:
+                controller.role.value.id != "" ? controller.role.value.id : '',
             iconSize: 20,
             decoration: InputDecoration(labelText: label),
             items: dropLists
@@ -411,6 +414,7 @@ class UpdateUserView extends GetView<UserController> {
     controller.addEmailController.text = '';
     controller.addNameController.text = '';
     controller.addPasswordController.text = '';
+    controller.roleSelected.value = '';
     controller.role.update((val) {
       val!.name = "";
       val.id = "";
@@ -421,6 +425,5 @@ class UpdateUserView extends GetView<UserController> {
   void resetRoleFields() {
     roleController.addNameController.text = '';
     roleController.addDescriptionController.text = '';
-    controller.roleSelected.value = '';
   }
 }

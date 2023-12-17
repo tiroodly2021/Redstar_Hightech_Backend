@@ -29,13 +29,18 @@ class UserCard extends StatelessWidget {
   UserController userController;
   List<Device>? devices;
 
+  Role? role;
+
   UserCard(
       {Key? key,
       required this.user,
       required this.index,
       required this.userController,
-      this.devices})
-      : super(key: key);
+      this.devices,
+      Role? xxx})
+      : super(key: key) {
+    role = xxx ?? Role(id: "", name: "", description: "");
+  }
 
   Future<void> _onDeleteData(BuildContext context, User user) async {
     if (AuthorizationMiddleware.checkPermission(
@@ -63,7 +68,38 @@ class UserCard extends StatelessWidget {
     userController.user.value = user;
     userController.addEmailController.text = user.email;
     userController.addNameController.text = user.name;
-    userController.roleSelected.value = user.roles!.values.toList()[2];
+
+    if (role != null) {
+      userController.roleSelected.update((val) {
+        val = role!.id;
+      });
+      userController.role.update((val) {
+        val!.name = role!.name;
+        val.id = role!.id;
+        val.description = role!.description;
+      });
+
+      // print(userController.roleSelected.value + "  --  " + role!.name);
+    } else {
+      userController.roleSelected.update((val) {
+        val = "";
+      });
+    }
+
+    // userController.roleSelected.value = user.roles!.;
+
+    /*   userController.roles.forEach((rl) {
+      if (rl.id!.toString().toLowerCase().trim() ==
+          value.toString().toLowerCase().trim()) {
+        userController.roleSelected.value = rl.id!;
+        userController.role.update((val) {
+          val!.name = rl.name;
+          val.id = rl.id;
+          val.description = rl.description;
+        });
+      }
+    });
+ */
     userController.imageLink.value = user.photoURL!;
 
     userController.toUpdateUserView(user);
@@ -294,6 +330,8 @@ class UserCard extends StatelessWidget {
                                             shrinkWrap: true,
                                             itemCount: roles.length,
                                             itemBuilder: (context, index) {
+                                              role = roles[index];
+
                                               return Text(roles[index].name);
                                             });
                                       }
