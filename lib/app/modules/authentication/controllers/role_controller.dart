@@ -47,6 +47,15 @@ class RoleController extends GetxController {
     return listPermissions;
   }
 
+  List<Permission>? getPermissionByRoleAsReal(Role role) {
+    RxList<Permission> permissionLists = <Permission>[].obs;
+    final listPermissions =
+        databaseService.getPermissionByRoleAsStream(role).asStream();
+    permissionLists.bindStream(listPermissions);
+
+    return permissionLists;
+  }
+
   void addRole(Role role) async {
     databaseService.addRole(role);
   }

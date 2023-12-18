@@ -116,7 +116,41 @@ class DatabaseService {
     return roles;
   }
 
+  Stream<List<Role>> getRoleByUserASStream(User user) {
+    final userCollection = _firebaseFirestore.collection('users');
+    final roles = userCollection
+        .doc(user.uid)
+        .collection('roles')
+        .snapshots()
+        .map((event) => event.docs.map((e) => Role.fromSnapShot(e)).toList());
+
+    return roles;
+
+    /*   final userCollection = _firebaseFirestore.collection('users');
+
+    cloud_firestore.QuerySnapshot<Map<String, dynamic>> devicesQuerySnap =
+        await userCollection.doc(user.uid).collection('roles').get();
+
+    List<Role> roles =
+        devicesQuerySnap.docs.map((role) => Role.fromSnapShot(role)).toList();
+
+    return roles; */
+  }
+
   Future<List<Permission>?> getPermissionByRole(Role role) async {
+    final userCollection = _firebaseFirestore.collection('roles');
+
+    cloud_firestore.QuerySnapshot<Map<String, dynamic>> devicesQuerySnap =
+        await userCollection.doc(role.id).collection('permissions').get();
+
+    List<Permission> permissions = devicesQuerySnap.docs
+        .map((permission) => Permission.fromSnapShot(permission))
+        .toList();
+
+    return permissions;
+  }
+
+  Future<List<Permission>> getPermissionByRoleAsStream(Role role) async {
     final userCollection = _firebaseFirestore.collection('roles');
 
     cloud_firestore.QuerySnapshot<Map<String, dynamic>> devicesQuerySnap =

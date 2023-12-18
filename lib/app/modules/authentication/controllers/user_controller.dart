@@ -44,6 +44,8 @@ class UserController extends GetxController {
 
   RxList<Device> devices = <Device>[].obs;
 
+  RxMap userRoles = {}.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -68,6 +70,18 @@ class UserController extends GetxController {
     final listRoles = databaseService.getRoleByUser(user);
 
     return listRoles;
+  }
+
+  List<Role> getRoleByUserAsReal(User user) {
+    // devices.bindStream(Stream.fromFuture(database.getDeviceByUser(user)));
+    RxList<Role> roleLists = <Role>[].obs;
+
+    print("avant bind");
+    roleLists.bindStream(databaseService.getRoleByUserASStream(user));
+
+    print('test:   ${roleLists.first}');
+
+    return roleLists;
   }
 
   Future<Role> getRoleFromId(String str) {
@@ -100,7 +114,7 @@ class UserController extends GetxController {
   }
 
   void editUser(User user, Role role) async {
-   /*  print(user.toMap());
+    /*  print(user.toMap());
     print(
         "***********************************************************************");
     if (role != null) {

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/constants/const.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/bindings/permission_binding.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/bindings/role_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/permission_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/role_controller.dart';
@@ -84,12 +85,13 @@ class AuthorizationMiddleware extends GetMiddleware {
 
   @override
   RouteSettings? redirect(String? route) {
-    /* PermissionController permissionController = Get.put(PermissionController());
+    PermissionController permissionController = Get.put(PermissionController());
     RoleController roleController = Get.put(RoleController());
 
     List<String> allPermissions = [];
     List<User> usersList = [];
-    List<Role> allRoles = [];
+    List<Role> allRoles = roleController.roles;
+
     Role roleToTest = Role(id: '', name: '', description: '');
 
     if (Get.find<AuthenticationController>().user != null) {
@@ -101,9 +103,24 @@ class AuthorizationMiddleware extends GetMiddleware {
                 authController.user!.email!.toLowerCase())
             .toList();
 
+        print("userList ${usersList[0].toMap()}");
+
+        /*    print(
+            "user from middleware : ${userController.getRoleByUserAsReal(usersList[0])} "); */
+/* 
+        print(
+            'Roles disponible ${userController.roles.value.map((role) => "${role.id} -- ${role.name} -- ${role.description}")}');
+ */
+        return null;
+
+/* 
         if (usersList.isNotEmpty) {
-          roleToTest = Role.fromMap(usersList[0].roles!);
-        }
+
+
+          roleToTest = userController.getRoleByUserAsReal(usersList[0]) != null
+              ? userController.getRoleByUserAsReal(usersList[0])[0]
+              : Role(id: '', name: '', description: '');
+        } */
 
         List<Role> roles = authController.authenticated
             ? roleController.roles
@@ -115,9 +132,9 @@ class AuthorizationMiddleware extends GetMiddleware {
             ? roles.first
             : Role(id: "", description: '', name: '');
 
-        if (role.permissionIds != null) {
-          if (role.permissionIds!.isNotEmpty) {
-            for (var id in role.permissionIds!) {
+        if (roleController.getPermissionByRoleAsReal(role) != null) {
+          if (roleController.getPermissionByRoleAsReal(role)!.isNotEmpty) {
+            for (var id in roleController.getPermissionByRoleAsReal(role)!) {
               permissionController.permissions.value.forEach((element) {
                 if (element.id == id) {
                   allPermissions.add(element.description);
@@ -142,9 +159,9 @@ class AuthorizationMiddleware extends GetMiddleware {
     } else {
       print("Page not authorization");
       return const RouteSettings(name: Routes.LOGIN);
-    } */
+    }
 
-    return null;
+    //return null;
   }
 
   //This function will be called  before anything created we can use it to
@@ -169,7 +186,7 @@ class AuthorizationMiddleware extends GetMiddleware {
   // Here we can change Bindings for this page.
   @override
   List<Bindings>? onBindingsStart(List<Bindings>? bindings) {
-    bindings = [HomeBinding(), PermissionBinding()];
+    bindings = [HomeBinding(), PermissionBinding(), RoleBinding()];
     return super.onBindingsStart(bindings);
   }
 
