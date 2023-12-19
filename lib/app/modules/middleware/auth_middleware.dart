@@ -29,125 +29,29 @@ class AuthorizationMiddleware extends GetMiddleware {
 
   static bool checkPermission(AuthenticationController authController,
       UserController userController, String route) {
-    /* PermissionController permissionController = Get.put(PermissionController());
-    RoleController roleController = Get.put(RoleController());
+    List<String> permissionStringLists =
+        authController.userPermission.map((e) => e.description).toList();
 
-    List<String> allPermissions = [];
-
-    List<Role> roles = authController.authenticated
-        ? roleController.roles
-            .where((role) =>
-                role.id ==
-                Role.fromMap(userController.users.value
-                        .where((user) =>
-                            user.email.toLowerCase() ==
-                            authController.user!.email!.toLowerCase())
-                        .toList()[0]
-                        .roles!)
-                    .id)
-            .toList()
-        : [];
-    Role role = roles.isNotEmpty
-        ? roles.first
-        : Role(id: "", description: '', name: '');
-
-    if (role.permissionIds != null) {
-      if (role.permissionIds!.isNotEmpty) {
-        for (var id in role.permissionIds!) {
-          permissionController.permissions.value.forEach((element) {
-            if (element.id == id) {
-              allPermissions.add(element.description);
-            }
-          });
-        }
-      }
-    }
-
-    print('all premission ${allPermissions}');
-    print('authenticated: ${authController.authenticated}');
-    print(
-        ' (Get.find<AuthenticationController>().user!.email == superUserEmail &&Get.find<AuthenticationController>().authenticated) : ' +
-            (Get.find<AuthenticationController>().user!.email!.toLowerCase() ==
-                        superUserEmail.toLowerCase() &&
-                    Get.find<AuthenticationController>().authenticated)
-                .toString());
-
-    if (allPermissions.contains(route.replaceAll("/", " ")) ||
+    if (permissionStringLists.contains(route.replaceAll("/", " ")) ||
         (Get.find<AuthenticationController>().user!.email!.toLowerCase() ==
                 superUserEmail.toLowerCase() &&
             Get.find<AuthenticationController>().authenticated)) {
       print("Page authorized route: ${route}");
       return true;
-    } */
+    }
 
-    return true;
+    return false;
   }
 
   @override
   RouteSettings? redirect(String? route) {
-    PermissionController permissionController = Get.put(PermissionController());
-    RoleController roleController = Get.put(RoleController());
+    print('permissions list ${authController.userPermission} ');
 
-    List<String> allPermissions = [];
-    List<User> usersList = [];
-    List<Role> allRoles = roleController.roles;
-
-    Role roleToTest = Role(id: '', name: '', description: '');
-
-    if (Get.find<AuthenticationController>().user != null) {
-      if (Get.find<AuthenticationController>().user!.email!.toLowerCase() !=
-          superUserEmail.toLowerCase()) {
-        usersList = userController.users.value
-            .where((user) =>
-                user.email.toLowerCase() ==
-                authController.user!.email!.toLowerCase())
-            .toList();
-
-        print("userList ${usersList[0].toMap()}");
-
-        /*    print(
-            "user from middleware : ${userController.getRoleByUserAsReal(usersList[0])} "); */
-/* 
-        print(
-            'Roles disponible ${userController.roles.value.map((role) => "${role.id} -- ${role.name} -- ${role.description}")}');
- */
-        return null;
-
-/* 
-        if (usersList.isNotEmpty) {
-
-
-          roleToTest = userController.getRoleByUserAsReal(usersList[0]) != null
-              ? userController.getRoleByUserAsReal(usersList[0])[0]
-              : Role(id: '', name: '', description: '');
-        } */
-
-        List<Role> roles = authController.authenticated
-            ? roleController.roles
-                .where((role) => role.id == roleToTest.id)
-                .toList()
-            : [];
-
-        Role role = roles.isNotEmpty
-            ? roles.first
-            : Role(id: "", description: '', name: '');
-
-        if (roleController.getPermissionByRoleAsReal(role) != null) {
-          if (roleController.getPermissionByRoleAsReal(role)!.isNotEmpty) {
-            for (var id in roleController.getPermissionByRoleAsReal(role)!) {
-              permissionController.permissions.value.forEach((element) {
-                if (element.id == id) {
-                  allPermissions.add(element.description);
-                }
-              });
-            }
-          }
-        }
-      }
-    }
+    List<String> permissionStringLists =
+        authController.userPermission.map((e) => e.description).toList();
 
     if (authController.authenticated == true && route != Routes.LOGIN) {
-      if (allPermissions.contains(route?.replaceAll("/", " ")) ||
+      if (permissionStringLists.contains(route?.replaceAll("/", " ")) ||
           (Get.find<AuthenticationController>().user!.email!.toLowerCase() ==
                   superUserEmail.toLowerCase() &&
               Get.find<AuthenticationController>().authenticated)) {
@@ -160,8 +64,6 @@ class AuthorizationMiddleware extends GetMiddleware {
       print("Page not authorization");
       return const RouteSettings(name: Routes.LOGIN);
     }
-
-    //return null;
   }
 
   //This function will be called  before anything created we can use it to
@@ -170,10 +72,10 @@ class AuthorizationMiddleware extends GetMiddleware {
   GetPage? onPageCalled(GetPage? page) {
     print('>>> Page ${page!.name} called');
 
-    /* print(
+    print(
         '>>> User ${authController.user != null ? authController.user!.email : ''} logged');
 
-    print('>>> Authenticated : ${authController.authenticated} ');*/
+    print('>>> Authenticated : ${authController.authenticated} ');
 
     authController.user != null
         ? page.copyWith(arguments: {'user': authController.user!.email})

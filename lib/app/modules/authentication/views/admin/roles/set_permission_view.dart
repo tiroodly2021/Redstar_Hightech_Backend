@@ -77,46 +77,66 @@ class SetPermissionView extends GetView<PermissionController> {
               ),
               Expanded(
                 child: Obx(() {
-                  List<String>? permissionIds = currentRole!.permissions!
-                      .map((e) => e.id!)
-                      .toList(); //currentRole!.permissionIds;
+                  /*   print(
+                      "permissions all length: ${controller.permissions.length}"); */
+                  return ListView.builder(
+                      itemCount: controller.permissions.length,
+                      itemBuilder: ((context, index) {
+                        // print(currentRole!.toMap());
 
-                  if (controller.permissions.isNotEmpty) {
-                    return ListView.builder(
-                        itemCount: controller.permissions.length,
-                        itemBuilder: ((context, index) {
-                          /*    if (Get.find<AuthenticationController>()
-                              .authenticated) {
-                            if (permissionIds != null) {
-                              if (permissionIds.contains(
-                                          controller.permissions[index].id) ==
-                                      false &&
-                                  (Get.find<AuthenticationController>()
-                                          .user!
-                                          .email!
-                                          .toLowerCase() !=
-                                      superUserEmail.toLowerCase())) {
-                                return Container();
+                        return FutureBuilder(
+                            future:
+                                controller.getPermissionByRole(currentRole!),
+                            builder: (context, asyncSnap) {
+                              if (asyncSnap.hasError) {
+                                return const Center(
+                                  child: Text("Unknown Error"),
+                                );
                               }
-                            }
-                          } */
 
-                          return SizedBox(
-                            //  height: 50,
-                            child: SetPermissionCard(
-                                permission: controller.permissions[index],
-                                index: index,
-                                role: currentRole!,
-                                permissionController: controller),
-                          );
-                        }));
-                  }
+                              if (asyncSnap.connectionState ==
+                                  ConnectionState.done) {
+                                List<Permission> permissions =
+                                    asyncSnap.data as List<Permission>;
+                                List<String> permissionsStringList =
+                                    permissions.map((e) => e.id!).toList();
 
-                  return ListNotFound(
-                      route: AppPages.INITIAL,
-                      message: "There are not permissions in the list",
-                      info: "Go Back",
-                      imageUrl: "assets/images/empty.png");
+                                if (permissions.isEmpty) {
+                                  return ListNotFound(
+                                      route: AppPages.INITIAL,
+                                      message:
+                                          "There are not permissions in the list",
+                                      info: "Go Back",
+                                      imageUrl: "assets/images/empty.png");
+                                }
+
+                                if (Get.find<AuthenticationController>()
+                                    .authenticated) {
+                                  if (permissionsStringList.contains(controller
+                                              .permissions[index].id) ==
+                                          false &&
+                                      (Get.find<AuthenticationController>()
+                                              .user!
+                                              .email!
+                                              .toLowerCase() !=
+                                          superUserEmail.toLowerCase())) {
+                                    return Container();
+                                  }
+                                }
+
+                                return SizedBox(
+                                  //  height: 50,
+                                  child: SetPermissionCard(
+                                      permission: controller.permissions[index],
+                                      index: index,
+                                      role: currentRole!,
+                                      permissionController: controller),
+                                );
+                              }
+
+                              return Container();
+                            });
+                      }));
                 }),
               )
             ],

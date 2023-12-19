@@ -52,6 +52,11 @@ class PermissionController extends GetxController {
     roles.bindStream(database.getRolesByName());
   }
 
+  Future<List<Permission>?> getPermissionByRole(Role role) {
+    final listPermissions = databaseService.getPermissionByRole(role);
+    return listPermissions;
+  }
+
   void permissionList() async {
     permissions.bindStream(database.getPermissions());
   }

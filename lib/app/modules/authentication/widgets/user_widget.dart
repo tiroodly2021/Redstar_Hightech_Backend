@@ -381,7 +381,6 @@ class UserCard extends StatelessWidget {
                                         List<Device>? devices =
                                             snap.data as List<Device>;
 
-                                        print(devices);
                                         return ListView.builder(
                                             shrinkWrap: true,
                                             itemCount: devices.length,

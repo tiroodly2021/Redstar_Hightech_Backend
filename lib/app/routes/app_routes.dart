@@ -29,7 +29,7 @@ abstract class Routes {
 
   static const ROLE = _Paths.ROLE;
   static const ADD_ROLE = _Paths.ADD_ROLE;
-  static const UPDATE_ROLE = _Paths.ADD_ROLE;
+  static const UPDATE_ROLE = _Paths.UPDATE_ROLE;
   static const SHOW_ROLE = _Paths.SHOW_ROLE;
 
   static const PERMISSION = _Paths.PERMISSION;

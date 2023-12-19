@@ -34,7 +34,7 @@ class UserView extends GetView<UserController> {
 
   @override
   Widget build(BuildContext context) {
-    controller.userList();
+    // controller.userList();
 
     return Scaffold(
         appBar: AppBarWidget(

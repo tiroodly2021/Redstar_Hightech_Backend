@@ -4,18 +4,18 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:redstar_hightech_backend/app/constants/const.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/controllers/role_controller.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
+
 import 'package:redstar_hightech_backend/app/modules/authentication/models/user_model.dart'
     as localModel;
+import 'package:redstar_hightech_backend/app/services/database_service.dart';
 
-import '../../../routes/app_pages.dart';
 import '../../home/views/home_view.dart';
+import '../models/permission_model.dart';
 import '../models/role_model.dart';
 import '../views/login_view.dart';
 
@@ -24,6 +24,11 @@ import 'dart:convert';
 
 class AuthenticationController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  DatabaseService databaseService = DatabaseService();
+  RxList<Role> roles = <Role>[].obs;
+  Role _role = Role(name: '', description: '', id: '');
+
+  List<Permission> _permissions = <Permission>[];
 
   GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['email']);
   // static final FacebookLogin facebookSsignIn = new FacebookLogin();
@@ -47,7 +52,17 @@ class AuthenticationController extends GetxController {
 
   String? get imageurl => _firebaseUser.value?.photoURL;
 
+  getUserRole() {}
+
   bool get authenticated => user != null ? true : false;
+
+  Role get userRole => _role;
+
+  set userRole(value) => _role = value;
+
+  List<Permission> get userPermission => _permissions;
+
+  set userPermission(value) => _permissions = value;
 
   set authenticated(value) => _authenticated.value = value;
 
@@ -57,25 +72,57 @@ class AuthenticationController extends GetxController {
 
     _initPackageInfo();
 
-    print(" Auth Change :   ${_auth.currentUser}");
-
-    /*    ever(_authenticated, (bool value) {
-      if (value) {
-        username = user!.email;
-      }
-    }); */
+    checkUserRolePermission();
 
     super.onInit();
   }
 
+  checkUserRolePermission() async {
+    final referenceUser = FirebaseFirestore.instance.collection("users");
+
+    final ftLocalUser = await referenceUser
+        .where('email', isEqualTo: email)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => localModel.User.fromSnapShot(doc))
+            .toList())
+        .first;
+
+    if (ftLocalUser.isNotEmpty) {
+      String? uid = ftLocalUser[0].uid;
+
+      final _role = await referenceUser
+          .doc(uid)
+          .collection('roles')
+          .snapshots()
+          .map((snapshot) =>
+              snapshot.docs.map((doc) => Role.fromSnapShot(doc)).toList())
+          .first;
+
+      final referenceRole = FirebaseFirestore.instance.collection("roles");
+
+      if (_role.isNotEmpty) {
+        _permissions = (await referenceRole
+                .doc(_role[0].id)
+                .collection('permissions')
+                .get())
+            .docs
+            .map((e) => Permission.fromSnapShot(e))
+            .toList();
+      }
+    }
+  }
+
   void login(String email, String password) async {
-    var userController = Get.find<UserController>();
-    var authController = Get.find<AuthenticationController>();
     await _auth
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) => Get.offAll(() => HomeView()))
-        .catchError(
-            (onError) => Get.snackbar("Error while sign in ", onError.message));
+        // ignore: invalid_return_type_for_catch_error
+        .catchError((onError) => Get.snackbar(
+            "Error while sign in ", onError.message,
+            margin: const EdgeInsets.all(10),
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.orange));
   }
 
   void signout() async {

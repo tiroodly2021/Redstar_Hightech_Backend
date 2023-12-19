@@ -515,7 +515,6 @@ class DatabaseService {
   }
 
   Future<void> updateRolePermissions(Role role, String s) {
-    print(role.toMap());
     return _firebaseFirestore
         .collection('roles')
         .doc(role.id)
