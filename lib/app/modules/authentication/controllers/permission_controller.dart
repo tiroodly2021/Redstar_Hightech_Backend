@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
 
@@ -63,10 +64,18 @@ class PermissionController extends GetxController {
 
   void addPermission(Permission permission) async {
     databaseService.addPermission(permission);
+    AuthenticationController authController =
+        Get.find<AuthenticationController>();
+    authController.checkUserRolePermission();
+    notifyChildrens();
   }
 
   void deletePermission(Permission permission) async {
     databaseService.deletePermission(permission);
+    AuthenticationController authController =
+        Get.find<AuthenticationController>();
+    authController.checkUserRolePermission();
+    notifyChildrens();
   }
 
   /* void toUpdatePermissionView(Permission permission) async {

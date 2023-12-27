@@ -28,7 +28,7 @@ class AuthenticationController extends GetxController {
   RxList<Role> roles = <Role>[].obs;
   Role _role = Role(name: '', description: '', id: '');
 
-  List<Permission> _permissions = <Permission>[];
+  RxList<Permission> _permissions = <Permission>[].obs;
 
   GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['email']);
   // static final FacebookLogin facebookSsignIn = new FacebookLogin();
@@ -52,27 +52,27 @@ class AuthenticationController extends GetxController {
 
   String? get imageurl => _firebaseUser.value?.photoURL;
 
-  getUserRole() {}
-
   bool get authenticated => user != null ? true : false;
 
   Role get userRole => _role;
 
   set userRole(value) => _role = value;
 
-  List<Permission> get userPermission => _permissions;
+  RxList<Permission> get userPermission => _permissions;
 
   set userPermission(value) => _permissions = value;
 
   set authenticated(value) => _authenticated.value = value;
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     _firebaseUser.bindStream(_auth.authStateChanges());
 
     _initPackageInfo();
 
     checkUserRolePermission();
+
+    _auth.currentUser?.reload();
 
     super.onInit();
   }
@@ -80,6 +80,17 @@ class AuthenticationController extends GetxController {
   checkUserRolePermission() async {
     final referenceUser = FirebaseFirestore.instance.collection("users");
 
+    /*  print("user uid email is: ${email}");
+
+    final ftLocalUser =
+        referenceUser.where('email', isEqualTo: email).get().then((value) {
+      print('user from authController:  ${value.docs.length} ');
+
+      if (value.docs.isNotEmpty) {
+        localModel.User user = localModel.User.fromSnapShot(value.docs.first);
+      }
+    });
+ */
     final ftLocalUser = await referenceUser
         .where('email', isEqualTo: email)
         .snapshots()
@@ -102,7 +113,7 @@ class AuthenticationController extends GetxController {
       final referenceRole = FirebaseFirestore.instance.collection("roles");
 
       if (_role.isNotEmpty) {
-        _permissions = (await referenceRole
+        _permissions.value = (await referenceRole
                 .doc(_role[0].id)
                 .collection('permissions')
                 .get())
@@ -146,7 +157,7 @@ class AuthenticationController extends GetxController {
     Map<String, dynamic> userdata = {
       "buildNumber": _packageInfo.buildNumber,
       "createdAt": DateTime.now().toString(),
-      "email": email,
+      "email": email.toLowerCase(),
       "lastSignInTime": DateTime.now().toString(),
       "displayName": firstname + ' ' + lastname,
       "roles": Map.castFrom(mmp),
@@ -155,7 +166,7 @@ class AuthenticationController extends GetxController {
     };
 
     final ftLocalUser = await reference
-        .where('email', isEqualTo: email)
+        .where('email', isEqualTo: email.toLowerCase())
         .snapshots()
         .map((snapshot) => snapshot.docs
             .map((doc) => localModel.User.fromSnapShot(doc))
@@ -164,7 +175,8 @@ class AuthenticationController extends GetxController {
 
     if (ftLocalUser.length == 0) {
       await _auth
-          .createUserWithEmailAndPassword(email: email, password: password)
+          .createUserWithEmailAndPassword(
+              email: email.toLowerCase(), password: password)
           .then((value) {
         reference.add(userdata).then((value) async {
           await _saveDevice(user);

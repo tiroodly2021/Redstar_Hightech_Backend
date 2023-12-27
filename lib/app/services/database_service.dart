@@ -1,5 +1,8 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart' as cloud_firestore;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/models/permission_model.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/models/role_model.dart';
 import 'package:redstar_hightech_backend/app/modules/category/models/category_model.dart';
@@ -471,7 +474,22 @@ class DatabaseService {
   }
 
   Future<void> deleteRole(Role role) {
-    return _firebaseFirestore.collection('roles').doc(role.id).delete();
+    _firebaseFirestore.collection('roles').doc(role.id).delete();
+
+    return _firebaseFirestore.collection('users').get().then((users) {
+      users.docs.forEach((userDoc) {
+        User user = User.fromSnapShot(userDoc);
+
+        _firebaseFirestore
+            .collection('users')
+            .doc(user.uid)
+            .collection('roles')
+            .doc(role.id)
+            .delete();
+      });
+    });
+
+    // return
   }
 
   Future<void> updateRole(Role role) {
@@ -492,10 +510,29 @@ class DatabaseService {
   }
 
   Future<void> deletePermission(Permission permission) {
-    return _firebaseFirestore
-        .collection('permissions')
-        .doc(permission.id)
-        .delete();
+    _firebaseFirestore.collection('permissions').doc(permission.id).delete();
+
+    return _firebaseFirestore.collection('roles').get().then((roles) {
+      roles.docs.forEach((roleDoc) {
+        Role role = Role.fromSnapShot(roleDoc);
+
+        _firebaseFirestore
+            .collection('roles')
+            .doc(role.id)
+            .collection('permissions')
+            .get()
+            .then((value) {
+          value.docs.forEach((element) {
+            _firebaseFirestore
+                .collection('roles')
+                .doc(role.id)
+                .collection('permissions')
+                .doc(permission.id)
+                .delete();
+          });
+        });
+      });
+    });
   }
 
   Future<void> updatePermission(Permission permission) {

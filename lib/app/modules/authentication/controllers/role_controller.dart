@@ -11,6 +11,7 @@ import 'package:redstar_hightech_backend/app/services/database_service.dart';
 
 import '../models/role_model.dart';
 import '../views/admin/roles/update_role_view.dart';
+import 'authentication_controller.dart';
 
 class RoleController extends GetxController {
   DatabaseService databaseService = DatabaseService();
@@ -76,8 +77,6 @@ class RoleController extends GetxController {
 
   updateRolePermissions(int index, Permission permission, Role role, String s,
       bool value, PermissionController permissionController) {
-    print(value);
-
     if (value) {
       database.addPermissionbyRole(role, permission);
     } else if (!value) {
@@ -85,11 +84,11 @@ class RoleController extends GetxController {
     }
 
     permissionController.permissions[index] = permission;
+
+    Get.find<AuthenticationController>().onInit();
   }
 
   Future<List<Permission>?> loadPermissionByRole(Role role) {
-    final listPermissions = databaseService.getPermissionByRole(role);
-
-    return listPermissions;
+    return databaseService.getPermissionByRole(role);
   }
 }

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/bindings/authentication_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/add_role_view.dart';
 
@@ -24,13 +25,13 @@ Future<void> main() async {
 
   await Hive.openBox('storage');
 
-  Get.put(AuthenticationController());
-
   runApp(
     GetMaterialApp(
       title: "Application",
+
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
+
       //home: AddRoleView(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

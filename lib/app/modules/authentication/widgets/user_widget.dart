@@ -78,28 +78,12 @@ class UserCard extends StatelessWidget {
         val.id = role!.id;
         val.description = role!.description;
       });
-
-      // print(userController.roleSelected.value + "  --  " + role!.name);
     } else {
       userController.roleSelected.update((val) {
         val = "";
       });
     }
 
-    // userController.roleSelected.value = user.roles!.;
-
-    /*   userController.roles.forEach((rl) {
-      if (rl.id!.toString().toLowerCase().trim() ==
-          value.toString().toLowerCase().trim()) {
-        userController.roleSelected.value = rl.id!;
-        userController.role.update((val) {
-          val!.name = rl.name;
-          val.id = rl.id;
-          val.description = rl.description;
-        });
-      }
-    });
- */
     userController.imageLink.value = user.photoURL!;
 
     userController.toUpdateUserView(user);

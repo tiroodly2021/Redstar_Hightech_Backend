@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/constants/const.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/bindings/permission_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/bindings/role_binding.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/bindings/user_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/permission_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/role_controller.dart';
@@ -20,11 +21,19 @@ import '../authentication/models/role_model.dart';
 import '../authentication/models/user_model.dart';
 import '../authentication/views/login_view.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:redstar_hightech_backend/app/modules/authentication/models/user_model.dart'
+    as localModel;
+
 class AuthorizationMiddleware extends GetMiddleware {
   @override
   int? get priority => 2;
 
-  final authController = Get.find<AuthenticationController>();
+  late List<Permission> permissions;
+
+  final authController = Get.put(
+      AuthenticationController()); //Get.find<AuthenticationController>();
   final userController = Get.put(UserController());
 
   static bool checkPermission(AuthenticationController authController,
@@ -72,10 +81,14 @@ class AuthorizationMiddleware extends GetMiddleware {
   GetPage? onPageCalled(GetPage? page) {
     print('>>> Page ${page!.name} called');
 
+    //authController.checkUserRolePermission();
+
     print(
-        '>>> User ${authController.user != null ? authController.user!.email : ''} logged');
+        '>>> User ${authController.user != null ? authController.user : ''} logged');
 
     print('>>> Authenticated : ${authController.authenticated} ');
+
+    Get.find<AuthenticationController>().onInit();
 
     authController.user != null
         ? page.copyWith(arguments: {'user': authController.user!.email})
@@ -88,7 +101,12 @@ class AuthorizationMiddleware extends GetMiddleware {
   // Here we can change Bindings for this page.
   @override
   List<Bindings>? onBindingsStart(List<Bindings>? bindings) {
-    bindings = [HomeBinding(), PermissionBinding(), RoleBinding()];
+    bindings = [
+      HomeBinding(),
+      PermissionBinding(),
+      RoleBinding(),
+      UserBinding()
+    ];
     return super.onBindingsStart(bindings);
   }
 

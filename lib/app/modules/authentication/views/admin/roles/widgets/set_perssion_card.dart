@@ -131,9 +131,9 @@ class SetPermissionCard extends StatelessWidget {
                         bool trouve = false;
 
                         permissions.forEach((localPerm) {
-                          /*   print(
-                              "********* local: [${localPerm.description}] perm in list : [${permission.description}] ************ "); */
-
+                          /*  print(
+                              "********* local: [${localPerm.description}] perm in list : [${permission.description}] ************ ");
+ */
                           if (localPerm.description
                                   .toString()
                                   .toLowerCase()

@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 
 import 'package:flutter/material.dart';
 
-import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/constants/const.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
@@ -77,65 +76,24 @@ class SetPermissionView extends GetView<PermissionController> {
               ),
               Expanded(
                 child: Obx(() {
-                  /*   print(
-                      "permissions all length: ${controller.permissions.length}"); */
+                  if (controller.permissions.isEmpty) {
+                    return ListNotFound(
+                        route: AppPages.INITIAL,
+                        message: "There are not permissions in the list",
+                        info: "Go Back",
+                        imageUrl: "assets/images/empty.png");
+                  }
                   return ListView.builder(
                       itemCount: controller.permissions.length,
                       itemBuilder: ((context, index) {
-                        // print(currentRole!.toMap());
-
-                        return FutureBuilder(
-                            future:
-                                controller.getPermissionByRole(currentRole!),
-                            builder: (context, asyncSnap) {
-                              if (asyncSnap.hasError) {
-                                return const Center(
-                                  child: Text("Unknown Error"),
-                                );
-                              }
-
-                              if (asyncSnap.connectionState ==
-                                  ConnectionState.done) {
-                                List<Permission> permissions =
-                                    asyncSnap.data as List<Permission>;
-                                List<String> permissionsStringList =
-                                    permissions.map((e) => e.id!).toList();
-
-                                if (permissions.isEmpty) {
-                                  return ListNotFound(
-                                      route: AppPages.INITIAL,
-                                      message:
-                                          "There are not permissions in the list",
-                                      info: "Go Back",
-                                      imageUrl: "assets/images/empty.png");
-                                }
-
-                                if (Get.find<AuthenticationController>()
-                                    .authenticated) {
-                                  if (permissionsStringList.contains(controller
-                                              .permissions[index].id) ==
-                                          false &&
-                                      (Get.find<AuthenticationController>()
-                                              .user!
-                                              .email!
-                                              .toLowerCase() !=
-                                          superUserEmail.toLowerCase())) {
-                                    return Container();
-                                  }
-                                }
-
-                                return SizedBox(
-                                  //  height: 50,
-                                  child: SetPermissionCard(
-                                      permission: controller.permissions[index],
-                                      index: index,
-                                      role: currentRole!,
-                                      permissionController: controller),
-                                );
-                              }
-
-                              return Container();
-                            });
+                        return SizedBox(
+                          //  height: 50,
+                          child: SetPermissionCard(
+                              permission: controller.permissions[index],
+                              index: index,
+                              role: currentRole!,
+                              permissionController: controller),
+                        );
                       }));
                 }),
               )
