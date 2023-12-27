@@ -170,19 +170,28 @@ class UpdateCategoryView extends GetView<CategoryController> {
                     if (!(imageDataFile == null)) {
                       imageLink = await uploadImageToFirestore(imageDataFile);
                     }
+                    if (controller.addNameController.text != "") {
+                      Category category = Category(
+                          id: currentCategory!.id,
+                          name: controller.addNameController.text,
+                          imageUrl: imageLink != ''
+                              ? imageLink
+                              : controller.imageLink.value);
 
-                    Category category = Category(
-                        id: currentCategory!.id,
-                        name: controller.addNameController.text,
-                        imageUrl: imageLink != ''
-                            ? imageLink
-                            : controller.imageLink.value);
+                      _editCategory(category);
 
-                    _editCategory(category);
+                      resetFields();
 
-                    resetFields();
-
-                    Navigator.pop(context);
+                      Navigator.pop(context);
+                    } else {
+                      Get.showSnackbar(const GetSnackBar(
+                        title: "Info",
+                        message: "Form not valid",
+                        backgroundColor: Colors.red,
+                        duration: Duration(seconds: 3),
+                        margin: EdgeInsets.all(12),
+                      ));
+                    }
                   },
                   child: const Text(
                     "Update",
@@ -195,96 +204,23 @@ class UpdateCategoryView extends GetView<CategoryController> {
     );
   }
 
-  /* _openPopup(context, CategoryController categoryController) {
-    Alert(
-        context: context,
-        title: "NEW CATEGORY",
-        content: Column(
-          children: <Widget>[
-            TextField(
-              decoration: const InputDecoration(
-                //icon: Icon(Icons.account_circle),
-                labelText: 'Name',
-              ),
-              onChanged: (value) {
-                categoryController.newCategory
-                    .update('name', (_) => value, ifAbsent: () => value);
-              },
-            ),
-            const SizedBox(height: 4),
-            SizedBox(
-              height: 60,
-              child: InkWell(
-                onTap: () async {
-                  ImagePicker _picker = ImagePicker();
-                  final XFile? _image =
-                      await _picker.pickImage(source: ImageSource.gallery);
-
-                  if (_image == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text("No Image Selected",
-                            style:
-                                TextStyle(fontSize: 16, color: Colors.red))));
-                  } else {
-                    await storage.uploadImage(_image);
-                    var imageUrl = await storage.getDownloadURL(_image.name);
-                    categoryController.newCategory.update(
-                        "imageUrl", (_) => imageUrl,
-                        ifAbsent: () => imageUrl);
-                    // print(controller.newUser['imageUrl']);
-                  }
-                },
-                child: Card(
-                  color: Colors.black,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.add_circle,
-                            color: Colors.white,
-                          )),
-                      const Text(
-                        "Add Product Image",
-                        style: TextStyle(fontSize: 20, color: Colors.white),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-        buttons: [
-          DialogButton(
-            color: Colors.black,
-            height: 50,
-            onPressed: () {
-              databaseService.addCategory(Category(
-                  name: categoryController.newCategory['name'],
-                  imageUrl: categoryController.newCategory['imageUrl']));
-              Navigator.pop(context);
-            },
-            child: const Text(
-              "Save",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-          )
-        ]).show();
-  } */
-
   Padding _buildTextFormField(
       String hintText, TextEditingController fieldEditingController) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: TextFormField(
-        controller: fieldEditingController,
-        decoration: InputDecoration(hintText: hintText),
-        /* onChanged: (value) {
-          controller.newUser.update(name, (_) => value, ifAbsent: () => value);
-        }, */
-      ),
+          controller: fieldEditingController,
+          decoration: InputDecoration(hintText: hintText),
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator: (value) {
+            if (value == null || value.isEmpty || value.length < 3) {
+              return 'Category Name must contain at least 3 characters';
+            } else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
+              return 'Category cannot contain special characters';
+            }
+
+            return null;
+          }),
     );
   }
 

@@ -179,26 +179,36 @@ class AddProductView extends GetView<ProductController> {
                                 await uploadImageToFirestore(imageDataFile);
                           }
 
-                          Product product = Product(
-                              name: controller.addNameController.text,
-                              description:
-                                  controller.addDescriptionController.text,
-                              category: controller.categorySelected.value,
-                              imageUrl: imageLink != ''
-                                  ? imageLink
-                                  : controller.imageLink.value,
-                              price: controller.slideList['price'],
-                              quantity:
-                                  controller.slideList['quantity'].toInt(),
-                              isPopular: controller.checkList['isPopular'],
-                              isRecommended:
-                                  controller.checkList['isRecommended']);
+                          if (controller.addNameController.text != "") {
+                            Product product = Product(
+                                name: controller.addNameController.text,
+                                description:
+                                    controller.addDescriptionController.text,
+                                category: controller.categorySelected.value,
+                                imageUrl: imageLink != ''
+                                    ? imageLink
+                                    : controller.imageLink.value,
+                                price: controller.slideList['price'],
+                                quantity:
+                                    controller.slideList['quantity'].toInt(),
+                                isPopular: controller.checkList['isPopular'],
+                                isRecommended:
+                                    controller.checkList['isRecommended']);
 
-                          _addProduct(product);
+                            _addProduct(product);
 
-                          resetFields();
+                            resetFields();
 
-                          Navigator.pop(context);
+                            Navigator.pop(context);
+                          } else {
+                            Get.showSnackbar(const GetSnackBar(
+                              title: "Info",
+                              message: "Form not valid",
+                              backgroundColor: Colors.red,
+                              duration: Duration(seconds: 3),
+                              margin: EdgeInsets.all(12),
+                            ));
+                          }
                         },
                         child: const Text(
                           "Save",

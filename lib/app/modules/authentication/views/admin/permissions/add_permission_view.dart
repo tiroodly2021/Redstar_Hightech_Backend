@@ -112,22 +112,32 @@ class AddPermissionView extends GetView<PermissionController> {
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(primary: Colors.black),
                         onPressed: () async {
-                          Permission permission = Permission(
-                              /*   read: controller.checkList['isRead'] ?? false,
+                          if (controller.addDescriptionController.text != "") {
+                            Permission permission = Permission(
+                                /*   read: controller.checkList['isRead'] ?? false,
                               write: controller.checkList['isWrite'] ?? false,
                               delete: controller.checkList['isDelete'] ?? false,
                             */
-                              description: controller.routeNameSelected
-                                  .value /* controller.addDescriptionController
+                                description: controller.routeNameSelected
+                                    .value /* controller.addDescriptionController
                                   .text  */ /* ,
                               role: controller.roleSelected.value */
-                              );
+                                );
 
-                          _addPermission(permission);
+                            _addPermission(permission);
 
-                          resetFields();
+                            resetFields();
 
-                          Navigator.pop(context);
+                            Navigator.pop(context);
+                          } else {
+                            Get.showSnackbar(const GetSnackBar(
+                              title: "Info",
+                              message: "Form not valid",
+                              backgroundColor: Colors.red,
+                              duration: Duration(seconds: 3),
+                              margin: EdgeInsets.all(12),
+                            ));
+                          }
                         },
                         child: const Text(
                           "Save",
@@ -293,12 +303,18 @@ class AddPermissionView extends GetView<PermissionController> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: TextFormField(
-        controller: fieldEditingController,
-        decoration: InputDecoration(hintText: hintText),
-        /* onChanged: (value) {
-          controller.newUser.update(name, (_) => value, ifAbsent: () => value);
-        }, */
-      ),
+          controller: fieldEditingController,
+          decoration: InputDecoration(hintText: hintText),
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator: (value) {
+            if (value == null || value.isEmpty || value.length < 3) {
+              return 'Field must contain at least 3 characters';
+            } else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
+              return 'Field cannot contain special characters';
+            }
+
+            return null;
+          }),
     );
   }
 

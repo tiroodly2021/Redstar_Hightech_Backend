@@ -200,35 +200,39 @@ class UpdateUserView extends GetView<UserController> {
                                 await uploadImageToFirestore(imageDataFile);
                           }
 
-                          User user = User(
-                              uid: currentUser!.uid,
-                              buildNumber: '',
-                              createdAt: currentUser!.createdAt,
-                              email: controller.addEmailController.text,
-                              lastLogin: '',
-                              name: controller.addNameController.text,
-                              password:
-                                  controller.addPasswordController.text != ''
-                                      ? generateMd5(
-                                          controller.addPasswordController.text)
-                                      : controller.user.value.password,
-                              photoURL: imageLink != ''
-                                  ? imageLink
-                                  : controller.imageLink.value);
+                          if (controller.addNameController.text != "" &&
+                              controller.addEmailController.text != "" &&
+                              controller.addPasswordController.text != "") {
+                            User user = User(
+                                uid: currentUser!.uid,
+                                buildNumber: '',
+                                createdAt: currentUser!.createdAt,
+                                email: controller.addEmailController.text,
+                                lastLogin: '',
+                                name: controller.addNameController.text,
+                                password: controller
+                                            .addPasswordController.text !=
+                                        ''
+                                    ? generateMd5(
+                                        controller.addPasswordController.text)
+                                    : controller.user.value.password,
+                                photoURL: imageLink != ''
+                                    ? imageLink
+                                    : controller.imageLink.value);
 
-                          /*  if (controller.role.value.id == "" &&
-                              controller.role.value.name == "" &&
-                              controller.role.value.description == "") {
-                           
-                            print("Role empty");
+                            _editUser(user, controller.role.value);
+                            resetFields();
+
+                            Navigator.pop(context);
                           } else {
-                            print("ooo  " + controller.role.value.description);
+                            Get.showSnackbar(const GetSnackBar(
+                              title: "Info",
+                              message: "Form not valid",
+                              backgroundColor: Colors.red,
+                              duration: Duration(seconds: 3),
+                              margin: EdgeInsets.all(12),
+                            ));
                           }
- */
-                          _editUser(user, controller.role.value);
-                          resetFields();
-
-                          Navigator.pop(context);
                         },
                         child: const Text(
                           "Update",
@@ -261,15 +265,26 @@ class UpdateUserView extends GetView<UserController> {
             onPressed: () async {
               String imageLink = '';
 
-              Role role = Role(
-                  name: roleController.addNameController.text,
-                  description: roleController.addDescriptionController.text);
+              if (roleController.addNameController.text != "" &&
+                  roleController.addDescriptionController.text != "") {
+                Role role = Role(
+                    name: roleController.addNameController.text,
+                    description: roleController.addDescriptionController.text);
 
-              _addRole(role);
+                _addRole(role);
 
-              resetRoleFields();
+                resetRoleFields();
 
-              Navigator.pop(context);
+                Navigator.pop(context);
+              } else {
+                Get.showSnackbar(const GetSnackBar(
+                  title: "Info",
+                  message: "Form not valid",
+                  backgroundColor: Colors.red,
+                  duration: Duration(seconds: 3),
+                  margin: EdgeInsets.all(12),
+                ));
+              }
             },
             child: const Text(
               "Save",
@@ -280,16 +295,34 @@ class UpdateUserView extends GetView<UserController> {
   }
 
   Padding _buildTextFormField(
-      String hintText, TextEditingController fieldEditingController) {
+      String hintText, TextEditingController fieldEditingController,
+      {bool isEmail = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: TextFormField(
-        controller: fieldEditingController,
-        decoration: InputDecoration(hintText: hintText),
-        /* onChanged: (value) {
-          controller.newUser.update(name, (_) => value, ifAbsent: () => value);
-        }, */
-      ),
+      child: isEmail
+          ? TextFormField(
+              controller: fieldEditingController,
+              decoration: InputDecoration(hintText: hintText),
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (value) {
+                if (GetUtils.isEmail(value!)) {
+                  return null;
+                }
+                return 'Email required';
+              })
+          : TextFormField(
+              controller: fieldEditingController,
+              decoration: InputDecoration(hintText: hintText),
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (value) {
+                if (value == null || value.isEmpty || value.length < 3) {
+                  return 'Field must contain at least 3 characters';
+                } else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
+                  return 'Field cannot contain special characters';
+                }
+
+                return null;
+              }),
     );
   }
 

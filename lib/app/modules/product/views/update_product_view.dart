@@ -201,30 +201,40 @@ class UpdateProductView extends GetView<ProductController> {
                                   await uploadImageToFirestore(imageDataFile);
                             }
 
-                            Product product = Product(
-                                id: currentProduct!.id,
-                                name: controller.addNameController.text,
-                                description:
-                                    controller.addDescriptionController.text,
-                                category:
-                                    controller.categorySelected.value != ''
-                                        ? controller.categorySelected.value
-                                        : currentProduct!.category,
-                                imageUrl: imageLink != ''
-                                    ? imageLink
-                                    : controller.imageLink.value,
-                                price: controller.slideList['price'],
-                                quantity:
-                                    controller.slideList['quantity'].toInt(),
-                                isPopular: controller.checkList['isPopular'],
-                                isRecommended:
-                                    controller.checkList['isRecommended']);
+                            if (controller.addNameController.text != "") {
+                              Product product = Product(
+                                  id: currentProduct!.id,
+                                  name: controller.addNameController.text,
+                                  description:
+                                      controller.addDescriptionController.text,
+                                  category:
+                                      controller.categorySelected.value != ''
+                                          ? controller.categorySelected.value
+                                          : currentProduct!.category,
+                                  imageUrl: imageLink != ''
+                                      ? imageLink
+                                      : controller.imageLink.value,
+                                  price: controller.slideList['price'],
+                                  quantity:
+                                      controller.slideList['quantity'].toInt(),
+                                  isPopular: controller.checkList['isPopular'],
+                                  isRecommended:
+                                      controller.checkList['isRecommended']);
 
-                            _editProduct(product);
+                              _editProduct(product);
 
-                            resetFields();
+                              resetFields();
 
-                            Navigator.pop(context);
+                              Navigator.pop(context);
+                            } else {
+                              Get.showSnackbar(const GetSnackBar(
+                                title: "Info",
+                                message: "Form not valid",
+                                backgroundColor: Colors.red,
+                                duration: Duration(seconds: 3),
+                                margin: EdgeInsets.all(12),
+                              ));
+                            }
                           },
                           child: const Text(
                             "Save",
@@ -286,15 +296,25 @@ class UpdateProductView extends GetView<ProductController> {
                 imageLink = await uploadImageToFirestore(imageCategoryDataFile);
               }
 
-              Category category = Category(
-                  name: categoryController.addNameController.text,
-                  imageUrl: imageLink != '' ? imageLink : '');
+              if (categoryController.addNameController.text != "") {
+                Category category = Category(
+                    name: categoryController.addNameController.text,
+                    imageUrl: imageLink != '' ? imageLink : '');
 
-              _addCategory(category);
+                _addCategory(category);
 
-              resetCategoryFields();
+                resetCategoryFields();
 
-              Navigator.pop(context);
+                Navigator.pop(context);
+              } else {
+                Get.showSnackbar(const GetSnackBar(
+                  title: "Info",
+                  message: "Form not valid",
+                  backgroundColor: Colors.red,
+                  duration: Duration(seconds: 3),
+                  margin: EdgeInsets.all(12),
+                ));
+              }
             },
             child: const Text(
               "Save",

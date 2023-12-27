@@ -173,7 +173,8 @@ class AddUserView extends GetView<UserController> {
                     height: 10,
                   ),
                   _buildTextFormField("Name", controller.addNameController),
-                  _buildTextFormField("Email", controller.addEmailController),
+                  _buildTextFormField("Email", controller.addEmailController,
+                      isEmail: true),
                   _buildTextFormField(
                       "Password", controller.addPasswordController),
                   Row(
@@ -202,24 +203,36 @@ class AddUserView extends GetView<UserController> {
                                 await uploadImageToFirestore(imageDataFile);
                           }
 
-                          User user = User(
-                            buildNumber: '',
-                            createdAt: DateTime.now().toString(),
-                            email: controller.addEmailController.text,
-                            lastLogin: '',
-                            name: controller.addNameController.text,
-                            password: generateMd5(
-                                controller.addPasswordController.text),
-                            photoURL: imageLink != ''
-                                ? imageLink
-                                : controller.imageLink.value,
-                          );
+                          if (controller.addNameController.text != "" &&
+                              controller.addEmailController.text != "" &&
+                              controller.addPasswordController.text != "") {
+                            User user = User(
+                              buildNumber: '',
+                              createdAt: DateTime.now().toString(),
+                              email: controller.addEmailController.text,
+                              lastLogin: '',
+                              name: controller.addNameController.text,
+                              password: generateMd5(
+                                  controller.addPasswordController.text),
+                              photoURL: imageLink != ''
+                                  ? imageLink
+                                  : controller.imageLink.value,
+                            );
 
-                          _addUserRole(user, controller.role.value);
+                            _addUserRole(user, controller.role.value);
 
-                          resetFields();
+                            resetFields();
 
-                          Navigator.pop(context);
+                            Navigator.pop(context);
+                          } else {
+                            Get.showSnackbar(const GetSnackBar(
+                              title: "Info",
+                              message: "Form not valid",
+                              backgroundColor: Colors.red,
+                              duration: Duration(seconds: 3),
+                              margin: EdgeInsets.all(12),
+                            ));
+                          }
                         },
                         child: const Text(
                           "Save",
@@ -252,15 +265,26 @@ class AddUserView extends GetView<UserController> {
             onPressed: () async {
               String imageLink = '';
 
-              Role role = Role(
-                  name: roleController.addNameController.text,
-                  description: roleController.addDescriptionController.text);
+              if (roleController.addNameController.text != "" &&
+                  roleController.addDescriptionController.text != "") {
+                Role role = Role(
+                    name: roleController.addNameController.text,
+                    description: roleController.addDescriptionController.text);
 
-              _addRole(role);
+                _addRole(role);
 
-              resetRoleFields();
+                resetRoleFields();
 
-              Navigator.pop(context);
+                Navigator.pop(context);
+              } else {
+                Get.showSnackbar(const GetSnackBar(
+                  title: "Info",
+                  message: "Form not valid",
+                  backgroundColor: Colors.red,
+                  duration: Duration(seconds: 3),
+                  margin: EdgeInsets.all(12),
+                ));
+              }
             },
             child: const Text(
               "Save",
@@ -271,16 +295,34 @@ class AddUserView extends GetView<UserController> {
   }
 
   Padding _buildTextFormField(
-      String hintText, TextEditingController fieldEditingController) {
+      String hintText, TextEditingController fieldEditingController,
+      {bool isEmail = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: TextFormField(
-        controller: fieldEditingController,
-        decoration: InputDecoration(hintText: hintText),
-        /* onChanged: (value) {
-          controller.newUser.update(name, (_) => value, ifAbsent: () => value);
-        }, */
-      ),
+      child: isEmail
+          ? TextFormField(
+              controller: fieldEditingController,
+              decoration: InputDecoration(hintText: hintText),
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (value) {
+                if (GetUtils.isEmail(value!)) {
+                  return null;
+                }
+                return 'Email required';
+              })
+          : TextFormField(
+              controller: fieldEditingController,
+              decoration: InputDecoration(hintText: hintText),
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (value) {
+                if (value == null || value.isEmpty || value.length < 3) {
+                  return 'Field must contain at least 3 characters';
+                } else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
+                  return 'Field cannot contain special characters';
+                }
+
+                return null;
+              }),
     );
   }
 

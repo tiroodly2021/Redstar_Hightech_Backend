@@ -18,6 +18,8 @@ class CategoryController extends GetxController {
   RxList<Category> categories = <Category>[].obs;
   RxList<Product> products = <Product>[].obs;
   RxString titleGame = ''.obs;
+  RxString textFieldMessage = ''.obs;
+
   final List<IconData> iconData = <IconData>[Icons.call, Icons.school];
   final Random r = Random();
 
