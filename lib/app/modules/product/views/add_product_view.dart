@@ -44,8 +44,8 @@ class AddProductView extends GetView<ProductController> {
     resetFields();
   }
 
-  void _addProduct(Product product) {
-    controller.addProduct(product);
+  void _addProductWithCategory(Product product, Category category) {
+    controller.addProductWithCategory(product, category);
   }
 
   void _addCategory(Category category) {
@@ -184,7 +184,7 @@ class AddProductView extends GetView<ProductController> {
                                 name: controller.addNameController.text,
                                 description:
                                     controller.addDescriptionController.text,
-                                category: controller.categorySelected.value,
+                                // category: controller.categorySelected.value,
                                 imageUrl: imageLink != ''
                                     ? imageLink
                                     : controller.imageLink.value,
@@ -195,7 +195,10 @@ class AddProductView extends GetView<ProductController> {
                                 isRecommended:
                                     controller.checkList['isRecommended']);
 
-                            _addProduct(product);
+                            //    _addUserRole(user, controller.role.value);
+
+                            _addProductWithCategory(
+                                product, controller.category.value);
 
                             resetFields();
 
@@ -381,7 +384,13 @@ class AddProductView extends GetView<ProductController> {
     return crypto.md5.convert(utf8.encode(input)).toString();
   }
 
-  Padding DropDownWidgetList(dropLists, field, label) {
+  Padding DropDownWidgetList(RxList<Category> dropLists, field, label) {
+    RxList<Category> ll = <Category>[].obs;
+
+    ll.add(Category(id: '', name: '', imageUrl: ''));
+
+    dropLists = ll + dropLists;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: SizedBox(
@@ -389,11 +398,22 @@ class AddProductView extends GetView<ProductController> {
         child: DropdownButtonFormField(
             iconSize: 20,
             decoration: InputDecoration(labelText: label),
-            items: (dropLists as List<String>)
-                .map((drop) => DropdownMenuItem(value: drop, child: Text(drop)))
+            items: (dropLists)
+                .map((drop) =>
+                    DropdownMenuItem(value: drop.id, child: Text(drop.name)))
                 .toList(),
             onChanged: (value) {
               controller.categorySelected.value = value.toString();
+              controller.categories.forEach((rl) {
+                if (rl.id!.toString().toLowerCase().trim() ==
+                    value.toString().toLowerCase().trim()) {
+                  controller.category.update((val) {
+                    val!.name = rl.name;
+                    val.id = rl.id;
+                    val.imageUrl = '';
+                  });
+                }
+              });
             }),
       ),
     );
@@ -468,6 +488,11 @@ class AddProductView extends GetView<ProductController> {
     controller.addNameController.text = '';
     controller.slideList.clear();
     controller.checkList.clear();
+    controller.category.update((val) {
+      val!.name = "";
+      val.id = "";
+      val.imageUrl = "";
+    });
   }
 
   void resetCategoryFields() {

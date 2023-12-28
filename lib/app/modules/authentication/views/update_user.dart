@@ -201,8 +201,7 @@ class UpdateUserView extends GetView<UserController> {
                           }
 
                           if (controller.addNameController.text != "" &&
-                              controller.addEmailController.text != "" &&
-                              controller.addPasswordController.text != "") {
+                              controller.addEmailController.text != "") {
                             User user = User(
                                 uid: currentUser!.uid,
                                 buildNumber: '',

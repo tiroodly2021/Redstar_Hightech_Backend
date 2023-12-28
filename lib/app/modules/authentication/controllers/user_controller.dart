@@ -44,8 +44,6 @@ class UserController extends GetxController {
 
   RxList<Device> devices = <Device>[].obs;
 
-  RxMap userRoles = {}.obs;
-
   @override
   void onInit() {
     super.onInit();
@@ -56,14 +54,6 @@ class UserController extends GetxController {
     count.bindStream(database.getCount('users', 'UserController'));
     users.bindStream(database.getUsers());
     roles.bindStream(database.getRoles());
-
-    print('check users here ${users.reactive.value}');
-
-    users.forEach((user) {
-      RxList<Role> rxRoles = <Role>[].obs;
-      rxRoles.bindStream(databaseService.getRoleByUserASStream(user));
-      userRoles.addAll({user: rxRoles});
-    });
   }
 
   Future<List<Device>?> getDeviceByUser(User user) {
@@ -117,7 +107,6 @@ class UserController extends GetxController {
   }
 
   void toUpdateUserView(User user) async {
-    print(roleSelected.value);
     Get.toNamed(AppPages.UPDATE_USER, arguments: user);
   }
 

@@ -4,9 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class Category extends Equatable {
-  final String? id;
-  final String name;
-  final String imageUrl;
+  String? id;
+  String name;
+  String imageUrl;
   // final List<String>? colors;
 
   Category({this.id, required this.name, required this.imageUrl});

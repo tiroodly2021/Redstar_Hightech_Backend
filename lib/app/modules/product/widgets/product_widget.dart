@@ -14,6 +14,7 @@ import '../../../constants/app_theme.dart';
 import '../../../routes/app_pages.dart';
 import 'package:intl/intl.dart';
 
+import '../../category/models/category_model.dart';
 import '../../middleware/auth_middleware.dart';
 import '../models/product_model.dart';
 
@@ -25,12 +26,17 @@ class ProductCard extends StatelessWidget {
   DatabaseService databaseService = DatabaseService();
   ProductController productController;
 
+  Category? category;
+
   ProductCard(
       {Key? key,
       required this.product,
       required this.index,
-      required this.productController})
-      : super(key: key);
+      required this.productController,
+      Category? xCategory})
+      : super(key: key) {
+    category = xCategory ?? Category(id: "", name: "", imageUrl: "");
+  }
 
   void _onDeleteData(BuildContext context, Product product) {
     if (AuthorizationMiddleware.checkPermission(
@@ -53,7 +59,22 @@ class ProductCard extends StatelessWidget {
     productController.product.value = product;
     productController.addDescriptionController.text = product.description;
     productController.addNameController.text = product.name;
-    productController.categorySelected.value = product.category;
+    // productController.categorySelected.value = product.category;
+    if (category != null) {
+      productController.categorySelected.update((val) {
+        val = category!.id;
+      });
+      productController.category.update((val) {
+        val!.name = category!.name;
+        val.id = category!.id;
+        val.imageUrl = category!.imageUrl;
+      });
+    } else {
+      productController.categorySelected.update((val) {
+        val = "";
+      });
+    }
+
     productController.slideList['price'] = product.price.toDouble();
     productController.slideList['quantity'] = product.quantity.toDouble();
     productController.checkList['isPopular'] = product.isPopular;
@@ -66,6 +87,9 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserController userController = Get.find();
+    Future<List<Category>?> futureCategoryList =
+        productController.getCategoryByProduct(product);
+
     return Card(
       shadowColor: Colors.blueGrey,
       elevation: 3,
@@ -200,10 +224,10 @@ class ProductCard extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    Text(
+                    /*   Text(
                       "Category : " + product.category,
                       style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                    ), */
                     const SizedBox(height: 10),
                     Row(
                       children: [
@@ -280,8 +304,84 @@ class ProductCard extends StatelessWidget {
                           style: const TextStyle(
                               fontSize: 14, fontWeight: FontWeight.bold),
                         ),
+                        SizedBox(
+                          height: 10,
+                        ),
                       ],
-                    )
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Column(
+                            children: const [
+                              SizedBox(
+                                width: 65,
+                                child: Text("Category: ",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              SizedBox(
+                                width: 150,
+                                child: FutureBuilder(
+                                    future: futureCategoryList,
+                                    builder: (context, snap) {
+                                      if (snap.hasError) {
+                                        return const Center(
+                                          child: Text("Error"),
+                                        );
+                                      }
+
+                                      if (snap.connectionState ==
+                                          ConnectionState.active) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(
+                                            color: Colors.green,
+                                          ),
+                                        );
+                                      }
+
+                                      if (snap.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(
+                                            color: Colors.orange,
+                                          ),
+                                        );
+                                      }
+
+                                      if (snap.connectionState ==
+                                          ConnectionState.done) {
+                                        List<Category>? categories =
+                                            snap.data as List<Category>;
+
+                                        return ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: categories.length,
+                                            itemBuilder: (context, index) {
+                                              category = categories[index];
+
+                                              return Text(
+                                                  categories[index].name);
+                                            });
+                                      }
+
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    }),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
                   ],
                 )
               ],

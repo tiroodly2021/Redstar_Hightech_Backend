@@ -22,7 +22,7 @@ import 'add_product_view.dart';
 class ProductView extends GetView<ProductController> {
   var exists;
 
-  Future<void> _pullRefresh() async {
+  Future<void> pullRefresh() async {
     controller.productList();
   }
 
@@ -102,7 +102,7 @@ class ProductView extends GetView<ProductController> {
                         itemCount: controller.products.length,
                         itemBuilder: ((context, index) {
                           return SizedBox(
-                            height: 200,
+                            height: 250,
                             child: ProductCard(
                                 product: controller.products[index],
                                 index: index,

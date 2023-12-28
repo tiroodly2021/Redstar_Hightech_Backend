@@ -45,7 +45,6 @@ class AuthorizationMiddleware extends GetMiddleware {
         (Get.find<AuthenticationController>().user!.email!.toLowerCase() ==
                 superUserEmail.toLowerCase() &&
             Get.find<AuthenticationController>().authenticated)) {
-      print("Page authorized route: ${route}");
       return true;
     }
 
@@ -54,8 +53,6 @@ class AuthorizationMiddleware extends GetMiddleware {
 
   @override
   RouteSettings? redirect(String? route) {
-    print('permissions list ${authController.userPermission} ');
-
     List<String> permissionStringLists =
         authController.userPermission.map((e) => e.description).toList();
 
@@ -64,7 +61,6 @@ class AuthorizationMiddleware extends GetMiddleware {
           (Get.find<AuthenticationController>().user!.email!.toLowerCase() ==
                   superUserEmail.toLowerCase() &&
               Get.find<AuthenticationController>().authenticated)) {
-        print("Page authorized route: ${route!}");
         return null;
       } else if (route == Routes.HOME) {
         return const RouteSettings(name: Routes.LOGIN);
@@ -72,7 +68,6 @@ class AuthorizationMiddleware extends GetMiddleware {
         return const RouteSettings(name: Routes.ACCESS_ERROR);
       }
     } else {
-      print("Page not authorization");
       return const RouteSettings(name: Routes.LOGIN);
     }
   }
@@ -82,13 +77,6 @@ class AuthorizationMiddleware extends GetMiddleware {
   @override
   GetPage? onPageCalled(GetPage? page) {
     print('>>> Page ${page!.name} called');
-
-    //authController.checkUserRolePermission();
-
-    print(
-        '>>> User ${authController.user != null ? authController.user : ''} logged');
-
-    print('>>> Authenticated : ${authController.authenticated} ');
 
     Get.find<AuthenticationController>().onInit();
 
@@ -116,15 +104,12 @@ class AuthorizationMiddleware extends GetMiddleware {
   // Here we can do something after  bindings created and before creating the page widget.
   @override
   GetPageBuilder? onPageBuildStart(GetPageBuilder? page) {
-    print('Bindings of ${page.toString()} are ready');
-
     return super.onPageBuildStart(page);
   }
 
   // Page build and widgets of page will be shown
   @override
   Widget onPageBuilt(Widget page) {
-    print('Widget ${page.toStringShort()} will be showed');
     return super.onPageBuilt(page);
   }
 
@@ -132,7 +117,6 @@ class AuthorizationMiddleware extends GetMiddleware {
   // (Controllers, views, ...) of the page.
   @override
   void onPageDispose() {
-    print('PageDisposed');
     super.onPageDispose();
   }
 

@@ -141,12 +141,7 @@ class UserView extends GetView<UserController> {
                             child: UserCard(
                                 user: user,
                                 index: index,
-                                userController:
-                                    controller /* ,
-                              devices: controller.devices.value != <Device>[]
-                                  ? controller.devices
-                                  : [], */
-                                ),
+                                userController: controller),
                           );
                         }));
                   }

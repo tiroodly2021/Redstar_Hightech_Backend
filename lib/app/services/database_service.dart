@@ -51,8 +51,40 @@ class DatabaseService {
             .toList());
   }
 
-  Future<void> addProduct(Product product) {
-    return _firebaseFirestore.collection('products').add(product.toMap());
+  Future<void> addProductWithCategory(
+      Product product, Category category) async {
+    String categoryId = category.id!;
+    String categoryName = category.name;
+    String categoryImageUrl = category.imageUrl;
+    Map<String, dynamic> categoryMap = {
+      'name': categoryName,
+      'imageUrl': categoryImageUrl
+    };
+
+    print('product is: ${product.toMap()}');
+    print('category with id: ${categoryId} is: ${category.toMap()}');
+
+    if (categoryId != "") {
+      if (categoryId != "" && categoryName != "") {
+        String id = (await _firebaseFirestore
+                .collection('products')
+                .add(product.toMap()))
+            .id;
+
+        return _firebaseFirestore
+            .collection('products')
+            .doc(id)
+            .collection('categories')
+            .doc(categoryId)
+            .set(categoryMap);
+      }
+    } else {
+      String uid =
+          (await _firebaseFirestore.collection('products').add(product.toMap()))
+              .id;
+    }
+
+    // return _firebaseFirestore.collection('products').add(product.toMap());
   }
 
   Future<void> addCategory(Category category) {
@@ -342,21 +374,97 @@ class DatabaseService {
   }
 
   Future<void> deleteCategory(Category category) {
-    return _firebaseFirestore
+    _firebaseFirestore.collection('categories').doc(category.id).delete();
+
+    return _firebaseFirestore.collection('products').get().then((products) {
+      products.docs.forEach((productDoc) {
+        Product product = Product.fromSnapShot(productDoc);
+
+        _firebaseFirestore
+            .collection('products')
+            .doc(product.id)
+            .collection('categories')
+            .doc(category.id)
+            .delete();
+      });
+    });
+
+    /*    return _firebaseFirestore
         .collection('categories')
         .doc(category.id)
-        .delete();
+        .delete(); */
   }
 
   Future<void> deleteProduct(Product product) {
     return _firebaseFirestore.collection('products').doc(product.id).delete();
   }
 
-  Future<void> updateProduct(Product newProduct) {
-    return _firebaseFirestore
+  Future<void> updateProduct(Product newProduct, Category category) async {
+    String id = newProduct.id!;
+    String categoryId = category.id!;
+    String categoryName = category.name;
+    String categoryImageUrl = category.imageUrl;
+    Map<String, dynamic> categoryMap = {
+      'name': categoryName,
+      'imageUrl': categoryImageUrl
+    };
+
+    await _firebaseFirestore
         .collection('products')
         .doc(newProduct.id)
         .update(newProduct.toMap());
+
+    if (categoryId != "" && categoryName != "") {
+      await _firebaseFirestore
+          .collection('products')
+          .doc(id)
+          .collection('categories')
+          .get()
+          .then((value) {
+        value.docs.forEach((element) {
+          _firebaseFirestore
+              .collection('products')
+              .doc(id)
+              .collection('categories')
+              .doc(element.id)
+              .delete()
+              .then((value) {
+            print("success");
+          });
+        });
+      });
+
+      return await _firebaseFirestore
+          .collection('products')
+          .doc(id)
+          .collection('categories')
+          .doc(categoryId)
+          .set(categoryMap);
+    } else {
+      await _firebaseFirestore
+          .collection('products')
+          .doc(id)
+          .collection('categories')
+          .get()
+          .then((value) {
+        value.docs.forEach((element) {
+          _firebaseFirestore
+              .collection('products')
+              .doc(id)
+              .collection('categories')
+              .doc(element.id)
+              .delete()
+              .then((value) {
+            print("success");
+          });
+        });
+      });
+    }
+
+    /*   return _firebaseFirestore
+        .collection('products')
+        .doc(newProduct.id)
+        .update(newProduct.toMap()); */
   }
 
   Future<void> addUserRole(User user, Role role) async {
@@ -590,7 +698,16 @@ class DatabaseService {
         .first;
   }
 
-  /*  void loadPermissionByRole(Role role) {
-    
-  } */
+  Future<List<Category>?> getCategoryByProduct(Product product) {
+    final userCollection = _firebaseFirestore.collection('products');
+
+    /*   cloud_firestore.QuerySnapshot<Map<String, dynamic>>  */ final categoriesQuerySnap =
+        userCollection.doc(product.id).collection('categories').get();
+
+    return categoriesQuerySnap.then((value) => value.docs
+        .map((category) => Category.fromSnapShot(category))
+        .toList()); /*  categoriesQuerySnap.docs
+        .map((category) => Category.fromSnapShot(category))
+        .toList(); */
+  }
 }

@@ -14,6 +14,7 @@ import 'package:redstar_hightech_backend/app/modules/category/models/category_mo
 import 'package:redstar_hightech_backend/app/modules/home/controllers/home_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/product/controllers/product_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
+import 'package:redstar_hightech_backend/app/modules/product/views/product_view.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
 import 'package:redstar_hightech_backend/app/services/storage_services.dart';
@@ -42,8 +43,8 @@ class UpdateProductView extends GetView<ProductController> {
 
   UpdateProductView({Key? key, this.currentProduct}) : super(key: key);
 
-  void _editProduct(Product product) {
-    controller.editProduct(product);
+  void _editProductWithCategory(Product product, Category category) {
+    controller.editProductWithCategory(product, category);
   }
 
   void _addCategory(Category category) {
@@ -53,6 +54,7 @@ class UpdateProductView extends GetView<ProductController> {
   @override
   Widget build(BuildContext context) {
     currentProduct = ModalRoute.of(context)!.settings.arguments as Product;
+
     return Scaffold(
       appBar: AppBarWidget(
         title: controller.product.value.name,
@@ -207,10 +209,10 @@ class UpdateProductView extends GetView<ProductController> {
                                   name: controller.addNameController.text,
                                   description:
                                       controller.addDescriptionController.text,
-                                  category:
+                                  /*  category:
                                       controller.categorySelected.value != ''
                                           ? controller.categorySelected.value
-                                          : currentProduct!.category,
+                                          : currentProduct!.category, */
                                   imageUrl: imageLink != ''
                                       ? imageLink
                                       : controller.imageLink.value,
@@ -221,7 +223,8 @@ class UpdateProductView extends GetView<ProductController> {
                                   isRecommended:
                                       controller.checkList['isRecommended']);
 
-                              _editProduct(product);
+                              _editProductWithCategory(
+                                  product, controller.category.value);
 
                               resetFields();
 
@@ -416,28 +419,47 @@ class UpdateProductView extends GetView<ProductController> {
     return crypto.md5.convert(utf8.encode(input)).toString();
   }
 
-  Padding DropDownWidgetList(dropLists, field, label) {
+  Padding DropDownWidgetList(RxList<Category> dropLists, field, label) {
+    RxList<Category> ll = <Category>[].obs;
+
+    ll.add(Category(id: '', name: '', imageUrl: ''));
+
+    dropLists = ll + dropLists;
+
+    print('selected value: ${controller.category.value.id}');
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: SizedBox(
         width: 300,
         child: DropdownButtonFormField(
-            value: controller.categorySelected.value != ""
-                ? controller.categorySelected.value
+            value: controller.category.value.id != ""
+                ? controller.category.value.id
                 : '',
             iconSize: 20,
             decoration: InputDecoration(labelText: label),
-            items: (dropLists as List<String>)
-                .map((drop) => DropdownMenuItem(value: drop, child: Text(drop)))
+            items: (dropLists)
+                .map((drop) =>
+                    DropdownMenuItem(value: drop.id, child: Text(drop.name)))
                 .toList(),
             onChanged: (value) {
               controller.categorySelected.value = value.toString();
 
-              /*  controller.newUser.update(
-                field,
-                (_) => value,
-                ifAbsent: () => value,
-              ); */
+              print('selected value in the view' +
+                  controller.categorySelected.value);
+
+              controller.categories.forEach((rl) {
+                if (rl.id!.toString().toLowerCase().trim() ==
+                    value.toString().toLowerCase().trim()) {
+                  controller.category.update((val) {
+                    val!.name = rl.name;
+                    val.id = rl.id;
+                    val.imageUrl = '';
+                  });
+                }
+              });
+
+              print('categ select ${controller.category.value.toMap()}');
             }),
       ),
     );
@@ -512,6 +534,14 @@ class UpdateProductView extends GetView<ProductController> {
     controller.addNameController.text = '';
     controller.slideList.clear();
     controller.checkList.clear();
+    controller.category.update((val) {
+      val!.name = "";
+      val.id = "";
+      val.imageUrl = "";
+    });
+    controller.categorySelected.update((val) {
+      val = '';
+    });
   }
 
   void resetCategoryFields() {
