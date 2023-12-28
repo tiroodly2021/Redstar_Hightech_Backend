@@ -112,7 +112,7 @@ class AddPermissionView extends GetView<PermissionController> {
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(primary: Colors.black),
                         onPressed: () async {
-                          if (controller.addDescriptionController.text != "") {
+                          if (controller.routeNameSelected.value != "") {
                             Permission permission = Permission(
                                 /*   read: controller.checkList['isRead'] ?? false,
                               write: controller.checkList['isWrite'] ?? false,

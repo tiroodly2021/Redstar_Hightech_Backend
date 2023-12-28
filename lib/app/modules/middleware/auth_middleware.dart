@@ -66,6 +66,8 @@ class AuthorizationMiddleware extends GetMiddleware {
               Get.find<AuthenticationController>().authenticated)) {
         print("Page authorized route: ${route!}");
         return null;
+      } else if (route == Routes.HOME) {
+        return const RouteSettings(name: Routes.LOGIN);
       } else {
         return const RouteSettings(name: Routes.ACCESS_ERROR);
       }

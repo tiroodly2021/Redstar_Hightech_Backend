@@ -65,14 +65,12 @@ class AuthenticationController extends GetxController {
   set authenticated(value) => _authenticated.value = value;
 
   @override
-  Future<void> onInit() async {
+  onInit() {
     _firebaseUser.bindStream(_auth.authStateChanges());
 
     _initPackageInfo();
 
     checkUserRolePermission();
-
-    _auth.currentUser?.reload();
 
     super.onInit();
   }
