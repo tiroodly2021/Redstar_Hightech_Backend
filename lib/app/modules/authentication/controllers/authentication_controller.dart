@@ -78,17 +78,6 @@ class AuthenticationController extends GetxController {
   checkUserRolePermission() async {
     final referenceUser = FirebaseFirestore.instance.collection("users");
 
-    /*  print("user uid email is: ${email}");
-
-    final ftLocalUser =
-        referenceUser.where('email', isEqualTo: email).get().then((value) {
-      print('user from authController:  ${value.docs.length} ');
-
-      if (value.docs.isNotEmpty) {
-        localModel.User user = localModel.User.fromSnapShot(value.docs.first);
-      }
-    });
- */
     final ftLocalUser = await referenceUser
         .where('email', isEqualTo: email)
         .snapshots()
@@ -145,20 +134,12 @@ class AuthenticationController extends GetxController {
       String firstname, String lastname, String email, String password) async {
     final reference = FirebaseFirestore.instance.collection("users");
 
-    Map<String, dynamic> mmp = {
-      "description": "Simple user",
-      "id": "any",
-      "name": "Staff",
-      "permissionIds": []
-    };
-
     Map<String, dynamic> userdata = {
       "buildNumber": _packageInfo.buildNumber,
       "createdAt": DateTime.now().toString(),
       "email": email.toLowerCase(),
       "lastSignInTime": DateTime.now().toString(),
       "displayName": firstname + ' ' + lastname,
-      "roles": Map.castFrom(mmp),
       "photoURL": "",
       "password": generateMd5(password)
     };

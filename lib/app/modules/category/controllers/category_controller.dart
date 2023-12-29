@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -61,8 +62,18 @@ class CategoryController extends GetxController {
   }
 
   void deleteCategory(Category category) async {
-    print('Category to delete');
+    String imageName = category.imageUrl != '' ? category.imageUrl : '';
+
+    imageName = imageName.split("%2F")[1].split("?")[0];
+
     databaseService.deleteCategory(category);
+    // Create a reference to the file to delete
+    if (imageName != '') {
+      final imageRef =
+          FirebaseStorage.instance.ref().child("images/${imageName}");
+// Delete the file
+      await imageRef.delete();
+    }
   }
 
   void toUpdateCategoryView(Category category) async {

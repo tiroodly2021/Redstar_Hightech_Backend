@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -102,8 +103,19 @@ class UserController extends GetxController {
   }
 
   void deleteUser(User user) async {
-    print('User to delete');
+    String? imageName = user.photoURL != '' ? user.photoURL : '';
+
+    imageName = imageName!.split("%2F")[1].split("?")[0];
+
     databaseService.deleteUser(user);
+
+    // Create a reference to the file to delete
+    if (imageName != '') {
+      final imageRef =
+          FirebaseStorage.instance.ref().child("images/${imageName}");
+// Delete the file
+      await imageRef.delete();
+    }
   }
 
   void toUpdateUserView(User user) async {
