@@ -13,6 +13,7 @@ import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
 import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
 import 'package:redstar_hightech_backend/app/shared/list_not_found.sharedWidgets.dart';
 
+import '../../common/navigation_drawer.dart';
 import '../../product/models/product_model.dart';
 import '../controllers/order_controller.dart';
 import '../models/order_model.dart';
@@ -35,6 +36,7 @@ class OrderView extends GetView<OrderController> {
         menuActionButton: ButtonOptionalMenu(),
         tooltip: 'Search',
       ),
+      drawer: NavigationDrawer(),
       body: Column(
         children: [
           Expanded(

@@ -14,6 +14,7 @@ import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
 import 'package:redstar_hightech_backend/app/shared/list_not_found.sharedWidgets.dart';
 
 import '../../../shared/app_bar_widget.dart';
+import '../../common/navigation_drawer.dart';
 import '../../order/models/order_model.dart';
 import '../../product/models/product_model.dart';
 
@@ -35,6 +36,7 @@ class CancelledOrderView extends GetView<CancelledOrderController> {
         menuActionButton: ButtonOptionalMenu(),
         tooltip: 'Search',
       ),
+      drawer: NavigationDrawer(),
       body: Column(
         children: [
           Expanded(

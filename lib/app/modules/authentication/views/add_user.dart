@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/role_controller.dart';
 
+import '../../common/navigation_drawer.dart';
 import '../models/role_model.dart';
 import '../models/user_model.dart';
 
@@ -72,6 +73,7 @@ class AddUserView extends GetView<UserController> {
         menuActionButton: ButtonOptionalMenu(),
         tooltip: 'Search',
       ),
+      drawer: NavigationDrawer(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10.0),

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/common/navigation_drawer.dart';
 
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
@@ -40,6 +41,7 @@ class ProductView extends GetView<ProductController> {
           menuActionButton: ButtonOptionalMenu(),
           tooltip: 'Search',
         ),
+        drawer: NavigationDrawer(),
         body: Padding(
           padding: const EdgeInsets.all(10),
           child: Column(

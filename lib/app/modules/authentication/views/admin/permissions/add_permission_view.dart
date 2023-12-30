@@ -24,6 +24,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:path/path.dart' as path;
 import 'dart:io';
 
+import '../../../../common/navigation_drawer.dart';
 import '../../../controllers/permission_controller.dart';
 import '../../../controllers/role_controller.dart';
 import '../../../models/permission_model.dart';
@@ -66,6 +67,7 @@ class AddPermissionView extends GetView<PermissionController> {
         menuActionButton: ButtonOptionalMenu(),
         tooltip: 'Search',
       ),
+      drawer: NavigationDrawer(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10.0),

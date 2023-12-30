@@ -20,6 +20,7 @@ import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
 import 'package:redstar_hightech_backend/app/shared/list_not_found.sharedWidgets.dart';
 import 'package:safe_url_check/safe_url_check.dart';
 
+import '../../common/navigation_drawer.dart';
 import '../models/device_model.dart';
 import '../models/user_model.dart';
 
@@ -48,6 +49,7 @@ class UserView extends GetView<UserController> {
           menuActionButton: ButtonOptionalMenu(),
           tooltip: 'Search',
         ),
+        drawer: NavigationDrawer(),
         body: Padding(
           padding: const EdgeInsets.all(10),
           child: Column(

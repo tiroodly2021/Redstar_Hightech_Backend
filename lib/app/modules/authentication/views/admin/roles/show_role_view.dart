@@ -27,6 +27,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:path/path.dart' as path;
 import 'dart:io';
 
+import '../../../../common/navigation_drawer.dart';
 import '../../../../middleware/auth_middleware.dart';
 import '../../../controllers/permission_controller.dart';
 import '../../../controllers/role_controller.dart';
@@ -97,6 +98,7 @@ class ShowRoleView extends GetView<RoleController> {
         menuActionButton: ButtonOptionalMenu(),
         tooltip: 'Search',
       ),
+      drawer: NavigationDrawer(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10.0),

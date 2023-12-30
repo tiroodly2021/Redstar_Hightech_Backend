@@ -13,6 +13,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   IconData? icon;
   Function()? onPressed;
   Function()? onPressedLoginState;
+  Function()? onPressedMenu;
   AuthenticationController? authenticationController;
   dynamic menuActionButton = Container(
     child: Text('Hll'),
@@ -27,13 +28,20 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       this.onPressed,
       this.onPressedLoginState,
       this.authenticationController,
-      this.menuActionButton})
+      this.menuActionButton,
+      this.onPressedMenu})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: const MenuWidget(),
+      /*   leading: IconButton(
+          tooltip: 'Menu',
+          onPressed: onPressedMenu,
+          icon: const Icon(
+            Icons.menu,
+            color: Colors.white,
+          )), */
       actions: [
         IconButton(
             color: Colors.white,

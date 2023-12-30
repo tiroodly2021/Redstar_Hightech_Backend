@@ -13,6 +13,7 @@ import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
 import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
 import 'package:redstar_hightech_backend/app/shared/list_not_found.sharedWidgets.dart';
 
+import '../../common/navigation_drawer.dart';
 import '../../order/controllers/order_controller.dart';
 import '../../order/models/order_model.dart';
 import '../../product/models/product_model.dart';
@@ -35,19 +36,8 @@ class PendingOrderView extends GetView<PendingOrderController> {
         authenticationController: Get.find<AuthenticationController>(),
         menuActionButton: ButtonOptionalMenu(),
         tooltip: 'Search',
-      )
-
-      /* AppBarWidget(
-        title: 'Pending Orders',
-        icon: Icons.search,
-        bgColor: Colors.black,
-        onPressed: () {
-          /*  showSearch(
-                      context: context, delegate: TransactionSearchDelegate()); */
-        },
-        tooltip: 'Search',
-      ) */
-      ,
+      ),
+      drawer: NavigationDrawer(),
       body: Column(
         children: [
           Expanded(

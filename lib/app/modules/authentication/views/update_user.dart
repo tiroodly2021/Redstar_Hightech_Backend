@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../common/navigation_drawer.dart';
 import '../controllers/role_controller.dart';
 import '../models/role_model.dart';
 import '../models/user_model.dart';
@@ -70,6 +71,7 @@ class UpdateUserView extends GetView<UserController> {
         menuActionButton: ButtonOptionalMenu(),
         tooltip: 'Search',
       ),
+      drawer: NavigationDrawer(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10.0),

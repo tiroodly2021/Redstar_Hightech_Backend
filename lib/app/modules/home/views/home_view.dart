@@ -1,3 +1,4 @@
+import 'package:drawerbehavior/drawerbehavior.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -18,6 +19,7 @@ import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
 
 import '../../../shared/button_optional_menu.dart';
 import '../../../shared/menu_widget.dart';
+import '../../common/navigation_drawer.dart';
 import '../../order/controllers/orderstat_controller.dart';
 import '../controllers/home_controller.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -48,7 +50,11 @@ class HomeView extends GetView<HomeController> {
     authenticationController = Get.find<AuthenticationController>();
 
     return Scaffold(
-      appBar: AppBarWidget(
+      appBar: /*  AppBar(
+        title: Text('Chat View'),
+        centerTitle: true,
+      ), */
+          AppBarWidget(
         title: 'Redstar Management',
         icon: Icons.search,
         bgColor: Colors.black,
@@ -60,6 +66,7 @@ class HomeView extends GetView<HomeController> {
         tooltip: 'Search',
       ),
       key: _scaffoldKey,
+      drawer: NavigationDrawer(),
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(

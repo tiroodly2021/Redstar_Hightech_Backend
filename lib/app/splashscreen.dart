@@ -110,7 +110,7 @@ class _SplashScreenState extends State<SplashScreen> {
           context,
           MaterialPageRoute(
             builder: (context) => isInited
-                ? const HomeDrawer()
+                ? HomeView() /* const HomeDrawer() */
                 : const EditProfile(
                     isFromInit: true,
                   ),

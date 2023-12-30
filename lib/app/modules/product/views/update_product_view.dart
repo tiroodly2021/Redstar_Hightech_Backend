@@ -33,6 +33,8 @@ import 'dart:convert';
 
 import 'package:firebase_storage/firebase_storage.dart';
 
+import '../../common/navigation_drawer.dart';
+
 class UpdateProductView extends GetView<ProductController> {
   FirebaseStorage _storage = FirebaseStorage.instance;
 
@@ -67,6 +69,7 @@ class UpdateProductView extends GetView<ProductController> {
         menuActionButton: ButtonOptionalMenu(),
         tooltip: 'Search',
       ),
+      drawer: NavigationDrawer(),
       body: SingleChildScrollView(
         child: Padding(
             padding: const EdgeInsets.all(10.0),

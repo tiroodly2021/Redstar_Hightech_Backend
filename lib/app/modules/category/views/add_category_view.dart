@@ -32,6 +32,8 @@ import 'dart:convert';
 
 import 'package:firebase_storage/firebase_storage.dart';
 
+import '../../common/navigation_drawer.dart';
+
 class AddCategoryView extends GetView<CategoryController> {
   FirebaseStorage _storage = FirebaseStorage.instance;
   final GlobalKey<FormState> _formKey = GlobalKey();
@@ -62,6 +64,7 @@ class AddCategoryView extends GetView<CategoryController> {
         menuActionButton: ButtonOptionalMenu(),
         tooltip: 'Search',
       ),
+      drawer: NavigationDrawer(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10.0),

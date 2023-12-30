@@ -17,6 +17,7 @@ import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
 import 'package:redstar_hightech_backend/app/shared/list_not_found.sharedWidgets.dart';
 import 'package:safe_url_check/safe_url_check.dart';
 
+import '../../common/navigation_drawer.dart';
 import '../controllers/category_controller.dart';
 import '../widgets/category_widget.dart';
 import 'add_category_view.dart';
@@ -42,6 +43,7 @@ class CategoryView extends GetView<CategoryController> {
           menuActionButton: ButtonOptionalMenu(),
           tooltip: 'Search',
         ),
+        drawer: NavigationDrawer(),
         body: Padding(
           padding: const EdgeInsets.all(10),
           child: Column(
