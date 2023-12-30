@@ -29,6 +29,7 @@ class AuthenticationController extends GetxController {
   Role _role = Role(name: '', description: '', id: '');
 
   RxList<Permission> _permissions = <Permission>[].obs;
+  RxList<Permission> _guestPermissions = <Permission>[].obs;
 
   GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['email']);
   // static final FacebookLogin facebookSsignIn = new FacebookLogin();
@@ -59,8 +60,10 @@ class AuthenticationController extends GetxController {
   set userRole(value) => _role = value;
 
   RxList<Permission> get userPermission => _permissions;
+  RxList<Permission> get guestPermission => _guestPermissions;
 
   set userPermission(value) => _permissions = value;
+  set guestPermission(value) => _guestPermissions = value;
 
   set authenticated(value) => _authenticated.value = value;
 
@@ -71,8 +74,32 @@ class AuthenticationController extends GetxController {
     _initPackageInfo();
 
     checkUserRolePermission();
+    checkGuestRolePermission();
 
     super.onInit();
+  }
+
+  checkGuestRolePermission() async {
+    var referenceRole = FirebaseFirestore.instance.collection("roles");
+
+    final guestRole = await referenceRole
+        .where('name', isEqualTo: 'Guest')
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Role.fromSnapShot(doc)).toList())
+        .first;
+
+    if (guestRole.isNotEmpty) {
+      String? id = guestRole[0].id;
+
+      if (guestRole.isNotEmpty) {
+        _guestPermissions.value =
+            (await referenceRole.doc(id).collection('permissions').get())
+                .docs
+                .map((e) => Permission.fromSnapShot(e))
+                .toList();
+      }
+    }
   }
 
   checkUserRolePermission() async {

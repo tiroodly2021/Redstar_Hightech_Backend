@@ -28,7 +28,10 @@ import 'package:redstar_hightech_backend/app/modules/authentication/models/user_
 
 class AuthorizationMiddleware extends GetMiddleware {
   @override
-  int? get priority => 2;
+  int? get priority => midPriority;
+  int? midPriority;
+
+  AuthorizationMiddleware({this.midPriority = 10});
 
   late List<Permission> permissions;
 
@@ -56,18 +59,26 @@ class AuthorizationMiddleware extends GetMiddleware {
     List<String> permissionStringLists =
         authController.userPermission.map((e) => e.description).toList();
 
+    List<String> guestPermissionStringLists =
+        authController.guestPermission.map((e) => e.description).toList();
+
+    print('check guest permissions ${authController.guestPermission}');
+
+    print('check auth permissions ${authController.userPermission}');
+
     if (authController.authenticated == true && route != Routes.LOGIN) {
       if (permissionStringLists.contains(route?.replaceAll("/", " ")) ||
           (Get.find<AuthenticationController>().user!.email!.toLowerCase() ==
                   superUserEmail.toLowerCase() &&
               Get.find<AuthenticationController>().authenticated)) {
         return null;
-      } else if (route == Routes.HOME) {
-        return const RouteSettings(name: Routes.LOGIN);
       } else {
         return const RouteSettings(name: Routes.ACCESS_ERROR);
       }
     } else {
+      if (guestPermissionStringLists.contains(route?.replaceAll("/", " "))) {
+        return null;
+      }
       return const RouteSettings(name: Routes.LOGIN);
     }
   }
@@ -76,7 +87,7 @@ class AuthorizationMiddleware extends GetMiddleware {
   // change something about the page or give it new page
   @override
   GetPage? onPageCalled(GetPage? page) {
-    print('>>> Page ${page!.name} called');
+    print('>>> Page ${page!.name} called/  Auth Middleware applied');
 
     Get.find<AuthenticationController>().onInit();
 

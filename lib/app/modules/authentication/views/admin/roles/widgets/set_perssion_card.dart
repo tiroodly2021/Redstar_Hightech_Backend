@@ -157,47 +157,13 @@ class SetPermissionCard extends StatelessWidget {
                           onChanged: (bool value) async {
                             // This is called when the user toggles the switch.
 
-                            if (value == false) {
-                              if (Get.find<AuthenticationController>().user !=
-                                  null) {
-                                if (Get.find<AuthenticationController>()
-                                        .user!
-                                        .email!
-                                        .toLowerCase() !=
-                                    superUserEmail.toLowerCase()) {
-                                  if (await confirm(context,
-                                      title: const Text("Info"),
-                                      content: const Text(
-                                          "By switch off this option, it is possible that you will not to switch it on"))) {
-                                    roleController.updateRolePermissions(
-                                        index,
-                                        permission,
-                                        role,
-                                        'permissionIds',
-                                        value,
-                                        permissionController);
-
-                                    return print('pressedOK');
-                                  }
-                                } else {
-                                  roleController.updateRolePermissions(
-                                      index,
-                                      permission,
-                                      role,
-                                      'permissionIds',
-                                      value,
-                                      permissionController);
-                                }
-                              }
-                            } else {
-                              roleController.updateRolePermissions(
-                                  index,
-                                  permission,
-                                  role,
-                                  'permissionIds',
-                                  value,
-                                  permissionController);
-                            }
+                            roleController.updateRolePermissions(
+                                index,
+                                permission,
+                                role,
+                                'permissionIds',
+                                value,
+                                permissionController);
                           },
                         );
                       }

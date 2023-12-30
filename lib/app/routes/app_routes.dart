@@ -42,6 +42,8 @@ abstract class Routes {
   // static const UPDATE_PERMISSION = _Paths.ADD_PERMISSION;
 
   static const ACCESS_ERROR = _Paths.ACCESS_ERROR;
+
+  static const GUEST = _Paths.GUEST;
 }
 
 abstract class _Paths {
@@ -49,7 +51,7 @@ abstract class _Paths {
   static const EDIT_PROFILE = "/edit-profile";
   static const SPLASH = "/initial";
 
-  static const HOME = '/home';
+  static const HOME = '/';
 
   static const PRODUCT = '/product';
   static const ADD_PRODUCT = '/product/add';
@@ -94,4 +96,5 @@ abstract class _Paths {
   static const DELETE_PERMISSION = '/permission/delete';
 
   static const SET_PERMISSIONS = '/permission/set';
+  static const GUEST = '/guest';
 }

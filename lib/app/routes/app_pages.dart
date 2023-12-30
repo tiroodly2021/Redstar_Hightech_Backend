@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/bindings/user_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
@@ -31,6 +32,7 @@ import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 
 import '../modules/middleware/auth_middleware.dart';
+
 import '../modules/order/bindings/order_binding.dart';
 import '../modules/order/views/order_view.dart';
 import '../modules/order_deliver_pending/bindings/order_deliver_pending_binding.dart';
@@ -168,17 +170,21 @@ SetPermissionView(
         name: _Paths.PRODUCT,
         page: () => ProductView(),
         binding: ProductBinding(),
-        middlewares: [AuthorizationMiddleware()]),
+        middlewares: [AuthorizationMiddleware(midPriority: 20)]),
     GetPage(
         name: _Paths.ADD_PRODUCT,
         page: () => AddProductView(),
         binding: ProductBinding(),
-        middlewares: [AuthorizationMiddleware()]),
+        middlewares: [
+          AuthorizationMiddleware(),
+        ]),
     GetPage(
         name: _Paths.UPDATE_PRODUCT,
         page: () => UpdateProductView(),
         binding: ProductBinding(),
-        middlewares: [AuthorizationMiddleware()]),
+        middlewares: [
+          AuthorizationMiddleware(),
+        ]),
     /*  GetPage(
       name: _Paths.PRODUCT_LIST,
       page: () => ProductsListView(),
