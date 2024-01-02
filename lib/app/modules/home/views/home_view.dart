@@ -25,6 +25,10 @@ import '../controllers/home_controller.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:intl/intl.dart';
 
+import 'desktop/desktop_body.dart';
+import 'mobile/mobile_body.dart';
+import 'responsive_layout.dart';
+
 class HomeView extends GetView<HomeController> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final OrderStatController orderStatController =
@@ -48,26 +52,41 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     authenticationController = Get.find<AuthenticationController>();
+    Orientation myOrientation = MediaQuery.of(context).orientation;
 
     return Scaffold(
-      appBar: /*  AppBar(
+        appBar: /*  AppBar(
         title: Text('Chat View'),
         centerTitle: true,
       ), */
-          AppBarWidget(
-        title: 'Redstar Management',
-        icon: Icons.search,
-        bgColor: Colors.black,
-        onPressed: () {
-          showSearch(context: context, delegate: AppSearchDelegate());
-        },
-        authenticationController: Get.find<AuthenticationController>(),
-        menuActionButton: ButtonOptionalMenu(),
-        tooltip: 'Search',
-      ),
-      key: _scaffoldKey,
-      drawer: NavigationDrawer(),
-      body: Container(
+            AppBarWidget(
+          title: 'Redstar Management',
+          icon: Icons.search,
+          bgColor: Colors.black,
+          onPressed: () {
+            showSearch(context: context, delegate: AppSearchDelegate());
+          },
+          authenticationController: Get.find<AuthenticationController>(),
+          menuActionButton: ButtonOptionalMenu(),
+          tooltip: 'Search',
+        ),
+        key: _scaffoldKey,
+        drawer: NavigationDrawer(),
+        body: OrientationBuilder(builder: (_, orientation) {
+          if (orientation == Orientation.portrait) {
+            return ResponsiveLayout(
+                mobileBody: MyMobileBody(),
+                desktopBody: MyDesktopBody(),
+                orientation: myOrientation.toString());
+          } else {
+            return ResponsiveLayout(
+                mobileBody: MyMobileBody(),
+                desktopBody: MyDesktopBody(),
+                orientation: myOrientation.toString());
+          } // else show the landscape one
+        })
+
+        /* Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/bg.png"),
@@ -100,15 +119,7 @@ class HomeView extends GetView<HomeController> {
                     child: CircularProgressIndicator(color: Colors.black),
                   );
                 },
-              )
-              /*   Container(
-                padding: const EdgeInsets.all(10),
-                height: 255,
-                child: CustomBarChart(
-                  orderStats: OrderStats.orderStats,
-                ),
-              ) */
-              ,
+              ),
               Obx(() {
                 return Expanded(
                   child: GridView.count(
@@ -173,8 +184,8 @@ class HomeView extends GetView<HomeController> {
             ],
           ),
         ),
-      ),
-    );
+      ), */
+        );
   }
 
   @override

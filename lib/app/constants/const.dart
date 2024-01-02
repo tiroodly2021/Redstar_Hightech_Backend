@@ -9,3 +9,7 @@ String superLastName = "User";
 
 String superUserEmail = "SysAdmin.Redstar@gmail.com";
 String superUserPassword = "SystemAuthPass"; /* nfDF6RaaEmVlWtEgKfiTDrCeS2G3 */
+
+// set the common device dimensions here for mobile / tablet / desktop
+
+const mobileWidth = 600;
