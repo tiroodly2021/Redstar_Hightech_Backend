@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
+import 'package:redstar_hightech_backend/app/style/colors.dart';
 
 import 'menu_widget.dart';
 
@@ -14,14 +15,14 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   Function()? onPressed;
   Function()? onPressedLoginState;
   Function()? onPressedMenu;
+  Widget? leading;
   AuthenticationController? authenticationController;
-  dynamic menuActionButton = Container(
-    child: Text('Hll'),
-  );
+  dynamic menuActionButton = Container();
 
   AppBarWidget(
       {Key? key,
       required this.title,
+      this.leading,
       this.bgColor,
       this.tooltip,
       this.icon,
@@ -35,13 +36,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      /*   leading: IconButton(
-          tooltip: 'Menu',
-          onPressed: onPressedMenu,
-          icon: const Icon(
-            Icons.menu,
-            color: Colors.white,
-          )), */
+      leading: leading,
       actions: [
         IconButton(
             color: Colors.white,
@@ -55,7 +50,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
             onPressed: onPressed,
             // tooltip: tooltip,
             icon: Icon(icon, color: Colors.white)),
-        menuActionButton
+        menuActionButton,
       ],
 
       title: Text(title),

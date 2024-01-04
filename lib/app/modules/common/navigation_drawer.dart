@@ -41,7 +41,8 @@ class NavigationDrawer extends StatelessWidget {
               icon: Icons.home,
               text: "Home",
               onTap: () => navigate(0),
-              tileColor: Get.currentRoute == Routes.HOME
+              tileColor: Get.currentRoute == Routes.HOME ||
+                      Get.currentRoute == Routes.INITIAL
                   ? AppTheme.darkGrayMenu
                   : null,
               textIconColor:

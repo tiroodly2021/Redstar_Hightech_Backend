@@ -5,8 +5,12 @@ class AppTheme {
   static const Color appbarColor = Color(0xff26384f);
   static const Color shadow = Color.fromARGB(65, 0, 0, 0);
   static const Color darkGray = Color(0xff324149);
-  static Color darkGrayMenu = Colors.grey.shade800; //Color(0xff324149);
+  static Color darkGrayMenu = Colors.grey.shade800; //
+
+  static Color allBlack = Colors.black; //
+
   static const Color lihtGray = Color(0xFFD3D3D3);
+  static const Color lihtLessGray = Color(0xff324f4f);
 
   static const Color hintLoginColor = Colors.white;
 

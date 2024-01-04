@@ -42,87 +42,85 @@ class ProductView extends GetView<ProductController> {
           tooltip: 'Search',
         ),
         drawer: NavigationDrawer(),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 100,
-                  child: InkWell(
-                    onTap: () {
-                      Get.toNamed(AppPages.ADD_PRODUCT);
-                      // Get.to(() => AddProductView());
-                    },
-                    child: Card(
-                      color: Colors.black,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+        body: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 100,
+                child: InkWell(
+                  onTap: () {
+                    Get.toNamed(AppPages.ADD_PRODUCT);
+                    // Get.to(() => AddProductView());
+                  },
+                  child: Card(
+                    color: Colors.black,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              Get.toNamed(AppPages.ADD_PRODUCT);
+                            },
+                            icon: const Icon(
+                              Icons.add,
+                              color: Colors.white,
+                            )),
+                        const Text(
+                          "Add Product",
+                          style: TextStyle(fontSize: 22, color: Colors.white),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                // width: MediaQuery.of(context).size.width,
+                height: 60,
+                child: Card(
+                  color: Colors.black12,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          const Text("All Product",
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold)),
                           IconButton(
                               onPressed: () {
-                                Get.toNamed(AppPages.ADD_PRODUCT);
+                                // Get.toNamed(AppPages.PRODUCT_LIST);
                               },
-                              icon: const Icon(
-                                Icons.add,
-                                color: Colors.white,
-                              )),
-                          const Text(
-                            "Add Product",
-                            style: TextStyle(fontSize: 22, color: Colors.white),
-                          )
-                        ],
-                      ),
-                    ),
+                              icon: const Icon(Icons.list))
+                        ]),
                   ),
                 ),
-                SizedBox(
-                  // width: MediaQuery.of(context).size.width,
-                  height: 60,
-                  child: Card(
-                    color: Colors.black12,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text("All Product",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold)),
-                            IconButton(
-                                onPressed: () {
-                                  // Get.toNamed(AppPages.PRODUCT_LIST);
-                                },
-                                icon: const Icon(Icons.list))
-                          ]),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Obx(() {
-                    if (controller.products.isNotEmpty) {
-                      return ListView.builder(
-                          itemCount: controller.products.length,
-                          itemBuilder: ((context, index) {
-                            return SizedBox(
-                              height: 250,
-                              child: ProductCard(
-                                  product: controller.products[index],
-                                  index: index,
-                                  productController: controller),
-                            );
-                          }));
-                    }
+              ),
+              Expanded(
+                child: Obx(() {
+                  if (controller.products.isNotEmpty) {
+                    return ListView.builder(
+                        itemCount: controller.products.length,
+                        itemBuilder: ((context, index) {
+                          return SizedBox(
+                            height: 250,
+                            child: ProductCard(
+                                product: controller.products[index],
+                                index: index,
+                                productController: controller),
+                          );
+                        }));
+                  }
 
-                    return ListNotFound(
-                        route: AppPages.INITIAL,
-                        message: "There are not product in the list",
-                        info: "Go Back",
-                        imageUrl: "assets/images/empty.png");
-                  }),
-                )
-              ],
-            ),
+                  return ListNotFound(
+                      route: AppPages.INITIAL,
+                      message: "There are not product in the list",
+                      info: "Go Back",
+                      imageUrl: "assets/images/empty.png");
+                }),
+              )
+            ],
           ),
         ));
   }

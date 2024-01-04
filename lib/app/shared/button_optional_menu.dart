@@ -45,7 +45,8 @@ class ButtonOptionalMenu extends StatelessWidget {
                         image: AssetImage("assets/images/person_connected.png"),
                         fit: BoxFit.cover,
                       ),
-                    )),
+                    ),
+                  ),
             itemBuilder: (context) => [
                   PopupMenuItem<int>(
                       value: 0,

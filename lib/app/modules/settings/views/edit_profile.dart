@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:redstar_hightech_backend/app/modules/home/views/home_drawer.dart';
+import 'package:redstar_hightech_backend/app/modules/home/views/home_view.dart';
 import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
 import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -246,7 +247,9 @@ class _EditProfileState extends State<EditProfile> {
     if (widget.isFromInit) {
       prefs.setBool('isInited', true);
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const HomeDrawer()));
+          context,
+          MaterialPageRoute(
+              builder: (context) => HomeView() /* const HomeDrawer() */));
     } else {
       Navigator.pop(context);
     }

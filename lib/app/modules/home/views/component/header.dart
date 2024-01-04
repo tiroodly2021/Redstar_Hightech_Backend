@@ -18,18 +18,18 @@ class Header extends StatelessWidget {
             children: [
               PrimaryText(
                   text: 'Dashboard', size: 30, fontWeight: FontWeight.w800),
-              PrimaryText(
+              /*  PrimaryText(
                 text: 'Payments updates',
                 size: 16,
                 fontWeight: FontWeight.w400,
                 color: AppColors.secondary,
-              )
+              ) */
             ]),
       ),
       Spacer(
         flex: 1,
       ),
-      Expanded(
+      /*      Expanded(
         flex: Responsive.isDesktop(context) ? 1 : 3,
         child: TextField(
           decoration: InputDecoration(
@@ -48,7 +48,7 @@ class Header extends StatelessWidget {
               hintText: 'Search',
               hintStyle: TextStyle(color: AppColors.secondary, fontSize: 14)),
         ),
-      ),
+      ), */
     ]);
   }
 }

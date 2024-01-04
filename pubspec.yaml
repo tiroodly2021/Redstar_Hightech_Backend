@@ -70,7 +70,7 @@ flutter:
 
 
   assets:
+    - assets/
     - assets/images/
- #   - assets/images/bg.png
  #   - assets/images/empty.png
  #   - assets/images/

@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/bindings/authentication_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/add_role_view.dart';
-import 'package:redstar_hightech_backend/app/modules/home/homepage.dart';
 
 import 'app/routes/app_pages.dart';
 import 'firebase_options.dart';

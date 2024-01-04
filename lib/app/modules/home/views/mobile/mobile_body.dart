@@ -19,6 +19,8 @@ import 'package:redstar_hightech_backend/app/modules/settings/views/settings_vie
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
 import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
+import 'package:redstar_hightech_backend/app/shared/custom_bar_chart.dart';
+import 'package:redstar_hightech_backend/app/shared/main_section.dart';
 
 import '../../../../shared/button_optional_menu.dart';
 import '../../../common/navigation_drawer.dart';
