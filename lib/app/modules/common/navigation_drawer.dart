@@ -109,9 +109,19 @@ class NavigationDrawer extends StatelessWidget {
                     ? Colors.white
                     : Colors.black),
             buildDrawerItem(
+                icon: Icons.price_change,
+                text: "Finance",
+                onTap: () => navigate(7),
+                tileColor: Get.currentRoute == Routes.FINANCE_HOME
+                    ? AppTheme.darkGrayMenu
+                    : null,
+                textIconColor: Get.currentRoute == Routes.FINANCE_HOME
+                    ? Colors.white
+                    : Colors.black),
+            buildDrawerItem(
                 icon: Icons.settings,
                 text: "Settings",
-                onTap: () => navigate(7),
+                onTap: () => navigate(8),
                 tileColor: Get.currentRoute == Routes.SETTINGS
                     ? AppTheme.darkGrayMenu
                     : null,
@@ -230,6 +240,8 @@ class NavigationDrawer extends StatelessWidget {
       case 6:
         return Get.toNamed(AppPages.CANCELLED_ORDER);
       case 7:
+        return Get.toNamed(AppPages.FINANCE_HOME);
+      case 8:
         return Get.toNamed(AppPages.SETTINGS);
 
       default:

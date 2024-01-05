@@ -3,6 +3,24 @@ part of 'app_pages.dart';
 
 abstract class Routes {
   Routes._();
+
+/*  FINANCE ROUTES */
+  static const FINANCE_HOME = _Paths.FINANCE_HOME;
+
+  static const FINANCE_ADD_TRANSACTION = _Paths.FINANCE_ADD_TRANSACTION;
+
+  static const FINANCE_TRANSACTION = _Paths.FINANCE_TRANSACTION;
+
+  static const FINANCE_EDIT_TRANSACTION = _Paths.FINANCE_EDIT_TRANSACTION;
+
+  static const FINANCE_ADD_CATEGORY = _Paths.FINANCE_ADD_CATEGORY;
+
+  static const FINANCE_CATEGORY = _Paths.FINANCE_CATEGORY;
+
+  static const FIANCE_EDIT_CATEGORY = _Paths.FINANCE_EDIT_CATEGORY;
+
+  /*  END  FIANCE ROUTES */
+
   static const EDIT_PROFILE = _Paths.EDIT_PROFILE;
   static const INITIAL = _Paths.SPLASH;
   static const HOME = _Paths.HOME;
@@ -48,6 +66,25 @@ abstract class Routes {
 
 abstract class _Paths {
   _Paths._();
+
+  /* Finance Name Routes */
+
+  static const FINANCE_HOME = '/finance/home';
+
+  static const FINANCE_ADD_TRANSACTION = '/finance/transaction/add';
+
+  static const FINANCE_TRANSACTION = '/finance/transaction';
+
+  static const FINANCE_EDIT_TRANSACTION = '/finance/transaction/edit';
+
+  static const FINANCE_ADD_CATEGORY = '/finance/category/add';
+
+  static const FINANCE_CATEGORY = '/finance/category';
+
+  static const FINANCE_EDIT_CATEGORY = '/finance/category/edit';
+
+  /* End Finance Name Routes */
+
   static const EDIT_PROFILE = "/edit-profile";
   static const SPLASH = "/initial";
 
@@ -97,4 +134,5 @@ abstract class _Paths {
 
   static const SET_PERMISSIONS = '/permission/set';
   static const GUEST = '/guest';
+  static const FINANCIAL_HOME = '/financial-home';
 }

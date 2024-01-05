@@ -40,6 +40,8 @@ dependencies:
   package_info_plus:
   safe_url_check:
   confirm_dialog:
+  flutter_slidable: 
+  toggle_switch: 
 
   wave:
 
@@ -56,6 +58,8 @@ dependency_overrides:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
+  build_runner: 
+  hive_generator: 
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

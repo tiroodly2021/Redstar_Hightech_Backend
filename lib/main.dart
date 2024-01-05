@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/bindings/authentication_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/add_role_view.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/account_category/models/account_category.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction.dart';
 
 import 'app/routes/app_pages.dart';
 import 'firebase_options.dart';
@@ -24,6 +26,14 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  await Hive.openBox('storage');
+
+  await Hive.initFlutter();
+  Hive.registerAdapter(TransactionAdapter());
+  Hive.registerAdapter(TransactionTypeAdapter());
+  Hive.registerAdapter(AccountCategoryAdapter());
+  await Hive.openBox<Transaction>('transactions');
+  await Hive.openBox<AccountCategory>('categories');
   await Hive.openBox('storage');
 
   runApp(

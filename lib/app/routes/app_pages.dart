@@ -1,38 +1,45 @@
 import 'package:flutter/cupertino.dart';
+
 import 'package:get/get.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/bindings/user_binding.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/views/add_user.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/permissions/add_permission_view.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/permissions/permission_view.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/permissions/update_permission_view.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/add_role_view.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/role_view.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/set_permission_view.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/show_role_view.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/update_role_view.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/views/login_view.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/views/registration_view.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/views/update_user.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/views/user_view.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/views/user_view.dart';
-import 'package:redstar_hightech_backend/app/modules/category/views/update_category_view.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/account_category/bindings/account_category_binding.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/account_category/views/account_category_view.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/finance_home/bindings/finance_home_binding.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/finance_home/views/finance_home_view.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/bindings/transaction_binding.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/views/add_transaction_view.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/views/transaction_view.dart';
 
 import '../modules/authentication/bindings/authentication_binding.dart';
 import '../modules/authentication/bindings/permission_binding.dart';
 import '../modules/authentication/bindings/role_binding.dart';
+import '../modules/authentication/bindings/user_binding.dart';
+import '../modules/authentication/controllers/authentication_controller.dart';
+import '../modules/authentication/controllers/user_controller.dart';
 import '../modules/authentication/views/access_error_view.dart';
+import '../modules/authentication/views/add_user.dart';
+import '../modules/authentication/views/admin/permissions/add_permission_view.dart';
+import '../modules/authentication/views/admin/permissions/permission_view.dart';
+import '../modules/authentication/views/admin/permissions/update_permission_view.dart';
+import '../modules/authentication/views/admin/roles/add_role_view.dart';
+import '../modules/authentication/views/admin/roles/role_view.dart';
+import '../modules/authentication/views/admin/roles/set_permission_view.dart';
+import '../modules/authentication/views/admin/roles/show_role_view.dart';
+import '../modules/authentication/views/admin/roles/update_role_view.dart';
+import '../modules/authentication/views/login_view.dart';
+import '../modules/authentication/views/registration_view.dart';
+import '../modules/authentication/views/update_user.dart';
+import '../modules/authentication/views/user_view.dart';
+import '../modules/authentication/views/user_view.dart';
 import '../modules/cancelled_order/bindings/cancelled_order_binding.dart';
 import '../modules/cancelled_order/views/cancelled_order_view.dart';
 import '../modules/category/bindings/category_binding.dart';
 import '../modules/category/views/add_category_view.dart';
 import '../modules/category/views/category_view.dart';
+import '../modules/category/views/update_category_view.dart';
+
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
-
 import '../modules/middleware/auth_middleware.dart';
-
 import '../modules/order/bindings/order_binding.dart';
 import '../modules/order/views/order_view.dart';
 import '../modules/order_deliver_pending/bindings/order_deliver_pending_binding.dart';
@@ -42,10 +49,10 @@ import '../modules/order_delivered/views/order_delivered_view.dart';
 import '../modules/pending_order/bindings/pending_order_binding.dart';
 import '../modules/pending_order/views/pending_order_view.dart';
 import '../modules/product/bindings/product_binding.dart';
-import '../modules/product/views/update_product_view.dart';
 import '../modules/product/views/add_product_view.dart';
 import '../modules/product/views/product_view.dart';
 import '../modules/product/views/products_list_view.dart';
+import '../modules/product/views/update_product_view.dart';
 import '../modules/settings/bindings/settings_binding.dart';
 import '../modules/settings/views/edit_profile.dart';
 import '../modules/settings/views/settings_view.dart';
@@ -63,6 +70,19 @@ SetPermissionView(
   */
 
   AppPages._();
+
+  /*  FINANCE Routes */
+
+  static const FINANCE_HOME = Routes.FINANCE_HOME;
+  static const FINANCE_ADD_TRANSACTION = Routes.FINANCE_ADD_TRANSACTION;
+  static const FINANCE_TRANSACTION = Routes.FINANCE_TRANSACTION;
+  static const FINANCE_EDIT_TRANSACTION = Routes.FINANCE_EDIT_TRANSACTION;
+
+  static const FINANCE_ADD_CATEGORY = Routes.FINANCE_ADD_CATEGORY;
+  static const FINANCE_CATEGORY = Routes.FINANCE_CATEGORY;
+  static const FINANCE_EDIT_CATEGORY = Routes.FIANCE_EDIT_CATEGORY;
+
+  /*  End Finance Routes */
 
   static const INITIAL = Routes.INITIAL;
   static const HOME = Routes.HOME;
@@ -117,6 +137,40 @@ SetPermissionView(
         page: () => ShowRoleView(),
         binding: RoleBinding(),
         middlewares: [AuthorizationMiddleware()]),
+    /*  Finance Get Pages */
+
+    GetPage(
+        name: _Paths.FINANCE_HOME,
+        page: () => FinanceHomeView(),
+        binding: FinanceHomeBinding(),
+        middlewares: [
+          /* AuthorizationMiddleware() */
+        ],
+        children: [
+          GetPage(
+              name: _Paths.FINANCE_ADD_CATEGORY,
+              page: () => AddCategoryView(),
+              binding: AccountCategoryBinding(),
+              middlewares: [/* AuthorizationMiddleware() */]),
+          GetPage(
+              name: _Paths.FINANCE_CATEGORY,
+              page: () => AccountCategoryView(),
+              binding: AccountCategoryBinding(),
+              middlewares: [/* AuthorizationMiddleware() */]),
+          GetPage(
+              name: _Paths.FINANCE_TRANSACTION,
+              page: () => TransactionView(),
+              binding: TransactionBinding(),
+              middlewares: [/* AuthorizationMiddleware() */]),
+          GetPage(
+              name: _Paths.FINANCE_ADD_TRANSACTION,
+              page: () => AddTransactionView(),
+              binding: FinanceHomeBinding(),
+              middlewares: [/* AuthorizationMiddleware() */]),
+        ]),
+
+    /* End Finance Finance Get Pages */
+
     GetPage(
         name: _Paths.SET_PERMISSIONS,
         page: () => SetPermissionView(),
