@@ -19,6 +19,11 @@ abstract class Routes {
 
   static const FIANCE_EDIT_CATEGORY = _Paths.FINANCE_EDIT_CATEGORY;
 
+  static const FINANCE_ACCOUNT = _Paths.FINANCE_ACCOUNT;
+  static const FINANCE_ADD_ACCOUNT = _Paths.FINANCE_ADD_ACCOUNT;
+  static const FINANCE_EDIT_ACCOUNT = _Paths.FINANCE_EDIT_ACCOUNT;
+  static const FINANCE_DELETE_ACCOUNT = _Paths.FINANCE_DELETE_ACCOUNT;
+
   /*  END  FIANCE ROUTES */
 
   static const EDIT_PROFILE = _Paths.EDIT_PROFILE;
@@ -82,6 +87,11 @@ abstract class _Paths {
   static const FINANCE_CATEGORY = '/finance/category';
 
   static const FINANCE_EDIT_CATEGORY = '/finance/category/edit';
+
+  static const FINANCE_ACCOUNT = '/finance/account';
+  static const FINANCE_ADD_ACCOUNT = '/finance/account/add';
+  static const FINANCE_EDIT_ACCOUNT = '/finance/account/edit';
+  static const FINANCE_DELETE_ACCOUNT = '/finance/account/delete';
 
   /* End Finance Name Routes */
 

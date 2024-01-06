@@ -88,10 +88,10 @@ class _AddCateoryDialogState extends State<AddCateoryDialog> {
       showError("Name can't be empty");
       return;
     }
-    if (!isEdit && _categoryManager.isCateoryExist(catName)) {
+    /* if (!isEdit && _categoryManager.isCateoryExist(catName)) {
       showError('Category already exist');
       return;
-    }
+    } */
     AccountCategory category =
         AccountCategory(categoryName: catName, type: widget.type);
     if (isEdit) {

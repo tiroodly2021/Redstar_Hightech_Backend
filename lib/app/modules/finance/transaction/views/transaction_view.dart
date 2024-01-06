@@ -10,6 +10,7 @@ import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/views/add_transaction_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/empty_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/tile_transaction.dart';
+import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
 import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
 import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
@@ -76,9 +77,10 @@ class _TransactionViewState extends State<TransactionView>
             duration: const Duration(milliseconds: 300),
             child: FloatingActionButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                /*   Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return const AddTransactionView();
-                }));
+                })); */
+                Get.toNamed(AppPages.FINANCE_ADD_TRANSACTION);
               },
               tooltip: 'New transaction',
               child: const Icon(Icons.add),

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/models/permission_model.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/models/role_model.dart';
 import 'package:redstar_hightech_backend/app/modules/category/models/category_model.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
 import 'package:redstar_hightech_backend/app/modules/order/models/order_stats_model.dart';
 
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
@@ -15,6 +16,12 @@ import '../modules/authentication/models/user_model.dart';
 class DatabaseService {
   final cloud_firestore.FirebaseFirestore _firebaseFirestore =
       cloud_firestore.FirebaseFirestore.instance;
+
+  Stream<List<Account>> getAccounts() {
+    return _firebaseFirestore.collection('account').snapshots().map(
+        (snapshot) =>
+            snapshot.docs.map((doc) => Account.fromSnapShot(doc)).toList());
+  }
 
   Stream<List<Category>> getCategories() {
     return _firebaseFirestore.collection('categories').snapshots().map(
@@ -708,4 +715,10 @@ class DatabaseService {
         .map((category) => Category.fromSnapShot(category))
         .toList(); */
   }
+
+  void updateAccount(Account account) {}
+
+  void deleteAccount(Account account) {}
+
+  void addAccount(Account account) {}
 }

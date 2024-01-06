@@ -16,6 +16,7 @@ import 'package:redstar_hightech_backend/app/modules/finance/transaction/views/t
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/empty_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/filter_bar.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/tile_transaction.dart';
+import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
 import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
 import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
@@ -53,9 +54,10 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
+          /*  Navigator.push(context, MaterialPageRoute(builder: (context) {
             return AddTransactionView();
-          }));
+          })); */
+          Get.toNamed(AppPages.FINANCE_ADD_TRANSACTION);
         },
         tooltip: 'New Transaction',
         child: const Icon(Icons.add),
@@ -83,8 +85,9 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const TransactionView()));
+                    /*  Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const TransactionView())); */
+                    Get.toNamed(AppPages.FINANCE_TRANSACTION);
                   },
                   child: const Text(
                     'See all',

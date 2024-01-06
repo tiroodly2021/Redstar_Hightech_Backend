@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/account/bindings/account_binding.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/account/views/account_view.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/account/views/add_account_view%20.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account_category/bindings/account_category_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account_category/views/account_category_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/finance_home/bindings/finance_home_binding.dart';
@@ -82,6 +85,11 @@ SetPermissionView(
   static const FINANCE_CATEGORY = Routes.FINANCE_CATEGORY;
   static const FINANCE_EDIT_CATEGORY = Routes.FIANCE_EDIT_CATEGORY;
 
+  static const FINANCE_ACCOUNT = Routes.FINANCE_ACCOUNT;
+  static const FINANCE_ADD_ACCOUNT = Routes.FINANCE_ADD_ACCOUNT;
+  static const FINANCE_EDIT_ACCOUNT = Routes.FINANCE_EDIT_ACCOUNT;
+  static const FINANCE_DELETE_ACCOUNT = Routes.FINANCE_DELETE_ACCOUNT;
+
   /*  End Finance Routes */
 
   static const INITIAL = Routes.INITIAL;
@@ -140,34 +148,50 @@ SetPermissionView(
     /*  Finance Get Pages */
 
     GetPage(
-        name: _Paths.FINANCE_HOME,
-        page: () => FinanceHomeView(),
-        binding: FinanceHomeBinding(),
-        middlewares: [
-          /* AuthorizationMiddleware() */
-        ],
-        children: [
-          GetPage(
-              name: _Paths.FINANCE_ADD_CATEGORY,
-              page: () => AddCategoryView(),
-              binding: AccountCategoryBinding(),
-              middlewares: [/* AuthorizationMiddleware() */]),
-          GetPage(
-              name: _Paths.FINANCE_CATEGORY,
-              page: () => AccountCategoryView(),
-              binding: AccountCategoryBinding(),
-              middlewares: [/* AuthorizationMiddleware() */]),
-          GetPage(
-              name: _Paths.FINANCE_TRANSACTION,
-              page: () => TransactionView(),
-              binding: TransactionBinding(),
-              middlewares: [/* AuthorizationMiddleware() */]),
-          GetPage(
-              name: _Paths.FINANCE_ADD_TRANSACTION,
-              page: () => AddTransactionView(),
-              binding: FinanceHomeBinding(),
-              middlewares: [/* AuthorizationMiddleware() */]),
-        ]),
+      name: _Paths.FINANCE_HOME,
+      page: () => FinanceHomeView(),
+      binding: FinanceHomeBinding(),
+      middlewares: [
+        /* AuthorizationMiddleware() */
+      ],
+    ),
+    GetPage(
+        name: _Paths.FINANCE_ADD_CATEGORY,
+        page: () => AddCategoryView(),
+        binding: AccountCategoryBinding(),
+        middlewares: [/* AuthorizationMiddleware() */]),
+    GetPage(
+        name: _Paths.FINANCE_CATEGORY,
+        page: () => AccountCategoryView(),
+        binding: AccountCategoryBinding(),
+        middlewares: [/* AuthorizationMiddleware() */]),
+    GetPage(
+        name: _Paths.FINANCE_TRANSACTION,
+        page: () => TransactionView(),
+        binding: TransactionBinding(),
+        middlewares: [/* AuthorizationMiddleware() */]),
+    GetPage(
+        name: _Paths.FINANCE_ADD_TRANSACTION,
+        page: () => AddTransactionView(),
+        binding: TransactionBinding(),
+        middlewares: [/* AuthorizationMiddleware() */]),
+
+    /* Account */
+    GetPage(
+        name: _Paths.FINANCE_ACCOUNT,
+        page: () => AccountView(),
+        binding: AccountBinding(),
+        middlewares: [/* AuthorizationMiddleware() */]),
+    GetPage(
+        name: _Paths.FINANCE_ADD_ACCOUNT,
+        page: () => AddAccountView(),
+        binding: AccountBinding(),
+        middlewares: [/* AuthorizationMiddleware() */]),
+    GetPage(
+        name: _Paths.FINANCE_EDIT_ACCOUNT,
+        page: () => AddTransactionView(),
+        binding: TransactionBinding(),
+        middlewares: [/* AuthorizationMiddleware() */]),
 
     /* End Finance Finance Get Pages */
 
