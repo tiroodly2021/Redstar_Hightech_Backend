@@ -5,13 +5,13 @@ import 'package:redstar_hightech_backend/app/config/responsive.dart';
 import 'package:redstar_hightech_backend/app/constants/app_theme.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/common/navigation_drawer.dart';
-import 'package:redstar_hightech_backend/app/modules/finance/account_category/controllers/account_category_controller.dart';
-import 'package:redstar_hightech_backend/app/modules/finance/account_category/models/account_category.dart';
-import 'package:redstar_hightech_backend/app/modules/finance/account_category/views/dialog_add_cateory.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/account/controllers/account_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/controllers/transaction_controller.dart';
-import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_type_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/circular_button.dart';
 import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
 import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
@@ -39,7 +39,7 @@ class _AddTransactionViewState extends State<AddTransactionView> {
   final FocusNode _categoryFocus = FocusNode();
   final FocusNode _amountFocus = FocusNode();
   final FocusNode _descriptionFocus = FocusNode();
-  final transactionTypes = ['Income', 'Expense'];
+  final transactionTypes = ['Income', 'Expense', 'Transfert'];
   TransactionType transactionType = TransactionType.expense;
 
   @override
@@ -47,7 +47,7 @@ class _AddTransactionViewState extends State<AddTransactionView> {
     if (widget.transaction != null) {
       final Transaction transaction = widget.transaction!;
       date = transaction.date;
-      categoryController.text = transaction.category;
+      categoryController.text = transaction.account;
       amountController.text = transaction.amount.toString();
       descriptionController.text = transaction.description ?? '';
       transactionType = transaction.type;
@@ -291,13 +291,13 @@ class _AddTransactionViewState extends State<AddTransactionView> {
     if (isValid) {
       Transaction transaction = Transaction(
           date: date,
-          category: categoryController.text,
+          account: categoryController.text,
           amount: double.parse(amountController.text),
           type: transactionType,
           description: descriptionController.text);
       if (isEdit) {
         transactionManager.updateTransaction(
-            widget.transaction!.key, transaction);
+            widget.transaction!.id, transaction);
       } else {
         transactionManager.addTransaction(transaction);
       }
@@ -367,7 +367,7 @@ class _CategorySheetState extends State<CategorySheet> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Text(
-                  'Categories',
+                  'Accounts',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
                 const Spacer(),
@@ -378,7 +378,7 @@ class _CategorySheetState extends State<CategorySheet> {
                     showDialog(
                             context: context,
                             builder: (context) =>
-                                AddCateoryDialog(type: widget.type))
+                                Container() /* AddCateoryDialog(type: widget.type) */)
                         .whenComplete(() {
                       setState(() {});
                     });
@@ -387,16 +387,16 @@ class _CategorySheetState extends State<CategorySheet> {
               ],
             ),
           ),
-          Expanded(child:
-              GetBuilder<AccountCategoryController>(builder: ((controller) {
-            List<AccountCategory> categories =
-                AccountCategoryController().getActiveCategories(widget.type);
+          Expanded(child: GetBuilder<AccountController>(builder: ((controller) {
+            /*  List<Account> accounts =
+                AccountController().getActiveCategories(widget.type); */
+            List<Account> accounts = accountsData;
             return GridView.builder(
                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 200,
                   childAspectRatio: 8 / 1.75,
                 ),
-                itemCount: categories.length,
+                itemCount: accounts.length,
                 itemBuilder: (ctx, index) {
                   return Container(
                     decoration: BoxDecoration(
@@ -404,12 +404,11 @@ class _CategorySheetState extends State<CategorySheet> {
                         border: Border.all(color: Colors.grey, width: .25)),
                     child: InkWell(
                       onTap: () {
-                        Navigator.of(context)
-                            .pop(categories[index].categoryName);
+                        Navigator.of(context).pop(accounts[index].name);
                       },
                       child: Center(
                         child: Text(
-                          categories[index].categoryName,
+                          accounts[index].name,
                         ),
                       ),
                     ),
@@ -426,19 +425,23 @@ class _CategorySheetState extends State<CategorySheet> {
 
 
 
-/* class AddTransactionView extends GetView {
+/* import 'package:flutter/material.dart';
+
+import 'package:get/get.dart';
+
+import '../controllers/transaction_controller.dart';
+
+class AddTransactionView extends GetView<TransactionController> {
   @override
   Widget build(BuildContext context) {
-
-    
     return Scaffold(
       appBar: AppBar(
-        title: Text('AddTransactionView'),
+        title: Text('TransactionView'),
         centerTitle: true,
       ),
       body: Center(
         child: Text(
-          'AddTransactionView is working',
+          'TransactionView is working',
           style: TextStyle(fontSize: 20),
         ),
       ),

@@ -1,4 +1,4 @@
-import 'package:redstar_hightech_backend/app/modules/finance/account_category/models/account_category.dart'
+/* import 'package:redstar_hightech_backend/app/modules/finance/account_category/models/account_category.dart'
     as financeCategory;
 
 class Defaults {
@@ -32,3 +32,4 @@ class Defaults {
         type: financeCategory.AccountCategoryType.expense)
   ];
 }
+ */

@@ -1,10 +1,7 @@
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
-
-import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
 
 class TransactionController extends GetxController {
-  late Box<Transaction> box;
   late List<Transaction> allTransactions;
   late List<Transaction> filterdList;
   late DateTime startDate;
@@ -13,30 +10,30 @@ class TransactionController extends GetxController {
 
   bool isFilterEnabled = false;
   TransactionController() {
-    box = Hive.box<Transaction>('transactions');
+    //box = Hive.box<Transaction>('transactions');
     _refreshList();
   }
   addTransaction(Transaction transaction) {
-    box.add(transaction);
+    //box.add(transaction);
     _refreshList();
     update();
   }
 
   updateTransaction(key, Transaction transaction) {
-    box.put(key, transaction);
+    //box.put(key, transaction);
     _refreshList();
     update();
   }
 
   deleteTransaction(Transaction transaction) {
-    if (box.values.contains(transaction)) {
+    /*   if (box.values.contains(transaction)) {
       box.delete(transaction.key);
       allTransactions.remove(transaction);
       if (filterdList.contains(transaction)) {
         filterdList.remove(transaction);
       }
       update();
-    }
+    } */
   }
 
   setFilter(DateTime start, DateTime end) {
@@ -54,7 +51,7 @@ class TransactionController extends GetxController {
   }
 
   _refreshList() {
-    allTransactions = box.values.toList();
+    allTransactions = transactionsData; //box.values.toList();
     if (isFilterEnabled) {
       filterdList = allTransactions
           .where((element) =>
@@ -69,7 +66,7 @@ class TransactionController extends GetxController {
   }
 
   Future<List<Transaction>> getTransactions() {
-    return Future.value(box.values.toList());
+    return Future.value(transactionsData);
   }
 
   @override

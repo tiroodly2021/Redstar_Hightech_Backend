@@ -1,14 +1,13 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:redstar_hightech_backend/app/modules/finance/account_category/models/account_category.dart';
 
 class Account {
   final String? id;
   final String number;
   final String createdAt;
   final String name;
-  List<AccountCategory>? categories;
+  //List<AccountCategory>? categories;
   String? photoURL;
   double? balanceCredit = 0;
   double? balanceDebit = 0;
@@ -17,7 +16,7 @@ class Account {
       {required this.number,
       required this.createdAt,
       required this.name,
-      this.categories,
+      // this.categories,
       this.id,
       this.photoURL,
       this.balanceCredit,
@@ -57,7 +56,6 @@ class Account {
         "number": number,
         "createdAt": createdAt,
         "name": name,
-        "id": id,
         "photoURL": photoURL,
         'balanceCredit': balanceCredit,
         'balanceDebit': balanceDebit
@@ -70,8 +68,8 @@ class Account {
         name: snap["name"],
         id: snap.id,
         photoURL: snap["photoURL"],
-        balanceCredit: snap['balanceCredit'],
-        balanceDebit: snap['balanceDebit']);
+        balanceCredit: double.parse(snap['balanceCredit']),
+        balanceDebit: double.parse(snap['balanceDebit']));
   }
 
   factory Account.fromMap(Map<String, dynamic> map) {
@@ -91,9 +89,27 @@ class Account {
       "createdAt": createdAt,
       "name": name,
       "photoURL": photoURL,
-      "id": id,
       'balanceCredit': balanceCredit,
       'balanceDebit': balanceDebit
     };
   }
 }
+
+List<Account> accountsData = [
+  Account(
+    number: '3434 4523 544',
+    name: 'Jackson Botox',
+    balanceCredit: 10560.00,
+    balanceDebit: 3423.00,
+    createdAt: '4 hours ago',
+    photoURL: 'assets/icons/face1.png',
+  ),
+  Account(
+    number: '3434 9900 544',
+    name: 'Jackson Botox',
+    balanceCredit: 223.00,
+    balanceDebit: 6757.00,
+    createdAt: '4 hours ago',
+    photoURL: 'assets/icons/face2.png',
+  ),
+];

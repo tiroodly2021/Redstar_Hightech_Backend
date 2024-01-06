@@ -4,8 +4,6 @@ import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/bindings/account_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/views/account_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/views/add_account_view%20.dart';
-import 'package:redstar_hightech_backend/app/modules/finance/account_category/bindings/account_category_binding.dart';
-import 'package:redstar_hightech_backend/app/modules/finance/account_category/views/account_category_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/finance_home/bindings/finance_home_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/finance_home/views/finance_home_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/bindings/transaction_binding.dart';
@@ -155,7 +153,7 @@ SetPermissionView(
         /* AuthorizationMiddleware() */
       ],
     ),
-    GetPage(
+    /*   GetPage(
         name: _Paths.FINANCE_ADD_CATEGORY,
         page: () => AddCategoryView(),
         binding: AccountCategoryBinding(),
@@ -164,7 +162,7 @@ SetPermissionView(
         name: _Paths.FINANCE_CATEGORY,
         page: () => AccountCategoryView(),
         binding: AccountCategoryBinding(),
-        middlewares: [/* AuthorizationMiddleware() */]),
+        middlewares: [/* AuthorizationMiddleware() */]), */
     GetPage(
         name: _Paths.FINANCE_TRANSACTION,
         page: () => TransactionView(),

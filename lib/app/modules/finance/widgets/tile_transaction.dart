@@ -4,7 +4,9 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:redstar_hightech_backend/app/constants/app_theme.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/controllers/transaction_controller.dart';
-import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_type_model.dart';
+
 import 'package:redstar_hightech_backend/util.dart';
 
 class TransactionTile extends StatelessWidget {
@@ -18,7 +20,7 @@ class TransactionTile extends StatelessWidget {
   final TransactionController transactionController;
   final DateTime today = DateTime.now();
   final bool enableSlide;
-  final textColors = [Colors.green, Colors.red];
+  final textColors = [Colors.green, Colors.red, Colors.orange];
   @override
   Widget build(BuildContext context) {
     return Slidable(
@@ -41,7 +43,7 @@ class TransactionTile extends StatelessWidget {
               onPressed: (ctx) {
                 final Transaction transactionCopy = Transaction(
                     date: transaction.date,
-                    category: transaction.category,
+                    account: transaction.account,
                     amount: transaction.amount,
                     type: transaction.type);
                 transactionController.deleteTransaction(transaction);
@@ -92,7 +94,7 @@ class TransactionTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      transaction.category,
+                      transaction.account,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context)
@@ -115,11 +117,23 @@ class TransactionTile extends StatelessWidget {
                   ],
                 ),
               ),
-              Text('\u{20B9} ${transaction.amount.toString()}',
-                  style: TextStyle(
-                      color: textColors[transaction.type.index],
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold))
+              Column(
+                children: [
+                  Text('\u{20B9} ${transaction.amount.toString()}',
+                      style: TextStyle(
+                          color: textColors[transaction.type.index],
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold)),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Text(transactionTypeToString(transaction.type),
+                      style: TextStyle(
+                          color: textColors[transaction.type.index],
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold)),
+                ],
+              )
             ],
           ),
         ),

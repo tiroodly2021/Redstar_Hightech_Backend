@@ -6,7 +6,8 @@ import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/config/responsive.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/common/navigation_drawer.dart';
-import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
+
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/views/add_transaction_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/empty_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/tile_transaction.dart';
@@ -115,3 +116,32 @@ class _TransactionViewState extends State<TransactionView>
         ));
   }
 }
+
+
+
+
+
+/* import 'package:flutter/material.dart';
+
+import 'package:get/get.dart';
+
+import '../controllers/transaction_controller.dart';
+
+class TransactionView extends GetView<TransactionController> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('TransactionView'),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: Text(
+          'TransactionView is working',
+          style: TextStyle(fontSize: 20),
+        ),
+      ),
+    );
+  }
+}
+ */

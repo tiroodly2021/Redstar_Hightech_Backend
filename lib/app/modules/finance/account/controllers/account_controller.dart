@@ -2,7 +2,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
-import 'package:redstar_hightech_backend/app/modules/finance/account_category/models/account_category.dart';
+//import 'package:redstar_hightech_backend/app/modules/finance/account_category/models/account_category.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
 
 class AccountController extends GetxController {
@@ -13,17 +13,18 @@ class AccountController extends GetxController {
 
   DatabaseService database = DatabaseService();
 
-  Rx<Account> user =
-      Account(number: '', createdAt: '', name: '', categories: []).obs;
+  Rx<Account> user = Account(number: '', createdAt: '', name: '').obs;
 
   TextEditingController addNameController = TextEditingController();
-  TextEditingController addEmailController = TextEditingController();
+  TextEditingController addNumberController = TextEditingController();
+  TextEditingController addBalanceCreditController = TextEditingController();
+  TextEditingController addNBalanceDebitController = TextEditingController();
 
-  RxList<AccountCategory> roles = <AccountCategory>[].obs;
+  //RxList<AccountCategory> roles = <AccountCategory>[].obs;
   RxString roleSelected = ''.obs;
   RxString imageLink = ''.obs;
   RxString imageLinkTemp = ''.obs;
-  Rx<AccountCategory> role = AccountCategory(categoryName: '', type: 0).obs;
+  //Rx<AccountCategory> role = AccountCategory(categoryName: '', type: 0).obs;
   var count = 0.obs;
 
   @override

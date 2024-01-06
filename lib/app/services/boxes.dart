@@ -1,4 +1,4 @@
-import 'package:hive/hive.dart';
+/* import 'package:hive/hive.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction.dart';
 
 class Boxes {
@@ -6,3 +6,4 @@ class Boxes {
       Hive.box<Transaction>('transactions');
   static Box getStorageBox() => Hive.box('storage');
 }
+ */

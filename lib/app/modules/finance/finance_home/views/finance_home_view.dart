@@ -6,16 +6,21 @@ import 'package:redstar_hightech_backend/app/config/responsive.dart';
 import 'package:redstar_hightech_backend/app/constants/app_theme.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/common/navigation_drawer.dart';
-import 'package:redstar_hightech_backend/app/modules/finance/account_category/controllers/account_category_controller.dart';
+/* import 'package:redstar_hightech_backend/app/modules/finance/account_category/controllers/account_category_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/statistics/controllers/monthly_chart_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/statistics/controllers/yearly_chart_contoller.dart';
+ */
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/controllers/transaction_controller.dart';
-import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_type_model.dart';
+//import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/views/add_transaction_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/views/transaction_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/empty_view.dart';
-import 'package:redstar_hightech_backend/app/modules/finance/widgets/filter_bar.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/tile_transaction.dart';
+/* import 'package:redstar_hightech_backend/app/modules/finance/widgets/empty_view.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/widgets/filter_bar.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/widgets/tile_transaction.dart'; */
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
 import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
@@ -27,9 +32,9 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final transactionController = Get.put(TransactionController());
-  final cateoryController = Get.put(AccountCategoryController());
+  /* final cateoryController = Get.put(AccountCategoryController());
   final chartController = Get.put(MonthlyChartContollrt());
-  final ychartController = Get.put(YearlyChartContoller());
+  final ychartController = Get.put(YearlyChartContoller()); */
   double totalBalance = 0;
   double totalIncome = 0;
   double totalExpense = 0;
@@ -42,7 +47,7 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
       appBar: /*  !Responsive.isDesktop(context)
           ?  */
           AppBarWidget(
-        title: 'Redstar Management',
+        title: 'Finance',
         icon: Icons.search,
         bgColor: Colors.black,
         onPressed: () {
@@ -52,20 +57,34 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
         menuActionButton: ButtonOptionalMenu(),
         tooltip: 'Search',
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          /*  Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return AddTransactionView();
-          })); */
-          Get.toNamed(AppPages.FINANCE_ADD_TRANSACTION);
-        },
-        tooltip: 'New Transaction',
-        child: const Icon(Icons.add),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            heroTag: "btn1",
+            onPressed: () {
+              Get.toNamed(AppPages.FINANCE_ADD_TRANSACTION);
+            },
+            tooltip: 'New Transaction',
+            child: const Icon(Icons.add),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          FloatingActionButton(
+            heroTag: "btn2",
+            onPressed: () {
+              Get.toNamed(AppPages.FINANCE_ADD_ACCOUNT);
+            },
+            tooltip: 'New Account',
+            child: const Icon(Icons.person_add),
+          ),
+        ],
       ),
       body: GetBuilder<TransactionController>(builder: (controller) {
         calculateBalances(controller.filterdList);
         return ListView(children: [
-          const FilterBarv(),
+          //     const FilterBarv(),
           const SizedBox(height: 25),
           _buildBalanceWidget(textColor),
           const SizedBox(height: 5),
@@ -85,8 +104,6 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
                 ),
                 TextButton(
                   onPressed: () {
-                    /*  Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const TransactionView())); */
                     Get.toNamed(AppPages.FINANCE_TRANSACTION);
                   },
                   child: const Text(
@@ -284,3 +301,22 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
     }
   }
 }
+/* 
+class FinanceHomeView extends GetView<FinanceHomeController> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('AccountView'),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: Text(
+          'AccountView is working',
+          style: TextStyle(fontSize: 20),
+        ),
+      ),
+    );
+  }
+}
+ */

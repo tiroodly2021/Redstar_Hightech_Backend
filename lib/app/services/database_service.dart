@@ -18,7 +18,7 @@ class DatabaseService {
       cloud_firestore.FirebaseFirestore.instance;
 
   Stream<List<Account>> getAccounts() {
-    return _firebaseFirestore.collection('account').snapshots().map(
+    return _firebaseFirestore.collection('accounts').snapshots().map(
         (snapshot) =>
             snapshot.docs.map((doc) => Account.fromSnapShot(doc)).toList());
   }
@@ -719,6 +719,7 @@ class DatabaseService {
   void updateAccount(Account account) {}
 
   void deleteAccount(Account account) {}
-
-  void addAccount(Account account) {}
+  Future<void> addAccount(Account account) {
+    return _firebaseFirestore.collection('accounts').add(account.toMap());
+  }
 }
