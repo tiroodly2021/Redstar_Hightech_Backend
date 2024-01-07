@@ -104,7 +104,7 @@ class _AddTransactionViewState extends State<AddTransactionView> {
               padding: const EdgeInsets.fromLTRB(20, 10, 20, 55),
               children: [
                 const SizedBox(height: 10),
-                if (!isEdit) _buildToggleSwitch(size),
+                /*  if (!isEdit) */ _buildToggleSwitch(size),
                 const SizedBox(height: 20),
                 Container(
                   padding:
@@ -310,6 +310,8 @@ class _AddTransactionViewState extends State<AddTransactionView> {
           amount: double.parse(amountController.text),
           type: transactionType,
           description: descriptionController.text);
+
+          
       if (isEdit) {
         transactionManager.updateTransaction(
             widget.transaction!.id, transaction);
@@ -434,32 +436,3 @@ class _AccountSheetState extends State<AccountSheet> {
     );
   }
 }
-
-
-
-
-
-/* import 'package:flutter/material.dart';
-
-import 'package:get/get.dart';
-
-import '../controllers/transaction_controller.dart';
-
-class AddTransactionView extends GetView<TransactionController> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('TransactionView'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Text(
-          'TransactionView is working',
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
-    );
-  }
-}
- */

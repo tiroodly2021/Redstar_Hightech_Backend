@@ -68,8 +68,8 @@ class Account {
         name: snap["name"],
         id: snap.id,
         photoURL: snap["photoURL"],
-        balanceCredit: double.parse(snap['balanceCredit']),
-        balanceDebit: double.parse(snap['balanceDebit']));
+        balanceCredit: snap['balanceCredit'].toDouble(),
+        balanceDebit: snap['balanceDebit'].toDouble());
   }
 
   factory Account.fromMap(Map<String, dynamic> map) {

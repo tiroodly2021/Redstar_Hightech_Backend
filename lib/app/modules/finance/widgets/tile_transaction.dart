@@ -6,6 +6,7 @@ import 'package:redstar_hightech_backend/app/constants/app_theme.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/controllers/transaction_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_type_model.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/views/add_transaction_view.dart';
 
 import 'package:redstar_hightech_backend/util.dart';
 
@@ -72,14 +73,12 @@ class TransactionTile extends StatelessWidget {
             border: Border.symmetric(
                 horizontal: BorderSide(color: Color(0x22000000), width: .5))),
         child: InkWell(
-          onTap:
-              () {} /* =>
+          onTap: () =>
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-            return AddTransaction(
+            return AddTransactionView(
               transaction: transaction,
             );
-          })) */
-          ,
+          })),
           onLongPress: () {
             if (enableSlide) {
               Util.showSnackbar(context, 'Slide transaction to delete');

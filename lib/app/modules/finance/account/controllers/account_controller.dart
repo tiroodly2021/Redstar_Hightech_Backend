@@ -2,6 +2,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
+import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 //import 'package:redstar_hightech_backend/app/modules/finance/account_category/models/account_category.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
 
@@ -10,6 +11,8 @@ class AccountController extends GetxController {
   RxBool loading = false.obs;
   Map<String, dynamic> body = {};
   RxList<Account> accounts = <Account>[].obs;
+
+  Rx<Account> account = Account(number: '', createdAt: '', name: '').obs;
 
   DatabaseService database = DatabaseService();
 
@@ -78,32 +81,22 @@ class AccountController extends GetxController {
 
   void deleteAccount(Account account) async {
     String? imageName = account.photoURL != '' ? account.photoURL : '';
-
-    imageName = imageName!.split("%2F")[1].split("?")[0];
-
     databaseService.deleteAccount(account);
 
-    // Create a reference to the file to delete
     if (imageName != '') {
+      imageName = imageName!.split("%2F")[1].split("?")[0];
       final imageRef =
           FirebaseStorage.instance.ref().child("images/${imageName}");
-// Delete the file
+
       await imageRef.delete();
     }
   }
 
-  void toUpdateAccountView(Account user) async {
-    //Get.toNamed(AppPages.UPDATE_USER, arguments: user);
+  void toUpdateAccountView(Account account) async {
+    Get.toNamed(AppPages.FINANCE_UPDATE_ACCOUNT, arguments: account);
   }
 
   void editAccount(Account account) async {
-    /*  print(user.toMap());
-    print(
-        "***********************************************************************");
-    if (role != null) {
-      print(role.toMap());
-    } */
-
     databaseService.updateAccount(account);
   }
 

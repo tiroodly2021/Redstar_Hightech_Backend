@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/bindings/account_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/views/account_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/views/add_account_view%20.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/account/views/update_account_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/finance_home/bindings/finance_home_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/finance_home/views/finance_home_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/bindings/transaction_binding.dart';
@@ -85,7 +86,7 @@ SetPermissionView(
 
   static const FINANCE_ACCOUNT = Routes.FINANCE_ACCOUNT;
   static const FINANCE_ADD_ACCOUNT = Routes.FINANCE_ADD_ACCOUNT;
-  static const FINANCE_EDIT_ACCOUNT = Routes.FINANCE_EDIT_ACCOUNT;
+  static const FINANCE_UPDATE_ACCOUNT = Routes.FINANCE_UPDATE_ACCOUNT;
   static const FINANCE_DELETE_ACCOUNT = Routes.FINANCE_DELETE_ACCOUNT;
 
   /*  End Finance Routes */
@@ -186,8 +187,8 @@ SetPermissionView(
         binding: AccountBinding(),
         middlewares: [/* AuthorizationMiddleware() */]),
     GetPage(
-        name: _Paths.FINANCE_EDIT_ACCOUNT,
-        page: () => AddTransactionView(),
+        name: _Paths.FINANCE_UPDATE_ACCOUNT,
+        page: () => UpdateAccountView(),
         binding: TransactionBinding(),
         middlewares: [/* AuthorizationMiddleware() */]),
 

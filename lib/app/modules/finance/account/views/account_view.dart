@@ -1,6 +1,158 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+
+import 'package:flutter/material.dart';
+
+import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/constants/const.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/add_user.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/role_view.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/widgets/user_widget.dart';
+import 'package:redstar_hightech_backend/app/modules/common/navigation_drawer.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/account/controllers/account_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/account/views/widgets/account_widget.dart';
+
+import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
+import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
+import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
+import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
+import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
+import 'package:redstar_hightech_backend/app/shared/list_not_found.sharedWidgets.dart';
+import 'package:safe_url_check/safe_url_check.dart';
+
+class AccountView extends GetView<AccountController> {
+  var exists;
+
+  AccountView({Key? key}) : super(key: key);
+
+  Future<void> _pullRefresh() async {
+    controller.accountList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // controller.userList();
+
+    return Scaffold(
+        appBar: AppBarWidget(
+          title: 'Accounts',
+          icon: Icons.search,
+          bgColor: Colors.black,
+          onPressed: () {
+            showSearch(context: context, delegate: AppSearchDelegate());
+          },
+          authenticationController: Get.find<AuthenticationController>(),
+          menuActionButton: ButtonOptionalMenu(),
+          tooltip: 'Search',
+        ),
+        drawer: NavigationDrawer(),
+        floatingActionButton: FloatingActionButton(
+          heroTag: "btn2",
+          onPressed: () {
+            Get.toNamed(AppPages.FINANCE_ADD_ACCOUNT);
+          },
+          tooltip: 'New Account',
+          child: const Icon(Icons.person_add),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              Expanded(
+                child: Obx(() {
+                  if (controller.accounts.isNotEmpty) {
+                    return ListView.builder(
+                        itemCount: controller.accounts.length,
+                        itemBuilder: ((context, index) {
+                          Account account = controller.accounts[index];
+
+                          //   controller.getDeviceByUser(user);
+
+                          /*    if (superUserEmail.toLowerCase() ==
+                                  user.email.toLowerCase() &&
+                              Get.find<AuthenticationController>()
+                                  .authenticated) {
+                            if (Get.find<AuthenticationController>().user !=
+                                null) {
+                              if (Get.find<AuthenticationController>()
+                                      .user!
+                                      .email!
+                                      .toLowerCase() !=
+                                  superUserEmail.toLowerCase()) {
+                                return Container();
+                              }
+                            }
+                          }
+
+                          if (Get.find<AuthenticationController>().user ==
+                                  null &&
+                              superUserEmail.toLowerCase() ==
+                                  controller.users[index].email.toLowerCase()) {
+                            return Container();
+                          } */
+
+                          return SizedBox(
+                            height: 190,
+                            child: AccountCard(
+                                account: account,
+                                index: index,
+                                accountController: controller),
+                          );
+                        }));
+                  }
+
+                  return ListNotFound(
+                      route: AppPages.INITIAL,
+                      message: "There are not account in the list",
+                      info: "Go Back",
+                      imageUrl: "assets/images/empty.png");
+                }),
+              )
+            ],
+          ),
+        ));
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* import 'package:flutter/material.dart';
+
+import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:redstar_hightech_backend/app/config/responsive.dart';
 import 'package:redstar_hightech_backend/app/constants/app_theme.dart';
@@ -334,27 +486,4 @@ class _AccountListState extends State<AccountList> {
 
 
 
-/* import 'package:flutter/material.dart';
-
-import 'package:get/get.dart';
-
-import '../controllers/account_controller.dart';
-
-class AccountView extends GetView<AccountController> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('AccountView'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Text(
-          'AccountView is working',
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
-    );
-  }
-}
  */

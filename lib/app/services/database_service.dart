@@ -5,6 +5,7 @@ import 'package:redstar_hightech_backend/app/modules/authentication/models/permi
 import 'package:redstar_hightech_backend/app/modules/authentication/models/role_model.dart';
 import 'package:redstar_hightech_backend/app/modules/category/models/category_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
 import 'package:redstar_hightech_backend/app/modules/order/models/order_stats_model.dart';
 
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
@@ -12,6 +13,8 @@ import 'package:redstar_hightech_backend/app/modules/product/models/product_mode
 import '../../app/modules/order/models/order_model.dart';
 import '../modules/authentication/models/device_model.dart';
 import '../modules/authentication/models/user_model.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart'
+    as financeModel;
 
 class DatabaseService {
   final cloud_firestore.FirebaseFirestore _firebaseFirestore =
@@ -716,10 +719,35 @@ class DatabaseService {
         .toList(); */
   }
 
-  void updateAccount(Account account) {}
+  Future<void> updateAccount(Account account) {
+    return _firebaseFirestore
+        .collection('accounts')
+        .doc(account.id)
+        .update(account.toMap());
+  }
 
-  void deleteAccount(Account account) {}
+  void deleteAccount(Account account) {
+    _firebaseFirestore.collection('accounts').doc(account.id).delete();
+  }
+
   Future<void> addAccount(Account account) {
     return _firebaseFirestore.collection('accounts').add(account.toMap());
+  }
+
+  void addTransaction(financeModel.Transaction transaction) {}
+
+  void updateTransaction(financeModel.Transaction transaction) {}
+
+  void deleteTransaction(financeModel.Transaction transaction) {}
+
+  Stream<List<financeModel.Transaction>> getTransactions() {
+/*     return _firebaseFirestore.collection('transactions').get().then(
+        (querySnapshot) => querySnapshot.docs.map((transaction) =>  
+        financeModel.Transaction.fromSnapshot(transaction)).toList()); */
+
+    return _firebaseFirestore.collection('transactions').snapshots().map(
+        (snapshot) => snapshot.docs
+            .map((doc) => financeModel.Transaction.fromSnapShot(doc))
+            .toList());
   }
 }

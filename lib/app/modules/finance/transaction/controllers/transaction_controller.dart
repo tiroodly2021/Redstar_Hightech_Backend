@@ -1,8 +1,11 @@
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
+import 'package:redstar_hightech_backend/app/services/database_service.dart';
 
 class TransactionController extends GetxController {
-  late List<Transaction> allTransactions;
+  DatabaseService databaseService = DatabaseService();
+
+  late RxList<Transaction> allTransactions;
   late List<Transaction> filterdList;
   late DateTime startDate;
   late DateTime endDate;
@@ -15,17 +18,22 @@ class TransactionController extends GetxController {
   }
   addTransaction(Transaction transaction) {
     //box.add(transaction);
+
+    databaseService.addTransaction(transaction);
+
     _refreshList();
     update();
   }
 
   updateTransaction(key, Transaction transaction) {
     //box.put(key, transaction);
+    databaseService.updateTransaction(transaction);
     _refreshList();
     update();
   }
 
   deleteTransaction(Transaction transaction) {
+    databaseService.deleteTransaction(transaction);
     /*   if (box.values.contains(transaction)) {
       box.delete(transaction.key);
       allTransactions.remove(transaction);
@@ -51,7 +59,8 @@ class TransactionController extends GetxController {
   }
 
   _refreshList() {
-    allTransactions = transactionsData; //box.values.toList();
+    allTransactions.bindStream(databaseService
+        .getTransactions()); //transactionsData; //box.values.toList();
     if (isFilterEnabled) {
       filterdList = allTransactions
           .where((element) =>
