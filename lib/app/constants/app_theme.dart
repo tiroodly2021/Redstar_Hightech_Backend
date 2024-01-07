@@ -28,4 +28,6 @@ class AppTheme {
   static const Color buttonLoginBackgroundColor = Colors.white;
 
   static const Color buttonTextDecorationColor = Color(0xFFa9d470);
+
+  static const redColor = Colors.red;
 }

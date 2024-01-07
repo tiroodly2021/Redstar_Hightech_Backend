@@ -27,13 +27,16 @@ class AccountController extends GetxController {
   //Rx<AccountCategory> role = AccountCategory(categoryName: '', type: 0).obs;
   var count = 0.obs;
 
+  ValueNotifier<List<Account>> accountsDataNotifier =
+      ValueNotifier(accountsData);
+
   @override
   void onInit() {
     super.onInit();
-    userList();
+    accountList();
   }
 
-  void userList() async {
+  void accountList() async {
     count.bindStream(database.getCount('accounts', 'AccountController'));
     accounts.bindStream(database.getAccounts());
     //  roles.bindStream(database.getRoles());
@@ -64,11 +67,16 @@ class AccountController extends GetxController {
     return futureRole;
   } */
 
-  void addAccount(Account account) async {
-    databaseService.addAccount(account);
+  List<Account> getActiveAccounts() {
+    return accountsData;
   }
 
-  void deleteUser(Account account) async {
+  void addAccount(Account account) async {
+    databaseService.addAccount(account);
+    // print(account.toMap());
+  }
+
+  void deleteAccount(Account account) async {
     String? imageName = account.photoURL != '' ? account.photoURL : '';
 
     imageName = imageName!.split("%2F")[1].split("?")[0];
@@ -106,4 +114,9 @@ class AccountController extends GetxController {
 
   @override
   void onClose() {}
+
+  void updateAccount(String? id, Account account) {
+    print(' id : ${id} account : ${account.toMap()}');
+    //databaseService.updateAccount(account);
+  }
 }

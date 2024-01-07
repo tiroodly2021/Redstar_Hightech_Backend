@@ -7,12 +7,14 @@ import 'package:redstar_hightech_backend/app/modules/authentication/controllers/
 import 'package:redstar_hightech_backend/app/modules/common/navigation_drawer.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/controllers/account_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/account/views/add_account_dialog.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/controllers/transaction_controller.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_type_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/circular_button.dart';
+import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
 import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
 import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
@@ -28,15 +30,16 @@ class AddTransactionView extends StatefulWidget {
 }
 
 class _AddTransactionViewState extends State<AddTransactionView> {
-  final TransactionController transactionManager = Get.find();
+  final TransactionController transactionManager =
+      Get.find<TransactionController>();
   final _formKey = GlobalKey<FormState>();
   late bool isEdit;
   DateTime date = DateTime.now();
-  final categoryController = TextEditingController();
+  final accountController = TextEditingController();
   final amountController = TextEditingController();
   final dateController = TextEditingController();
   final descriptionController = TextEditingController();
-  final FocusNode _categoryFocus = FocusNode();
+  final FocusNode _accountFocus = FocusNode();
   final FocusNode _amountFocus = FocusNode();
   final FocusNode _descriptionFocus = FocusNode();
   final transactionTypes = ['Income', 'Expense', 'Transfert'];
@@ -47,7 +50,7 @@ class _AddTransactionViewState extends State<AddTransactionView> {
     if (widget.transaction != null) {
       final Transaction transaction = widget.transaction!;
       date = transaction.date;
-      categoryController.text = transaction.account;
+      accountController.text = transaction.account;
       amountController.text = transaction.amount.toString();
       descriptionController.text = transaction.description ?? '';
       transactionType = transaction.type;
@@ -57,12 +60,12 @@ class _AddTransactionViewState extends State<AddTransactionView> {
 
   @override
   void dispose() {
-    categoryController.dispose();
+    accountController.dispose();
     amountController.dispose();
     dateController.dispose();
     descriptionController.dispose();
     _amountFocus.dispose();
-    _categoryFocus.dispose();
+    _accountFocus.dispose();
     super.dispose();
   }
 
@@ -130,24 +133,26 @@ class _AddTransactionViewState extends State<AddTransactionView> {
                         ),
                       ),
                       TextFormField(
-                        controller: categoryController,
-                        focusNode: _categoryFocus,
+                        controller: accountController,
+                        focusNode: _accountFocus,
                         textInputAction: TextInputAction.next,
                         readOnly: true,
                         onTap: () {
-                          pickCategory(transactionType.index);
+                          print(
+                              'account type picked : ${transactionType.index}');
+                          pickAccount();
                         },
                         autofocus: !isEdit,
-                        validator: (category) =>
-                            category != null && category.isEmpty
-                                ? 'Enter  Category'
+                        validator: (account) =>
+                            account != null && account.isEmpty
+                                ? 'Enter  Account'
                                 : null,
                         decoration: const InputDecoration(
                           prefixIcon: Icon(
                             Icons.category,
                             color: Colors.blue,
                           ),
-                          label: Text('Category'),
+                          label: Text('Account'),
                         ),
                       ),
                       TextFormField(
@@ -190,6 +195,12 @@ class _AddTransactionViewState extends State<AddTransactionView> {
                   ),
                 ),
                 const SizedBox(height: 5),
+                ElevatedButton(
+                    onPressed: () {
+                      Get.toNamed(AppPages.FINANCE_ACCOUNT);
+                    },
+                    style: ElevatedButton.styleFrom(primary: Colors.black),
+                    child: const Text("All Accounts"))
               ]),
           Positioned(
             bottom: 0,
@@ -244,15 +255,16 @@ class _AddTransactionViewState extends State<AddTransactionView> {
   _buildToggleSwitch(Size size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
+      // mainAxisSize: MainAxisSize.min,
       children: [
         ToggleSwitch(
-          minWidth: size.width * .35,
+          minWidth: size.width * .28,
           minHeight: 28,
           cornerRadius: 25.0,
           activeBgColors: const [
             [Colors.white, Color(0xFFEBFFE3)],
-            [Colors.white, Color(0xFFFCE5E5)]
+            [Colors.white, Color(0xFFFCE5E5)],
+            [Colors.white, Color.fromARGB(255, 220, 155, 71)]
           ],
           activeFgColor: Colors.black,
           inactiveBgColor: AppTheme.lihtGray,
@@ -260,29 +272,32 @@ class _AddTransactionViewState extends State<AddTransactionView> {
           customTextStyles: const [TextStyle(fontWeight: FontWeight.bold)],
           borderColor: const [AppTheme.lihtGray],
           initialLabelIndex: transactionType.index,
-          totalSwitches: 2,
+          totalSwitches: 3,
           labels: transactionTypes,
           radiusStyle: true,
           onToggle: (index) {
-            transactionType =
-                index == 1 ? TransactionType.expense : TransactionType.income;
-            categoryController.clear();
+            transactionType = index == 0
+                ? TransactionType.income
+                : (index == 1)
+                    ? TransactionType.expense
+                    : TransactionType.transfert;
+            accountController.clear();
           },
         ),
       ],
     );
   }
 
-  pickCategory(int type) async {
+  pickAccount() async {
     String? newcat = await showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
         barrierColor: Colors.transparent,
-        builder: (context) => CategorySheet(type: type));
+        builder: (context) => AccountSheet());
 
     if (newcat != null) {
-      categoryController.text = newcat;
-      _fieldFocusChange(_categoryFocus, _amountFocus);
+      accountController.text = newcat;
+      _fieldFocusChange(_accountFocus, _amountFocus);
     }
   }
 
@@ -291,7 +306,7 @@ class _AddTransactionViewState extends State<AddTransactionView> {
     if (isValid) {
       Transaction transaction = Transaction(
           date: date,
-          account: categoryController.text,
+          account: accountController.text,
           amount: double.parse(amountController.text),
           type: transactionType,
           description: descriptionController.text);
@@ -304,11 +319,11 @@ class _AddTransactionViewState extends State<AddTransactionView> {
       if (close) {
         Navigator.pop(context);
       } else {
-        categoryController.clear();
+        accountController.clear();
         amountController.clear();
         descriptionController.clear;
-        FocusScope.of(context).requestFocus(_categoryFocus);
-        pickCategory(transactionType.index);
+        FocusScope.of(context).requestFocus(_accountFocus);
+        pickAccount();
       }
     }
   }
@@ -336,18 +351,16 @@ class _AddTransactionViewState extends State<AddTransactionView> {
           : DateFormat('d MMM y, E').format(date);
 }
 
-class CategorySheet extends StatefulWidget {
-  const CategorySheet({
+class AccountSheet extends StatefulWidget {
+  const AccountSheet({
     Key? key,
-    required this.type,
   }) : super(key: key);
-  final int type;
 
   @override
-  State<CategorySheet> createState() => _CategorySheetState();
+  State<AccountSheet> createState() => _AccountSheetState();
 }
 
-class _CategorySheetState extends State<CategorySheet> {
+class _AccountSheetState extends State<AccountSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -377,8 +390,7 @@ class _CategorySheetState extends State<CategorySheet> {
                   onPressed: () {
                     showDialog(
                             context: context,
-                            builder: (context) =>
-                                Container() /* AddCateoryDialog(type: widget.type) */)
+                            builder: (context) => const AddAccountDialog())
                         .whenComplete(() {
                       setState(() {});
                     });
@@ -387,11 +399,12 @@ class _CategorySheetState extends State<CategorySheet> {
               ],
             ),
           ),
-          Expanded(child: GetBuilder<AccountController>(builder: ((controller) {
-            /*  List<Account> accounts =
-                AccountController().getActiveCategories(widget.type); */
-            List<Account> accounts = accountsData;
-            return GridView.builder(
+          Expanded(child: GetBuilder<AccountController>(builder: (controller) {
+            /*  List<Account> accounts = AccountController().getActiveAccounts();
+            print('account length: ${accounts.length} '); */
+            // List<Account> accounts = accountsData;
+            return Text(
+                    "fdf") /* GridView.builder(
                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 200,
                   childAspectRatio: 8 / 1.75,
@@ -413,8 +426,9 @@ class _CategorySheetState extends State<CategorySheet> {
                       ),
                     ),
                   );
-                });
-          })))
+                }) */
+                ;
+          }))
         ],
       ),
     );
