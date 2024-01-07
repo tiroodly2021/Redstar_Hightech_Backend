@@ -5,13 +5,14 @@ import 'package:redstar_hightech_backend/app/services/database_service.dart';
 class TransactionController extends GetxController {
   DatabaseService databaseService = DatabaseService();
 
-  late RxList<Transaction> allTransactions;
+  late RxList<Transaction> allTransactions = <Transaction>[].obs;
   late List<Transaction> filterdList;
   late DateTime startDate;
   late DateTime endDate;
   String currPeriod = '';
 
   bool isFilterEnabled = false;
+
   TransactionController() {
     //box = Hive.box<Transaction>('transactions');
     _refreshList();
@@ -25,7 +26,7 @@ class TransactionController extends GetxController {
     update();
   }
 
-  updateTransaction(key, Transaction transaction) {
+  updateTransaction(Transaction transaction) {
     //box.put(key, transaction);
     databaseService.updateTransaction(transaction);
     _refreshList();
@@ -77,17 +78,4 @@ class TransactionController extends GetxController {
   Future<List<Transaction>> getTransactions() {
     return Future.value(transactionsData);
   }
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {}
 }

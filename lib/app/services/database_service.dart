@@ -736,15 +736,18 @@ class DatabaseService {
 
   void addTransaction(financeModel.Transaction transaction) {}
 
-  void updateTransaction(financeModel.Transaction transaction) {}
+  Future<void> updateTransaction(financeModel.Transaction transaction) {
+    return _firebaseFirestore
+        .collection('transactions')
+        .doc(transaction.id)
+        .update(transaction.toMap());
+  }
 
-  void deleteTransaction(financeModel.Transaction transaction) {}
+  void deleteTransaction(financeModel.Transaction transaction) {
+    _firebaseFirestore.collection('transactions').doc(transaction.id).delete();
+  }
 
   Stream<List<financeModel.Transaction>> getTransactions() {
-/*     return _firebaseFirestore.collection('transactions').get().then(
-        (querySnapshot) => querySnapshot.docs.map((transaction) =>  
-        financeModel.Transaction.fromSnapshot(transaction)).toList()); */
-
     return _firebaseFirestore.collection('transactions').snapshots().map(
         (snapshot) => snapshot.docs
             .map((doc) => financeModel.Transaction.fromSnapShot(doc))

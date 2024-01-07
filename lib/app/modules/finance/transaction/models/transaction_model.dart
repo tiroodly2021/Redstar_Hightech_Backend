@@ -72,10 +72,10 @@ class Transaction {
     return Transaction(
         title: snap["title"],
         description: snap["description"],
-        date: snap["date"],
+        date: DateTime.parse(snap["date"]),
         id: snap.id,
-        type: snap['type'],
-        amount: snap["amount"],
+        type: Transaction.transactionIndexToTransactionType(snap['type']),
+        amount: snap["amount"].toDouble(),
         account: snap['account'],
         image: snap['image']);
   }
@@ -101,6 +101,24 @@ class Transaction {
       "amount": amount,
       'image': image
     };
+  }
+
+  static TransactionType transactionIndexToTransactionType(int index) {
+    TransactionType transactionType = TransactionType.income;
+
+    if (index == 0) {
+      transactionType = TransactionType.income;
+    }
+
+    if (index == 1) {
+      transactionType = TransactionType.expense;
+    }
+
+    if (index == 2) {
+      transactionType = TransactionType.transfert;
+    }
+
+    return transactionType;
   }
 }
 

@@ -305,16 +305,17 @@ class _AddTransactionViewState extends State<AddTransactionView> {
     final isValid = _formKey.currentState!.validate();
     if (isValid) {
       Transaction transaction = Transaction(
+          title: transactionTypeToString(transactionType),
           date: date,
           account: accountController.text,
           amount: double.parse(amountController.text),
           type: transactionType,
-          description: descriptionController.text);
+          description: descriptionController.text,
+          image: '');
 
-          
       if (isEdit) {
-        transactionManager.updateTransaction(
-            widget.transaction!.id, transaction);
+        transactionManager
+            .updateTransaction(/* widget.transaction!.id, */ transaction);
       } else {
         transactionManager.addTransaction(transaction);
       }

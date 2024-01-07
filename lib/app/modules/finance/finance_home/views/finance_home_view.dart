@@ -35,6 +35,7 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
   /* final cateoryController = Get.put(AccountCategoryController());
   final chartController = Get.put(MonthlyChartContollrt());
   final ychartController = Get.put(YearlyChartContoller()); */
+
   double totalBalance = 0;
   double totalIncome = 0;
   double totalExpense = 0;
@@ -81,7 +82,63 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
           ),
         ],
       ),
-      body: GetBuilder<TransactionController>(builder: (controller) {
+      body: /* ListView(children: [
+          //     const FilterBarv(),
+          const SizedBox(height: 25),
+          _buildBalanceWidget(textColor),
+          const SizedBox(height: 5),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Recent Transactions',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(fontWeight: FontWeight.bold),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Get.toNamed(AppPages.FINANCE_TRANSACTION);
+                  },
+                  child: const Text(
+                    'See all',
+                  ),
+                )
+              ],
+            ),
+          ),
+          SizedBox(
+            child: transactionController.filterdList.isEmpty
+                ? SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    child: const EmptyView(
+                        icon: Icons.receipt_long,
+                        label: 'No Transactions Found'),
+                  )
+                : SlidableAutoCloseBehavior(
+                    closeWhenOpened: true,
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: transactionController.filterdList.length < 5
+                            ? transactionController.filterdList.length
+                            : 5,
+                        itemBuilder: (context, index) {
+                          Transaction currItem =
+                              transactionController.filterdList[index];
+                          return TransactionTile(
+                              transaction: currItem,
+                              transactionController: transactionController);
+                        }),
+                  ),
+          ),
+        ]) */
+          GetBuilder<TransactionController>(builder: (controller) {
         calculateBalances(controller.filterdList);
         return ListView(children: [
           //     const FilterBarv(),
