@@ -16,3 +16,20 @@ String transactionTypeToString(TransactionType transactionType) {
 
   return output;
 }
+
+int transactionTypeToInt(TransactionType transactionType) {
+  int output = 0;
+  if (transactionType == TransactionType.income) {
+    output = 0;
+  }
+
+  if (transactionType == TransactionType.expense) {
+    output = 1;
+  }
+
+  if (transactionType == TransactionType.transfert) {
+    output = 2;
+  }
+
+  return output;
+}

@@ -102,9 +102,9 @@ class _TransactionViewState extends State<TransactionView>
             //   );
             // }
 
-            /*  if (widget.account != null) {
+            if (widget.account != null) {
               controller.setFilterByAccount(widget.account!.number);
-            } */
+            }
 
             if (controller.filterdList.isEmpty) {
               return const EmptyView(

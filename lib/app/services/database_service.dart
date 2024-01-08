@@ -754,4 +754,15 @@ class DatabaseService {
             .map((doc) => financeModel.Transaction.fromSnapShot(doc))
             .toList());
   }
+
+  Stream<List<financeModel.Transaction>> getTransactionsByAccount(
+      String accountNumber) {
+    return _firebaseFirestore
+        .collection('transactions')
+        .where('account', isEqualTo: accountNumber)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => financeModel.Transaction.fromSnapShot(doc))
+            .toList());
+  }
 }

@@ -139,8 +139,9 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
           ),
         ]) */
           GetBuilder<TransactionController>(builder: (controller) {
-        calculateBalances(controller.filterdList);
         return Obx(() {
+          calculateBalances(controller.filterdList);
+
           return ListView(children: [
             //     const FilterBarv(),
             const SizedBox(height: 25),

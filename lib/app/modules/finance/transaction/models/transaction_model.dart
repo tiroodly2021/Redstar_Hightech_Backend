@@ -67,7 +67,7 @@ class Transaction {
     return Transaction(
         title: snap["title"],
         description: snap["description"],
-        date: DateTime.fromMicrosecondsSinceEpoch(snap['date']),
+        date: snap['date'].toDate(),
         id: snap.id,
         type: Transaction.transactionIndexToTransactionType(snap['type']),
         amount: snap["amount"].toDouble(),
@@ -90,7 +90,7 @@ class Transaction {
       "title": title,
       "description": description,
       "date": date,
-      "type": transactionTypeToString(type),
+      "type": transactionTypeToInt(type),
       "amount": amount
     };
   }
