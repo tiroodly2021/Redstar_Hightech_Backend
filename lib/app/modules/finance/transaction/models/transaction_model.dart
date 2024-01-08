@@ -11,7 +11,7 @@ class Transaction {
   TransactionType type;
   DateTime date;
   final double amount;
-  final String? image;
+
   String? id;
 
   Transaction({
@@ -22,7 +22,6 @@ class Transaction {
     required this.account,
     required this.amount,
     required this.type,
-    this.image,
   });
 
   Transaction copyWith(
@@ -32,8 +31,7 @@ class Transaction {
           String? account,
           TransactionType? type,
           DateTime? date,
-          double? amount,
-          String? image}) =>
+          double? amount}) =>
       Transaction(
           title: title ?? this.title,
           description: description ?? this.description,
@@ -41,8 +39,7 @@ class Transaction {
           id: id ?? this.id,
           account: account ?? this.account,
           amount: amount ?? this.amount,
-          type: type ?? this.type,
-          image: image ?? this.image);
+          type: type ?? this.type);
 
   factory Transaction.fromRawJson(String str) =>
       Transaction.fromJson(json.decode(str));
@@ -56,28 +53,25 @@ class Transaction {
       id: json["id"],
       type: json['type'],
       account: json['account'],
-      amount: json["amount"],
-      image: json['image']);
+      amount: json["amount"]);
 
   Map<String, dynamic> toJson() => {
         "title": title,
         "description": description,
         "date": date,
         "type": type,
-        "amount": amount,
-        'image': image
+        "amount": amount
       };
 
   factory Transaction.fromSnapShot(DocumentSnapshot snap) {
     return Transaction(
         title: snap["title"],
         description: snap["description"],
-        date: DateTime.parse(snap["date"]),
+        date: DateTime.fromMicrosecondsSinceEpoch(snap['date']),
         id: snap.id,
         type: Transaction.transactionIndexToTransactionType(snap['type']),
         amount: snap["amount"].toDouble(),
-        account: snap['account'],
-        image: snap['image']);
+        account: snap['account']);
   }
 
   factory Transaction.fromMap(Map<String, dynamic> map) {
@@ -88,8 +82,7 @@ class Transaction {
         id: map["id"],
         amount: map["amount"],
         type: map['type'],
-        account: map['account'],
-        image: map['image']);
+        account: map['account']);
   }
 
   Map<String, dynamic> toMap() {
@@ -97,9 +90,8 @@ class Transaction {
       "title": title,
       "description": description,
       "date": date,
-      "type": type,
-      "amount": amount,
-      'image': image
+      "type": transactionTypeToString(type),
+      "amount": amount
     };
   }
 
@@ -124,75 +116,59 @@ class Transaction {
 
 List<Transaction> transactionsData = [
   Transaction(
-    title: 'Fund wallet',
-    description: 'to Jackson Botox',
-    amount: 10560.00,
-    type: TransactionType.income,
-    account: '3434 4523 544',
-    date: DateTime.now(),
-    image: 'assets/icons/face1.png',
-  ),
+      title: 'Fund wallet',
+      description: 'to Jackson Botox',
+      amount: 10560.00,
+      type: TransactionType.income,
+      account: '3434 4523 544',
+      date: DateTime.now()),
   Transaction(
-    title: 'Transfer',
-    description: 'to James Brown',
-    amount: 289.00,
-    account: '3434 4523 544',
-    type: TransactionType.transfert,
-    date: DateTime.now(),
-    image: 'assets/icons/face2.png',
-  ),
+      title: 'Transfer',
+      description: 'to James Brown',
+      amount: 289.00,
+      account: '3434 4523 544',
+      type: TransactionType.transfert,
+      date: DateTime.now()),
   Transaction(
-    title: 'Transfer',
-    description: 'to Jacob Jons',
-    amount: 289.00,
-    account: '3434 4523 544',
-    type: TransactionType.expense,
-    date: DateTime.now(),
-    image: 'assets/icons/face3.png',
-  ),
+      title: 'Transfer',
+      description: 'to Jacob Jons',
+      amount: 289.00,
+      account: '3434 4523 544',
+      type: TransactionType.expense,
+      date: DateTime.now()),
   Transaction(
-    title: 'Transfer',
-    description: 'to James David',
-    amount: 740.00,
-    account: '3434 4523 544',
-    type: TransactionType.transfert,
-    date: DateTime.now(),
-    image: 'assets/icons/icon_step.png',
-  ),
+      title: 'Transfer',
+      description: 'to James David',
+      amount: 740.00,
+      account: '3434 4523 544',
+      type: TransactionType.transfert,
+      date: DateTime.now()),
   Transaction(
-    title: 'Fund wallet',
-    description: 'to Jackson Botox',
-    amount: 650.00,
-    account: '3434 4523 544',
-    type: TransactionType.transfert,
-    date: DateTime.now(),
-    image: 'assets/icons/face1.png',
-  ),
+      title: 'Fund wallet',
+      description: 'to Jackson Botox',
+      amount: 650.00,
+      account: '3434 4523 544',
+      type: TransactionType.transfert,
+      date: DateTime.now()),
   Transaction(
-    title: 'Transfer',
-    description: 'to James Brown',
-    amount: 500.00,
-    account: '3434 4523 544',
-    type: TransactionType.income,
-    date: DateTime.now(),
-    image: 'assets/icons/face3.png',
-  ),
+      title: 'Transfer',
+      description: 'to James Brown',
+      amount: 500.00,
+      account: '3434 4523 544',
+      type: TransactionType.income,
+      date: DateTime.now()),
   Transaction(
-    title: 'Transfer',
-    description: 'to Jacob Jons',
-    amount: 2700.00,
-    account: '3434 4523 544',
-    type: TransactionType.transfert,
-    date: DateTime.now(),
-    image: 'assets/icons/icon_step.png',
-  ),
+      title: 'Transfer',
+      description: 'to Jacob Jons',
+      amount: 2700.00,
+      account: '3434 4523 544',
+      type: TransactionType.transfert,
+      date: DateTime.now()),
   Transaction(
-    title: 'Transfer',
-    description: 'to James David',
-    amount: 200.00,
-    account: '3434 4523 544',
-    type: TransactionType.expense,
-    date: DateTime.now(),
-    image: 'assets/icons/face3.png',
-  ),
+      title: 'Transfer',
+      description: 'to James David',
+      amount: 200.00,
+      account: '3434 4523 544',
+      type: TransactionType.expense,
+      date: DateTime.now()),
 ];

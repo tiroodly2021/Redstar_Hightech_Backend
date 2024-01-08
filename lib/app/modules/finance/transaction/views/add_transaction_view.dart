@@ -281,7 +281,7 @@ class _AddTransactionViewState extends State<AddTransactionView> {
                 : (index == 1)
                     ? TransactionType.expense
                     : TransactionType.transfert;
-            accountController.clear();
+            // accountController.clear();
           },
         ),
       ],
@@ -310,12 +310,11 @@ class _AddTransactionViewState extends State<AddTransactionView> {
           account: accountController.text,
           amount: double.parse(amountController.text),
           type: transactionType,
-          description: descriptionController.text,
-          image: '');
+          description: descriptionController.text);
 
       if (isEdit) {
-        transactionManager
-            .updateTransaction(/* widget.transaction!.id, */ transaction);
+        transactionManager.updateTransaction(
+            widget.transaction!.id!, transaction);
       } else {
         transactionManager.addTransaction(transaction);
       }

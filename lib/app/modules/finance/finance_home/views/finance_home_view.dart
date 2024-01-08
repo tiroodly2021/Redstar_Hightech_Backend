@@ -75,10 +75,10 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
           FloatingActionButton(
             heroTag: "btn2",
             onPressed: () {
-              Get.toNamed(AppPages.FINANCE_ADD_ACCOUNT);
+              Get.toNamed(AppPages.FINANCE_ACCOUNT);
             },
-            tooltip: 'New Account',
-            child: const Icon(Icons.person_add),
+            tooltip: 'Accounts',
+            child: const Icon(Icons.list),
           ),
         ],
       ),
@@ -140,61 +140,65 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
         ]) */
           GetBuilder<TransactionController>(builder: (controller) {
         calculateBalances(controller.filterdList);
-        return ListView(children: [
-          //     const FilterBarv(),
-          const SizedBox(height: 25),
-          _buildBalanceWidget(textColor),
-          const SizedBox(height: 5),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Recent Transactions',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium!
-                      .copyWith(fontWeight: FontWeight.bold),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Get.toNamed(AppPages.FINANCE_TRANSACTION);
-                  },
-                  child: const Text(
-                    'See all',
+        return Obx(() {
+          return ListView(children: [
+            //     const FilterBarv(),
+            const SizedBox(height: 25),
+            _buildBalanceWidget(textColor),
+            const SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Recent Transactions',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(fontWeight: FontWeight.bold),
                   ),
-                )
-              ],
-            ),
-          ),
-          SizedBox(
-            child: controller.filterdList.isEmpty
-                ? SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.4,
-                    child: const EmptyView(
-                        icon: Icons.receipt_long,
-                        label: 'No Transactions Found'),
+                  TextButton(
+                    onPressed: () {
+                      Get.toNamed(AppPages.FINANCE_TRANSACTION);
+                    },
+                    child: const Text(
+                      'See all',
+                    ),
                   )
-                : SlidableAutoCloseBehavior(
-                    closeWhenOpened: true,
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: controller.filterdList.length < 5
-                            ? controller.filterdList.length
-                            : 5,
-                        itemBuilder: (context, index) {
-                          Transaction currItem = controller.filterdList[index];
-                          return TransactionTile(
-                              transaction: currItem,
-                              transactionController: transactionController);
-                        }),
-                  ),
-          ),
-        ]);
+                ],
+              ),
+            ),
+            SizedBox(
+              child: controller.filterdList.isEmpty
+                  ? SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.4,
+                      child: const EmptyView(
+                          icon: Icons.receipt_long,
+                          label: 'No Transactions Found'),
+                    )
+                  : SlidableAutoCloseBehavior(
+                      closeWhenOpened: true,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: controller.filterdList.length < 5
+                              ? controller.filterdList.length
+                              : 5,
+                          itemBuilder: (context, index) {
+                            Transaction currItem =
+                                controller.filterdList[index];
+                            print(currItem.toMap());
+                            return TransactionTile(
+                                transaction: currItem,
+                                transactionController: transactionController);
+                          }),
+                    ),
+            ),
+          ]);
+        });
       }),
     );
   }

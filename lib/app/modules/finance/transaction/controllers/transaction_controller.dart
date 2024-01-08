@@ -9,9 +9,12 @@ class TransactionController extends GetxController {
   late List<Transaction> filterdList;
   late DateTime startDate;
   late DateTime endDate;
+  late String accountNumber;
   String currPeriod = '';
 
   bool isFilterEnabled = false;
+
+  bool isFilterByAccountEnabled = false;
 
   TransactionController() {
     //box = Hive.box<Transaction>('transactions');
@@ -26,9 +29,9 @@ class TransactionController extends GetxController {
     update();
   }
 
-  updateTransaction(Transaction transaction) {
+  updateTransaction(String key, Transaction transaction) {
     //box.put(key, transaction);
-    databaseService.updateTransaction(transaction);
+    databaseService.updateTransaction(key, transaction);
     _refreshList();
     update();
   }
@@ -53,6 +56,13 @@ class TransactionController extends GetxController {
     update();
   }
 
+  setFilterByAccount(String number) {
+    accountNumber = number;
+    isFilterByAccountEnabled = true;
+    _refreshList();
+    //update();
+  }
+
   clearFilter() {
     isFilterEnabled = false;
     _refreshList();
@@ -60,8 +70,8 @@ class TransactionController extends GetxController {
   }
 
   _refreshList() {
-    allTransactions.bindStream(databaseService
-        .getTransactions()); //transactionsData; //box.values.toList();
+    allTransactions.bindStream(databaseService.getTransactions());
+    // allTransactions.value = transactionsData; //box.values.toList();
     if (isFilterEnabled) {
       filterdList = allTransactions
           .where((element) =>
@@ -70,6 +80,12 @@ class TransactionController extends GetxController {
           .toList();
     } else {
       filterdList = allTransactions;
+    }
+
+    if (isFilterByAccountEnabled) {
+      filterdList = filterdList
+          .where((element) => element.account == accountNumber)
+          .toList();
     }
 
     filterdList.sort((a, b) => b.date.compareTo(a.date));

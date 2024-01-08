@@ -736,10 +736,11 @@ class DatabaseService {
 
   void addTransaction(financeModel.Transaction transaction) {}
 
-  Future<void> updateTransaction(financeModel.Transaction transaction) {
+  Future<void> updateTransaction(
+      String key, financeModel.Transaction transaction) {
     return _firebaseFirestore
         .collection('transactions')
-        .doc(transaction.id)
+        .doc(key)
         .update(transaction.toMap());
   }
 

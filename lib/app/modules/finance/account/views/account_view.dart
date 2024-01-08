@@ -97,10 +97,15 @@ class AccountView extends GetView<AccountController> {
 
                           return SizedBox(
                             height: 190,
-                            child: AccountCard(
-                                account: account,
-                                index: index,
-                                accountController: controller),
+                            child: InkWell(
+                              onTap: () => Get.toNamed(
+                                  AppPages.FINANCE_TRANSACTION,
+                                  arguments: account),
+                              child: AccountCard(
+                                  account: account,
+                                  index: index,
+                                  accountController: controller),
+                            ),
                           );
                         }));
                   }

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/config/responsive.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/common/navigation_drawer.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
 
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/views/add_transaction_view.dart';
@@ -19,7 +20,8 @@ import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
 import '../controllers/transaction_controller.dart';
 
 class TransactionView extends StatefulWidget {
-  const TransactionView({Key? key}) : super(key: key);
+  Account? account;
+  TransactionView({Key? key, this.account}) : super(key: key);
 
   @override
   State<TransactionView> createState() => _TransactionViewState();
@@ -53,6 +55,10 @@ class _TransactionViewState extends State<TransactionView>
 
   @override
   Widget build(BuildContext context) {
+    widget.account = ModalRoute.of(context)?.settings.arguments as Account;
+
+    print(widget.account!.toMap());
+
     return Scaffold(
         drawer:
             !Responsive.isDesktop(context) ? NavigationDrawer() : Container(),
@@ -95,53 +101,32 @@ class _TransactionViewState extends State<TransactionView>
             //     child: Text('No transactions Found'),
             //   );
             // }
+
+            /*  if (widget.account != null) {
+              controller.setFilterByAccount(widget.account!.number);
+            } */
+
             if (controller.filterdList.isEmpty) {
               return const EmptyView(
                   icon: Icons.receipt_long, label: 'No transactions found');
             }
-            return SlidableAutoCloseBehavior(
-              child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  controller: scrollController,
-                  itemCount: controller.filterdList.length,
-                  itemBuilder: (context, index) {
-                    Transaction currItem = controller.filterdList[index];
-                    return TransactionTile(
-                      transaction: currItem,
-                      transactionController: transactionController,
-                    );
-                  }),
-            );
+            return Obx(() {
+              return SlidableAutoCloseBehavior(
+                child: ListView.builder(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    controller: scrollController,
+                    itemCount: controller.filterdList.length,
+                    itemBuilder: (context, index) {
+                      Transaction currItem = controller.filterdList[index];
+
+                      return TransactionTile(
+                        transaction: currItem,
+                        transactionController: transactionController,
+                      );
+                    }),
+              );
+            });
           },
         ));
   }
 }
-
-
-
-
-
-/* import 'package:flutter/material.dart';
-
-import 'package:get/get.dart';
-
-import '../controllers/transaction_controller.dart';
-
-class TransactionView extends GetView<TransactionController> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('TransactionView'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Text(
-          'TransactionView is working',
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
-    );
-  }
-}
- */
