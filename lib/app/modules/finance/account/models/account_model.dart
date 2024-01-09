@@ -79,8 +79,8 @@ class Account {
         name: map["name"],
         id: map["id"],
         photoURL: map["photoURL"],
-        balanceCredit: map['balanceCredit'],
-        balanceDebit: map['balanceDebit']);
+        balanceCredit: map['balanceCredit'].toDouble(),
+        balanceDebit: map['balanceDebit'].toDouble());
   }
 
   Map<String, dynamic> toMap() {

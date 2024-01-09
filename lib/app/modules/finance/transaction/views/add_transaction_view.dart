@@ -47,12 +47,15 @@ class _AddTransactionViewState extends State<AddTransactionView> {
   final transactionTypes = ['Income', 'Expense', 'Transfert'];
   TransactionType transactionType = TransactionType.expense;
 
+  late Account accountPrimary;
+  late Account destinationAccount;
+
   @override
   void initState() {
     if (widget.transaction != null) {
       final Transaction transaction = widget.transaction!;
       date = transaction.date;
-      accountController.text = transaction.account;
+      accountController.text = transaction.account.number;
       amountController.text = transaction.amount.toString();
       descriptionController.text = transaction.description ?? '';
       transactionType = transaction.type;
@@ -69,6 +72,7 @@ class _AddTransactionViewState extends State<AddTransactionView> {
     _amountFocus.dispose();
     _accountFocus.dispose();
     _destinationAccountFocus.dispose();
+    transactionManager.isFilterByAccountEnabled.value = false;
     super.dispose();
   }
 
@@ -78,33 +82,34 @@ class _AddTransactionViewState extends State<AddTransactionView> {
 
     isEdit = widget.transaction != null;
     dateController.text = getFormatedDate(date);
-    return Scaffold(
-      backgroundColor: const Color(0xFFF3f3f3),
-      /*  appBar: AppBar(
-        title: Text(isEdit
-            ? transactionTypes[transactionType.index]
-            : 'Add Transaction'),
-        centerTitle: true,
-      ) ,*/
-      drawer: !Responsive.isDesktop(context) ? NavigationDrawer() : Container(),
-      appBar: /*  !Responsive.isDesktop(context)
-          ?  */
-          AppBarWidget(
-        title: 'Add Transaction',
-        icon: Icons.search,
-        bgColor: Colors.black,
-        onPressed: () {
-          showSearch(context: context, delegate: AppSearchDelegate());
-        },
-        authenticationController: Get.find<AuthenticationController>(),
-        menuActionButton: ButtonOptionalMenu(),
-        tooltip: 'Search',
-      ),
-      body: Form(
-        key: _formKey,
-        child: Stack(children: [
-          Obx(() {
-            return ListView(
+    return Obx(() {
+      return Scaffold(
+        backgroundColor: const Color(0xFFF3f3f3),
+        /*  appBar: AppBar(
+            title: Text(isEdit
+                ? transactionTypes[transactionType.index]
+                : 'Add Transaction'),
+            centerTitle: true,
+          ) ,*/
+        drawer:
+            !Responsive.isDesktop(context) ? NavigationDrawer() : Container(),
+        appBar: /*  !Responsive.isDesktop(context)
+              ?  */
+            AppBarWidget(
+          title: 'Add Transaction',
+          icon: Icons.search,
+          bgColor: Colors.black,
+          onPressed: () {
+            showSearch(context: context, delegate: AppSearchDelegate());
+          },
+          authenticationController: Get.find<AuthenticationController>(),
+          menuActionButton: ButtonOptionalMenu(),
+          tooltip: 'Search',
+        ),
+        body: Form(
+          key: _formKey,
+          child: Stack(children: [
+            ListView(
                 padding: const EdgeInsets.fromLTRB(20, 10, 20, 55),
                 children: [
                   const SizedBox(height: 10),
@@ -226,56 +231,56 @@ class _AddTransactionViewState extends State<AddTransactionView> {
                       },
                       style: ElevatedButton.styleFrom(primary: Colors.black),
                       child: const Text("All Accounts"))
-                ]);
-          }),
-          Positioned(
-            bottom: 0,
-            child: Container(
-              width: size.width,
-              color: Colors.white,
-              child: Column(
-                children: [
-                  const Divider(thickness: 1.5, height: 1.5),
-                  Row(
-                    children: [
-                      Visibility(
-                        visible: !isEdit,
-                        child: SizedBox(
+                ]),
+            Positioned(
+              bottom: 0,
+              child: Container(
+                width: size.width,
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    const Divider(thickness: 1.5, height: 1.5),
+                    Row(
+                      children: [
+                        Visibility(
+                          visible: !isEdit,
+                          child: SizedBox(
+                            height: 40,
+                            child: TextButton(
+                              autofocus: false,
+                              onPressed: () {
+                                save(close: false);
+                              },
+                              style: TextButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 25)),
+                              child: const Text('SAVE & ADD ANOTHER'),
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        SizedBox(
                           height: 40,
                           child: TextButton(
-                            autofocus: false,
                             onPressed: () {
-                              save(close: false);
+                              save(close: true);
                             },
                             style: TextButton.styleFrom(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 25)),
-                            child: const Text('SAVE & ADD ANOTHER'),
+                            child: const Text('SAVE'),
                           ),
-                        ),
-                      ),
-                      const Spacer(),
-                      SizedBox(
-                        height: 40,
-                        child: TextButton(
-                          onPressed: () {
-                            save(close: true);
-                          },
-                          style: TextButton.styleFrom(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 25)),
-                          child: const Text('SAVE'),
-                        ),
-                      )
-                    ],
-                  ),
-                ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ]),
-      ),
-    );
+          ]),
+        ),
+      );
+    });
   }
 
   _buildToggleSwitch(Size size) {
@@ -287,18 +292,23 @@ class _AddTransactionViewState extends State<AddTransactionView> {
           minWidth: size.width * .28,
           minHeight: 28,
           cornerRadius: 25.0,
-          activeBgColors: const [
-            [Colors.white, Color(0xFFEBFFE3)],
-            [Colors.white, Color(0xFFFCE5E5)],
-            [Colors.white, Color.fromARGB(255, 220, 155, 71)]
-          ],
+          activeBgColors: !isEdit
+              ? const [
+                  [Colors.white, Color(0xFFEBFFE3)],
+                  [Colors.white, Color(0xFFFCE5E5)],
+                  [Colors.white, Color.fromARGB(255, 220, 155, 71)]
+                ]
+              : const [
+                  [Colors.white, Color(0xFFEBFFE3)],
+                  [Colors.white, Color(0xFFFCE5E5)]
+                ],
           activeFgColor: Colors.black,
           inactiveBgColor: AppTheme.lihtGray,
           inactiveFgColor: Colors.black,
           customTextStyles: const [TextStyle(fontWeight: FontWeight.bold)],
           borderColor: const [AppTheme.lihtGray],
           initialLabelIndex: transactionType.index,
-          totalSwitches: 3,
+          totalSwitches: !isEdit ? 3 : 2,
           labels: transactionTypes,
           radiusStyle: true,
           onToggle: (index) {
@@ -309,7 +319,6 @@ class _AddTransactionViewState extends State<AddTransactionView> {
                     : TransactionType.transfert;
             // accountController.clear();
             if (index == 2) {
-              print('transfert activated');
               transactionManager.isTransfertActivated.value = true;
             } else {
               transactionManager.isTransfertActivated.value = false;
@@ -321,17 +330,21 @@ class _AddTransactionViewState extends State<AddTransactionView> {
   }
 
   pickAccount(TextEditingController controller) async {
-    String? newAcc = await showModalBottomSheet(
+    /* String? */ Account newAcc = await showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
         barrierColor: Colors.transparent,
         builder: (context) => AccountSheet());
 
-    if (newAcc != null) {
-      // accountController.text = newcat;
-      controller.text = newAcc;
-      _fieldFocusChange(_accountFocus, _amountFocus);
+    controller.text = newAcc != null ? newAcc.number : '';
+
+    if (!transactionManager.isTransfertActivated.value) {
+      accountPrimary = newAcc;
+    } else {
+      destinationAccount = newAcc;
     }
+
+    _fieldFocusChange(_accountFocus, _amountFocus);
   }
 
   save({required bool close}) {
@@ -345,15 +358,18 @@ class _AddTransactionViewState extends State<AddTransactionView> {
         transaction = Transaction(
             title: transactionTypeToString(transactionType),
             date: date,
-            account: accountController.text,
+            account: !isEdit
+                ? accountPrimary
+                : widget.transaction!
+                    .account, //accountController.accountController.text,
             amount: double.parse(amountController.text),
             type: transactionType,
             description: descriptionController.text);
       } else {
         tx1 = Transaction(
-            title: transactionTypeToString(transactionType),
+            title: transactionTypeToString(TransactionType.expense),
             date: date,
-            account: accountController.text,
+            account: accountPrimary, //accountController.text,
             amount: double.parse(amountController.text),
             type: TransactionType.expense,
             description: descriptionController.text +
@@ -363,9 +379,9 @@ class _AddTransactionViewState extends State<AddTransactionView> {
                 destinationAccountController.text);
 
         tx2 = Transaction(
-            title: transactionTypeToString(transactionType),
+            title: transactionTypeToString(TransactionType.income),
             date: date,
-            account: destinationAccountController.text,
+            account: destinationAccount, //destinationAccountController.text,
             amount: double.parse(amountController.text),
             type: TransactionType.income,
             description: descriptionController.text +
@@ -382,8 +398,15 @@ class _AddTransactionViewState extends State<AddTransactionView> {
         if (!transactionManager.isTransfertActivated.value) {
           transactionManager.addTransaction(transaction);
         } else {
-          transactionManager.addTransaction(tx1);
-          transactionManager.addTransaction(tx2);
+          if (transactionType.index == 2) {
+            transactionManager.addTransaction(tx1);
+            transactionManager.addTransaction(tx2);
+            Get.showSnackbar(const GetSnackBar(
+              title: 'Error',
+              message: "Destination can't be empty",
+              backgroundColor: Colors.red,
+            ));
+          }
         }
       }
       if (close) {
@@ -393,6 +416,7 @@ class _AddTransactionViewState extends State<AddTransactionView> {
         amountController.clear();
         destinationAccountController.clear();
         descriptionController.clear;
+        transactionManager.isTransfertActivated.value = false;
         FocusScope.of(context).requestFocus(_accountFocus);
         FocusScope.of(context).requestFocus(_destinationAccountFocus);
         pickAccount(accountController);
@@ -499,7 +523,7 @@ class _AccountSheetState extends State<AccountSheet> {
                             border: Border.all(color: Colors.grey, width: .25)),
                         child: InkWell(
                           onTap: () {
-                            Navigator.of(context).pop(accounts[index].number);
+                            Navigator.of(context).pop(accounts[index]);
                           },
                           child: Center(
                             child: Column(
@@ -507,7 +531,7 @@ class _AccountSheetState extends State<AccountSheet> {
                                 Text(
                                   accounts[index].name,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 1,
                                 ),
                                 Text(

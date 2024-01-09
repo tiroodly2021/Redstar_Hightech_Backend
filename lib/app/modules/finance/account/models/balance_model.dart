@@ -1,15 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
 
 class Balances {
   final String name;
-  final String number;
+  Account account;
   final String balance;
   final String expiryDate;
   final String id;
 
   Balances({
     required this.name,
-    required this.number,
+    required this.account,
     required this.balance,
     required this.expiryDate,
     required this.id,
@@ -17,7 +18,7 @@ class Balances {
 
   factory Balances.fromJson(Map<String, dynamic> json) => Balances(
         name: json["name"],
-        number: json["number"],
+        account: json["number"],
         balance: json["balance"],
         expiryDate: json["expiry_Date"],
         id: json["id"],
@@ -26,7 +27,7 @@ class Balances {
   factory Balances.fromSnapShot(DocumentSnapshot snap) {
     return Balances(
         name: snap["name"],
-        number: snap["number"],
+        account: Account.fromSnapShot(snap["number"]),
         balance: snap["balance"],
         id: snap.id,
         expiryDate: snap["expiryDate"]);
@@ -35,7 +36,7 @@ class Balances {
   Map<String, dynamic> toMap() {
     return {
       "name": name,
-      "number": number,
+      "account": account.toMap()..addAll({'id': account.id}),
       "balance": balance,
       "expiry_Date": expiryDate,
       "id": id,
@@ -44,7 +45,7 @@ class Balances {
 
   Map<String, dynamic> toJson() => {
         "name": name,
-        "number": number,
+        "account": account,
         "balance": balance,
         "expiry_Date": expiryDate,
         "id": id,

@@ -191,7 +191,9 @@ class _TransactionViewState extends State<TransactionView>
                       return const Text(
                         'Balance : \$ 0 }',
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green),
                       );
                     }
                     return totalBalance >= 0

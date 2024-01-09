@@ -7,7 +7,8 @@ import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/
 class Transaction {
   final String? title;
   final String? description;
-  String account;
+  Account account;
+  //String account;
   TransactionType type;
   DateTime date;
   final double amount;
@@ -27,7 +28,7 @@ class Transaction {
           {String? id,
           String? title,
           String? description,
-          String? account,
+          Account? account,
           TransactionType? type,
           DateTime? date,
           double? amount}) =>
@@ -70,7 +71,7 @@ class Transaction {
         id: snap.id,
         type: Transaction.transactionIndexToTransactionType(snap['type']),
         amount: snap["amount"].toDouble(),
-        account: snap['account']);
+        account: Account.fromMap(snap['account']));
   }
 
   factory Transaction.fromMap(Map<String, dynamic> map) {
@@ -91,7 +92,8 @@ class Transaction {
       "account": account,
       "date": date,
       "type": transactionTypeToInt(type),
-      "amount": amount
+      "amount": amount,
+      "account": account.toMap()..addAll({'id': account.id})
     };
   }
 

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
 
@@ -28,7 +29,8 @@ class TransactionController extends GetxController {
     //box.add(transaction);
 
     databaseService.addTransaction(transaction);
-    //print(transaction.toMap());
+
+    print(transaction.toMap());
 
     _refreshList();
     // update();
@@ -37,6 +39,8 @@ class TransactionController extends GetxController {
   updateTransaction(String key, Transaction transaction) {
     //box.put(key, transaction);
     databaseService.updateTransaction(key, transaction);
+    print(transaction.toMap());
+
     _refreshList();
     update();
   }
