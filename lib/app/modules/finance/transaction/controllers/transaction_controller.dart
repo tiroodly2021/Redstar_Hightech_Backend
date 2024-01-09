@@ -72,20 +72,28 @@ class TransactionController extends GetxController {
   _refreshList() {
     allTransactions.bindStream(databaseService.getTransactions());
     // allTransactions.value = transactionsData; //box.values.toList();
-    if (isFilterEnabled.value) {
-      filterdList.value = allTransactions
+    if (isFilterEnabled.value && !isFilterByAccountEnabled.value) {
+      filterdList = allTransactions
           .where((element) =>
               (element.date.isAfter(startDate) || element.date == startDate) &&
               element.date.isBefore(endDate))
-          .toList();
+          .toList()
+          .obs;
+    } else if (!isFilterEnabled.value && isFilterByAccountEnabled.value) {
+      filterdList = allTransactions
+          .where((element) => element.account == accountNumber)
+          .toList()
+          .obs;
+    } else if (isFilterEnabled.value && isFilterByAccountEnabled.value) {
+      filterdList = allTransactions
+          .where((element) =>
+              (element.date.isAfter(startDate) || element.date == startDate) &&
+              element.date.isBefore(endDate))
+          .where((element) => element.account == accountNumber)
+          .toList()
+          .obs;
     } else {
       filterdList = allTransactions;
-    }
-
-    if (isFilterByAccountEnabled.value) {
-      filterdList.value = filterdList
-          .where((element) => element.account == accountNumber)
-          .toList();
     }
 
     filterdList.sort((a, b) => b.date.compareTo(a.date));
