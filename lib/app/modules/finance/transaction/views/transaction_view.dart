@@ -8,6 +8,7 @@ import 'package:redstar_hightech_backend/app/modules/authentication/controllers/
 import 'package:redstar_hightech_backend/app/modules/common/navigation_drawer.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_type_model.dart';
 
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/views/add_transaction_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/empty_view.dart';
@@ -33,6 +34,11 @@ class _TransactionViewState extends State<TransactionView>
   final scrollController = ScrollController();
   bool showFAB = true;
 
+  double totalBalance = 0;
+  double totalIncome = 0;
+  double totalExpense = 0;
+  final textColor = const Color(0xff324149);
+
   @override
   void initState() {
     scrollController.addListener(() {
@@ -56,8 +62,6 @@ class _TransactionViewState extends State<TransactionView>
   @override
   Widget build(BuildContext context) {
     widget.account = ModalRoute.of(context)?.settings.arguments as Account;
-
-    print(widget.account!.toMap());
 
     return Scaffold(
       drawer: !Responsive.isDesktop(context) ? NavigationDrawer() : Container(),
@@ -119,6 +123,7 @@ class _TransactionViewState extends State<TransactionView>
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       widget.account != null
                           ? Row(
@@ -165,14 +170,45 @@ class _TransactionViewState extends State<TransactionView>
                                 ),
                               ],
                             )
-                          : const Text(
-                              'All',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+                          : const Padding(
+                              padding: EdgeInsets.only(left: 20.0),
+                              child: Text(
+                                'All',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
                             ),
                     ],
                   ),
                 ),
+                Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  child:
+                      GetBuilder<TransactionController>(builder: (controller) {
+                    calculateBalances(controller.filterdList);
+
+                    if (controller.filterdList.isEmpty) {
+                      return const Text(
+                        'Balance : \$ 0 }',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      );
+                    }
+                    return totalBalance >= 0
+                        ? Text(
+                            'Balance : \$${totalBalance}',
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          )
+                        : Text(
+                            'Balance : - \$${-totalBalance}',
+                            style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red),
+                          );
+                  }),
+                )
               ],
             ),
           ),
@@ -184,12 +220,12 @@ class _TransactionViewState extends State<TransactionView>
               //   );
               // }
 
-              if (widget.account != null) {
+              /*   if (widget.account != null) {
                 transactionController.isFilterByAccountEnabled.value = true;
                 transactionController
                     .setFilterByAccount(widget.account!.number);
               }
-
+ */
               if (controller.filterdList.isEmpty) {
                 return const EmptyView(
                     icon: Icons.receipt_long, label: 'No transactions found');
@@ -244,5 +280,20 @@ class _TransactionViewState extends State<TransactionView>
         });
       }), */
     );
+  }
+
+  calculateBalances(List<Transaction> tarnsactions) {
+    totalBalance = 0;
+    totalExpense = 0;
+    totalIncome = 0;
+    for (Transaction transaction in tarnsactions) {
+      if (transaction.type == TransactionType.income) {
+        totalBalance += transaction.amount;
+        totalIncome += transaction.amount;
+      } else {
+        totalBalance -= transaction.amount;
+        totalExpense += transaction.amount;
+      }
+    }
   }
 }

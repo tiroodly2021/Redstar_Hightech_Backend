@@ -33,6 +33,10 @@ class AccountController extends GetxController {
   ValueNotifier<List<Account>> accountsDataNotifier =
       ValueNotifier(accountsData);
 
+  AccountController() {
+    accountList();
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -71,12 +75,13 @@ class AccountController extends GetxController {
   } */
 
   List<Account> getActiveAccounts() {
-    return accountsData;
+    return accounts;
   }
 
   void addAccount(Account account) async {
     databaseService.addAccount(account);
     // print(account.toMap());
+    update();
   }
 
   void deleteAccount(Account account) async {
@@ -89,6 +94,7 @@ class AccountController extends GetxController {
           FirebaseStorage.instance.ref().child("images/${imageName}");
 
       await imageRef.delete();
+      update();
     }
   }
 
@@ -98,6 +104,7 @@ class AccountController extends GetxController {
 
   void editAccount(Account account) async {
     databaseService.updateAccount(account);
+    update();
   }
 
   @override

@@ -36,10 +36,12 @@ class _AddTransactionViewState extends State<AddTransactionView> {
   late bool isEdit;
   DateTime date = DateTime.now();
   final accountController = TextEditingController();
+  final destinationAccountController = TextEditingController();
   final amountController = TextEditingController();
   final dateController = TextEditingController();
   final descriptionController = TextEditingController();
   final FocusNode _accountFocus = FocusNode();
+  final FocusNode _destinationAccountFocus = FocusNode();
   final FocusNode _amountFocus = FocusNode();
   final FocusNode _descriptionFocus = FocusNode();
   final transactionTypes = ['Income', 'Expense', 'Transfert'];
@@ -66,6 +68,7 @@ class _AddTransactionViewState extends State<AddTransactionView> {
     descriptionController.dispose();
     _amountFocus.dispose();
     _accountFocus.dispose();
+    _destinationAccountFocus.dispose();
     super.dispose();
   }
 
@@ -100,108 +103,131 @@ class _AddTransactionViewState extends State<AddTransactionView> {
       body: Form(
         key: _formKey,
         child: Stack(children: [
-          ListView(
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 55),
-              children: [
-                const SizedBox(height: 10),
-                /*  if (!isEdit) */ _buildToggleSwitch(size),
-                const SizedBox(height: 20),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(boxShadow: const [
-                    BoxShadow(color: Colors.black),
-                    BoxShadow(
-                      color: Colors.white,
-                      spreadRadius: 0,
-                      blurRadius: 4,
-                    ),
-                  ], borderRadius: BorderRadius.circular(10)),
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        controller: dateController,
-                        readOnly: true,
-                        textInputAction: TextInputAction.next,
-                        onTap: () {
-                          pickDate();
-                        },
-                        decoration: const InputDecoration(
-                          prefixIcon:
-                              Icon(Icons.calendar_month, color: Colors.blue),
-                          label: Text('Date'),
-                        ),
+          Obx(() {
+            return ListView(
+                padding: const EdgeInsets.fromLTRB(20, 10, 20, 55),
+                children: [
+                  const SizedBox(height: 10),
+                  /*  if (!isEdit) */ _buildToggleSwitch(size),
+                  const SizedBox(height: 20),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(boxShadow: const [
+                      BoxShadow(color: Colors.black),
+                      BoxShadow(
+                        color: Colors.white,
+                        spreadRadius: 0,
+                        blurRadius: 4,
                       ),
-                      TextFormField(
-                        controller: accountController,
-                        focusNode: _accountFocus,
-                        textInputAction: TextInputAction.next,
-                        readOnly: true,
-                        onTap: () {
-                          print(
-                              'account type picked : ${transactionType.index}');
-                          pickAccount();
-                        },
-                        autofocus: !isEdit,
-                        validator: (account) =>
-                            account != null && account.isEmpty
-                                ? 'Enter  Account'
-                                : null,
-                        decoration: const InputDecoration(
-                          prefixIcon: Icon(
-                            Icons.category,
-                            color: Colors.blue,
+                    ], borderRadius: BorderRadius.circular(10)),
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          controller: dateController,
+                          readOnly: true,
+                          textInputAction: TextInputAction.next,
+                          onTap: () {
+                            pickDate();
+                          },
+                          decoration: const InputDecoration(
+                            prefixIcon:
+                                Icon(Icons.calendar_month, color: Colors.blue),
+                            label: Text('Date'),
                           ),
-                          label: Text('Account'),
                         ),
-                      ),
-                      TextFormField(
-                        controller: amountController,
-                        focusNode: _amountFocus,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        keyboardType: TextInputType.number,
-                        textInputAction: TextInputAction.next,
-                        onFieldSubmitted: (term) {
-                          _fieldFocusChange(_amountFocus, _descriptionFocus);
-                        },
-                        validator: (amount) =>
-                            amount != null && double.tryParse(amount) == null
-                                ? 'Enter Amount'
-                                : null,
-                        decoration: const InputDecoration(
+                        TextFormField(
+                          controller: accountController,
+                          focusNode: _accountFocus,
+                          textInputAction: TextInputAction.next,
+                          readOnly: isEdit ? true : false,
+                          onTap: () {
+                            pickAccount(accountController);
+                          },
+                          autofocus: !isEdit,
+                          validator: (account) =>
+                              account != null && account.isEmpty
+                                  ? 'Enter  Account'
+                                  : null,
+                          decoration: const InputDecoration(
                             prefixIcon: Icon(
-                              Icons.currency_rupee,
+                              Icons.category,
                               color: Colors.blue,
                             ),
-                            label: Text('Amount'),
-                            hintText: ' 0'),
-                      ),
-                      TextFormField(
-                        controller: descriptionController,
-                        focusNode: _descriptionFocus,
-                        textCapitalization: TextCapitalization.sentences,
-                        maxLength: 30,
-                        decoration: const InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.edit_note,
-                              color: Colors.blue,
-                            ),
-                            label: Text('Note'),
-                            counterText: ''),
-                      )
-                    ],
+                            label: Text('Account'),
+                          ),
+                        ),
+                        (transactionManager.isTransfertActivated.value)
+                            ? TextFormField(
+                                controller: destinationAccountController,
+                                focusNode: _destinationAccountFocus,
+                                textInputAction: TextInputAction.next,
+                                readOnly: isEdit ? true : false,
+                                onTap: () {
+                                  pickAccount(destinationAccountController);
+                                },
+                                autofocus: !isEdit,
+                                validator: (account) =>
+                                    account != null && account.isEmpty
+                                        ? 'Enter  Destination Account '
+                                        : null,
+                                decoration: const InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.category,
+                                    color: Colors.blue,
+                                  ),
+                                  label: Text('Destination Account'),
+                                ),
+                              )
+                            : Container(),
+                        TextFormField(
+                          controller: amountController,
+                          focusNode: _amountFocus,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          keyboardType: TextInputType.number,
+                          textInputAction: TextInputAction.next,
+                          onFieldSubmitted: (term) {
+                            _fieldFocusChange(_amountFocus, _descriptionFocus);
+                          },
+                          validator: (amount) =>
+                              amount != null && double.tryParse(amount) == null
+                                  ? 'Enter Amount'
+                                  : null,
+                          decoration: const InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.currency_rupee,
+                                color: Colors.blue,
+                              ),
+                              label: Text('Amount'),
+                              hintText: ' 0'),
+                        ),
+                        TextFormField(
+                          controller: descriptionController,
+                          focusNode: _descriptionFocus,
+                          textCapitalization: TextCapitalization.sentences,
+                          maxLength: 30,
+                          decoration: const InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.edit_note,
+                                color: Colors.blue,
+                              ),
+                              label: Text('Note'),
+                              counterText: ''),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 5),
-                ElevatedButton(
-                    onPressed: () {
-                      Get.toNamed(AppPages.FINANCE_ACCOUNT);
-                    },
-                    style: ElevatedButton.styleFrom(primary: Colors.black),
-                    child: const Text("All Accounts"))
-              ]),
+                  const SizedBox(height: 5),
+                  ElevatedButton(
+                      onPressed: () {
+                        Get.toNamed(AppPages.FINANCE_ACCOUNT);
+                      },
+                      style: ElevatedButton.styleFrom(primary: Colors.black),
+                      child: const Text("All Accounts"))
+                ]);
+          }),
           Positioned(
             bottom: 0,
             child: Container(
@@ -282,50 +308,97 @@ class _AddTransactionViewState extends State<AddTransactionView> {
                     ? TransactionType.expense
                     : TransactionType.transfert;
             // accountController.clear();
+            if (index == 2) {
+              print('transfert activated');
+              transactionManager.isTransfertActivated.value = true;
+            } else {
+              transactionManager.isTransfertActivated.value = false;
+            }
           },
         ),
       ],
     );
   }
 
-  pickAccount() async {
-    String? newcat = await showModalBottomSheet(
+  pickAccount(TextEditingController controller) async {
+    String? newAcc = await showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
         barrierColor: Colors.transparent,
         builder: (context) => AccountSheet());
 
-    if (newcat != null) {
-      accountController.text = newcat;
+    if (newAcc != null) {
+      // accountController.text = newcat;
+      controller.text = newAcc;
       _fieldFocusChange(_accountFocus, _amountFocus);
     }
   }
 
   save({required bool close}) {
     final isValid = _formKey.currentState!.validate();
+    late Transaction transaction;
+    late Transaction tx1;
+    late Transaction tx2;
+
     if (isValid) {
-      Transaction transaction = Transaction(
-          title: transactionTypeToString(transactionType),
-          date: date,
-          account: accountController.text,
-          amount: double.parse(amountController.text),
-          type: transactionType,
-          description: descriptionController.text);
+      if (!transactionManager.isTransfertActivated.value) {
+        transaction = Transaction(
+            title: transactionTypeToString(transactionType),
+            date: date,
+            account: accountController.text,
+            amount: double.parse(amountController.text),
+            type: transactionType,
+            description: descriptionController.text);
+      } else {
+        tx1 = Transaction(
+            title: transactionTypeToString(transactionType),
+            date: date,
+            account: accountController.text,
+            amount: double.parse(amountController.text),
+            type: TransactionType.expense,
+            description: descriptionController.text +
+                ' ' +
+                accountController.text +
+                ' To ' +
+                destinationAccountController.text);
+
+        tx2 = Transaction(
+            title: transactionTypeToString(transactionType),
+            date: date,
+            account: destinationAccountController.text,
+            amount: double.parse(amountController.text),
+            type: TransactionType.income,
+            description: descriptionController.text +
+                ' ' +
+                accountController.text +
+                ' To ' +
+                destinationAccountController.text);
+      }
 
       if (isEdit) {
         transactionManager.updateTransaction(
             widget.transaction!.id!, transaction);
       } else {
-        transactionManager.addTransaction(transaction);
+        if (!transactionManager.isTransfertActivated.value) {
+          transactionManager.addTransaction(transaction);
+        } else {
+          transactionManager.addTransaction(tx1);
+          transactionManager.addTransaction(tx2);
+        }
       }
       if (close) {
         Navigator.pop(context);
       } else {
         accountController.clear();
         amountController.clear();
+        destinationAccountController.clear();
         descriptionController.clear;
         FocusScope.of(context).requestFocus(_accountFocus);
-        pickAccount();
+        FocusScope.of(context).requestFocus(_destinationAccountFocus);
+        pickAccount(accountController);
+        if (transactionManager.isTransfertActivated.value) {
+          pickAccount(destinationAccountController);
+        }
       }
     }
   }
@@ -363,6 +436,8 @@ class AccountSheet extends StatefulWidget {
 }
 
 class _AccountSheetState extends State<AccountSheet> {
+  final accountObjController = Get.put(AccountController());
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -402,34 +477,54 @@ class _AccountSheetState extends State<AccountSheet> {
             ),
           ),
           Expanded(child: GetBuilder<AccountController>(builder: (controller) {
-            /*  List<Account> accounts = AccountController().getActiveAccounts();
-            print('account length: ${accounts.length} '); */
+            //ist<Account> accounts = AccountController().getActiveAccounts();
+
             // List<Account> accounts = accountsData;
-            return Text(
-                    "fdf") /* GridView.builder(
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 200,
-                  childAspectRatio: 8 / 1.75,
-                ),
-                itemCount: accounts.length,
-                itemBuilder: (ctx, index) {
-                  return Container(
-                    decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 245, 245, 245),
-                        border: Border.all(color: Colors.grey, width: .25)),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.of(context).pop(accounts[index].name);
-                      },
-                      child: Center(
-                        child: Text(
-                          accounts[index].name,
+            return Obx(() {
+              List<Account> accounts = accountObjController.accounts;
+
+              return GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 200,
+                    childAspectRatio: 8 / 1.75,
+                  ),
+                  itemCount: accounts.length,
+                  itemBuilder: (ctx, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Container(
+                        margin: const EdgeInsets.only(left: 8.0),
+                        decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 245, 245, 245),
+                            border: Border.all(color: Colors.grey, width: .25)),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).pop(accounts[index].number);
+                          },
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Text(
+                                  accounts[index].name,
+                                ),
+                                SizedBox(
+                                  height: 1,
+                                ),
+                                Text(
+                                  accounts[index].number,
+                                  style: TextStyle(
+                                      fontSize: 10,
+                                      color: Colors.green.shade900,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                }) */
-                ;
+                    );
+                  });
+            });
           }))
         ],
       ),

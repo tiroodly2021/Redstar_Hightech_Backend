@@ -14,15 +14,14 @@ class Transaction {
 
   String? id;
 
-  Transaction({
-    this.id,
-    this.description,
-    this.title,
-    required this.date,
-    required this.account,
-    required this.amount,
-    required this.type,
-  });
+  Transaction(
+      {this.id,
+      this.description,
+      this.title,
+      required this.date,
+      required this.account,
+      required this.amount,
+      required this.type});
 
   Transaction copyWith(
           {String? id,
@@ -89,6 +88,7 @@ class Transaction {
     return {
       "title": title,
       "description": description,
+      "account": account,
       "date": date,
       "type": transactionTypeToInt(type),
       "amount": amount
@@ -106,14 +106,14 @@ class Transaction {
       transactionType = TransactionType.expense;
     }
 
-    if (index == 2) {
+    /*  if (index == 2) {
       transactionType = TransactionType.transfert;
-    }
+    } */
 
     return transactionType;
   }
 }
-
+/* 
 List<Transaction> transactionsData = [
   Transaction(
       title: 'Fund wallet',
@@ -172,3 +172,4 @@ List<Transaction> transactionsData = [
       type: TransactionType.expense,
       date: DateTime.now()),
 ];
+ */

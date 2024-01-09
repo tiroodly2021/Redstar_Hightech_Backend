@@ -173,7 +173,7 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
               ),
             ),
             SizedBox(
-              child: controller.filterdList.isEmpty
+              child: controller.allTransactions.isEmpty //.filterdList.isEmpty
                   ? SizedBox(
                       height: MediaQuery.of(context).size.height * 0.4,
                       child: const EmptyView(
@@ -191,7 +191,7 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
                           itemBuilder: (context, index) {
                             Transaction currItem =
                                 controller.filterdList[index];
-                            print(currItem.toMap());
+
                             return TransactionTile(
                                 transaction: currItem,
                                 transactionController: transactionController);

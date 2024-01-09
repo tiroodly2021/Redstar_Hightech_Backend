@@ -10,9 +10,9 @@ String transactionTypeToString(TransactionType transactionType) {
     output = "Debit";
   }
 
-  if (transactionType == TransactionType.transfert) {
+  /*  if (transactionType == TransactionType.transfert) {
     output = "Transfert";
-  }
+  } */
 
   return output;
 }
@@ -27,9 +27,9 @@ int transactionTypeToInt(TransactionType transactionType) {
     output = 1;
   }
 
-  if (transactionType == TransactionType.transfert) {
+  /*  if (transactionType == TransactionType.transfert) {
     output = 2;
-  }
+  } */
 
   return output;
 }

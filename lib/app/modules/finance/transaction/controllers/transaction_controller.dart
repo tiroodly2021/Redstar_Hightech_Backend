@@ -16,15 +16,20 @@ class TransactionController extends GetxController {
 
   RxBool isFilterByAccountEnabled = false.obs;
 
+  RxBool isTransfertActivated = false.obs;
+
   TransactionController() {
     //box = Hive.box<Transaction>('transactions');
+    clearFilterByAccount();
+    clearFilter();
     _refreshList();
   }
   addTransaction(Transaction transaction) {
     //box.add(transaction);
 
-    //  databaseService.addTransaction(transaction);
-    print(transaction.toMap());
+    databaseService.addTransaction(transaction);
+    //print(transaction.toMap());
+
     _refreshList();
     // update();
   }
@@ -53,18 +58,25 @@ class TransactionController extends GetxController {
     endDate = end;
     isFilterEnabled.value = true;
     _refreshList();
-    //update();
+    update();
   }
 
   setFilterByAccount(String number) {
     accountNumber = number;
     isFilterByAccountEnabled.value = true;
     _refreshList();
-    // update();
+    //update();
   }
 
   clearFilter() {
     isFilterEnabled.value = false;
+
+    _refreshList();
+    update();
+  }
+
+  clearFilterByAccount() {
+    isFilterByAccountEnabled.value = false;
     _refreshList();
     update();
   }
@@ -92,11 +104,19 @@ class TransactionController extends GetxController {
           .where((element) => element.account == accountNumber)
           .toList()
           .obs;
-    } else {
+    } else if (!isFilterEnabled.value && !isFilterByAccountEnabled.value) {
       filterdList = allTransactions;
     }
 
     filterdList.sort((a, b) => b.date.compareTo(a.date));
+  }
+
+  @override
+  void onClose() {
+    clearFilterByAccount();
+    clearFilter();
+
+    super.onClose();
   }
 }
 
