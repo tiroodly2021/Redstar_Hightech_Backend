@@ -14,6 +14,7 @@ import 'package:intl/intl.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_type_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/circular_button.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/widgets/search_transaction.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
 import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
@@ -100,7 +101,7 @@ class _AddTransactionViewState extends State<AddTransactionView> {
           icon: Icons.search,
           bgColor: Colors.black,
           onPressed: () {
-            showSearch(context: context, delegate: AppSearchDelegate());
+            showSearch(context: context, delegate: TransactionSearchDelegate());
           },
           authenticationController: Get.find<AuthenticationController>(),
           menuActionButton: ButtonOptionalMenu(),
@@ -289,7 +290,7 @@ class _AddTransactionViewState extends State<AddTransactionView> {
       // mainAxisSize: MainAxisSize.min,
       children: [
         ToggleSwitch(
-          minWidth: size.width * .28,
+          minWidth: isEdit ? size.width * .42 : size.width * .28,
           minHeight: 28,
           cornerRadius: 25.0,
           activeBgColors: !isEdit

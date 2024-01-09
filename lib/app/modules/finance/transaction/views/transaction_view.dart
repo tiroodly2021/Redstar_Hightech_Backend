@@ -12,6 +12,8 @@ import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/
 
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/views/add_transaction_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/empty_view.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/widgets/filter_bar.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/widgets/search_transaction.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/tile_transaction.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
@@ -72,7 +74,7 @@ class _TransactionViewState extends State<TransactionView>
         icon: Icons.search,
         bgColor: Colors.black,
         onPressed: () {
-          showSearch(context: context, delegate: AppSearchDelegate());
+          showSearch(context: context, delegate: TransactionSearchDelegate());
         },
         authenticationController: Get.find<AuthenticationController>(),
         menuActionButton: ButtonOptionalMenu(),
@@ -99,6 +101,7 @@ class _TransactionViewState extends State<TransactionView>
       ),
       body: Column(
         children: [
+          const FilterBarv(),
           Container(
             height: 60,
             decoration: const BoxDecoration(
@@ -173,7 +176,7 @@ class _TransactionViewState extends State<TransactionView>
                           : const Padding(
                               padding: EdgeInsets.only(left: 20.0),
                               child: Text(
-                                'All',
+                                'All Matches Accounts',
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
@@ -189,7 +192,7 @@ class _TransactionViewState extends State<TransactionView>
 
                     if (controller.filterdList.isEmpty) {
                       return const Text(
-                        'Balance : \$ 0 }',
+                        'Balance : \$ 0 ',
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,

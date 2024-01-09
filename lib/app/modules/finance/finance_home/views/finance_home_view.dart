@@ -17,6 +17,8 @@ import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/views/add_transaction_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/views/transaction_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/empty_view.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/widgets/filter_bar.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/widgets/search_transaction.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/tile_transaction.dart';
 /* import 'package:redstar_hightech_backend/app/modules/finance/widgets/empty_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/filter_bar.dart';
@@ -52,7 +54,7 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
         icon: Icons.search,
         bgColor: Colors.black,
         onPressed: () {
-          showSearch(context: context, delegate: AppSearchDelegate());
+          showSearch(context: context, delegate: TransactionSearchDelegate());
         },
         authenticationController: Get.find<AuthenticationController>(),
         menuActionButton: ButtonOptionalMenu(),
@@ -143,7 +145,7 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
           calculateBalances(controller.filterdList);
 
           return ListView(children: [
-            //     const FilterBarv(),
+            const FilterBarv(),
             const SizedBox(height: 25),
             _buildBalanceWidget(textColor),
             const SizedBox(height: 5),
