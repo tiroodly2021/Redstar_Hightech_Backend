@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:fab_circular_menu/fab_circular_menu.dart';
 
 class FinanceHomeController extends GetxController {
-  //TODO: Implement FinanceHomeController
+  final GlobalKey<FabCircularMenuState> fabKey = GlobalKey();
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
@@ -16,5 +17,12 @@ class FinanceHomeController extends GetxController {
 
   @override
   void onClose() {}
-  void increment() => count.value++;
+
+  openCloseFabMenu() {
+    if (fabKey.currentState!.isOpen) {
+      fabKey.currentState!.close();
+    } else {
+      fabKey.currentState!.open();
+    }
+  }
 }

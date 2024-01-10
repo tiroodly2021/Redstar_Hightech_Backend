@@ -42,6 +42,10 @@ dependencies:
   confirm_dialog:
   flutter_slidable: 
   toggle_switch: 
+  
+  
+
+  fab_circular_menu: 
 
   wave:
 
