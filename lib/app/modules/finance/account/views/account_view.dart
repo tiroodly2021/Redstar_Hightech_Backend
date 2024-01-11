@@ -15,6 +15,9 @@ import 'package:redstar_hightech_backend/app/modules/common/navigation_drawer.da
 import 'package:redstar_hightech_backend/app/modules/finance/account/controllers/account_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/views/widgets/account_widget.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/controllers/transaction_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_type_model.dart';
 
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
@@ -26,6 +29,12 @@ import 'package:safe_url_check/safe_url_check.dart';
 
 class AccountView extends GetView<AccountController> {
   var exists;
+  TransactionController transactionController =
+      Get.put(TransactionController());
+  double totalBalance = 0;
+  double totalIncome = 0;
+  double totalExpense = 0;
+  final textColor = const Color(0xff324149);
 
   AccountView({Key? key}) : super(key: key);
 
@@ -69,31 +78,15 @@ class AccountView extends GetView<AccountController> {
                         itemCount: controller.accounts.length,
                         itemBuilder: ((context, index) {
                           Account account = controller.accounts[index];
+                          late Transaction myTransaction;
 
-                          //   controller.getDeviceByUser(user);
+                          List<Transaction> txByAccount = transactionController
+                              .allTransactions
+                              .takeWhile((transaction) =>
+                                  transaction.account.id == account.id)
+                              .toList();
 
-                          /*    if (superUserEmail.toLowerCase() ==
-                                  user.email.toLowerCase() &&
-                              Get.find<AuthenticationController>()
-                                  .authenticated) {
-                            if (Get.find<AuthenticationController>().user !=
-                                null) {
-                              if (Get.find<AuthenticationController>()
-                                      .user!
-                                      .email!
-                                      .toLowerCase() !=
-                                  superUserEmail.toLowerCase()) {
-                                return Container();
-                              }
-                            }
-                          }
-
-                          if (Get.find<AuthenticationController>().user ==
-                                  null &&
-                              superUserEmail.toLowerCase() ==
-                                  controller.users[index].email.toLowerCase()) {
-                            return Container();
-                          } */
+                          calculateBalances(txByAccount);
 
                           return SizedBox(
                             height: 190,
@@ -103,6 +96,7 @@ class AccountView extends GetView<AccountController> {
                                   arguments: account),
                               child: AccountCard(
                                   account: account,
+                                  totalBalance: totalBalance,
                                   index: index,
                                   accountController: controller),
                             ),
@@ -120,6 +114,21 @@ class AccountView extends GetView<AccountController> {
             ],
           ),
         ));
+  }
+
+  calculateBalances(List<Transaction> tarnsactions) {
+    totalBalance = 0;
+    totalExpense = 0;
+    totalIncome = 0;
+    for (Transaction transaction in tarnsactions) {
+      if (transaction.type == TransactionType.income) {
+        totalBalance += transaction.amount;
+        totalIncome += transaction.amount;
+      } else {
+        totalBalance -= transaction.amount;
+        totalExpense += transaction.amount;
+      }
+    }
   }
 }
 

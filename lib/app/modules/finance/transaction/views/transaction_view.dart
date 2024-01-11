@@ -101,7 +101,9 @@ class _TransactionViewState extends State<TransactionView>
       ),
       body: Column(
         children: [
-          const FilterBarv(),
+          widget.account != null
+              ? FilterBarv(number: widget.account!.number)
+              : FilterBarv(),
           Container(
             height: 60,
             decoration: const BoxDecoration(

@@ -7,6 +7,8 @@ import 'package:redstar_hightech_backend/app/modules/finance/account/views/add_a
 import 'package:redstar_hightech_backend/app/modules/finance/account/views/update_account_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/finance_home/bindings/finance_home_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/finance_home/views/finance_home_view.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/statistics/bindings/statistics_binding.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/statistics/views/statistics_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/bindings/transaction_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/views/add_transaction_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/views/transaction_view.dart';
@@ -88,6 +90,8 @@ SetPermissionView(
   static const FINANCE_ADD_ACCOUNT = Routes.FINANCE_ADD_ACCOUNT;
   static const FINANCE_UPDATE_ACCOUNT = Routes.FINANCE_UPDATE_ACCOUNT;
   static const FINANCE_DELETE_ACCOUNT = Routes.FINANCE_DELETE_ACCOUNT;
+
+  static const FINANCE_STATISTIC = Routes.FINANCE_STATISTIC;
 
   /*  End Finance Routes */
 
@@ -173,6 +177,11 @@ SetPermissionView(
         name: _Paths.FINANCE_ADD_TRANSACTION,
         page: () => AddTransactionView(),
         binding: TransactionBinding(),
+        middlewares: [/* AuthorizationMiddleware() */]),
+    GetPage(
+        name: _Paths.FINANCE_STATISTIC,
+        page: () => StatisticsView(),
+        binding: StatisticsBinding(),
         middlewares: [/* AuthorizationMiddleware() */]),
 
     /* Account */

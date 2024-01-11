@@ -15,6 +15,9 @@ import 'package:redstar_hightech_backend/app/modules/category/models/category_mo
 import 'package:redstar_hightech_backend/app/modules/common/navigation_drawer.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/controllers/account_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/controllers/transaction_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_type_model.dart';
 import 'package:redstar_hightech_backend/app/modules/home/controllers/home_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/product/controllers/product_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
@@ -37,8 +40,8 @@ class AddAccountView extends GetView<AccountController> {
   FirebaseStorage _storage = FirebaseStorage.instance;
 
   late XFile? imageDataFile = null;
-/*   RoleController roleController = Get.put(RoleController());
-  Role roleToAttach = Role(name: '', description: ''); */
+  TransactionController transactionController =
+      Get.put(TransactionController());
 
   AddAccountView({
     Key? key,
@@ -207,29 +210,51 @@ class AddAccountView extends GetView<AccountController> {
                           }
 
                           if (controller.addNameController.text != "" &&
-                              controller.addNumberController.text != "") {
+                              controller.addNumberController.text != "" &&
+                              controller.addBalanceCreditController.text !=
+                                  controller.addNBalanceDebitController.text) {
                             Account account = Account(
                               number: controller.addNumberController.text,
                               createdAt: DateTime.now().toString(),
                               name: controller.addNameController.text,
-                              balanceCredit:
-                                  controller.addBalanceCreditController.text !=
-                                          ''
-                                      ? double.parse(controller
-                                          .addBalanceCreditController.text)
-                                      : 0,
-                              balanceDebit:
-                                  controller.addNBalanceDebitController.text !=
-                                          ''
-                                      ? double.parse(controller
-                                          .addNBalanceDebitController.text)
-                                      : 0,
                               photoURL: imageLink != ''
                                   ? imageLink
                                   : controller.imageLink.value,
                             );
 
                             _addAccount(account);
+
+                            if (controller.addBalanceCreditController.text !=
+                                '') {
+                              Transaction tx = Transaction(
+                                  title: transactionTypeToString(
+                                      TransactionType.income),
+                                  description: transactionTypeToString(
+                                      TransactionType.income),
+                                  date: DateTime.now(),
+                                  account: account,
+                                  amount: double.parse(controller
+                                      .addBalanceCreditController.text),
+                                  type: TransactionType.income);
+
+                              transactionController.addTransaction(tx);
+                            }
+
+                            if (controller.addNBalanceDebitController.text !=
+                                '') {
+                              Transaction tx = Transaction(
+                                  title: transactionTypeToString(
+                                      TransactionType.expense),
+                                  description: transactionTypeToString(
+                                      TransactionType.expense),
+                                  date: DateTime.now(),
+                                  account: account,
+                                  amount: double.parse(controller
+                                      .addNBalanceDebitController.text),
+                                  type: TransactionType.expense);
+
+                              transactionController.addTransaction(tx);
+                            }
 
                             resetFields();
 

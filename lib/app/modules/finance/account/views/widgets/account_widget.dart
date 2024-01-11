@@ -10,9 +10,13 @@ import 'package:redstar_hightech_backend/app/modules/authentication/controllers/
 import 'package:redstar_hightech_backend/app/modules/authentication/models/user_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/controllers/account_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/controllers/transaction_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
 import 'package:redstar_hightech_backend/app/modules/middleware/auth_middleware.dart';
 
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart'
+    as financeModel;
 
 import 'package:intl/intl.dart';
 
@@ -22,6 +26,7 @@ class AccountCard extends StatelessWidget {
   Account account;
   final int index;
   DatabaseService databaseService = DatabaseService();
+  double? totalBalance = 0;
 
   AccountController accountController;
 
@@ -29,7 +34,8 @@ class AccountCard extends StatelessWidget {
       {Key? key,
       required this.account,
       required this.index,
-      required this.accountController})
+      required this.accountController,
+      this.totalBalance})
       : super(key: key);
 
   Future<void> _onDeleteData(BuildContext context, Account account) async {
@@ -59,10 +65,6 @@ class AccountCard extends StatelessWidget {
     accountController.addNameController.text = account.name;
     accountController.addNumberController.text = account.number;
     accountController.addNumberController.text = account.number;
-    accountController.addBalanceCreditController.text =
-        account.balanceCredit.toString();
-    accountController.addNBalanceDebitController.text =
-        account.balanceDebit.toString();
 
     accountController.imageLink.value = account.photoURL!;
 
@@ -150,53 +152,6 @@ class AccountCard extends StatelessWidget {
                       },
                     ),
                   )
-                  /* Get.find<AuthenticationController>().user != null
-                      ? (superUserEmail.toLowerCase() ==
-                                  user.email.toLowerCase() &&
-                              Get.find<AuthenticationController>()
-                                  .authenticated)
-                          ? Container()
-                          : CircleAvatar(
-                              backgroundColor: Colors.transparent,
-                              child: PopupMenuButton(
-                                icon: const Icon(Icons.more_vert_rounded),
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                        bottomLeft: Radius.circular(8),
-                                        bottomRight: Radius.circular(8),
-                                        topLeft: Radius.circular(8),
-                                        topRight: Radius.circular(8))),
-                                offset: const Offset(0.0, 1),
-                                itemBuilder: (ctx) => [
-                                  _buildPopMenuItem(
-                                      "Edit", Icons.edit, Options.Edit.index),
-                                  _buildPopMenuItem("Delete", Icons.remove,
-                                      Options.Delete.index),
-                                ],
-                                onSelected: (value) async {
-                                  int selectedValue = value as int;
-
-                                  switch (selectedValue) {
-                                    case 0:
-                                      /*  Navigator.pushNamed(context, AppPages.EDIT_USER,
-                                arguments: user); */
-                                      _onEdit(account);
-                                      break;
-                                    case 1:
-                                      if (await confirm(context)) {
-                                        _onDeleteData(context, account);
-
-                                        return print('pressedOK');
-                                      }
-
-                                      return print('pressedCancel');
-
-                                    default:
-                                  }
-                                },
-                              ),
-                            )
-                      : Container() */
                 ],
               ),
             ),
@@ -246,19 +201,6 @@ class AccountCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    /* Row(
-                      children: [
-                        const Text("Role: ",
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          user.roles!.values.toList()[0],
-                          //style: const TextStyle(fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ), */
                     const SizedBox(
                       height: 10,
                     ),
@@ -297,32 +239,28 @@ class AccountCard extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        const Text("Balance Credit: ",
+                        const Text("Balance : ",
                             style: TextStyle(fontWeight: FontWeight.bold)),
                         const SizedBox(
                           width: 10,
                         ),
-                        Text(
-                          '\$ ${account.balanceCredit!.toStringAsFixed(2)}',
-                          //style: const TextStyle(fontWeight: FontWeight.bold),
-                        )
+                        totalBalance! >= 0
+                            ? Text(
+                                '\$${totalBalance!}',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.green),
+                              )
+                            : Text(
+                                '-  \$${-totalBalance!}',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red),
+                              )
                       ],
                     ),
                     const SizedBox(
                       height: 10,
-                    ),
-                    Row(
-                      children: [
-                        const Text("Balance Debit: ",
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          '\$ ${account.balanceDebit!.toStringAsFixed(2)}',
-                          //style: const TextStyle(fontWeight: FontWeight.bold),
-                        )
-                      ],
                     ),
                   ],
                 )

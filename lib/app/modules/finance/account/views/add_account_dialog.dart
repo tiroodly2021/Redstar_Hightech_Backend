@@ -132,8 +132,6 @@ class _AddAccountDialogState extends State<AddAccountDialog> {
         name: accountName,
         number: accountNumber /* widget.account!.number */,
         createdAt: DateTime.now().toIso8601String(),
-        balanceCredit: 0,
-        balanceDebit: 0,
         photoURL: '');
     if (isEdit) {
       _accountManager.updateAccount(widget.account!.id, account);

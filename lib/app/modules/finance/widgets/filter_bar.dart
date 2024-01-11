@@ -3,9 +3,8 @@ import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/controllers/transaction_controller.dart';
 
 class FilterBarv extends StatefulWidget {
-  const FilterBarv({
-    Key? key,
-  }) : super(key: key);
+  String? number;
+  FilterBarv({Key? key, this.number}) : super(key: key);
 
   @override
   State<FilterBarv> createState() => _FilterBarvState();
@@ -23,6 +22,13 @@ class _FilterBarvState extends State<FilterBarv> {
   int selFilterIndex = 0;
   @override
   void initState() {
+    if (widget.number != null) {
+      setFilter(widget.number);
+      setState(() {
+        // selFilterIndex = index;
+      });
+    }
+
     super.initState();
   }
 
@@ -120,6 +126,7 @@ class _FilterBarvState extends State<FilterBarv> {
 
         break;
       default:
+        controller.setFilterByAccount(widget.number!);
         break;
     }
   }

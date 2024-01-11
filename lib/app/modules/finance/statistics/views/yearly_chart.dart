@@ -1,4 +1,4 @@
-/* import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/statistics/controllers/yearly_chart_contoller.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/statistics/views/monthly_chart.dart';
@@ -44,7 +44,7 @@ class _YearlyChartState extends State<YearlyChart> {
             },
           ),
         ),
-        Padding(
+        /*  Padding(
             padding: const EdgeInsets.symmetric(vertical: 20),
             child: GetBuilder<YearlyChartContoller>(
               builder: (controller) {
@@ -52,9 +52,8 @@ class _YearlyChartState extends State<YearlyChart> {
                   controller: controller,
                 );
               },
-            ))
+            )) */
       ],
     );
   }
 }
- */

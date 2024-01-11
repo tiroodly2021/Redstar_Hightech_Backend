@@ -15,7 +15,8 @@ class MonthlyChart extends StatefulWidget {
 }
 
 class _MonthlyChartState extends State<MonthlyChart> {
-  final MonthlyChartContollrt chartController = Get.find();
+  final MonthlyChartContollrt chartController =
+      Get.put(MonthlyChartContollrt());
   String period = '';
   int filterType = 0;
 
@@ -27,7 +28,8 @@ class _MonthlyChartState extends State<MonthlyChart> {
   @override
   Widget build(BuildContext context) {
     period = chartController.getPeriod();
-    return ListView(
+    return Text(
+        "Hello"); /* ListView(
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
@@ -47,7 +49,7 @@ class _MonthlyChartState extends State<MonthlyChart> {
             },
           ),
         ),
-        Padding(
+           Padding(
             padding: const EdgeInsets.symmetric(vertical: 20),
             child: GetBuilder<MonthlyChartContollrt>(
               builder: (controller) {
@@ -55,9 +57,9 @@ class _MonthlyChartState extends State<MonthlyChart> {
                   controller: controller,
                 );
               },
-            ))
+            )) 
       ],
-    );
+    ); */
   }
 }
 

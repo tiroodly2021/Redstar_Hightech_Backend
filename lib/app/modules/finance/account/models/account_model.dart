@@ -1,16 +1,15 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
 
-class Account {
+class Account extends Equatable {
   final String? id;
   final String number;
   final String createdAt;
   final String name;
   //List<AccountCategory>? categories;
   String? photoURL;
-  double? balanceCredit = 0;
-  double? balanceDebit = 0;
 
   Account(
       {required this.number,
@@ -18,26 +17,20 @@ class Account {
       required this.name,
       // this.categories,
       this.id,
-      this.photoURL,
-      this.balanceCredit,
-      this.balanceDebit});
+      this.photoURL});
 
   Account copyWith(
           {String? number,
           String? createdAt,
           String? name,
           String? uid,
-          String? photoURL,
-          double? blanceCredit,
-          double? balanceDebit}) =>
+          String? photoURL}) =>
       Account(
           number: number ?? this.number,
           createdAt: createdAt ?? this.createdAt,
           name: name ?? this.name,
           id: id ?? this.id,
-          photoURL: photoURL ?? this.photoURL,
-          balanceCredit: balanceCredit ?? this.balanceCredit,
-          balanceDebit: balanceDebit ?? this.balanceDebit);
+          photoURL: photoURL ?? this.photoURL);
 
   factory Account.fromRawJson(String str) => Account.fromJson(json.decode(str));
 
@@ -48,17 +41,13 @@ class Account {
       createdAt: json["createdAt"],
       name: json["name"],
       id: json["id"],
-      photoURL: json["photoURL"],
-      balanceCredit: json['balanceCredit'],
-      balanceDebit: json['balanceDebit']);
+      photoURL: json["photoURL"]);
 
   Map<String, dynamic> toJson() => {
         "number": number,
         "createdAt": createdAt,
         "name": name,
-        "photoURL": photoURL,
-        'balanceCredit': balanceCredit,
-        'balanceDebit': balanceDebit
+        "photoURL": photoURL
       };
 
   factory Account.fromSnapShot(DocumentSnapshot snap) {
@@ -67,9 +56,7 @@ class Account {
         createdAt: snap["createdAt"],
         name: snap["name"],
         id: snap.id,
-        photoURL: snap["photoURL"],
-        balanceCredit: snap['balanceCredit'].toDouble(),
-        balanceDebit: snap['balanceDebit'].toDouble());
+        photoURL: snap["photoURL"]);
   }
 
   factory Account.fromMap(Map<String, dynamic> map) {
@@ -78,9 +65,7 @@ class Account {
         createdAt: map["createdAt"],
         name: map["name"],
         id: map["id"],
-        photoURL: map["photoURL"],
-        balanceCredit: map['balanceCredit'].toDouble(),
-        balanceDebit: map['balanceDebit'].toDouble());
+        photoURL: map["photoURL"]);
   }
 
   Map<String, dynamic> toMap() {
@@ -88,30 +73,10 @@ class Account {
       "number": number,
       "createdAt": createdAt,
       "name": name,
-      "photoURL": photoURL,
-      'balanceCredit': balanceCredit,
-      'balanceDebit': balanceDebit
+      "photoURL": photoURL
     };
   }
-}
 
-List<Account> accountsData = [
-  Account(
-    id: '4545A',
-    number: '3434 4523 544',
-    name: 'Jackson Botox',
-    balanceCredit: 10560.00,
-    balanceDebit: 3423.00,
-    createdAt: '4 hours ago',
-    photoURL: 'assets/icons/face1.png',
-  ),
-  Account(
-    id: '4B45A',
-    number: '3434 9900 544',
-    name: 'Jackson Botox',
-    balanceCredit: 223.00,
-    balanceDebit: 6757.00,
-    createdAt: '4 hours ago',
-    photoURL: 'assets/icons/face2.png',
-  ),
-];
+  @override
+  List<Object?> get props => [id, number, createdAt, name, photoURL];
+}

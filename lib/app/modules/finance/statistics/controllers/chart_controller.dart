@@ -3,6 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/controllers/account_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/statistics/models/chart_data_model.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/controllers/transaction_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
 
 abstract class ChartController extends GetxController {
@@ -10,6 +11,8 @@ abstract class ChartController extends GetxController {
   late List<Transaction> allTransactions;
   late List<Transaction> filterdList;
   late List<CatChartData> chartDataList;
+  TransactionController transactionController =
+      Get.put(TransactionController());
   List<CatChartData> displyDataList = [];
   int currTypeFilter = 0;
   final DateTime now = DateTime.now();
@@ -17,8 +20,8 @@ abstract class ChartController extends GetxController {
   late DateTime endDate;
 
   initialize(startDate, endDate) {
-    box = Hive.box<Transaction>('transactions');
-    allTransactions = box.values.toList();
+    allTransactions =
+        transactionController.allTransactions.value; //box.values.toList();
     setDateFilter(startDate, endDate);
     setTypeFiler(0);
   }

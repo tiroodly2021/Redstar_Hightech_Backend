@@ -23,6 +23,7 @@ class TransactionController extends GetxController {
     //box = Hive.box<Transaction>('transactions');
     clearFilterByAccount();
     clearFilter();
+
     _refreshList();
   }
   addTransaction(Transaction transaction) {
@@ -81,6 +82,7 @@ class TransactionController extends GetxController {
 
   clearFilterByAccount() {
     isFilterByAccountEnabled.value = false;
+    setFilterByAccount('');
     _refreshList();
     update();
   }
@@ -97,7 +99,7 @@ class TransactionController extends GetxController {
           .obs;
     } else if (!isFilterEnabled.value && isFilterByAccountEnabled.value) {
       filterdList = allTransactions
-          .where((element) => element.account == accountNumber)
+          .where((element) => element.account.number == accountNumber)
           .toList()
           .obs;
     } else if (isFilterEnabled.value && isFilterByAccountEnabled.value) {
@@ -105,7 +107,7 @@ class TransactionController extends GetxController {
           .where((element) =>
               (element.date.isAfter(startDate) || element.date == startDate) &&
               element.date.isBefore(endDate))
-          .where((element) => element.account == accountNumber)
+          .where((element) => element.account.number == accountNumber)
           .toList()
           .obs;
     } else if (!isFilterEnabled.value && !isFilterByAccountEnabled.value) {

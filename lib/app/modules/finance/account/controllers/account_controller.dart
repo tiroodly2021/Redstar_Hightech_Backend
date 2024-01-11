@@ -30,8 +30,7 @@ class AccountController extends GetxController {
   //Rx<AccountCategory> role = AccountCategory(categoryName: '', type: 0).obs;
   var count = 0.obs;
 
-  ValueNotifier<List<Account>> accountsDataNotifier =
-      ValueNotifier(accountsData);
+  ValueNotifier<List<Account>> accountsDataNotifier = ValueNotifier([]);
 
   AccountController() {
     accountList();

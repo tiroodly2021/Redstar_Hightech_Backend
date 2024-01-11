@@ -109,7 +109,7 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
                       child: Icon(Icons.transform, color: Colors.white)),
                   RawMaterialButton(
                       onPressed: () {
-                        //  Get.to(() => StatisticsView());
+                        Get.to(() => StatisticsView());
                       },
                       shape: CircleBorder(
                         side: BorderSide(width: 1, color: Colors.white),
@@ -213,7 +213,7 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
           calculateBalances(controller.filterdList);
 
           return ListView(children: [
-            const FilterBarv(),
+            FilterBarv(),
             const SizedBox(height: 25),
             _buildBalanceWidget(textColor),
             const SizedBox(height: 5),

@@ -166,12 +166,6 @@ class UpdateAccountView extends GetView<AccountController> {
                       "Account Name", controller.addNameController),
                   _buildTextFormField(
                       "Account Number", controller.addNumberController),
-                  _buildTextFormField(
-                      "Balance Credit", controller.addBalanceCreditController,
-                      isNumber: true),
-                  _buildTextFormField(
-                      "Balance Debit", controller.addNBalanceDebitController,
-                      isNumber: true),
                   /* Row(
                     children: [
                       DropDownWidgetList(controller.roles, 'role', 'Role'),
@@ -204,18 +198,6 @@ class UpdateAccountView extends GetView<AccountController> {
                               name: controller.addNameController.text,
                               number: controller.addNumberController.text,
                               createdAt: controller.account.value.createdAt,
-                              balanceCredit:
-                                  controller.addBalanceCreditController.text !=
-                                          ''
-                                      ? double.parse(controller
-                                          .addBalanceCreditController.text)
-                                      : controller.account.value.balanceCredit,
-                              balanceDebit:
-                                  controller.addNBalanceDebitController.text !=
-                                          ''
-                                      ? double.parse(controller
-                                          .addNBalanceDebitController.text)
-                                      : controller.account.value.balanceDebit,
                               photoURL: imageLink != ''
                                   ? imageLink
                                   : controller.account.value.photoURL,

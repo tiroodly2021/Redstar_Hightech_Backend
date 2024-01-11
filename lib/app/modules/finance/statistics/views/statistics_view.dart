@@ -1,4 +1,4 @@
-/* import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 
@@ -19,13 +19,15 @@ class StatisticsView extends StatefulWidget {
 class _StatisticsViewState extends State<StatisticsView>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  final MonthlyChartContollrt monthChartController = Get.find();
-  final YearlyChartContoller yearChartController = Get.find();
+  final MonthlyChartContollrt monthChartController =
+      Get.put(MonthlyChartContollrt());
+  final YearlyChartContoller yearChartController =
+      Get.put(YearlyChartContoller());
   final DateTime now = DateTime.now();
 
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 1, vsync: this);
     final initDateS = DateTime(now.year, now.month, 1);
     final initDateE = DateTime(initDateS.year, initDateS.month + 1, 1);
     monthChartController.initialize(initDateS, initDateE);
@@ -110,7 +112,7 @@ class _StatisticsViewState extends State<StatisticsView>
                 unselectedLabelColor: Colors.black54,
                 labelStyle: const TextStyle(fontWeight: FontWeight.bold),
                 tabs: const [
-                  Tab(text: 'Monthly'),
+                  //  Tab(text: 'Monthly'),
                   Tab(text: 'Yearly'),
                 ],
               ),
@@ -123,7 +125,7 @@ class _StatisticsViewState extends State<StatisticsView>
               child: TabBarView(
                 controller: _tabController,
                 children: const [
-                  MonthlyChart(),
+                  // MonthlyChart(),
                   YearlyChart(),
                 ],
               ),
@@ -158,4 +160,4 @@ class StatisticsView extends GetView<StatisticsController> {
     );
   }
 }
- */ */
+*/
