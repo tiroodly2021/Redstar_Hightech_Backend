@@ -22,12 +22,12 @@ class _FilterBarvState extends State<FilterBarv> {
   int selFilterIndex = 0;
   @override
   void initState() {
-    if (widget.number != null) {
+    /* if (widget.number != null) {
       setFilter(widget.number);
       setState(() {
         // selFilterIndex = index;
       });
-    }
+    } */
 
     super.initState();
   }

@@ -78,15 +78,21 @@ class AccountView extends GetView<AccountController> {
                         itemCount: controller.accounts.length,
                         itemBuilder: ((context, index) {
                           Account account = controller.accounts[index];
-                          late Transaction myTransaction;
+                          List<Transaction> transactionByAccount = [];
 
-                          List<Transaction> txByAccount = transactionController
+                          /*   List<Transaction> txByAccount = */ transactionController
                               .allTransactions
-                              .takeWhile((transaction) =>
+                              .forEach((element) {
+                            if (element.account.id == account.id) {
+                              transactionByAccount.add(element);
+                            }
+                          });
+
+                          /*          .takeWhile((transaction) =>
                                   transaction.account.id == account.id)
                               .toList();
-
-                          calculateBalances(txByAccount);
+ */
+                          calculateBalances(transactionByAccount);
 
                           return SizedBox(
                             height: 190,

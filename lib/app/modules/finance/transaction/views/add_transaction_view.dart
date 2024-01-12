@@ -60,6 +60,7 @@ class _AddTransactionViewState extends State<AddTransactionView> {
       amountController.text = transaction.amount.toString();
       descriptionController.text = transaction.description ?? '';
       transactionType = transaction.type;
+      accountPrimary = widget.transaction!.account;
     }
     super.initState();
   }
@@ -148,7 +149,9 @@ class _AddTransactionViewState extends State<AddTransactionView> {
                           textInputAction: TextInputAction.next,
                           readOnly: isEdit ? true : false,
                           onTap: () {
-                            pickAccount(accountController);
+                            if (!isEdit) {
+                              pickAccount(accountController);
+                            }
                           },
                           autofocus: !isEdit,
                           validator: (account) =>
@@ -359,10 +362,7 @@ class _AddTransactionViewState extends State<AddTransactionView> {
         transaction = Transaction(
             title: transactionTypeToString(transactionType),
             date: date,
-            account: !isEdit
-                ? accountPrimary
-                : widget.transaction!
-                    .account, //accountController.accountController.text,
+            account: accountPrimary,
             amount: double.parse(amountController.text),
             type: transactionType,
             description: descriptionController.text);
@@ -555,4 +555,7 @@ class _AccountSheetState extends State<AccountSheet> {
       ),
     );
   }
+
+  @override
+  List<Object?> get props => [accountObjController];
 }

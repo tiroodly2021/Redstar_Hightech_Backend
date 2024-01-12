@@ -82,7 +82,7 @@ class TransactionController extends GetxController {
 
   clearFilterByAccount() {
     isFilterByAccountEnabled.value = false;
-    setFilterByAccount('');
+
     _refreshList();
     update();
   }
