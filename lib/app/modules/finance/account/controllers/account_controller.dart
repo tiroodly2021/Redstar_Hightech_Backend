@@ -45,33 +45,7 @@ class AccountController extends GetxController {
   void accountList() async {
     count.bindStream(database.getCount('accounts', 'AccountController'));
     accounts.bindStream(database.getAccounts());
-    //  roles.bindStream(database.getRoles());
   }
-
-  /* Future<List<AccountCategory>?> getRoleByUser(Account user) {
-    // devices.bindStream(Stream.fromFuture(database.getDeviceByUser(user)));
-    final listRoles = databaseService.getRoleByUser(user);
-
-    return listRoles;
-  }
-
-  List<AccountCategory> getRoleByUserAsReal(Account user) {
-    // devices.bindStream(Stream.fromFuture(database.getDeviceByUser(user)));
-    RxList<AccountCategory> roleLists = <AccountCategory>[].obs;
-
-    print("avant bind");
-    roleLists.bindStream(databaseService.getRoleByUserASStream(user));
-
-    print('test:   ${roleLists.first}');
-
-    return roleLists;
-  }
-
-  Future<AccountCategory> getRoleFromId(String str) {
-    Future<AccountCategory> futureRole = database.getRoleById(str);
-
-    return futureRole;
-  } */
 
   List<Account> getActiveAccounts() {
     return accounts;
@@ -114,8 +88,5 @@ class AccountController extends GetxController {
   @override
   void onClose() {}
 
-  void updateAccount(String? id, Account account) {
-    print(' id : ${id} account : ${account.toMap()}');
-    //databaseService.updateAccount(account);
-  }
+  void updateAccount(String? id, Account account) {}
 }

@@ -90,13 +90,13 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
                   RawMaterialButton(
                     onPressed: () {
                       // controller.fabKey.currentState!.close();
-                      Get.toNamed(AppPages.FINANCE_HOME);
+                      Get.toNamed(AppPages.FINANCE_PERSONALIZEDTRANSACTION);
                     },
                     shape: CircleBorder(
                       side: BorderSide(width: 1, color: Colors.white),
                     ),
                     padding: const EdgeInsets.all(10.0),
-                    child: Icon(Icons.home, color: Colors.white),
+                    child: Icon(Icons.sell, color: Colors.white),
                   ),
                   RawMaterialButton(
                       onPressed: () {

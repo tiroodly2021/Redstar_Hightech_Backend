@@ -11,6 +11,7 @@ import 'package:redstar_hightech_backend/app/modules/finance/statistics/bindings
 import 'package:redstar_hightech_backend/app/modules/finance/statistics/views/statistics_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/bindings/transaction_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/views/add_transaction_view.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/views/personalized_transaction.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/views/transaction_view.dart';
 
 import '../modules/authentication/bindings/authentication_binding.dart';
@@ -92,6 +93,8 @@ SetPermissionView(
   static const FINANCE_DELETE_ACCOUNT = Routes.FINANCE_DELETE_ACCOUNT;
 
   static const FINANCE_STATISTIC = Routes.FINANCE_STATISTIC;
+  static const FINANCE_PERSONALIZEDTRANSACTION =
+      Routes.FINANCE_PERSONALIZEDTRANSACTION;
 
   /*  End Finance Routes */
 
@@ -198,6 +201,11 @@ SetPermissionView(
     GetPage(
         name: _Paths.FINANCE_UPDATE_ACCOUNT,
         page: () => UpdateAccountView(),
+        binding: TransactionBinding(),
+        middlewares: [/* AuthorizationMiddleware() */]),
+    GetPage(
+        name: _Paths.FINANCE_PERSONALIZEDTRANSACTION,
+        page: () => PersonalizedTransactionView(),
         binding: TransactionBinding(),
         middlewares: [/* AuthorizationMiddleware() */]),
 

@@ -2,20 +2,22 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_type.dart';
 
 class Account extends Equatable {
   final String? id;
   final String number;
   final String createdAt;
   final String name;
-  //List<AccountCategory>? categories;
+
+  AccountType? type;
   String? photoURL;
 
   Account(
       {required this.number,
       required this.createdAt,
       required this.name,
-      // this.categories,
+      this.type,
       this.id,
       this.photoURL});
 
@@ -23,12 +25,14 @@ class Account extends Equatable {
           {String? number,
           String? createdAt,
           String? name,
+          AccountType? type,
           String? uid,
           String? photoURL}) =>
       Account(
           number: number ?? this.number,
           createdAt: createdAt ?? this.createdAt,
           name: name ?? this.name,
+          type: type ?? this.type,
           id: id ?? this.id,
           photoURL: photoURL ?? this.photoURL);
 
@@ -40,6 +44,7 @@ class Account extends Equatable {
       number: json["number"],
       createdAt: json["createdAt"],
       name: json["name"],
+      type: json['type'],
       id: json["id"],
       photoURL: json["photoURL"]);
 
@@ -47,6 +52,7 @@ class Account extends Equatable {
         "number": number,
         "createdAt": createdAt,
         "name": name,
+        "type": type,
         "photoURL": photoURL
       };
 
@@ -55,6 +61,7 @@ class Account extends Equatable {
         number: snap["number"],
         createdAt: snap["createdAt"],
         name: snap["name"],
+        type: Account.accountIndexToAccountType(snap['type']),
         id: snap.id,
         photoURL: snap["photoURL"]);
   }
@@ -64,6 +71,7 @@ class Account extends Equatable {
         number: map["number"],
         createdAt: map["createdAt"],
         name: map["name"],
+        type: map['type'],
         id: map["id"],
         photoURL: map["photoURL"]);
   }
@@ -73,8 +81,27 @@ class Account extends Equatable {
       "number": number,
       "createdAt": createdAt,
       "name": name,
+      "type": type != null ? accountTypeToInt(type!) : 0,
       "photoURL": photoURL
     };
+  }
+
+  static AccountType accountIndexToAccountType(int index) {
+    AccountType accountType = AccountType.mobileAgent;
+
+    if (index == 0) {
+      accountType = AccountType.mobileAgent;
+    }
+
+    if (index == 1) {
+      accountType = AccountType.lotoAgent;
+    }
+
+    if (index == 2) {
+      accountType = AccountType.cashMoney;
+    }
+
+    return accountType;
   }
 
   @override
