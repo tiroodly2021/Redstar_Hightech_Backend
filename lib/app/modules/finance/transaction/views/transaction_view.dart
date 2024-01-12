@@ -190,7 +190,20 @@ class _TransactionViewState extends State<TransactionView>
                   margin: const EdgeInsets.only(right: 10),
                   child:
                       GetBuilder<TransactionController>(builder: (controller) {
-                    calculateBalances(controller.filterdList);
+                    List<Transaction> listTrx = [];
+
+                    if (widget.account != null) {
+                      controller.filterdList.forEach((element) {
+                        if (element.account.id.toString().toLowerCase() ==
+                            widget.account!.id.toString().toLowerCase()) {
+                          listTrx.add(element);
+                        }
+                      });
+                    } else {
+                      listTrx = controller.filterdList;
+                    }
+
+                    calculateBalances(listTrx);
 
                     if (controller.filterdList.isEmpty) {
                       return const Text(
@@ -246,10 +259,25 @@ class _TransactionViewState extends State<TransactionView>
                     itemBuilder: (context, index) {
                       Transaction currItem = controller.filterdList[index];
 
-                      return TransactionTile(
-                        transaction: currItem,
-                        transactionController: transactionController,
-                      );
+                      if (widget.account != null) {
+                        if (currItem.account.id.toString().toLowerCase() ==
+                            widget.account!.id.toString().toLowerCase()) {
+                          print(
+                              'account id in the list is: ${currItem.account.id}');
+                          print('account id passed is: ${widget.account!.id}');
+                          return TransactionTile(
+                            transaction: currItem,
+                            transactionController: transactionController,
+                          );
+                        }
+
+                        return Container();
+                      } else {
+                        return TransactionTile(
+                          transaction: currItem,
+                          transactionController: transactionController,
+                        );
+                      }
                     }),
               );
               // });
