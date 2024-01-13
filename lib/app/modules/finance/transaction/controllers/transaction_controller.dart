@@ -19,6 +19,11 @@ class TransactionController extends GetxController {
 
   RxBool isTransfertActivated = false.obs;
 
+  RxInt operationType = 0.obs;
+  RxInt transactionTypeMobileAgent = 0.obs;
+  RxInt transactionTypeLotoAgent = 0.obs;
+  RxInt transactionTypeCashMoney = 0.obs;
+
   TransactionController() {
     //box = Hive.box<Transaction>('transactions');
     clearFilterByAccount();

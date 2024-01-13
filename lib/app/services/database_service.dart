@@ -5,6 +5,7 @@ import 'package:redstar_hightech_backend/app/modules/authentication/models/permi
 import 'package:redstar_hightech_backend/app/modules/authentication/models/role_model.dart';
 import 'package:redstar_hightech_backend/app/modules/category/models/category_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_type.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
 import 'package:redstar_hightech_backend/app/modules/order/models/order_stats_model.dart';
 
@@ -768,5 +769,13 @@ class DatabaseService {
         .map((snapshot) => snapshot.docs
             .map((doc) => financeModel.Transaction.fromSnapShot(doc))
             .toList());
+  }
+
+  Stream<Account> getAccountsFiltered(AccountType accountType) {
+    return _firebaseFirestore
+        .collection('accounts')
+        .where('type', isEqualTo: accountTypeToInt(accountType))
+        .snapshots()
+        .map((snapshot) => Account.fromSnapShot(snapshot.docs.first));
   }
 }

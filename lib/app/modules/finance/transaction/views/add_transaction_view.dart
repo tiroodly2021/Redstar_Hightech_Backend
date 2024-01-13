@@ -14,6 +14,7 @@ import 'package:intl/intl.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_type_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/circular_button.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/widgets/floating_circle_menu.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/search_transaction.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
@@ -108,6 +109,7 @@ class _AddTransactionViewState extends State<AddTransactionView> {
           menuActionButton: ButtonOptionalMenu(),
           tooltip: 'Search',
         ),
+        floatingActionButton: const FloatingCircleMenu(),
         body: Form(
           key: _formKey,
           child: Stack(children: [

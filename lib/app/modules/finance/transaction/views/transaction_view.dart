@@ -13,6 +13,7 @@ import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/views/add_transaction_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/empty_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/filter_bar.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/widgets/floating_circle_menu.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/search_transaction.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/tile_transaction.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
@@ -87,7 +88,8 @@ class _TransactionViewState extends State<TransactionView>
         child: AnimatedOpacity(
           opacity: showFAB ? 1 : 0,
           duration: const Duration(milliseconds: 300),
-          child: FloatingActionButton(
+          child:
+              const FloatingCircleMenu() /* FloatingActionButton(
             onPressed: () {
               /*   Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return const AddTransactionView();
@@ -96,7 +98,8 @@ class _TransactionViewState extends State<TransactionView>
             },
             tooltip: 'New transaction',
             child: const Icon(Icons.add),
-          ),
+          ) */
+          ,
         ),
       ),
       body: Column(

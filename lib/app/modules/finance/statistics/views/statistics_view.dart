@@ -6,6 +6,7 @@ import 'package:redstar_hightech_backend/app/modules/finance/statistics/controll
 import 'package:redstar_hightech_backend/app/modules/finance/statistics/controllers/yearly_chart_contoller.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/statistics/views/monthly_chart.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/statistics/views/yearly_chart.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/widgets/floating_circle_menu.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/search_transaction.dart';
 import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
 import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
@@ -56,6 +57,7 @@ class _StatisticsViewState extends State<StatisticsView>
           menuActionButton: ButtonOptionalMenu(),
           tooltip: 'Search',
         ),
+        floatingActionButton: const FloatingCircleMenu(),
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(

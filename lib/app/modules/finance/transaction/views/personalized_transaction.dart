@@ -7,13 +7,16 @@ import 'package:redstar_hightech_backend/app/modules/authentication/controllers/
 import 'package:redstar_hightech_backend/app/modules/common/navigation_drawer.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/controllers/account_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_type.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/views/add_account_dialog.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/controllers/personalized_transaction_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/controllers/transaction_controller.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_type_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/circular_button.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/widgets/floating_circle_menu.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/search_transaction.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
@@ -34,51 +37,60 @@ class PersonalizedTransactionView extends StatefulWidget {
 
 class _PersonalizedTransactionViewViewState
     extends State<PersonalizedTransactionView> {
-  final TransactionController transactionManager =
-      Get.find<TransactionController>();
+  final TransactionController transactionController =
+      Get.put(TransactionController());
+
   final _formKey = GlobalKey<FormState>();
   late bool isEdit;
   DateTime date = DateTime.now();
-  final accountController = TextEditingController();
-  final destinationAccountController = TextEditingController();
+
   final amountController = TextEditingController();
   final dateController = TextEditingController();
+
   final descriptionController = TextEditingController();
   final FocusNode _accountFocus = FocusNode();
-  final FocusNode _destinationAccountFocus = FocusNode();
+
   final FocusNode _amountFocus = FocusNode();
   final FocusNode _descriptionFocus = FocusNode();
-  final transactionTypes = ['Retrait', 'Depot', 'Transfert'];
+
+  /*  Account accountMobileAgent = Account(number: '', createdAt: '', name: '');
+  late Account accountLotoAgent;
+  late Account accountCashMoney;
+ */
+  final transactionMobileAgent = ['Retrait', 'Depot', 'Transfert'];
+
+  final transactionLotoAgent = ['Depot', 'Loto Sell'];
+
+  final transactionCashMoney = ["Entre Cash", "Sortie Cash"];
+
+  final transactionSellType = ['MONCASH', 'LOTTO', 'CASH'];
 
   TransactionType transactionType = TransactionType.expense;
-
-  late Account accountPrimary;
-  late Account destinationAccount;
+  AccountController accountManager = Get.put(AccountController());
 
   @override
   void initState() {
     if (widget.transaction != null) {
       final Transaction transaction = widget.transaction!;
       date = transaction.date;
-      accountController.text = transaction.account.number;
       amountController.text = transaction.amount.toString();
       descriptionController.text = transaction.description ?? '';
       transactionType = transaction.type;
-      accountPrimary = widget.transaction!.account;
     }
+
     super.initState();
   }
 
   @override
   void dispose() {
-    accountController.dispose();
     amountController.dispose();
     dateController.dispose();
     descriptionController.dispose();
     _amountFocus.dispose();
     _accountFocus.dispose();
-    _destinationAccountFocus.dispose();
-    transactionManager.isFilterByAccountEnabled.value = false;
+
+    //transactionController.operationType.value = -1;
+
     super.dispose();
   }
 
@@ -88,7 +100,17 @@ class _PersonalizedTransactionViewViewState
 
     isEdit = widget.transaction != null;
     dateController.text = getFormatedDate(date);
+
     return Obx(() {
+      /*   accountManager.accounts.forEach((element) {
+        if (element.type == AccountType.mobileAgent) {
+          accountMobileAgent = element;
+        }
+      });
+
+      print(accountMobileAgent.toMap()); */
+      /*print(accountCashMoney.toMap()); */
+
       return Scaffold(
         backgroundColor: const Color(0xFFF3f3f3),
         /*  appBar: AppBar(
@@ -112,6 +134,7 @@ class _PersonalizedTransactionViewViewState
           menuActionButton: ButtonOptionalMenu(),
           tooltip: 'Search',
         ),
+        floatingActionButton: const FloatingCircleMenu(),
         body: Form(
           key: _formKey,
           child: Stack(children: [
@@ -119,8 +142,29 @@ class _PersonalizedTransactionViewViewState
                 padding: const EdgeInsets.fromLTRB(20, 10, 20, 55),
                 children: [
                   const SizedBox(height: 10),
-                  /*  if (!isEdit) */ _buildToggleSwitch(size),
+                  if (transactionController.operationType.value == 0)
+                    _buildToggleSwitchMobileAgent(size, 3),
+                  if (transactionController.operationType.value == 1)
+                    _buildToggleSwitchLotoAgent(size, 2),
+                  if (transactionController.operationType.value == 2)
+                    _buildToggleSwitchCashMoney(size, 2),
                   const SizedBox(height: 20),
+                  /*     Row(
+                    children: [
+                      Text(accountManager.accountMobileAgent.value.name),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(accountManager.accountLotoAgent.value.name),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(accountManager.accountCashMoney.value.name),
+                      SizedBox(
+                        width: 10,
+                      ),
+                    ],
+                  ), */
                   Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -134,65 +178,6 @@ class _PersonalizedTransactionViewViewState
                     ], borderRadius: BorderRadius.circular(10)),
                     child: Column(
                       children: [
-                        TextFormField(
-                          controller: dateController,
-                          readOnly: true,
-                          textInputAction: TextInputAction.next,
-                          onTap: () {
-                            pickDate();
-                          },
-                          decoration: const InputDecoration(
-                            prefixIcon:
-                                Icon(Icons.calendar_month, color: Colors.blue),
-                            label: Text('Date'),
-                          ),
-                        ),
-                        TextFormField(
-                          controller: accountController,
-                          focusNode: _accountFocus,
-                          textInputAction: TextInputAction.next,
-                          readOnly: isEdit ? true : false,
-                          onTap: () {
-                            if (!isEdit) {
-                              pickAccount(accountController);
-                            }
-                          },
-                          autofocus: !isEdit,
-                          validator: (account) =>
-                              account != null && account.isEmpty
-                                  ? 'Enter  Account'
-                                  : null,
-                          decoration: const InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.category,
-                              color: Colors.blue,
-                            ),
-                            label: Text('Account'),
-                          ),
-                        ),
-                        (transactionManager.isTransfertActivated.value)
-                            ? TextFormField(
-                                controller: destinationAccountController,
-                                focusNode: _destinationAccountFocus,
-                                textInputAction: TextInputAction.next,
-                                readOnly: isEdit ? true : false,
-                                onTap: () {
-                                  pickAccount(destinationAccountController);
-                                },
-                                autofocus: !isEdit,
-                                validator: (account) =>
-                                    account != null && account.isEmpty
-                                        ? 'Enter  Destination Account '
-                                        : null,
-                                decoration: const InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.category,
-                                    color: Colors.blue,
-                                  ),
-                                  label: Text('Destination Account'),
-                                ),
-                              )
-                            : Container(),
                         TextFormField(
                           controller: amountController,
                           focusNode: _amountFocus,
@@ -232,13 +217,8 @@ class _PersonalizedTransactionViewViewState
                       ],
                     ),
                   ),
-                  const SizedBox(height: 5),
-                  ElevatedButton(
-                      onPressed: () {
-                        Get.toNamed(AppPages.FINANCE_ACCOUNT);
-                      },
-                      style: ElevatedButton.styleFrom(primary: Colors.black),
-                      child: const Text("All Accounts"))
+                  const SizedBox(height: 20),
+                  _buildToggleSwitchSellType(size, 3)
                 ]),
             Positioned(
               bottom: 0,
@@ -291,7 +271,7 @@ class _PersonalizedTransactionViewViewState
     });
   }
 
-  _buildToggleSwitch(Size size) {
+  _buildToggleSwitchSellType(Size size, int itemCount) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       // mainAxisSize: MainAxisSize.min,
@@ -300,36 +280,23 @@ class _PersonalizedTransactionViewViewState
           minWidth: isEdit ? size.width * .42 : size.width * .28,
           minHeight: 28,
           cornerRadius: 25.0,
-          activeBgColors: !isEdit
-              ? const [
-                  [Colors.white, Color(0xFFEBFFE3)],
-                  [Colors.white, Color(0xFFFCE5E5)],
-                  [Colors.white, Color.fromARGB(255, 220, 155, 71)]
-                ]
-              : const [
-                  [Colors.white, Color(0xFFEBFFE3)],
-                  [Colors.white, Color(0xFFFCE5E5)]
-                ],
+          activeBgColors: const [
+            [Colors.white, Color(0xFFEBFFE3)],
+            [Colors.white, Color(0xFFEBFFE3)],
+            [Colors.white, Color(0xFFEBFFE3)],
+          ],
           activeFgColor: Colors.black,
           inactiveBgColor: AppTheme.lihtGray,
           inactiveFgColor: Colors.black,
           customTextStyles: const [TextStyle(fontWeight: FontWeight.bold)],
           borderColor: const [AppTheme.lihtGray],
-          initialLabelIndex: transactionType.index,
-          totalSwitches: !isEdit ? 3 : 2,
-          labels: transactionTypes,
+          initialLabelIndex: transactionController.operationType.value,
+          totalSwitches: itemCount,
+          labels: transactionSellType,
           radiusStyle: true,
           onToggle: (index) {
-            transactionType = index == 0
-                ? TransactionType.income
-                : (index == 1)
-                    ? TransactionType.expense
-                    : TransactionType.transfert;
-            // accountController.clear();
-            if (index == 2) {
-              transactionManager.isTransfertActivated.value = true;
-            } else {
-              transactionManager.isTransfertActivated.value = false;
+            if (index != null) {
+              transactionController.operationType.value = index;
             }
           },
         ),
@@ -337,22 +304,177 @@ class _PersonalizedTransactionViewViewState
     );
   }
 
-  pickAccount(TextEditingController controller) async {
-    /* String? */ Account newAcc = await showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.transparent,
-        barrierColor: Colors.transparent,
-        builder: (context) => AccountSheet());
+  _buildToggleSwitchMobileAgent(Size size, int itemCount) {
+    descriptionController.text = myTransactionTypeToString(
+        transactionController.transactionTypeMobileAgent.value);
+    return Column(
+      children: [
+        const SizedBox(
+          height: 20,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Text("MONCASH TRANSACTION",
+                style: TextStyle(fontSize: 22, color: Colors.red))
+          ],
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisSize: MainAxisSize.min,
+          children: [
+            ToggleSwitch(
+              minWidth: isEdit ? size.width * .42 : size.width * .28,
+              minHeight: 28,
+              cornerRadius: 25.0,
+              activeBgColors: const [
+                [Colors.white, Color(0xFFEBFFE3)],
+                [Colors.white, Color(0xFFFCE5E5)],
+                [Colors.white, Color.fromARGB(255, 220, 155, 71)]
+              ],
+              activeFgColor: Colors.black,
+              inactiveBgColor: AppTheme.lihtGray,
+              inactiveFgColor: Colors.black,
+              customTextStyles: const [TextStyle(fontWeight: FontWeight.bold)],
+              borderColor: const [AppTheme.lihtGray],
+              initialLabelIndex:
+                  transactionController.transactionTypeMobileAgent.value,
+              totalSwitches: itemCount,
+              labels: transactionMobileAgent,
+              radiusStyle: true,
+              onToggle: (index) {
+                transactionController.transactionTypeMobileAgent.value = index!;
+                descriptionController.text = myTransactionTypeToString(
+                    transactionController.transactionTypeMobileAgent.value);
+              },
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 
-    controller.text = newAcc != null ? newAcc.number : '';
+  _buildToggleSwitchLotoAgent(Size size, int itemCount) {
+    descriptionController.text = myTransactionTypeToString(
+        transactionController.transactionTypeLotoAgent.value);
+    return Column(
+      children: [
+        const SizedBox(
+          height: 20,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Text("LOTO TRANSACTION",
+                style: TextStyle(fontSize: 22, color: Colors.red))
+          ],
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisSize: MainAxisSize.min,
+          children: [
+            ToggleSwitch(
+              minWidth: isEdit ? size.width * .42 : size.width * .28,
+              minHeight: 28,
+              cornerRadius: 25.0,
+              activeBgColors: const [
+                [Colors.white, Color(0xFFEBFFE3)],
+                [Colors.white, Color(0xFFFCE5E5)]
+              ],
+              activeFgColor: Colors.black,
+              inactiveBgColor: AppTheme.lihtGray,
+              inactiveFgColor: Colors.black,
+              customTextStyles: const [TextStyle(fontWeight: FontWeight.bold)],
+              borderColor: const [AppTheme.lihtGray],
+              initialLabelIndex:
+                  transactionController.transactionTypeLotoAgent.value,
+              totalSwitches: itemCount,
+              labels: transactionLotoAgent,
+              radiusStyle: true,
+              onToggle: (index) {
+                transactionController.transactionTypeLotoAgent.value = index!;
+                descriptionController.text = myTransactionTypeToString(
+                    transactionController.transactionTypeLotoAgent.value);
+              },
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 
-    if (!transactionManager.isTransfertActivated.value) {
-      accountPrimary = newAcc;
-    } else {
-      destinationAccount = newAcc;
+  _buildToggleSwitchCashMoney(Size size, int itemCount) {
+    descriptionController.text = myTransactionTypeToString(
+        transactionController.transactionTypeCashMoney.value);
+    return Column(
+      children: [
+        const SizedBox(
+          height: 20,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Text("CASH TRANSACTION",
+                style: TextStyle(fontSize: 22, color: Colors.red))
+          ],
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisSize: MainAxisSize.min,
+          children: [
+            ToggleSwitch(
+              minWidth: isEdit ? size.width * .42 : size.width * .28,
+              minHeight: 28,
+              cornerRadius: 25.0,
+              activeBgColors: const [
+                [Colors.white, Color(0xFFEBFFE3)],
+                [Colors.white, Color(0xFFFCE5E5)]
+              ],
+              activeFgColor: Colors.black,
+              inactiveBgColor: AppTheme.lihtGray,
+              inactiveFgColor: Colors.black,
+              customTextStyles: const [TextStyle(fontWeight: FontWeight.bold)],
+              borderColor: const [AppTheme.lihtGray],
+              initialLabelIndex:
+                  transactionController.transactionTypeCashMoney.value,
+              totalSwitches: itemCount,
+              labels: transactionCashMoney,
+              radiusStyle: true,
+              onToggle: (index) {
+                transactionController.transactionTypeCashMoney.value = index!;
+                descriptionController.text = myTransactionTypeToString(
+                    transactionController.transactionTypeCashMoney.value);
+              },
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  String myTransactionTypeToString(int i) {
+    String out = '';
+    if (i == 0) {
+      out = "Entree";
+    }
+    if (i == 1) {
+      out = "Sortie";
     }
 
-    _fieldFocusChange(_accountFocus, _amountFocus);
+    if (i == 2) {
+      out = "Transfert";
+    }
+
+    return out;
   }
 
   save({required bool close}) {
@@ -362,7 +484,159 @@ class _PersonalizedTransactionViewViewState
     late Transaction tx2;
 
     if (isValid) {
-      if (!transactionManager.isTransfertActivated.value) {
+      //MONCASH MANAGEMENT
+      if (transactionController.operationType == 0) {
+        print("moncash transction...");
+        if (transactionController.transactionTypeMobileAgent == 0) {
+          // print("retrait...");
+
+          tx1 = Transaction(
+              title: transactionTypeToString(TransactionType.expense),
+              date: date,
+              account: accountManager
+                  .accountCashMoney.value, //accountController.text,
+              amount: double.parse(amountController.text),
+              type: TransactionType.expense,
+              description: 'Sortie pour retrait moncash');
+
+          tx2 = Transaction(
+              title: transactionTypeToString(TransactionType.income),
+              date: date,
+              account: accountManager.accountMobileAgent
+                  .value, //destinationAccountController.text,
+              amount: double.parse(amountController.text),
+              type: TransactionType.income,
+              description: 'Rentree pour retrait moncash');
+
+          transactionController.addTransaction(tx1);
+          transactionController.addTransaction(tx2);
+        }
+
+        if (transactionController.transactionTypeMobileAgent == 1) {
+          print("depot...");
+          tx1 = Transaction(
+              title: transactionTypeToString(TransactionType.expense),
+              date: date,
+              account: accountManager
+                  .accountMobileAgent.value, //accountController.text,
+              amount: double.parse(amountController.text),
+              type: TransactionType.expense,
+              description: 'Sortie pour depot moncash');
+
+          tx2 = Transaction(
+              title: transactionTypeToString(TransactionType.income),
+              date: date,
+              account: accountManager
+                  .accountCashMoney.value, //destinationAccountController.text,
+              amount: double.parse(amountController.text),
+              type: TransactionType.income,
+              description: 'Rentree pour depot moncash');
+
+          transactionController.addTransaction(tx1);
+          transactionController.addTransaction(tx2);
+        }
+
+        if (transactionController.transactionTypeMobileAgent == 2) {
+          print("transfert...");
+          tx1 = Transaction(
+              title: transactionTypeToString(TransactionType.expense),
+              date: date,
+              account: accountManager
+                  .accountMobileAgent.value, //accountController.text,
+              amount: double.parse(amountController.text),
+              type: TransactionType.expense,
+              description: 'Sortie pour transfert moncash');
+
+          tx2 = Transaction(
+              title: transactionTypeToString(TransactionType.income),
+              date: date,
+              account: accountManager
+                  .accountCashMoney.value, //destinationAccountController.text,
+              amount: double.parse(amountController.text),
+              type: TransactionType.income,
+              description: 'Rentree pour transfert moncash');
+
+          transactionController.addTransaction(tx1);
+          transactionController.addTransaction(tx2);
+        }
+      }
+      // LOTO MANAGEMENT
+      if (transactionController.operationType == 1) {
+        print("loto transction...");
+
+        if (transactionController.transactionTypeLotoAgent == 0) {
+          print("ajouter credit...");
+
+          tx1 = Transaction(
+              title: transactionTypeToString(TransactionType.income),
+              date: date,
+              account: accountManager
+                  .accountLotoAgent.value, //accountController.text,
+              amount: double.parse(amountController.text),
+              type: TransactionType.income,
+              description: 'Rentree Credit Loto');
+
+          transactionController.addTransaction(tx1);
+        }
+
+        if (transactionController.transactionTypeLotoAgent == 1) {
+          print("vente...");
+
+          tx1 = Transaction(
+              title: transactionTypeToString(TransactionType.expense),
+              date: date,
+              account: accountManager
+                  .accountLotoAgent.value, //accountController.text,
+              amount: double.parse(amountController.text),
+              type: TransactionType.expense,
+              description: 'Vente Loto');
+
+          tx2 = Transaction(
+              title: transactionTypeToString(TransactionType.income),
+              date: date,
+              account: accountManager
+                  .accountCashMoney.value, //accountController.text,
+              amount: double.parse(amountController.text),
+              type: TransactionType.income,
+              description: 'Rentree CASH Vente Loto');
+
+          transactionController.addTransaction(tx1);
+          transactionController.addTransaction(tx2);
+        }
+      }
+
+      //CASH MANAGEMENT
+
+      if (transactionController.operationType == 2) {
+        print("cash transction...");
+        if (transactionController.transactionTypeCashMoney == 0) {
+          print("Entree...");
+          tx1 = Transaction(
+              title: transactionTypeToString(TransactionType.income),
+              date: date,
+              account: accountManager
+                  .accountCashMoney.value, //accountController.text,
+              amount: double.parse(amountController.text),
+              type: TransactionType.income,
+              description: 'Rentre Cash');
+          transactionController.addTransaction(tx1);
+        }
+
+        if (transactionController.transactionTypeCashMoney == 1) {
+          print("Sortie...");
+          tx1 = Transaction(
+              title: transactionTypeToString(TransactionType.expense),
+              date: date,
+              account: accountManager
+                  .accountCashMoney.value, //accountController.text,
+              amount: double.parse(amountController.text),
+              type: TransactionType.expense,
+              description: 'Sortie Cash');
+
+          transactionController.addTransaction(tx1);
+        }
+      }
+/*       if (!transactionManager.isTransfertActivated.value) {
         transaction = Transaction(
             title: transactionTypeToString(transactionType),
             date: date,
@@ -413,21 +687,16 @@ class _PersonalizedTransactionViewViewState
             ));
           }
         }
-      }
+      }*/
+
       if (close) {
         Navigator.pop(context);
       } else {
-        accountController.clear();
         amountController.clear();
-        destinationAccountController.clear();
         descriptionController.clear;
-        transactionManager.isTransfertActivated.value = false;
-        FocusScope.of(context).requestFocus(_accountFocus);
-        FocusScope.of(context).requestFocus(_destinationAccountFocus);
-        pickAccount(accountController);
-        if (transactionManager.isTransfertActivated.value) {
-          pickAccount(destinationAccountController);
-        }
+        //transactionManager.isTransfertActivated.value = false;
+        FocusScope.of(context).requestFocus(_amountFocus);
+        FocusScope.of(context).requestFocus(_descriptionFocus);
       }
     }
   }
@@ -453,6 +722,25 @@ class _PersonalizedTransactionViewViewState
       DateTime.now().year == dateTime.year
           ? DateFormat('d MMM, E').format(date)
           : DateFormat('d MMM y, E').format(date);
+
+  @override
+  List<Object?> get props => [
+        transactionController,
+        _formKey,
+        isEdit,
+        date,
+        amountController,
+        dateController,
+        descriptionController,
+        _accountFocus,
+        _amountFocus,
+        _descriptionFocus,
+        transactionMobileAgent,
+        transactionLotoAgent,
+        transactionCashMoney,
+        transactionSellType,
+        transactionType
+      ];
 }
 
 class AccountSheet extends StatefulWidget {

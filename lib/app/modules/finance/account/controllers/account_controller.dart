@@ -2,6 +2,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_type.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 //import 'package:redstar_hightech_backend/app/modules/finance/account_category/models/account_category.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
@@ -32,6 +33,15 @@ class AccountController extends GetxController {
 
   ValueNotifier<List<Account>> accountsDataNotifier = ValueNotifier([]);
 
+  Rx<Account> accountMobileAgent =
+      Account(number: '', createdAt: '', name: '').obs;
+
+  Rx<Account> accountLotoAgent =
+      Account(number: '', createdAt: '', name: '').obs;
+
+  Rx<Account> accountCashMoney =
+      Account(number: '', createdAt: '', name: '').obs;
+
   AccountController() {
     accountList();
   }
@@ -45,6 +55,30 @@ class AccountController extends GetxController {
   void accountList() async {
     count.bindStream(database.getCount('accounts', 'AccountController'));
     accounts.bindStream(database.getAccounts());
+    accountMobileAgent
+        .bindStream(database.getAccountsFiltered(AccountType.mobileAgent));
+    accountLotoAgent
+        .bindStream(database.getAccountsFiltered(AccountType.lotoAgent));
+    accountCashMoney
+        .bindStream(database.getAccountsFiltered(AccountType.cashMoney));
+
+/*     accountMobileAgent = accounts
+        .where((element) => element.type == AccountType.mobileAgent)
+        .toList()
+        .first
+        .obs;
+
+    accountLotoAgent = accounts
+        .where((element) => element.type == AccountType.lotoAgent)
+        .toList()
+        .first
+        .obs;
+
+    accountCashMoney = accounts
+        .where((element) => element.type == AccountType.cashMoney)
+        .toList()
+        .first
+        .obs; */
   }
 
   List<Account> getActiveAccounts() {

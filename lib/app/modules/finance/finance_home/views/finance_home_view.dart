@@ -20,6 +20,7 @@ import 'package:redstar_hightech_backend/app/modules/finance/transaction/views/a
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/views/transaction_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/empty_view.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/filter_bar.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/widgets/floating_circle_menu.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/search_transaction.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/tile_transaction.dart';
 /* import 'package:redstar_hightech_backend/app/modules/finance/widgets/empty_view.dart';
@@ -68,66 +69,8 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
         menuActionButton: ButtonOptionalMenu(),
         tooltip: 'Search',
       ),
-      floatingActionButton: Builder(
-          builder: (context) => FabCircularMenu(
-                alignment: Alignment.bottomRight,
-                ringColor: Colors.black.withOpacity(0.7),
-                ringDiameter: 300.0,
-                ringWidth: 100.0,
-                fabSize: 64.0,
-                fabElevation: 8.0,
-                fabIconBorder: CircleBorder(),
-                fabColor: Colors.black,
-                fabOpenIcon: Icon(Icons.menu, color: Colors.white),
-                fabCloseIcon: Icon(Icons.close, color: Colors.white),
-                fabMargin: const EdgeInsets.all(16.0),
-                animationDuration: const Duration(milliseconds: 800),
-                animationCurve: Curves.easeInOutCirc,
-                onDisplayChange: (isOpen) {
-                  print(isOpen);
-                },
-                children: <Widget>[
-                  RawMaterialButton(
-                    onPressed: () {
-                      // controller.fabKey.currentState!.close();
-                      Get.toNamed(AppPages.FINANCE_PERSONALIZEDTRANSACTION);
-                    },
-                    shape: CircleBorder(
-                      side: BorderSide(width: 1, color: Colors.white),
-                    ),
-                    padding: const EdgeInsets.all(10.0),
-                    child: Icon(Icons.sell, color: Colors.white),
-                  ),
-                  RawMaterialButton(
-                      onPressed: () {
-                        Get.toNamed(AppPages.FINANCE_ADD_TRANSACTION);
-                      },
-                      shape: CircleBorder(
-                        side: BorderSide(width: 1, color: Colors.white),
-                      ),
-                      padding: const EdgeInsets.all(10.0),
-                      child: Icon(Icons.transform, color: Colors.white)),
-                  RawMaterialButton(
-                      onPressed: () {
-                        Get.to(() => StatisticsView());
-                      },
-                      shape: CircleBorder(
-                        side: BorderSide(width: 1, color: Colors.white),
-                      ),
-                      padding: const EdgeInsets.all(10.0),
-                      child: Icon(Icons.bar_chart, color: Colors.white)),
-                  RawMaterialButton(
-                    onPressed: () {
-                      Get.toNamed(AppPages.FINANCE_ACCOUNT);
-                    },
-                    shape: CircleBorder(
-                      side: BorderSide(width: 1, color: Colors.white),
-                    ),
-                    padding: const EdgeInsets.all(10.0),
-                    child: Icon(Icons.account_box, color: Colors.white),
-                  )
-                ],
-              )) /* Row(
+      floatingActionButton:
+          const FloatingCircleMenu() /* Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(

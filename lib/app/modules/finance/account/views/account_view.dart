@@ -18,6 +18,7 @@ import 'package:redstar_hightech_backend/app/modules/finance/account/views/widge
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/controllers/transaction_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_type_model.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/widgets/floating_circle_menu.dart';
 
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
@@ -59,14 +60,16 @@ class AccountView extends GetView<AccountController> {
           tooltip: 'Search',
         ),
         drawer: NavigationDrawer(),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton:
+            const FloatingCircleMenu() /* FloatingActionButton(
           heroTag: "btn2",
           onPressed: () {
             Get.toNamed(AppPages.FINANCE_ADD_ACCOUNT);
           },
           tooltip: 'New Account',
           child: const Icon(Icons.person_add),
-        ),
+        ) */
+        ,
         body: Padding(
           padding: const EdgeInsets.all(10),
           child: Column(

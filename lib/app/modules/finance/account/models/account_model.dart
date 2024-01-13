@@ -71,7 +71,7 @@ class Account extends Equatable {
         number: map["number"],
         createdAt: map["createdAt"],
         name: map["name"],
-        type: map['type'],
+        type: Account.accountIndexToAccountType(map['type']),
         id: map["id"],
         photoURL: map["photoURL"]);
   }
