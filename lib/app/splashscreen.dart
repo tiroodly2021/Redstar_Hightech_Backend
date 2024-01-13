@@ -109,16 +109,19 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => isInited
-                ? HomeView() /* const HomeDrawer() */
+              builder: (context) => HomeView(),
+              /* isInited
+                ? HomeView()
                 : const EditProfile(
                     isFromInit: true,
-                  ),
-            // maintainState: true,
-            settings: isInited
+                  ), */
+
+              settings: const RouteSettings(
+                  name: AppPages
+                      .INITIAL) /* isInited
                 ? const RouteSettings(name: AppPages.INITIAL)
-                : const RouteSettings(name: AppPages.EDIT_PROFILE),
-          ));
+                : const RouteSettings(name: AppPages.EDIT_PROFILE), */
+              ));
     });
   }
 }
