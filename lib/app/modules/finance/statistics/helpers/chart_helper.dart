@@ -14,7 +14,7 @@ class ChartHelper {
     _createEmptyList();
     for (Transaction item in filteredList) {
       int index =
-          tmpdataList.indexWhere((el) => el.category == item.account.number);
+          tmpdataList.indexWhere((el) => el.category == item.account.name);
       if (index != -1) {
         tmpdataList[index].toatal += item.amount;
       } else {
@@ -34,8 +34,8 @@ class ChartHelper {
     List<Account> accounts = accountController.accounts;
 
     for (Account account in accounts) {
-      tmpdataList.add(
-          CatChartData(account.number, accountTypeToInt(account.type!), 0));
+      tmpdataList
+          .add(CatChartData(account.name, accountTypeToInt(account.type!), 0));
     }
   }
 

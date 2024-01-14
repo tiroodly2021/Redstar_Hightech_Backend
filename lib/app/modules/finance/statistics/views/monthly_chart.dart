@@ -10,7 +10,7 @@ import 'package:redstar_hightech_backend/app/modules/home/views/component/barCha
 import 'package:redstar_hightech_backend/app/modules/order/controllers/orderstat_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/order/models/order_stats_model.dart';
 
-///import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class MonthlyChart extends StatefulWidget {
   const MonthlyChart({Key? key}) : super(key: key);
@@ -94,39 +94,6 @@ class PieChartView extends StatelessWidget {
     Color.fromRGBO(104, 255, 205, 1)
   ];
 
-  /* 
-  
-  Container(
-      height: 180,
-      child: FutureBuilder(
-        future: orderStatController.stats.value,
-        builder:
-            (BuildContext context, AsyncSnapshot<List<OrderStats>> snapshot) {
-          if (snapshot.hasData) {
-            return Container(
-              padding: const EdgeInsets.all(10),
-              height: 255,
-              child: BarChartCopmponent(
-                orderStats: snapshot.data!,
-              ),
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text("${snapshot.error}"),
-            );
-          }
-
-          return const Center(
-            child: CircularProgressIndicator(color: Colors.black),
-          );
-        },
-      ), //BarChartCopmponent(),
-    );
-  
-  
-  
-   */
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -157,37 +124,7 @@ class PieChartView extends StatelessWidget {
           ).toList(),
         ),
         controller.displyDataList.isNotEmpty
-            ? Container(
-                height: 180,
-                child: StatBarChart(
-                    catChartDatas: controller
-                        .displyDataList) /* FutureBuilder(
-                  future: orderStatController.stats.value,
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<OrderStats>> snapshot) {
-                    if (snapshot.hasData) {
-                      return Container(
-                        padding: const EdgeInsets.all(10),
-                        height: 255,
-                        child: BarChartCopmponent(
-                          orderStats: snapshot.data!,
-                        ),
-                      );
-                    } else if (snapshot.hasError) {
-                      return Center(
-                        child: Text("${snapshot.error}"),
-                      );
-                    }
-
-                    return const Center(
-                      child: CircularProgressIndicator(color: Colors.black),
-                    );
-                  },
-                ) */
-                , //BarChartCopmponent(),
-              )
-
-            /* SfCircularChart(
+            ? SfCircularChart(
                 legend: Legend(
                   isVisible: true,
                   overflowMode: LegendItemOverflowMode.wrap,
@@ -219,7 +156,7 @@ class PieChartView extends StatelessWidget {
                         labelPosition: ChartDataLabelPosition.outside,
                       ))
                 ],
-              ) */
+              )
             : SizedBox(
                 height: MediaQuery.of(context).size.height * 0.5,
                 child: const EmptyView(

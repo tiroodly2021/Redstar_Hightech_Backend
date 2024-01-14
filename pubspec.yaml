@@ -46,7 +46,7 @@ dependencies:
   
 
   fab_circular_menu: 
-  syncfusion_flutter_charts: ^20.3.61
+  syncfusion_flutter_charts: ^18.4.49
   wave:
 
 dev_dependencies:

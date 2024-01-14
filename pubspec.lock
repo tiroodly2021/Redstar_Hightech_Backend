@@ -1063,14 +1063,14 @@ packages:
       name: syncfusion_flutter_charts
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "20.3.61"
+    version: "18.4.49"
   syncfusion_flutter_core:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "20.3.61"
+    version: "18.4.49"
   term_glyph:
     dependency: transitive
     description:

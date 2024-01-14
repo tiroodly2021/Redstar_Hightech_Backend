@@ -344,7 +344,7 @@ class _SettingsViewState extends State<SettingsView> {
   feedback() async {
     final Uri emailLaunchUri = Uri(
         scheme: 'mailto',
-        path: 'ihsanpv007@gmail.com',
+        path: 'rs.hightech.more@gmail.com',
         query: 'subject=Feedback about Money Manager app&body=');
 
     if (!await launchUrl(emailLaunchUri)) {
