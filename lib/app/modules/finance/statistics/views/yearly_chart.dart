@@ -44,7 +44,7 @@ class _YearlyChartState extends State<YearlyChart> {
             },
           ),
         ),
-        /*  Padding(
+        Padding(
             padding: const EdgeInsets.symmetric(vertical: 20),
             child: GetBuilder<YearlyChartContoller>(
               builder: (controller) {
@@ -52,7 +52,7 @@ class _YearlyChartState extends State<YearlyChart> {
                   controller: controller,
                 );
               },
-            )) */
+            ))
       ],
     );
   }

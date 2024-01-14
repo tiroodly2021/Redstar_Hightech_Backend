@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/controllers/account_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/statistics/helpers/chart_helper.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/statistics/models/chart_data_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/controllers/transaction_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
@@ -22,8 +23,9 @@ abstract class ChartController extends GetxController {
   initialize(startDate, endDate) {
     allTransactions =
         transactionController.allTransactions.value; //box.values.toList();
+
     setDateFilter(startDate, endDate);
-    setTypeFiler(0);
+    setTypeFiler(currTypeFilter);
   }
 
   prev();
@@ -51,6 +53,8 @@ abstract class ChartController extends GetxController {
         update();
         break;
       default:
+        displyDataList = chartDataList;
+        update();
         break;
     }
     currTypeFilter = type;
@@ -67,54 +71,5 @@ abstract class ChartController extends GetxController {
         .toList();
     chartDataList = ChartHelper().getCatTotals(filterdList);
     setTypeFiler(currTypeFilter);
-  }
-}
-
-class ChartHelper {
-  List<CatChartData> tmpdataList = [];
-  List<CatChartData> dataList = [];
-  List<CatChartData> getCatTotals(List<Transaction> filteredList) {
-    _createEmptyList();
-    for (Transaction item in filteredList) {
-      int index =
-          tmpdataList.indexWhere((el) => el.category == item.account.number);
-      if (index != -1) {
-        tmpdataList[index].toatal += item.amount;
-      } else {
-        //print('not contains');
-      }
-    }
-    for (CatChartData data in tmpdataList) {
-      if (data.toatal > 0) {
-        dataList.add(data);
-      }
-    }
-    return dataList;
-  }
-
-  _createEmptyList() {
-    List<Account> accounts = AccountController().accounts;
-
-    for (Account account in accounts) {
-      tmpdataList.add(CatChartData(account.name, 0, 0));
-    }
-  }
-
-  getOverViewData(List<CatChartData> allData) {
-    List<CatChartData> overviewList = [];
-    double totalIncome = 0;
-    double totalExpense = 0;
-    for (CatChartData data in allData) {
-      if (data.type == 1) {
-        totalExpense += data.toatal;
-      } else if (data.type == 0) {
-        totalIncome += data.toatal;
-      }
-    }
-    if (totalExpense > 0 || totalIncome > 0) {
-      overviewList.add(CatChartData('Income', -1, totalIncome));
-      overviewList.add(CatChartData('Expense', -1, totalExpense));
-    }
-    return overviewList;
   }
 }

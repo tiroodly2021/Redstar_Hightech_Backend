@@ -485,9 +485,9 @@ class _PersonalizedTransactionViewViewState
 
     if (isValid) {
       //MONCASH MANAGEMENT
-      if (transactionController.operationType == 0) {
+      if (transactionController.operationType.value == 0) {
         print("moncash transction...");
-        if (transactionController.transactionTypeMobileAgent == 0) {
+        if (transactionController.transactionTypeMobileAgent.value == 0) {
           // print("retrait...");
 
           tx1 = Transaction(
@@ -512,7 +512,7 @@ class _PersonalizedTransactionViewViewState
           transactionController.addTransaction(tx2);
         }
 
-        if (transactionController.transactionTypeMobileAgent == 1) {
+        if (transactionController.transactionTypeMobileAgent.value == 1) {
           print("depot...");
           tx1 = Transaction(
               title: transactionTypeToString(TransactionType.expense),
@@ -536,7 +536,7 @@ class _PersonalizedTransactionViewViewState
           transactionController.addTransaction(tx2);
         }
 
-        if (transactionController.transactionTypeMobileAgent == 2) {
+        if (transactionController.transactionTypeMobileAgent.value == 2) {
           print("transfert...");
           tx1 = Transaction(
               title: transactionTypeToString(TransactionType.expense),
@@ -561,10 +561,10 @@ class _PersonalizedTransactionViewViewState
         }
       }
       // LOTO MANAGEMENT
-      if (transactionController.operationType == 1) {
+      if (transactionController.operationType.value == 1) {
         print("loto transction...");
 
-        if (transactionController.transactionTypeLotoAgent == 0) {
+        if (transactionController.transactionTypeLotoAgent.value == 0) {
           print("ajouter credit...");
 
           tx1 = Transaction(
@@ -579,7 +579,7 @@ class _PersonalizedTransactionViewViewState
           transactionController.addTransaction(tx1);
         }
 
-        if (transactionController.transactionTypeLotoAgent == 1) {
+        if (transactionController.transactionTypeLotoAgent.value == 1) {
           print("vente...");
 
           tx1 = Transaction(
@@ -607,7 +607,7 @@ class _PersonalizedTransactionViewViewState
 
       //CASH MANAGEMENT
 
-      if (transactionController.operationType == 2) {
+      if (transactionController.operationType.value == 2) {
         print("cash transction...");
         if (transactionController.transactionTypeCashMoney == 0) {
           print("Entree...");
@@ -622,7 +622,7 @@ class _PersonalizedTransactionViewViewState
           transactionController.addTransaction(tx1);
         }
 
-        if (transactionController.transactionTypeCashMoney == 1) {
+        if (transactionController.transactionTypeCashMoney.value == 1) {
           print("Sortie...");
           tx1 = Transaction(
               title: transactionTypeToString(TransactionType.expense),
@@ -636,65 +636,18 @@ class _PersonalizedTransactionViewViewState
           transactionController.addTransaction(tx1);
         }
       }
-/*       if (!transactionManager.isTransfertActivated.value) {
-        transaction = Transaction(
-            title: transactionTypeToString(transactionType),
-            date: date,
-            account: accountPrimary,
-            amount: double.parse(amountController.text),
-            type: transactionType,
-            description: descriptionController.text);
-      } else {
-        tx1 = Transaction(
-            title: transactionTypeToString(TransactionType.expense),
-            date: date,
-            account: accountPrimary, //accountController.text,
-            amount: double.parse(amountController.text),
-            type: TransactionType.expense,
-            description: descriptionController.text +
-                ' ' +
-                accountController.text +
-                ' To ' +
-                destinationAccountController.text);
-
-        tx2 = Transaction(
-            title: transactionTypeToString(TransactionType.income),
-            date: date,
-            account: destinationAccount, //destinationAccountController.text,
-            amount: double.parse(amountController.text),
-            type: TransactionType.income,
-            description: descriptionController.text +
-                ' ' +
-                accountController.text +
-                ' To ' +
-                destinationAccountController.text);
-      }
-
-      if (isEdit) {
-        transactionManager.updateTransaction(
-            widget.transaction!.id!, transaction);
-      } else {
-        if (!transactionManager.isTransfertActivated.value) {
-          transactionManager.addTransaction(transaction);
-        } else {
-          if (transactionType.index == 2) {
-            transactionManager.addTransaction(tx1);
-            transactionManager.addTransaction(tx2);
-            Get.showSnackbar(const GetSnackBar(
-              title: 'Error',
-              message: "Destination can't be empty",
-              backgroundColor: Colors.red,
-            ));
-          }
-        }
-      }*/
 
       if (close) {
         Navigator.pop(context);
       } else {
         amountController.clear();
         descriptionController.clear;
-        //transactionManager.isTransfertActivated.value = false;
+
+        transactionController.operationType.value = 0;
+        transactionController.transactionTypeMobileAgent.value = 0;
+        transactionController.transactionTypeLotoAgent.value = 0;
+        transactionController.transactionTypeCashMoney.value = 0;
+
         FocusScope.of(context).requestFocus(_amountFocus);
         FocusScope.of(context).requestFocus(_descriptionFocus);
       }

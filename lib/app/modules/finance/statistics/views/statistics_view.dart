@@ -28,11 +28,15 @@ class _StatisticsViewState extends State<StatisticsView>
 
   @override
   void initState() {
-    _tabController = TabController(length: 1, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
     final initDateS = DateTime(now.year, now.month, 1);
     final initDateE = DateTime(initDateS.year, initDateS.month + 1, 1);
     monthChartController.initialize(initDateS, initDateE);
+
     yearChartController.initialize(DateTime(now.year), DateTime(now.year + 1));
+
+    print('chart data display: ${monthChartController.displyDataList}');
+
     super.initState();
   }
 
@@ -114,7 +118,7 @@ class _StatisticsViewState extends State<StatisticsView>
                 unselectedLabelColor: Colors.black54,
                 labelStyle: const TextStyle(fontWeight: FontWeight.bold),
                 tabs: const [
-                  //  Tab(text: 'Monthly'),
+                  Tab(text: 'Monthly'),
                   Tab(text: 'Yearly'),
                 ],
               ),
@@ -127,7 +131,7 @@ class _StatisticsViewState extends State<StatisticsView>
               child: TabBarView(
                 controller: _tabController,
                 children: const [
-                  // MonthlyChart(),
+                  MonthlyChart(),
                   YearlyChart(),
                 ],
               ),
@@ -136,30 +140,3 @@ class _StatisticsViewState extends State<StatisticsView>
         ));
   }
 }
-
-
-
-/* import 'package:flutter/material.dart';
-
-import 'package:get/get.dart';
-
-import '../controllers/statistics_controller.dart';
-
-class StatisticsView extends GetView<StatisticsController> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('StatisticsView'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Text(
-          'StatisticsView is working',
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
-    );
-  }
-}
-*/

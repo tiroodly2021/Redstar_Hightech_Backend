@@ -106,7 +106,8 @@ class TransactionTile extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 5),
                         child: Text(
-                          transaction.description!,
+                          DateFormat.yMMMd().format(DateTime.parse(
+                              transaction.date.toLocal().toIso8601String())),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(

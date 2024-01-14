@@ -61,24 +61,6 @@ class AccountController extends GetxController {
         .bindStream(database.getAccountsFiltered(AccountType.lotoAgent));
     accountCashMoney
         .bindStream(database.getAccountsFiltered(AccountType.cashMoney));
-
-/*     accountMobileAgent = accounts
-        .where((element) => element.type == AccountType.mobileAgent)
-        .toList()
-        .first
-        .obs;
-
-    accountLotoAgent = accounts
-        .where((element) => element.type == AccountType.lotoAgent)
-        .toList()
-        .first
-        .obs;
-
-    accountCashMoney = accounts
-        .where((element) => element.type == AccountType.cashMoney)
-        .toList()
-        .first
-        .obs; */
   }
 
   List<Account> getActiveAccounts() {

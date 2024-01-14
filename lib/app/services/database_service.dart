@@ -405,6 +405,23 @@ class DatabaseService {
   }
 
   Future<void> deleteProduct(Product product) {
+    /* 
+    
+    
+    return _firebaseFirestore.collection('products').get().then((products) {
+      products.docs.forEach((productDoc) {
+        Product product = Product.fromSnapShot(productDoc);
+
+        _firebaseFirestore
+            .collection('products')
+            .doc(product.id)
+            .collection('categories')
+            .doc(category.id)
+            .delete();
+      });
+    });
+    
+     */
     return _firebaseFirestore.collection('products').doc(product.id).delete();
   }
 
@@ -729,6 +746,13 @@ class DatabaseService {
 
   void deleteAccount(Account account) {
     _firebaseFirestore.collection('accounts').doc(account.id).delete();
+
+    /*     _firebaseFirestore
+        .collection('transactions').where('account', isEqualTo: account.toMap()).get().then((value){
+            value.docs.forEach((element2) {
+              element2.d
+            })          
+        }); */
   }
 
   Future<void> addAccount(Account account) {
