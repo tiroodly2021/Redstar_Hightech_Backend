@@ -76,7 +76,13 @@ class PieChartView extends StatelessWidget {
   final ChartController controller;
   final OrderStatController orderStatController =
       Get.put(OrderStatController());
-  final List<String> filterTypes = const ['Expense', 'Income', 'Overview'];
+  final List<String> filterTypes = const [
+    'All',
+    'Mobile Agent',
+    'LOTO',
+    'CASH',
+    'OverView'
+  ];
   final List<Color> overviewPalte = const [
     Color(0xff4EAE51),
     Color(0xffFF5F5F)
@@ -96,76 +102,103 @@ class PieChartView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Wrap(
-          spacing: 8,
-          children: List<Widget>.generate(
-            3,
-            (int index) {
-              return ChoiceChip(
-                label: Text(filterTypes[index]),
-                labelStyle: const TextStyle(fontSize: 13),
-                visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-                selected: controller.currTypeFilter == index,
-                onSelected: (bool selected) {
-                  controller.setTypeFiler(index);
-                },
-                backgroundColor: Colors.grey.shade200,
-                selectedColor: const Color(0xffc8e2f8),
-                shape: StadiumBorder(
-                    side: BorderSide(
-                        width: 0.5,
-                        color: controller.currTypeFilter == index
-                            ? Colors.blue
-                            : Colors.grey)),
-              );
-            },
-          ).toList(),
-        ),
-        controller.displyDataList.isNotEmpty
-            ? SfCircularChart(
-                legend: Legend(
-                  isVisible: true,
-                  overflowMode: LegendItemOverflowMode.wrap,
-                  position: LegendPosition.bottom,
-                ),
-                palette:
-                    controller.currTypeFilter == 2 ? overviewPalte : palette,
-                tooltipBehavior: TooltipBehavior(
-                    enable: true,
-                    borderColor: Colors.white,
-                    borderWidth: 1,
-                    format: 'point.x: \u{20B9}point.y'),
-                series: <CircularSeries>[
-                  PieSeries<CatChartData, String>(
-                      animationDuration: 700,
-                      dataSource: controller.displyDataList,
-                      explode: true,
-                      explodeGesture: ActivationMode.singleTap,
-                      xValueMapper: (CatChartData data, _) => data.category,
-                      yValueMapper: (CatChartData data, _) => data.toatal,
-                      dataLabelMapper: (CatChartData data, _) => data.category,
-                      sortingOrder: SortingOrder.descending,
-                      legendIconType: LegendIconType.circle,
-                      dataLabelSettings: DataLabelSettings(
-                        isVisible: true,
-                        connectorLineSettings:
-                            ConnectorLineSettings(type: ConnectorType.curve),
-                        showZeroValue: false,
-                        labelPosition: ChartDataLabelPosition.outside,
-                      ))
+    return FutureBuilder(
+        future: controller.displyDataList,
+        builder: (BuildContext context, AsyncSnapshot asyncSnapshot) {
+          if (asyncSnapshot.hasError) {
+            return const Center(
+              child: Text("Unknow Error"),
+            );
+          }
+
+          if (asyncSnapshot.connectionState == ConnectionState.done) {
+            List<CatChartData> catChartDataList =
+                asyncSnapshot.data as List<CatChartData>;
+
+            return Container(
+              margin: const EdgeInsets.only(right: 10),
+              child: Column(
+                children: [
+                  Wrap(
+                    spacing: 2,
+                    children: List<Widget>.generate(
+                      filterTypes.length,
+                      (int index) {
+                        return ChoiceChip(
+                          label: Text(filterTypes[index]),
+                          labelStyle: const TextStyle(fontSize: 13),
+                          visualDensity:
+                              const VisualDensity(horizontal: 0, vertical: -4),
+                          selected: controller.currTypeFilter == index,
+                          onSelected: (bool selected) {
+                            controller.setTypeFiler(index);
+                          },
+                          backgroundColor: Colors.grey.shade200,
+                          selectedColor: const Color(0xffc8e2f8),
+                          shape: StadiumBorder(
+                              side: BorderSide(
+                                  width: 0.5,
+                                  color: controller.currTypeFilter == index
+                                      ? Colors.blue
+                                      : Colors.grey)),
+                        );
+                      },
+                    ).toList(),
+                  ),
+                  catChartDataList.isNotEmpty
+                      ? SfCircularChart(
+                          legend: Legend(
+                            isVisible: true,
+                            overflowMode: LegendItemOverflowMode.wrap,
+                            position: LegendPosition.bottom,
+                          ),
+                          palette: controller.currTypeFilter == 2
+                              ? overviewPalte
+                              : palette,
+                          tooltipBehavior: TooltipBehavior(
+                              enable: true,
+                              borderColor: Colors.white,
+                              borderWidth: 1,
+                              format: 'point.x: \u{20B9}point.y'),
+                          series: <CircularSeries>[
+                            PieSeries<CatChartData, String>(
+                                animationDuration: 700,
+                                dataSource: catChartDataList,
+                                explode: true,
+                                explodeGesture: ActivationMode.singleTap,
+                                xValueMapper: (CatChartData data, _) =>
+                                    data.category,
+                                yValueMapper: (CatChartData data, _) =>
+                                    data.toatal,
+                                dataLabelMapper: (CatChartData data, _) =>
+                                    data.category,
+                                sortingOrder: SortingOrder.descending,
+                                legendIconType: LegendIconType.circle,
+                                dataLabelSettings: DataLabelSettings(
+                                  isVisible: true,
+                                  connectorLineSettings: ConnectorLineSettings(
+                                      type: ConnectorType.curve),
+                                  showZeroValue: false,
+                                  labelPosition: ChartDataLabelPosition.outside,
+                                ))
+                          ],
+                        )
+                      : SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.5,
+                          child: const EmptyView(
+                            icon: Icons.bar_chart,
+                            label: 'No Data Found',
+                            color: Color.fromARGB(249, 26, 93, 148),
+                          ),
+                        ),
                 ],
-              )
-            : SizedBox(
-                height: MediaQuery.of(context).size.height * 0.5,
-                child: const EmptyView(
-                  icon: Icons.bar_chart,
-                  label: 'No Data Found',
-                  color: Color.fromARGB(249, 26, 93, 148),
-                ),
               ),
-      ],
-    );
+            );
+          }
+
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        });
   }
 }

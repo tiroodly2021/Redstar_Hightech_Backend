@@ -18,6 +18,6 @@ class MonthlyChartContollrt extends ChartController {
 
   @override
   String getPeriod() {
-    return '${DateFormat('MMM ').format(startDate).toUpperCase()} ${startDate.year}';
+    return '${DateFormat('MMM ').format(startDate).toUpperCase()} ${endDate.year}';
   }
 }

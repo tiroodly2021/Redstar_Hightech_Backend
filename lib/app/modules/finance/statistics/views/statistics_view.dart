@@ -31,11 +31,10 @@ class _StatisticsViewState extends State<StatisticsView>
     _tabController = TabController(length: 2, vsync: this);
     final initDateS = DateTime(now.year, now.month, 1);
     final initDateE = DateTime(initDateS.year, initDateS.month + 1, 1);
+
     monthChartController.initialize(initDateS, initDateE);
 
     yearChartController.initialize(DateTime(now.year), DateTime(now.year + 1));
-
-    print('chart data display: ${monthChartController.displyDataList}');
 
     super.initState();
   }

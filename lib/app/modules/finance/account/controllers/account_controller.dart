@@ -55,6 +55,10 @@ class AccountController extends GetxController {
   void accountList() async {
     count.bindStream(database.getCount('accounts', 'AccountController'));
     accounts.bindStream(database.getAccounts());
+
+    print("Exec:    accounts.bindStream(database.getAccounts()); ");
+    print("Length: ${accounts.value.length}");
+
     accountMobileAgent
         .bindStream(database.getAccountsFiltered(AccountType.mobileAgent));
     accountLotoAgent

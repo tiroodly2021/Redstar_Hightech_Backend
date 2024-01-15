@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart' as cloudFirestore;
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/controllers/account_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
@@ -8,10 +9,13 @@ import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/
 class ChartHelper {
   List<CatChartData> tmpdataList = [];
   List<CatChartData> dataList = [];
-  AccountController accountController = Get.put(AccountController());
+  // AccountController accountController = Get.put(AccountController());
+  List<Account> accounts = [];
 
-  List<CatChartData> getCatTotals(List<Transaction> filteredList) {
-    _createEmptyList();
+  Future<List<CatChartData>> getCatTotals(
+      List<Transaction> filteredList) async {
+    await _createEmptyList();
+
     for (Transaction item in filteredList) {
       int index =
           tmpdataList.indexWhere((el) => el.category == item.account.name);
@@ -26,20 +30,26 @@ class ChartHelper {
         dataList.add(data);
       }
     }
+
     return dataList;
   }
 
-  _createEmptyList() {
-    accountController.refresh();
-    List<Account> accounts = accountController.accounts;
+  _createEmptyList() async {
+    final referenceAccount =
+        cloudFirestore.FirebaseFirestore.instance.collection("accounts");
 
-    for (Account account in accounts) {
+    final accountList = (await referenceAccount.get())
+        .docs
+        .map((e) => Account.fromSnapShot(e))
+        .toList();
+
+    for (Account account in accountList) {
       tmpdataList
           .add(CatChartData(account.name, accountTypeToInt(account.type!), 0));
     }
   }
 
-  getOverViewData(List<CatChartData> allData) {
+/*   getOverViewData(List<CatChartData> allData) {
     List<CatChartData> overviewList = [];
     double totalIncome = 0;
     double totalExpense = 0;
@@ -55,5 +65,24 @@ class ChartHelper {
       overviewList.add(CatChartData('Expense', -1, totalExpense));
     }
     return overviewList;
+  } */
+
+  Future<List<CatChartData>> getOverViewData(List<Transaction> allData) {
+    List<Transaction> overviewList = [];
+    List<CatChartData> catchartList = [];
+    double totalIncome = 0;
+    double totalExpense = 0;
+    for (Transaction data in allData) {
+      if (data.type.index == 1) {
+        totalExpense += data.amount;
+      } else if (data.type.index == 0) {
+        totalIncome += data.amount;
+      }
+    }
+    if (totalExpense > 0 || totalIncome > 0) {
+      catchartList.add(CatChartData('Income', -1, totalIncome));
+      catchartList.add(CatChartData('Expense', -1, totalExpense));
+    }
+    return Future.value(catchartList);
   }
 }
