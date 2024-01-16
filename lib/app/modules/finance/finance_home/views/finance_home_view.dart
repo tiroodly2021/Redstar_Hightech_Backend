@@ -93,13 +93,31 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
                         .titleMedium!
                         .copyWith(fontWeight: FontWeight.bold),
                   ),
-                  TextButton(
-                    onPressed: () {
-                      Get.toNamed(AppPages.FINANCE_TRANSACTION);
-                    },
-                    child: const Text(
-                      'See all',
-                    ),
+                  Row(
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Get.toNamed(AppPages.FINANCE_TRANSACTION);
+                        },
+                        child: const Text(
+                          'See all',
+                        ),
+                      ),
+                      Container(
+                          height: 20,
+                          child: Text(
+                            "|",
+                            style: TextStyle(color: Colors.blue),
+                          )),
+                      TextButton(
+                        onPressed: () {
+                          Get.toNamed(AppPages.FINANCE_ACCOUNT);
+                        },
+                        child: const Text(
+                          '  Accounts',
+                        ),
+                      ),
+                    ],
                   )
                 ],
               ),

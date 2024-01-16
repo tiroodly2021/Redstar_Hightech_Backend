@@ -178,12 +178,12 @@ SetPermissionView(
         middlewares: [/* AuthorizationMiddleware() */]),
     GetPage(
         name: _Paths.FINANCE_ADD_TRANSACTION,
-        page: () => AddTransactionView(),
+        page: () => const AddTransactionView(),
         binding: TransactionBinding(),
-        middlewares: [/* AuthorizationMiddleware() */]),
+        middlewares: [AuthorizationMiddleware()]),
     GetPage(
         name: _Paths.FINANCE_STATISTIC,
-        page: () => StatisticsView(),
+        page: () => const StatisticsView(),
         binding: StatisticsBinding(),
         middlewares: [/* AuthorizationMiddleware() */]),
 
@@ -192,20 +192,20 @@ SetPermissionView(
         name: _Paths.FINANCE_ACCOUNT,
         page: () => AccountView(),
         binding: AccountBinding(),
-        middlewares: [/* AuthorizationMiddleware() */]),
+        middlewares: [/*AuthorizationMiddleware() */]),
     GetPage(
         name: _Paths.FINANCE_ADD_ACCOUNT,
         page: () => AddAccountView(),
         binding: AccountBinding(),
-        middlewares: [/* AuthorizationMiddleware() */]),
+        middlewares: [AuthorizationMiddleware()]),
     GetPage(
         name: _Paths.FINANCE_UPDATE_ACCOUNT,
         page: () => UpdateAccountView(),
         binding: TransactionBinding(),
-        middlewares: [/* AuthorizationMiddleware() */]),
+        middlewares: [AuthorizationMiddleware()]),
     GetPage(
         name: _Paths.FINANCE_PERSONALIZEDTRANSACTION,
-        page: () => PersonalizedTransactionView(),
+        page: () => const PersonalizedTransactionView(),
         binding: TransactionBinding(),
         middlewares: [/* AuthorizationMiddleware() */]),
 
