@@ -31,6 +31,11 @@ class _MonthlyChartState extends State<MonthlyChart> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     period = chartController.getPeriod();
     return ListView(
@@ -56,6 +61,7 @@ class _MonthlyChartState extends State<MonthlyChart> {
         Padding(
             padding: const EdgeInsets.symmetric(vertical: 20),
             child: GetBuilder<MonthlyChartContollrt>(
+              autoRemove: false,
               builder: (controller) {
                 return PieChartView(
                   controller: controller,

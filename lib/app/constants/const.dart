@@ -13,3 +13,5 @@ String superUserPassword = "SystemAuthPass"; /* nfDF6RaaEmVlWtEgKfiTDrCeS2G3 */
 // set the common device dimensions here for mobile / tablet / desktop
 
 const mobileWidth = 600;
+
+const FINANCE_ROLE = 'test';

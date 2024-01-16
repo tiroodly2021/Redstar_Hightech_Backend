@@ -42,6 +42,7 @@ class _StatisticsViewState extends State<StatisticsView>
   @override
   void dispose() {
     super.dispose();
+
     _tabController.dispose();
   }
 
@@ -60,7 +61,7 @@ class _StatisticsViewState extends State<StatisticsView>
           menuActionButton: ButtonOptionalMenu(),
           tooltip: 'Search',
         ),
-        floatingActionButton: const FloatingCircleMenu(),
+        floatingActionButton: FloatingCircleMenu(),
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(

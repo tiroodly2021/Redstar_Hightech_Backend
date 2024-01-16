@@ -29,6 +29,14 @@ abstract class ChartController extends GetxController {
     setTypeFiler(0);
   }
 
+  @override
+  void onClose() {
+    allTransactions.clear();
+    filterdList.clear();
+    chartDataList.then((value) => value.clear());
+    transactionController.refresh();
+  }
+
   prev();
   next();
   String getPeriod();
@@ -71,7 +79,6 @@ abstract class ChartController extends GetxController {
 
         update();
         break;
-      //  displyDataList = ChartHelper().getOverViewData(chartDataList);
       default:
         displyDataList = chartDataList;
         update();

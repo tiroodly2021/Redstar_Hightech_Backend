@@ -22,6 +22,11 @@ class _YearlyChartState extends State<YearlyChart> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     period = chartController.getPeriod();
     return ListView(

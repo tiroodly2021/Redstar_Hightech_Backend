@@ -89,7 +89,7 @@ class _TransactionViewState extends State<TransactionView>
           opacity: showFAB ? 1 : 0,
           duration: const Duration(milliseconds: 300),
           child:
-              const FloatingCircleMenu() /* FloatingActionButton(
+              FloatingCircleMenu() /* FloatingActionButton(
             onPressed: () {
               /*   Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return const AddTransactionView();

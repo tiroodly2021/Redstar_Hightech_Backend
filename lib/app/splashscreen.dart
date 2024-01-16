@@ -1,6 +1,11 @@
 import 'dart:async';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/constants/const.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/models/role_model.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/finance_home/views/finance_home_view.dart';
 import 'package:redstar_hightech_backend/app/modules/home/views/home_drawer.dart';
 import 'package:redstar_hightech_backend/app/modules/home/views/home_view.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
@@ -25,6 +30,9 @@ class _SplashScreenState extends State<SplashScreen> {
     AppTheme.appbarColor,
     Colors.transparent
   ];
+
+  final authController = Get.put(AuthenticationController());
+
   @override
   void initState() {
     /*SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
@@ -105,23 +113,32 @@ class _SplashScreenState extends State<SplashScreen> {
 
     final bool isInited = prefs.getBool('isInited') ?? false;
 
-    Timer(const Duration(seconds: 5), () {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => HomeView(),
-              /* isInited
+    authController.checkUserRolePermission().then(
+      (role) {
+        Timer(const Duration(seconds: 5), () {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      role.name.toString().toLowerCase() == FINANCE_ROLE
+                          ? FinanceHomeView()
+                          : HomeView(),
+                  /* isInited
                 ? HomeView()
                 : const EditProfile(
                     isFromInit: true,
                   ), */
 
-              settings: const RouteSettings(
-                  name: AppPages
-                      .INITIAL) /* isInited
+                  settings: role.name.toString().toLowerCase() == FINANCE_ROLE
+                      ? const RouteSettings(name: AppPages.FINANCE_HOME)
+                      : const RouteSettings(
+                          name: AppPages
+                              .INITIAL) /* isInited
                 ? const RouteSettings(name: AppPages.INITIAL)
                 : const RouteSettings(name: AppPages.EDIT_PROFILE), */
-              ));
-    });
+                  ));
+        });
+      },
+    );
   }
 }

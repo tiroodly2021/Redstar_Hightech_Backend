@@ -26,7 +26,7 @@ class AuthenticationController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   DatabaseService databaseService = DatabaseService();
   RxList<Role> roles = <Role>[].obs;
-  Role _role = Role(name: '', description: '', id: '');
+  Role _myRole = Role(name: '', description: '', id: '');
 
   RxList<Permission> _permissions = <Permission>[].obs;
   RxList<Permission> _guestPermissions = <Permission>[].obs;
@@ -55,9 +55,9 @@ class AuthenticationController extends GetxController {
 
   bool get authenticated => user != null ? true : false;
 
-  Role get userRole => _role;
+  Role get userRole => _myRole;
 
-  set userRole(value) => _role = value;
+  set userRole(value) => _myRole = value;
 
   RxList<Permission> get userPermission => _permissions;
   RxList<Permission> get guestPermission => _guestPermissions;
@@ -102,7 +102,7 @@ class AuthenticationController extends GetxController {
     }
   }
 
-  checkUserRolePermission() async {
+  Future<Role> checkUserRolePermission() async {
     final referenceUser = FirebaseFirestore.instance.collection("users");
 
     final ftLocalUser = await referenceUser
@@ -127,6 +127,8 @@ class AuthenticationController extends GetxController {
       final referenceRole = FirebaseFirestore.instance.collection("roles");
 
       if (_role.isNotEmpty) {
+        _myRole = _role.first;
+
         _permissions.value = (await referenceRole
                 .doc(_role[0].id)
                 .collection('permissions')
@@ -136,6 +138,8 @@ class AuthenticationController extends GetxController {
             .toList();
       }
     }
+
+    return _myRole;
   }
 
   void login(String email, String password) async {

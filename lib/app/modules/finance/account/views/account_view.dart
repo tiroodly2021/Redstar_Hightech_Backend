@@ -61,7 +61,7 @@ class AccountView extends GetView<AccountController> {
         ),
         drawer: NavigationDrawer(),
         floatingActionButton:
-            const FloatingCircleMenu() /* FloatingActionButton(
+            FloatingCircleMenu() /* FloatingActionButton(
           heroTag: "btn2",
           onPressed: () {
             Get.toNamed(AppPages.FINANCE_ADD_ACCOUNT);

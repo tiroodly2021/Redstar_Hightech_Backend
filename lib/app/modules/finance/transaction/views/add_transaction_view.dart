@@ -109,7 +109,7 @@ class _AddTransactionViewState extends State<AddTransactionView> {
           menuActionButton: ButtonOptionalMenu(),
           tooltip: 'Search',
         ),
-        floatingActionButton: const FloatingCircleMenu(),
+        floatingActionButton: FloatingCircleMenu(),
         body: Form(
           key: _formKey,
           child: Stack(children: [

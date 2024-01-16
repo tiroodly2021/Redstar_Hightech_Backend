@@ -1,11 +1,15 @@
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/finance_home/controllers/finance_home_controller.dart';
 
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 
 class FloatingCircleMenu extends StatelessWidget {
-  const FloatingCircleMenu({Key? key}) : super(key: key);
+  FinanceHomeController financeHomeController =
+      Get.put(FinanceHomeController());
+
+  FloatingCircleMenu({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +34,10 @@ class FloatingCircleMenu extends StatelessWidget {
               children: <Widget>[
                 RawMaterialButton(
                   onPressed: () {
-                    // controller.fabKey.currentState!.close();
+                    if (financeHomeController.fabKey.currentState != null) {
+                      financeHomeController.fabKey.currentState!.close();
+                    }
+
                     Get.toNamed(AppPages.FINANCE_PERSONALIZEDTRANSACTION);
                   },
                   shape: const CircleBorder(

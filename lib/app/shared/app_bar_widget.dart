@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/constants/const.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/style/colors.dart';
@@ -41,7 +42,11 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
             color: Colors.white,
             onPressed: () {
-              Get.toNamed(AppPages.HOME);
+              authenticationController?.checkUserRolePermission().then((value) {
+                value.name == FINANCE_ROLE
+                    ? Get.toNamed(AppPages.FINANCE_HOME)
+                    : Get.toNamed(AppPages.HOME);
+              });
             },
             // tooltip: tooltip,
             icon: const Icon(Icons.home, color: Colors.white)),
