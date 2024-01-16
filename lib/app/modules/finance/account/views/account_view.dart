@@ -93,7 +93,7 @@ class AccountView extends GetView<AccountController> {
                             child: InkWell(
                               onTap: () => Get.toNamed(
                                   AppPages.FINANCE_TRANSACTION,
-                                  arguments: account),
+                                  arguments: {'acc': account}),
                               child: AccountCard(
                                   account: account,
                                   totalBalance: totalBalance,

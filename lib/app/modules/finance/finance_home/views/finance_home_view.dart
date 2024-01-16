@@ -213,33 +213,37 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
                           Color(0x8827FF2E)
                         ]),
                   ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Icon(
-                            Icons.arrow_upward,
-                            color: AppTheme.darkGray,
-                            size: 18,
-                          ),
-                          SizedBox(width: 10),
-                          Text('Income',
-                              style: TextStyle(
-                                  color: AppTheme.darkGray,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600))
-                        ],
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        '\u{20B9} $totalIncome',
-                        style: const TextStyle(
-                            fontSize: 15,
-                            color: Color(0xff4EAE51),
-                            fontWeight: FontWeight.bold),
-                      )
-                    ],
+                  child: InkWell(
+                    onTap: () => Get.toNamed(AppPages.FINANCE_TRANSACTION,
+                        arguments: {'trans_arg': TransactionType.income}),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: const [
+                            Icon(
+                              Icons.arrow_upward,
+                              color: AppTheme.darkGray,
+                              size: 18,
+                            ),
+                            SizedBox(width: 10),
+                            Text('Income',
+                                style: TextStyle(
+                                    color: AppTheme.darkGray,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600))
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          '\u{20B9} $totalIncome',
+                          style: const TextStyle(
+                              fontSize: 15,
+                              color: Color(0xff4EAE51),
+                              fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -261,33 +265,37 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
                           Color(0x88FF6969)
                         ]),
                   ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Icon(
-                            Icons.arrow_downward,
-                            color: AppTheme.darkGray,
-                            size: 18,
-                          ),
-                          SizedBox(width: 10),
-                          Text('Expense',
-                              style: TextStyle(
-                                  color: AppTheme.darkGray,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600))
-                        ],
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        '\u{20B9} $totalExpense',
-                        style: const TextStyle(
-                            fontSize: 15,
-                            color: Color(0xffFF5F5F),
-                            fontWeight: FontWeight.bold),
-                      )
-                    ],
+                  child: InkWell(
+                    onTap: () => Get.toNamed(AppPages.FINANCE_TRANSACTION,
+                        arguments: {'trans_arg': TransactionType.expense}),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: const [
+                            Icon(
+                              Icons.arrow_downward,
+                              color: AppTheme.darkGray,
+                              size: 18,
+                            ),
+                            SizedBox(width: 10),
+                            Text('Expense',
+                                style: TextStyle(
+                                    color: AppTheme.darkGray,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600))
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          '\u{20B9} $totalExpense',
+                          style: const TextStyle(
+                              fontSize: 15,
+                              color: Color(0xffFF5F5F),
+                              fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               )

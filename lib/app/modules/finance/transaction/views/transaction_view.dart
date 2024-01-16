@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:get/get.dart';
@@ -24,8 +25,10 @@ import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
 import '../controllers/transaction_controller.dart';
 
 class TransactionView extends StatefulWidget {
-  Account? account;
-  TransactionView({Key? key, this.account}) : super(key: key);
+  Account? account = null;
+  TransactionType? type = null;
+
+  TransactionView({Key? key, this.account, this.type}) : super(key: key);
 
   @override
   State<TransactionView> createState() => _TransactionViewState();
@@ -64,7 +67,14 @@ class _TransactionViewState extends State<TransactionView>
 
   @override
   Widget build(BuildContext context) {
-    widget.account = ModalRoute.of(context)?.settings.arguments as Account;
+    Map<String, dynamic> arg =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+
+    if (arg.keys.first == 'trans_arg') {
+      widget.type = arg.values.first as TransactionType;
+    } else {
+      widget.account = arg.values.first as Account;
+    }
 
     return Scaffold(
       drawer: !Responsive.isDesktop(context) ? NavigationDrawer() : Container(),
@@ -194,42 +204,67 @@ class _TransactionViewState extends State<TransactionView>
                   child:
                       GetBuilder<TransactionController>(builder: (controller) {
                     List<Transaction> listTrx = [];
+                    totalBalance = 0;
 
                     if (widget.account != null) {
                       controller.filterdList.forEach((element) {
                         if (element.account.id.toString().toLowerCase() ==
                             widget.account!.id.toString().toLowerCase()) {
-                          listTrx.add(element);
+                          SchedulerBinding.instance
+                              ?.addPostFrameCallback((timeStamp) {
+                            listTrx.add(element);
+                          });
+                        }
+                      });
+                    } else if (widget.type != null) {
+                      controller.filterdList.forEach((element) {
+                        if (element.type.index == widget.type!.index) {
+                          SchedulerBinding.instance
+                              ?.addPostFrameCallback((timeStamp) {
+                            listTrx.add(element);
+                          });
                         }
                       });
                     } else {
                       listTrx = controller.filterdList;
                     }
 
-                    calculateBalances(listTrx);
+                    calculateBalances(controller.filterdList);
+                    double total = 0;
 
-                    if (controller.filterdList.isEmpty) {
+                    if (widget.type == TransactionType.income) {
+                      total = totalIncome;
+                    }
+
+                    if (widget.type == TransactionType.expense) {
+                      total = -totalExpense;
+                    }
+
+                    if (total == 0) {
                       return const Text(
                         'Balance : \$ 0 ',
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
+                            color: Colors.orange),
+                      );
+                    } else if (total > 0) {
+                      return Text(
+                        'Balance : \$${total}',
+                        style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                             color: Colors.green),
                       );
+                    } else {
+                      return Text(
+                        'Balance : - \$${-total}',
+                        style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red),
+                      );
                     }
-                    return totalBalance >= 0
-                        ? Text(
-                            'Balance : \$${totalBalance}',
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          )
-                        : Text(
-                            'Balance : - \$${-totalBalance}',
-                            style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.red),
-                          );
                   }),
                 )
               ],
@@ -265,22 +300,23 @@ class _TransactionViewState extends State<TransactionView>
                       if (widget.account != null) {
                         if (currItem.account.id.toString().toLowerCase() ==
                             widget.account!.id.toString().toLowerCase()) {
-                          print(
-                              'account id in the list is: ${currItem.account.id}');
-                          print('account id passed is: ${widget.account!.id}');
                           return TransactionTile(
                             transaction: currItem,
                             transactionController: transactionController,
                           );
                         }
-
-                        return Container();
-                      } else {
-                        return TransactionTile(
-                          transaction: currItem,
-                          transactionController: transactionController,
-                        );
                       }
+
+                      if (widget.type != null) {
+                        if (currItem.type.index == widget.type!.index) {
+                          return TransactionTile(
+                            transaction: currItem,
+                            transactionController: transactionController,
+                          );
+                        }
+                      }
+
+                      return Container();
                     }),
               );
               // });
@@ -333,5 +369,6 @@ class _TransactionViewState extends State<TransactionView>
         totalExpense += transaction.amount;
       }
     }
+    return [totalBalance, totalExpense, totalIncome];
   }
 }
