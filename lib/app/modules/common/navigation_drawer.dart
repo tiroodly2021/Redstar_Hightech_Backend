@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:redstar_hightech_backend/app/constants/const.dart';
 
 import '../../../util.dart';
 import '../../constants/app_theme.dart';
@@ -11,6 +12,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../authentication/controllers/authentication_controller.dart';
 
 class NavigationDrawer extends StatelessWidget {
+  AuthenticationController authenticationController =
+      Get.find<AuthenticationController>();
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -226,7 +230,12 @@ class NavigationDrawer extends StatelessWidget {
   navigate(int index) {
     switch (index) {
       case 0:
-        return Get.toNamed(AppPages.HOME);
+        authenticationController.checkUserRolePermission().then((value) {
+          value.name == FINANCE_ROLE
+              ? Get.toNamed(AppPages.FINANCE_HOME)
+              : Get.toNamed(AppPages.HOME);
+        });
+        break;
       case 1:
         return Get.toNamed(AppPages.USER);
       case 2:

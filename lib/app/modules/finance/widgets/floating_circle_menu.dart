@@ -34,7 +34,7 @@ class FloatingCircleMenu extends StatelessWidget {
               children: <Widget>[
                 RawMaterialButton(
                   onPressed: () {
-                    if (financeHomeController.fabKey != null) {
+                    if (financeHomeController.fabKey.currentState != null) {
                       financeHomeController.fabKey.currentState!.close();
                     }
 

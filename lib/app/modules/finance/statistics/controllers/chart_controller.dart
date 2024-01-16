@@ -1,3 +1,4 @@
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/controllers/account_controller.dart';
@@ -26,7 +27,7 @@ abstract class ChartController extends GetxController {
         transactionController.allTransactions.value; //box.values.toList();
 
     setDateFilter(startDate, endDate);
-    setTypeFiler(0);
+    setTypeFiler(currTypeFilter);
   }
 
   @override
@@ -45,7 +46,9 @@ abstract class ChartController extends GetxController {
     switch (type) {
       case 0:
         displyDataList = chartDataList;
-        update();
+        SchedulerBinding.instance?.addPostFrameCallback((_) {
+          update();
+        });
         break;
 
       case 1:
@@ -54,7 +57,9 @@ abstract class ChartController extends GetxController {
                 Account.accountIndexToAccountType(el.type) ==
                 AccountType.mobileAgent)
             .toList());
-        update();
+        SchedulerBinding.instance?.addPostFrameCallback((_) {
+          update();
+        });
         break;
       case 2:
         displyDataList = chartDataList.then((value) => value
@@ -62,7 +67,9 @@ abstract class ChartController extends GetxController {
                 Account.accountIndexToAccountType(el.type) ==
                 AccountType.lotoAgent)
             .toList());
-        update();
+        SchedulerBinding.instance?.addPostFrameCallback((_) {
+          update();
+        });
         break;
       case 3:
         displyDataList = chartDataList.then((value) => value
@@ -70,8 +77,9 @@ abstract class ChartController extends GetxController {
                 Account.accountIndexToAccountType(el.type) ==
                 AccountType.cashMoney)
             .toList());
-
-        update();
+        SchedulerBinding.instance?.addPostFrameCallback((_) {
+          update();
+        });
         break;
 
       case 4:
@@ -81,7 +89,9 @@ abstract class ChartController extends GetxController {
         break;
       default:
         displyDataList = chartDataList;
-        update();
+        SchedulerBinding.instance?.addPostFrameCallback((_) {
+          update();
+        });
         break;
     }
     currTypeFilter = type;

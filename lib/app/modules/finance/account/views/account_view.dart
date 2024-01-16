@@ -60,16 +60,7 @@ class AccountView extends GetView<AccountController> {
           tooltip: 'Search',
         ),
         drawer: NavigationDrawer(),
-        floatingActionButton:
-            FloatingCircleMenu() /* FloatingActionButton(
-          heroTag: "btn2",
-          onPressed: () {
-            Get.toNamed(AppPages.FINANCE_ADD_ACCOUNT);
-          },
-          tooltip: 'New Account',
-          child: const Icon(Icons.person_add),
-        ) */
-        ,
+        floatingActionButton: FloatingCircleMenu(),
         body: Padding(
           padding: const EdgeInsets.all(10),
           child: Column(
