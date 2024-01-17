@@ -70,14 +70,21 @@ class _TransactionViewState extends State<TransactionView>
     Map<String, dynamic> arg =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
 
-    if (arg.keys.first == 'trans_arg') {
-      widget.type = arg.values.first as TransactionType;
-    } else {
-      widget.account = arg.values.first as Account;
+    if (ModalRoute.of(context)?.settings.arguments != null) {
+      if (arg.keys.first == 'trans_arg') {
+        widget.type = arg.values.first as TransactionType;
+      } else {
+        widget.account = arg.values.first as Account;
+      }
+
+      if (arg.keys.first == 'trans_arg') {
+        widget.type = arg.values.first as TransactionType;
+      } else {
+        widget.account = arg.values.first as Account;
+      }
     }
 
     return Scaffold(
-      drawer: !Responsive.isDesktop(context) ? NavigationDrawer() : Container(),
       appBar: /*  !Responsive.isDesktop(context)
           ?  */
           AppBarWidget(
@@ -204,18 +211,26 @@ class _TransactionViewState extends State<TransactionView>
                   child:
                       GetBuilder<TransactionController>(builder: (controller) {
                     List<Transaction> listTrx = [];
-                    totalBalance = 0;
+
+                    double total = 0;
 
                     if (widget.account != null) {
                       controller.filterdList.forEach((element) {
                         if (element.account.id.toString().toLowerCase() ==
                             widget.account!.id.toString().toLowerCase()) {
-                          SchedulerBinding.instance
-                              ?.addPostFrameCallback((timeStamp) {
-                            listTrx.add(element);
-                          });
+                          print(
+                              'el: ${element.account.id} -- widget.account.id: ${widget.account!.id} ');
+                          /*   SchedulerBinding.instance
+                              ?.addPostFrameCallback((timeStamp) { */
+                          listTrx.add(element);
+                          //   });
                         }
                       });
+                      print("account hummm ${listTrx.length}");
+
+                      total = calculateBalances(listTrx)[0];
+
+                      print("total ${total}");
                     } else if (widget.type != null) {
                       controller.filterdList.forEach((element) {
                         if (element.type.index == widget.type!.index) {
@@ -225,12 +240,17 @@ class _TransactionViewState extends State<TransactionView>
                           });
                         }
                       });
+
+                      calculateBalances(controller.filterdList);
                     } else {
                       listTrx = controller.filterdList;
-                    }
 
-                    calculateBalances(controller.filterdList);
-                    double total = 0;
+                      print("account hummm ${listTrx.length}");
+
+                      total = calculateBalances(listTrx)[0];
+
+                      print("total ${total}");
+                    }
 
                     if (widget.type == TransactionType.income) {
                       total = totalIncome;
@@ -305,15 +325,18 @@ class _TransactionViewState extends State<TransactionView>
                             transactionController: transactionController,
                           );
                         }
-                      }
-
-                      if (widget.type != null) {
+                      } else if (widget.type != null) {
                         if (currItem.type.index == widget.type!.index) {
                           return TransactionTile(
                             transaction: currItem,
                             transactionController: transactionController,
                           );
                         }
+                      } else {
+                        return TransactionTile(
+                          transaction: currItem,
+                          transactionController: transactionController,
+                        );
                       }
 
                       return Container();
