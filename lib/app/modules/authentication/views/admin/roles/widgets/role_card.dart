@@ -199,7 +199,7 @@ class RoleCard extends StatelessWidget {
                     Column(
                       children: [
                         SizedBox(
-                          width: 150,
+                          width: 300,
                           child: FutureBuilder(
                               future: futureListPermission,
                               builder: (context, snap) {

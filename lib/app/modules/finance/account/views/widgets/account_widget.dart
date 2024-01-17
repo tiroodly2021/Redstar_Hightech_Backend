@@ -243,6 +243,24 @@ class AccountCard extends StatelessWidget {
                     ),
                     Row(
                       children: [
+                        const Text("Type : ",
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          account.type != null
+                              ? accountTypeToString(account.type!)
+                              : 'Not defined',
+                          //style: const TextStyle(fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
                         const Text("Balance : ",
                             style: TextStyle(fontWeight: FontWeight.bold)),
                         const SizedBox(
