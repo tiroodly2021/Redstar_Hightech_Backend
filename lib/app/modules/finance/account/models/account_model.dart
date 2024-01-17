@@ -119,7 +119,7 @@ class Account extends Equatable {
       accountType = AccountType.lotoAgent;
     }
 
-    if (str == "CASH") {
+    if (str == "Cash") {
       accountType = AccountType.cashMoney;
     }
 

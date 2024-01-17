@@ -166,19 +166,12 @@ class UpdateAccountView extends GetView<AccountController> {
                       "Account Name", controller.addNameController),
                   _buildTextFormField(
                       "Account Number", controller.addNumberController),
-                  /* Row(
+                  Row(
                     children: [
-                      DropDownWidgetList(controller.roles, 'role', 'Role'),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.black,
-                              minimumSize: const Size(65, 44)),
-                          onPressed: () {
-                            // _openPopup(context, categoryController);
-                          },
-                          child: const Icon(Icons.add_circle))
+                      DropDownWidgetList(controller.accountType, 'type', 'Type',
+                          MediaQuery.of(context).size.width * .91),
                     ],
-                  ), */
+                  ),
                   const SizedBox(height: 20),
                   Center(
                     child: ElevatedButton(
@@ -194,14 +187,15 @@ class UpdateAccountView extends GetView<AccountController> {
                           if (controller.addNameController.text != "" &&
                               controller.addNumberController.text != "") {
                             Account account = Account(
-                              id: currentAccount!.id,
-                              name: controller.addNameController.text,
-                              number: controller.addNumberController.text,
-                              createdAt: controller.account.value.createdAt,
-                              photoURL: imageLink != ''
-                                  ? imageLink
-                                  : controller.account.value.photoURL,
-                            );
+                                id: currentAccount!.id,
+                                name: controller.addNameController.text,
+                                number: controller.addNumberController.text,
+                                createdAt: controller.account.value.createdAt,
+                                photoURL: imageLink != ''
+                                    ? imageLink
+                                    : controller.account.value.photoURL,
+                                type: Account.accountStringToAccountType(
+                                    controller.accountTypeSelected.value));
 
                             _editAccount(account);
 
@@ -279,6 +273,29 @@ class UpdateAccountView extends GetView<AccountController> {
   }
 
  */
+
+  Padding DropDownWidgetList(RxList<String> dropLists, field, label, width) {
+    print(
+        'Controller value: ${controller.accountTypeSelected.value}  - ${dropLists}');
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: SizedBox(
+        width: width,
+        child: DropdownButtonFormField(
+            value: controller.accountTypeSelected.value != ""
+                ? controller.accountTypeSelected.value
+                : '',
+            iconSize: 20,
+            decoration: InputDecoration(labelText: label),
+            items: dropLists
+                .map((drop) => DropdownMenuItem(value: drop, child: Text(drop)))
+                .toList(),
+            onChanged: (value) {
+              controller.accountTypeSelected.value = value.toString();
+            }),
+      ),
+    );
+  }
 
   Padding _buildTextFormField(
       String hintText, TextEditingController fieldEditingController,
@@ -445,5 +462,6 @@ class UpdateAccountView extends GetView<AccountController> {
     controller.addNumberController.text = '';
     controller.addBalanceCreditController.text = '';
     controller.addNBalanceDebitController.text = '';
+    controller.accountTypeSelected.value = '';
   }
 }

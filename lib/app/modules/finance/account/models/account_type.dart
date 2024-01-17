@@ -27,7 +27,7 @@ String accountTypeToString(AccountType accountType) {
     out = "Loto Agent";
   }
   if (accountType == AccountType.cashMoney) {
-    out = "CASH";
+    out = "Cash";
   }
 
   return out;

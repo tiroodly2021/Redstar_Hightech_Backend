@@ -27,7 +27,7 @@ class AccountController extends GetxController {
   TextEditingController addNBalanceDebitController = TextEditingController();
 
   //RxList<AccountCategory> roles = <AccountCategory>[].obs;
-  RxString acountTypeSelected = ''.obs;
+  RxString accountTypeSelected = ''.obs;
 
   RxString imageLink = ''.obs;
   RxString imageLinkTemp = ''.obs;

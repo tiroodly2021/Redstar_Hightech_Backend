@@ -213,7 +213,7 @@ class AddAccountView extends GetView<AccountController> {
                                     ? imageLink
                                     : controller.imageLink.value,
                                 type: Account.accountStringToAccountType(
-                                    controller.acountTypeSelected.value));
+                                    controller.accountTypeSelected.value));
 
                             _addAccount(account);
 
@@ -244,12 +244,6 @@ class AddAccountView extends GetView<AccountController> {
   }
 
   Padding DropDownWidgetList(RxList<String> dropLists, field, label, width) {
-    /*    RxList<String> ll = <AccountType>[].obs;
-
-    ll.add(AccountType.));
-
-    dropLists = ll + dropLists; */
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: SizedBox(
@@ -261,7 +255,7 @@ class AddAccountView extends GetView<AccountController> {
                 .map((drop) => DropdownMenuItem(value: drop, child: Text(drop)))
                 .toList(),
             onChanged: (value) {
-              controller.acountTypeSelected.value = value.toString();
+              controller.accountTypeSelected.value = value.toString();
 
               /*    controller.accountType.forEach((rl) {
                 if (rl.id!.toString().toLowerCase().trim() ==
@@ -404,7 +398,7 @@ class AddAccountView extends GetView<AccountController> {
     controller.addNameController.text = '';
     controller.addBalanceCreditController.text = '';
     controller.addNBalanceDebitController.text = '';
-    controller.acountTypeSelected.value = '';
+    controller.accountTypeSelected.value = '';
     /*    controller.role.update((val) {
       val!.name = "";
       val.id = "";

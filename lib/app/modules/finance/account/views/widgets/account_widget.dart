@@ -10,6 +10,7 @@ import 'package:redstar_hightech_backend/app/modules/authentication/controllers/
 import 'package:redstar_hightech_backend/app/modules/authentication/models/user_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/controllers/account_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_type.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/controllers/transaction_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
 import 'package:redstar_hightech_backend/app/modules/middleware/auth_middleware.dart';
@@ -61,10 +62,13 @@ class AccountCard extends StatelessWidget {
   }
 
   Future<void> _onEdit(Account account) async {
+    print(' accountype: ${account.type}');
     accountController.account.value = account;
     accountController.addNameController.text = account.name;
     accountController.addNumberController.text = account.number;
     accountController.addNumberController.text = account.number;
+    accountController.accountTypeSelected.value =
+        account.type != null ? accountTypeToString(account.type!) : "";
 
     accountController.imageLink.value = account.photoURL!;
 
