@@ -9,7 +9,11 @@ class FloatingCircleMenu extends StatelessWidget {
   FinanceHomeController financeHomeController =
       Get.put(FinanceHomeController());
 
-  FloatingCircleMenu({Key? key}) : super(key: key);
+  String? tempRoute;
+  IconData? tempIcon;
+
+  FloatingCircleMenu({Key? key, this.tempRoute, this.tempIcon})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -66,13 +70,15 @@ class FloatingCircleMenu extends StatelessWidget {
                     child: const Icon(Icons.bar_chart, color: Colors.white)),
                 RawMaterialButton(
                   onPressed: () {
-                    Get.toNamed(AppPages.FINANCE_ACCOUNT);
+                    Get.toNamed(tempRoute ?? AppPages.FINANCE_ACCOUNT);
                   },
                   shape: const CircleBorder(
                     side: BorderSide(width: 1, color: Colors.white),
                   ),
                   padding: const EdgeInsets.all(10.0),
-                  child: const Icon(Icons.account_box, color: Colors.white),
+                  child: Icon(
+                      tempIcon ?? Icons.account_box /* Icons.account_box */,
+                      color: Colors.white),
                 )
               ],
             ));

@@ -7,6 +7,7 @@ import 'package:redstar_hightech_backend/app/modules/category/models/category_mo
 import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_type.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_type_model.dart';
 import 'package:redstar_hightech_backend/app/modules/order/models/order_stats_model.dart';
 
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
@@ -746,17 +747,44 @@ class DatabaseService {
 
   void deleteAccount(Account account) {
     _firebaseFirestore.collection('accounts').doc(account.id).delete();
-
-    /*     _firebaseFirestore
-        .collection('transactions').where('account', isEqualTo: account.toMap()).get().then((value){
-            value.docs.forEach((element2) {
-              element2.d
-            })          
-        }); */
   }
 
-  Future<void> addAccount(Account account) {
-    return _firebaseFirestore.collection('accounts').add(account.toMap());
+  Future<void> addAccount(Account account, String credit, String debit) async {
+    String id =
+        (await _firebaseFirestore.collection('accounts').add(account.toMap()))
+            .id;
+
+    Account accountCopy = Account(
+        number: account.number,
+        createdAt: account.createdAt,
+        name: account.name,
+        id: id,
+        photoURL: account.photoURL,
+        type: account.type);
+
+    if (credit != '') {
+      financeModel.Transaction tx = financeModel.Transaction(
+          title: transactionTypeToString(TransactionType.income),
+          description: transactionTypeToString(TransactionType.income),
+          date: DateTime.now(),
+          account: accountCopy,
+          amount: double.parse(credit),
+          type: TransactionType.income);
+
+      _firebaseFirestore.collection('transactions').add(tx.toMap());
+    }
+
+    if (debit != '') {
+      financeModel.Transaction tx = financeModel.Transaction(
+          title: transactionTypeToString(TransactionType.expense),
+          description: transactionTypeToString(TransactionType.expense),
+          date: DateTime.now(),
+          account: accountCopy,
+          amount: double.parse(debit),
+          type: TransactionType.expense);
+
+      _firebaseFirestore.collection('transactions').add(tx.toMap());
+    }
   }
 
   Future<void> addTransaction(financeModel.Transaction transaction) {

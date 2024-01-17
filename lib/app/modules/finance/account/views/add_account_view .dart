@@ -15,6 +15,7 @@ import 'package:redstar_hightech_backend/app/modules/category/models/category_mo
 import 'package:redstar_hightech_backend/app/modules/common/navigation_drawer.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/controllers/account_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_type.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/controllers/transaction_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_type_model.dart';
@@ -80,7 +81,7 @@ class AddAccountView extends GetView<AccountController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: 80,
+                    height: 60,
                     child: InkWell(
                       onTap: () async {
                         imageDataFile = await getImage(ImageSource.gallery);
@@ -159,7 +160,7 @@ class AddAccountView extends GetView<AccountController> {
                               ),
                             ),
                   const SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -181,21 +182,12 @@ class AddAccountView extends GetView<AccountController> {
                   _buildTextFormField(
                       "Debit", controller.addNBalanceDebitController,
                       isNumber: true),
-                  /*  _buildTextFormField(
-                      "Password", controller.addPasswordController), */
-                  /*  Row(
+                  Row(
                     children: [
-                      DropDownWidgetList(controller.roles, 'role', 'Role'),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.black,
-                              minimumSize: const Size(65, 44)),
-                          onPressed: () {
-                            _openPopup(context, roleController);
-                          },
-                          child: const Icon(Icons.add_circle))
+                      DropDownWidgetList(controller.accountType, 'type', 'Type',
+                          MediaQuery.of(context).size.width * .91),
                     ],
-                  ), */
+                  ),
                   const SizedBox(height: 10),
                   const SizedBox(height: 10),
                   Center(
@@ -214,47 +206,16 @@ class AddAccountView extends GetView<AccountController> {
                               controller.addBalanceCreditController.text !=
                                   controller.addNBalanceDebitController.text) {
                             Account account = Account(
-                              number: controller.addNumberController.text,
-                              createdAt: DateTime.now().toString(),
-                              name: controller.addNameController.text,
-                              photoURL: imageLink != ''
-                                  ? imageLink
-                                  : controller.imageLink.value,
-                            );
+                                number: controller.addNumberController.text,
+                                createdAt: DateTime.now().toString(),
+                                name: controller.addNameController.text,
+                                photoURL: imageLink != ''
+                                    ? imageLink
+                                    : controller.imageLink.value,
+                                type: Account.accountStringToAccountType(
+                                    controller.acountTypeSelected.value));
 
                             _addAccount(account);
-
-                            if (controller.addBalanceCreditController.text !=
-                                '') {
-                              Transaction tx = Transaction(
-                                  title: transactionTypeToString(
-                                      TransactionType.income),
-                                  description: transactionTypeToString(
-                                      TransactionType.income),
-                                  date: DateTime.now(),
-                                  account: account,
-                                  amount: double.parse(controller
-                                      .addBalanceCreditController.text),
-                                  type: TransactionType.income);
-
-                              transactionController.addTransaction(tx);
-                            }
-
-                            if (controller.addNBalanceDebitController.text !=
-                                '') {
-                              Transaction tx = Transaction(
-                                  title: transactionTypeToString(
-                                      TransactionType.expense),
-                                  description: transactionTypeToString(
-                                      TransactionType.expense),
-                                  date: DateTime.now(),
-                                  account: account,
-                                  amount: double.parse(controller
-                                      .addNBalanceDebitController.text),
-                                  type: TransactionType.expense);
-
-                              transactionController.addTransaction(tx);
-                            }
 
                             resetFields();
 
@@ -282,53 +243,41 @@ class AddAccountView extends GetView<AccountController> {
     );
   }
 
-/*   _openPopup(context, RoleController roleController) {
-    Alert(
-        context: context,
-        title: "NEW Role",
-        content: Column(
-          children: <Widget>[
-            _buildTextFormField("Name", roleController.addNameController),
-            _buildTextFormField(
-                "Description", roleController.addDescriptionController),
-          ],
-        ),
-        buttons: [
-          DialogButton(
-            color: Colors.black,
-            height: 50,
-            onPressed: () async {
-              String imageLink = '';
+  Padding DropDownWidgetList(RxList<String> dropLists, field, label, width) {
+    /*    RxList<String> ll = <AccountType>[].obs;
 
-              if (roleController.addNameController.text != "" &&
-                  roleController.addDescriptionController.text != "") {
-                Role role = Role(
-                    name: roleController.addNameController.text,
-                    description: roleController.addDescriptionController.text);
+    ll.add(AccountType.));
 
-                _addRole(role);
+    dropLists = ll + dropLists; */
 
-                resetRoleFields();
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: SizedBox(
+        width: width,
+        child: DropdownButtonFormField(
+            iconSize: 20,
+            decoration: InputDecoration(labelText: label),
+            items: dropLists
+                .map((drop) => DropdownMenuItem(value: drop, child: Text(drop)))
+                .toList(),
+            onChanged: (value) {
+              controller.acountTypeSelected.value = value.toString();
 
-                Navigator.pop(context);
-              } else {
-                Get.showSnackbar(const GetSnackBar(
-                  title: "Info",
-                  message: "Form not valid",
-                  backgroundColor: Colors.red,
-                  duration: Duration(seconds: 3),
-                  margin: EdgeInsets.all(12),
-                ));
-              }
-            },
-            child: const Text(
-              "Save",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-          )
-        ]).show();
+              /*    controller.accountType.forEach((rl) {
+                if (rl.id!.toString().toLowerCase().trim() ==
+                    value.toString().toLowerCase().trim()) {
+                  controller.role.update((val) {
+                    val!.name = rl.name;
+                    val.id = rl.id;
+                    val.description = rl.description;
+                  });
+                }
+              }); */
+            }),
+      ),
+    );
   }
- */
+
   Padding _buildTextFormField(
       String hintText, TextEditingController fieldEditingController,
       {bool isEmail = false, isNumber = false}) {
@@ -455,7 +404,7 @@ class AddAccountView extends GetView<AccountController> {
     controller.addNameController.text = '';
     controller.addBalanceCreditController.text = '';
     controller.addNBalanceDebitController.text = '';
-    controller.roleSelected.value = '';
+    controller.acountTypeSelected.value = '';
     /*    controller.role.update((val) {
       val!.name = "";
       val.id = "";

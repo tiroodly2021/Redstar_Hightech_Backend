@@ -71,7 +71,7 @@ class AuthorizationMiddleware extends GetMiddleware {
               Get.find<AuthenticationController>().authenticated)) {
         return null;
       } else {
-        return const RouteSettings(name: Routes.ACCESS_ERROR);
+        return RouteSettings(name: Routes.ACCESS_ERROR, arguments: route);
       }
     } else {
       if (guestPermissionStringLists.contains(route?.replaceAll("/", " "))) {

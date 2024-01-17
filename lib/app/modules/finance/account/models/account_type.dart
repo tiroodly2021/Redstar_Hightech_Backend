@@ -16,3 +16,19 @@ int accountTypeToInt(AccountType accountType) {
 
   return output;
 }
+
+String accountTypeToString(AccountType accountType) {
+  String out = '';
+
+  if (accountType == AccountType.mobileAgent) {
+    out = "Mobile Agent";
+  }
+  if (accountType == AccountType.lotoAgent) {
+    out = "Loto Agent";
+  }
+  if (accountType == AccountType.cashMoney) {
+    out = "CASH";
+  }
+
+  return out;
+}

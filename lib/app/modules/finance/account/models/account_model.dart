@@ -81,12 +81,12 @@ class Account extends Equatable {
       "number": number,
       "createdAt": createdAt,
       "name": name,
-      "type": type != null ? accountTypeToInt(type!) : 0,
+      "type": type != null ? accountTypeToInt(type!) : -1,
       "photoURL": photoURL
     };
   }
 
-  static AccountType accountIndexToAccountType(int index) {
+  static AccountType? accountIndexToAccountType(int index) {
     AccountType accountType = AccountType.mobileAgent;
 
     if (index == 0) {
@@ -99,6 +99,32 @@ class Account extends Equatable {
 
     if (index == 2) {
       accountType = AccountType.cashMoney;
+    }
+
+    if (index == -1) {
+      return null;
+    }
+
+    return accountType;
+  }
+
+  static AccountType? accountStringToAccountType(String str) {
+    AccountType accountType = AccountType.mobileAgent;
+
+    if (str == "Mobile Agent") {
+      accountType = AccountType.mobileAgent;
+    }
+
+    if (str == "Loto Agent") {
+      accountType = AccountType.lotoAgent;
+    }
+
+    if (str == "CASH") {
+      accountType = AccountType.cashMoney;
+    }
+
+    if (str == "") {
+      return null;
     }
 
     return accountType;

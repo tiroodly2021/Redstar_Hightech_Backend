@@ -145,6 +145,9 @@ SetPermissionView(
     GetPage(name: _Paths.DELETE_USER, page: () => const GeneriDeletePage()),
     GetPage(name: _Paths.DELETE_ROLE, page: () => const GeneriDeletePage()),
     GetPage(
+        name: _Paths.FINANCE_DELETE_ACCOUNT,
+        page: () => const GeneriDeletePage()),
+    GetPage(
         name: _Paths.DELETE_PERMISSION, page: () => const GeneriDeletePage()),
     GetPage(
         name: _Paths.SHOW_ROLE,

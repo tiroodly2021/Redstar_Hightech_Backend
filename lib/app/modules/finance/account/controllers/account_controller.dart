@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_type.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/controllers/transaction_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_type_model.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 //import 'package:redstar_hightech_backend/app/modules/finance/account_category/models/account_category.dart';
 import 'package:redstar_hightech_backend/app/services/database_service.dart';
@@ -25,7 +27,8 @@ class AccountController extends GetxController {
   TextEditingController addNBalanceDebitController = TextEditingController();
 
   //RxList<AccountCategory> roles = <AccountCategory>[].obs;
-  RxString roleSelected = ''.obs;
+  RxString acountTypeSelected = ''.obs;
+
   RxString imageLink = ''.obs;
   RxString imageLinkTemp = ''.obs;
   //Rx<AccountCategory> role = AccountCategory(categoryName: '', type: 0).obs;
@@ -41,6 +44,8 @@ class AccountController extends GetxController {
 
   Rx<Account> accountCashMoney =
       Account(number: '', createdAt: '', name: '').obs;
+
+  RxList<String> accountType = ["", "Mobile Agent", "Loto Agent", "Cash"].obs;
 
   AccountController() {
     accountList();
@@ -72,14 +77,25 @@ class AccountController extends GetxController {
   }
 
   void addAccount(Account account) async {
-    databaseService.addAccount(account);
-    // print(account.toMap());
+    databaseService.addAccount(account, addBalanceCreditController.text,
+        addNBalanceDebitController.text);
+/*     print(
+        'credit - debit : ${addBalanceCreditController.text} - ${addNBalanceDebitController.text}'); */
+
     update();
   }
 
   void deleteAccount(Account account) async {
     String? imageName = account.photoURL != '' ? account.photoURL : '';
     databaseService.deleteAccount(account);
+    TransactionController trx = Get.put(TransactionController());
+
+    trx.allTransactions.forEach((element) {
+      if (element.account.id.toString().toLowerCase() ==
+          account.id.toString().toLowerCase()) {
+        trx.deleteTransaction(element);
+      }
+    });
 
     if (imageName != '') {
       imageName = imageName!.split("%2F")[1].split("?")[0];

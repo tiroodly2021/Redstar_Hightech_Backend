@@ -60,7 +60,10 @@ class AccountView extends GetView<AccountController> {
           tooltip: 'Search',
         ),
         drawer: NavigationDrawer(),
-        floatingActionButton: FloatingCircleMenu(),
+        floatingActionButton: FloatingCircleMenu(
+          tempIcon: Icons.person_add,
+          tempRoute: AppPages.FINANCE_ADD_ACCOUNT,
+        ),
         body: Padding(
           padding: const EdgeInsets.all(10),
           child: Column(
