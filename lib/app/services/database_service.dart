@@ -406,13 +406,14 @@ class DatabaseService {
   }
 
   Future<void> deleteProduct(Product product) {
-    /* 
-    
-    
-    return _firebaseFirestore.collection('products').get().then((products) {
-      products.docs.forEach((productDoc) {
-        Product product = Product.fromSnapShot(productDoc);
-
+    _firebaseFirestore
+        .collection('products')
+        .doc(product.id)
+        .collection('categories')
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        Category category = Category.fromSnapShot(element);
         _firebaseFirestore
             .collection('products')
             .doc(product.id)
@@ -421,8 +422,7 @@ class DatabaseService {
             .delete();
       });
     });
-    
-     */
+
     return _firebaseFirestore.collection('products').doc(product.id).delete();
   }
 
@@ -522,6 +522,23 @@ class DatabaseService {
   }
 
   Future<void> deleteUser(User user) {
+    _firebaseFirestore
+        .collection('users')
+        .doc(user.uid)
+        .collection('roles')
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        Role role = Role.fromSnapShot(element);
+        _firebaseFirestore
+            .collection('users')
+            .doc(user.uid)
+            .collection('roles')
+            .doc(role.id)
+            .delete();
+      });
+    });
+
     return _firebaseFirestore.collection('users').doc(user.uid).delete();
   }
 
@@ -609,6 +626,23 @@ class DatabaseService {
   }
 
   Future<void> deleteRole(Role role) {
+    _firebaseFirestore
+        .collection('roles')
+        .doc(role.id)
+        .collection('permissions')
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        Permission permission = Permission.fromSnapShot(element);
+        _firebaseFirestore
+            .collection('roles')
+            .doc(role.id)
+            .collection('permissions')
+            .doc(permission.id)
+            .delete();
+      });
+    });
+
     _firebaseFirestore.collection('roles').doc(role.id).delete();
 
     return _firebaseFirestore.collection('users').get().then((users) {

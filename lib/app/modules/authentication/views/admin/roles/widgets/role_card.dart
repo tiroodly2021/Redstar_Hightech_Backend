@@ -43,7 +43,7 @@ class RoleCard extends StatelessWidget {
       return print("Check Delete route permission valid");
     }
     {
-      Get.snackbar("Delete product", "You don't have permission",
+      Get.snackbar("Delete role", "You don't have permission",
           icon: const Icon(Icons.warning_amber),
           margin: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
           backgroundColor: Colors.red,

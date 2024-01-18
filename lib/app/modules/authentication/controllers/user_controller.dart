@@ -105,12 +105,11 @@ class UserController extends GetxController {
   void deleteUser(User user) async {
     String? imageName = user.photoURL != '' ? user.photoURL : '';
 
-    imageName = imageName!.split("%2F")[1].split("?")[0];
-
     databaseService.deleteUser(user);
 
     // Create a reference to the file to delete
     if (imageName != '') {
+      imageName = imageName!.split("%2F")[1].split("?")[0];
       final imageRef =
           FirebaseStorage.instance.ref().child("images/${imageName}");
 // Delete the file
