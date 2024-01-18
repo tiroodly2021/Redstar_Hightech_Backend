@@ -129,6 +129,10 @@ class TransactionController extends GetxController {
 
     super.onClose();
   }
+
+  void clearAllData() {
+    databaseService.deleteAllTransactions();
+  }
 }
 
 

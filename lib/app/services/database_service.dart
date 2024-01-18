@@ -864,4 +864,26 @@ class DatabaseService {
         .snapshots()
         .map((snapshot) => Account.fromSnapShot(snapshot.docs.first));
   }
+
+  void deleteAllAccounts() {
+    _firebaseFirestore.collection('accounts').get().then((value) {
+      value.docs.forEach((element) {
+        Account account = Account.fromSnapShot(element);
+        _firebaseFirestore.collection('accounts').doc(account.id).delete();
+      });
+    });
+  }
+
+  void deleteAllTransactions() {
+    _firebaseFirestore.collection('transactions').get().then((value) {
+      value.docs.forEach((element) {
+        financeModel.Transaction transaction =
+            financeModel.Transaction.fromSnapShot(element);
+        _firebaseFirestore
+            .collection('transactions')
+            .doc(transaction.id)
+            .delete();
+      });
+    });
+  }
 }

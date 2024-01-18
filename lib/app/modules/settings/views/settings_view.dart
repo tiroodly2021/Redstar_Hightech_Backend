@@ -3,8 +3,11 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:redstar_hightech_backend/app/databases/boxes.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/account/controllers/account_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/transaction/controllers/transaction_controller.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
+import 'package:redstar_hightech_backend/app/splashscreen.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -244,7 +247,7 @@ class _SettingsViewState extends State<SettingsView> {
                 ),
                 tiles: [
                   SettingsTile(
-                      title: const Text('Reset Data'),
+                      title: const Text('Reset All Financial Data'),
                       leading: const Icon(Icons.restore),
                       onPressed: (context) {
                         confirmReset(context);
@@ -266,10 +269,24 @@ class _SettingsViewState extends State<SettingsView> {
                             borderRadius: BorderRadius.circular(7),
                             child: Image.asset('assets/images/appicon.png',
                                 width: 50)),
-                        applicationName: 'Money Manager',
+                        applicationName: 'Redstar Hightech Manager',
                         applicationVersion: 'version 1.0.1',
                         children: <Widget>[
-                          const Text('Developed by Ihsan Kottupadam')
+                          Row(
+                            children: const [
+                              Text('Developed by:'),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            children: const [
+                              Text(
+                                'Roodly Stevenson CHERELUS',
+                                style: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          )
                         ],
                       );
                     },
@@ -322,15 +339,20 @@ class _SettingsViewState extends State<SettingsView> {
   enableNotification() {
     notificationService.showNotificationDaily(
         id: 1,
-        title: 'Money Manager',
+        title: 'Redstar Hightech Manager',
         body: 'Have you recorded your transactions today?',
         scheduleTime: pickedTime!);
   }
 
   resetData(ctx) {
-    /* Hive.box<Transaction>('transactions').clear();
-    Hive.box<Category>('categories').clear();
-    TransactionController transactionController = Get.find();
+    /*   Hive.box<Transaction>('transactions').clear();
+    Hive.box<Category>('categories').clear(); */
+    TransactionController transactionController =
+        Get.put(TransactionController());
+    AccountController accountController = Get.put(AccountController());
+
+    accountController.clearData();
+    transactionController.clearAllData();
     transactionController.filterdList.clear();
     prefs.clear();
     Navigator.pushAndRemoveUntil(
@@ -338,7 +360,7 @@ class _SettingsViewState extends State<SettingsView> {
         MaterialPageRoute(
           builder: (ctx) => const SplashScreen(),
         ),
-        (route) => false); */
+        (route) => false);
   }
 
   feedback() async {

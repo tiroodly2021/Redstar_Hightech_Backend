@@ -125,4 +125,8 @@ class AccountController extends GetxController {
   void onClose() {}
 
   void updateAccount(String? id, Account account) {}
+
+  void clearData() {
+    databaseService.deleteAllAccounts();
+  }
 }
