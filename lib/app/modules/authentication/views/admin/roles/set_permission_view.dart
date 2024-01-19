@@ -8,6 +8,7 @@ import 'package:redstar_hightech_backend/app/constants/const.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/add_user.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/permissions/widgets/search_permissions.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/widgets/user_widget.dart';
 import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
@@ -26,6 +27,7 @@ import 'widgets/set_perssion_card.dart';
 
 class SetPermissionView extends GetView<PermissionController> {
   Role? currentRole;
+  RoleController roleController = Get.put(RoleController());
 
   SetPermissionView({this.currentRole});
 
@@ -43,7 +45,11 @@ class SetPermissionView extends GetView<PermissionController> {
           icon: Icons.search,
           bgColor: Colors.black,
           onPressed: () {
-            showSearch(context: context, delegate: AppSearchDelegate());
+            showSearch(
+                context: context,
+                delegate: PermissionSearchDelegate(
+                  currentRole: currentRole,
+                ));
           },
           authenticationController: Get.find<AuthenticationController>(),
           menuActionButton: ButtonOptionalMenu(),

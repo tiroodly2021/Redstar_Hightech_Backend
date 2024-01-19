@@ -38,6 +38,16 @@ class RoleController extends GetxController {
     roleList();
   }
 
+/*   getActiveRoles() {
+    List<Role> listRole = [];
+
+    database.getRoles().listen((event) {
+      listRole = event;
+    });
+
+    return listRole;
+  } */
+
   void roleList() async {
     count.bindStream(database.getCount('roles', 'RoleController'));
     roles.bindStream(database.getRoles());

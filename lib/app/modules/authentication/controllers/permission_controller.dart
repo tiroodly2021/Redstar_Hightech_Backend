@@ -21,16 +21,14 @@ class PermissionController extends GetxController {
   final List<IconData> iconData = <IconData>[Icons.call, Icons.school];
   final Random r = Random();
 
+  PermissionController() {
+    permissionList();
+  }
+
   DatabaseService database = DatabaseService();
 
   Rx<Permission> permission = Permission(description: '').obs;
 
-  /* bool? get isRead => checkList['isRead'];
-
-  bool? get isWrite => checkList['isWrite'];
-
-  bool? get isDelete => checkList['isDelete'];
- */
   Icon randomIcon2() => Icon(iconData[r.nextInt(iconData.length)]);
 
   TextEditingController addDescriptionController = TextEditingController();
@@ -61,6 +59,16 @@ class PermissionController extends GetxController {
   void permissionList() async {
     permissions.bindStream(database.getPermissions());
   }
+
+/*   List<Permission> getActivePermissions() {
+    List<Permission> listPermission = [];
+
+    database.getPermissions().listen((event) {
+      listPermission = event;
+    });
+
+    return listPermission;
+  } */
 
   void addPermission(Permission permission) async {
     databaseService.addPermission(permission);

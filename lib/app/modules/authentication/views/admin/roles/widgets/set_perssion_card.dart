@@ -24,7 +24,7 @@ enum Options { Edit, Delete }
 
 class SetPermissionCard extends StatelessWidget {
   Permission permission;
-  Role role;
+  Role? role;
   final int index;
   RoleController roleController = Get.put(RoleController());
   PermissionController permissionController;
@@ -36,7 +36,7 @@ class SetPermissionCard extends StatelessWidget {
     Key? key,
     required this.permission,
     required this.index,
-    required this.role,
+    this.role,
     required this.permissionController,
   }) : super(key: key);
 
@@ -119,7 +119,7 @@ class SetPermissionCard extends StatelessWidget {
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 FutureBuilder(
-                    future: roleController.loadPermissionByRole(role),
+                    future: roleController.loadPermissionByRole(role!),
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
                         return const Center(child: Text("Unknow Error "));
@@ -157,10 +157,12 @@ class SetPermissionCard extends StatelessWidget {
                           onChanged: (bool value) async {
                             // This is called when the user toggles the switch.
 
+                            print('value of the switch is: ${value}');
+
                             roleController.updateRolePermissions(
                                 index,
                                 permission,
-                                role,
+                                role!,
                                 'permissionIds',
                                 value,
                                 permissionController);
