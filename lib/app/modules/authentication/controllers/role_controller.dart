@@ -101,4 +101,17 @@ class RoleController extends GetxController {
   Future<List<Permission>?> loadPermissionByRole(Role role) {
     return databaseService.getPermissionByRole(role);
   }
+
+  void updateRolePermissionsSearch(int index, Permission permission, Role role,
+      String s, bool value, PermissionController permissionController) {
+    if (value) {
+      database.addPermissionbyRole(role, permission);
+    } else if (!value) {
+      database.removePermissionbyRole(role, permission);
+    }
+
+    permissionController.resultList[index] = permission;
+
+    Get.find<AuthenticationController>().onInit();
+  }
 }

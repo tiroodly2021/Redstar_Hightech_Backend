@@ -48,6 +48,8 @@ class PermissionSearchDelegate extends SearchDelegate {
     return IconButton(
       icon: const Icon(Icons.arrow_back),
       onPressed: () {
+        permissionController.resetPermission();
+
         close(context, null);
       },
     );
@@ -55,33 +57,33 @@ class PermissionSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    List<Permission> resultList = [];
-
     for (var item in permissions) {
       if (query.isNotEmpty &&
           item.description.toLowerCase().contains(query.toLowerCase())) {
-        resultList.add(item);
+        permissionController.addSearchPermissonToList(item);
       }
     }
-    if (query.isNotEmpty && resultList.isEmpty) {
+    if (query.isNotEmpty && permissionController.resultList.isEmpty) {
       return const EmptyView(icon: Icons.search, label: 'No Results Found');
     }
 
-    print('resultList ${resultList.length}');
+    print('resultList ${permissionController.resultList.length}');
 
     return SlidableAutoCloseBehavior(
-      child: ListView.builder(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          itemCount: resultList.length,
-          itemBuilder: (context, index) {
-            Permission currItem = resultList[index];
-            return SetSearchPermissionCard(
-              role: currentRole,
-              permission: currItem,
-              permissionController: permissionController,
-              index: index,
-            );
-          }),
+      child: Obx(() {
+        return ListView.builder(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            itemCount: permissionController.resultList.length,
+            itemBuilder: (context, index) {
+              Permission currItem = permissionController.resultList[index];
+              return SetSearchPermissionCard(
+                role: currentRole,
+                permission: currItem,
+                permissionController: permissionController,
+                index: index,
+              );
+            });
+      }),
     );
   }
 

@@ -157,7 +157,7 @@ class SetSearchPermissionCard extends StatelessWidget {
                           onChanged: (bool value) async {
                             // This is called when the user toggles the switch.
 
-                            roleController.updateRolePermissions(
+                            roleController.updateRolePermissionsSearch(
                                 index,
                                 permission,
                                 role!,
@@ -178,31 +178,6 @@ class SetSearchPermissionCard extends StatelessWidget {
                 )
               ],
             )
-            /*     Padding(
-              padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 10),
-              child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Role Description",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        SizedBox(
-                            width: MediaQuery.of(context).size.width - 50,
-                            child: Text(
-                              permission.description,
-                              style: const TextStyle(color: Colors.black54),
-                            )),
-                      ],
-                    )
-                  ]),
-            ) */
           ],
         ),
       ),

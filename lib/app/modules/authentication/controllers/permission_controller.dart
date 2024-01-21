@@ -21,6 +21,8 @@ class PermissionController extends GetxController {
   final List<IconData> iconData = <IconData>[Icons.call, Icons.school];
   final Random r = Random();
 
+  List<Permission> resultList = <Permission>[].obs;
+
   PermissionController() {
     permissionList();
   }
@@ -86,11 +88,11 @@ class PermissionController extends GetxController {
     notifyChildrens();
   }
 
-  /* void toUpdatePermissionView(Permission permission) async {
-    Get.to(() => UpdatePermissionView(currentPermission: permission));
+  void addSearchPermissonToList(Permission item) {
+    resultList.add(item);
   }
- */
-  /* void editPermission(Permission permission) async {
-    databaseService.updatePermission(permission);
-  } */
+
+  void resetPermission() {
+    permissionList();
+  }
 }
