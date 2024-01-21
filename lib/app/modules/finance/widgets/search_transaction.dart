@@ -59,13 +59,12 @@ class TransactionSearchDelegate extends SearchDelegate {
           itemCount: resultList.length,
           itemBuilder: (context, index) {
             Transaction currItem = resultList[index];
-            return Obx(() {
-              return TransactionTile(
-                transaction: currItem,
-                transactionController: transactionController,
-                enableSlide: false,
-              );
-            });
+
+            return TransactionTile(
+              transaction: currItem,
+              transactionController: transactionController,
+              enableSlide: false,
+            );
           }),
     );
   }

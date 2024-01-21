@@ -4,13 +4,8 @@ import 'package:get/get.dart';
 
 import 'package:flutter/material.dart';
 
-import 'package:get/get.dart';
-import 'package:redstar_hightech_backend/app/constants/const.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/views/add_user.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/role_view.dart';
-import 'package:redstar_hightech_backend/app/modules/authentication/widgets/user_widget.dart';
+
 import 'package:redstar_hightech_backend/app/modules/common/navigation_drawer.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/controllers/account_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
@@ -20,13 +15,11 @@ import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_type_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/widgets/floating_circle_menu.dart';
 
-import 'package:redstar_hightech_backend/app/modules/product/models/product_model.dart';
 import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 import 'package:redstar_hightech_backend/app/shared/app_bar_widget.dart';
 import 'package:redstar_hightech_backend/app/shared/app_search_delegate.dart';
 import 'package:redstar_hightech_backend/app/shared/button_optional_menu.dart';
 import 'package:redstar_hightech_backend/app/shared/list_not_found.sharedWidgets.dart';
-import 'package:safe_url_check/safe_url_check.dart';
 
 class AccountView extends GetView<AccountController> {
   var exists;
@@ -45,7 +38,7 @@ class AccountView extends GetView<AccountController> {
 
   @override
   Widget build(BuildContext context) {
-    // controller.userList();
+    AccountController controller = Get.put(AccountController());
 
     return Scaffold(
         appBar: AppBarWidget(

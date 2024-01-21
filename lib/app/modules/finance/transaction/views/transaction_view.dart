@@ -187,11 +187,14 @@ class _TransactionViewState extends State<TransactionView>
                                 const SizedBox(
                                   width: 10,
                                 ),
-                                Text(
-                                  widget.account!.name,
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
+                                SizedBox(
+                                  width: 150,
+                                  child: Text(
+                                    widget.account!.name,
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 ),
                               ],
                             )
@@ -208,6 +211,7 @@ class _TransactionViewState extends State<TransactionView>
                 ),
                 Container(
                   margin: const EdgeInsets.only(right: 10),
+                  width: 100,
                   child:
                       GetBuilder<TransactionController>(builder: (controller) {
                     List<Transaction> listTrx = [];
@@ -262,7 +266,7 @@ class _TransactionViewState extends State<TransactionView>
 
                     if (total == 0) {
                       return const Text(
-                        'Balance : \$ 0 ',
+                        'Bal: \$ 0 ',
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -270,7 +274,7 @@ class _TransactionViewState extends State<TransactionView>
                       );
                     } else if (total > 0) {
                       return Text(
-                        'Balance : \$${total}',
+                        'Bal: \$${total}',
                         style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -278,7 +282,7 @@ class _TransactionViewState extends State<TransactionView>
                       );
                     } else {
                       return Text(
-                        'Balance : - \$${-total}',
+                        'Bal: - \$${-total}',
                         style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,

@@ -169,8 +169,8 @@ class AccountCard extends StatelessWidget {
                   children: [
                     account.photoURL == ""
                         ? SizedBox(
-                            width: 100,
-                            height: 100,
+                            width: 80,
+                            height: 80,
                             child: Container(
                               decoration: const BoxDecoration(
                                 image: DecorationImage(
@@ -182,11 +182,11 @@ class AccountCard extends StatelessWidget {
                             ),
                           )
                         : Image.network(account.photoURL!,
-                            width: 100, height: 100, fit: BoxFit.cover,
+                            width: 80, height: 80, fit: BoxFit.cover,
                             errorBuilder: (context, exception, stackTrace) {
                             return Container(
-                              width: 100,
-                              height: 100,
+                              width: 80,
+                              height: 80,
                               decoration: const BoxDecoration(
                                 image: DecorationImage(
                                   image:

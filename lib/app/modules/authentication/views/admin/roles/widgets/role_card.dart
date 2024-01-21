@@ -199,7 +199,7 @@ class RoleCard extends StatelessWidget {
                     Column(
                       children: [
                         SizedBox(
-                          width: 300,
+                          width: 200,
                           child: FutureBuilder(
                               future: futureListPermission,
                               builder: (context, snap) {
@@ -237,8 +237,11 @@ class RoleCard extends StatelessWidget {
                                               const SizedBox(
                                                 width: 4,
                                               ),
-                                              Text(permissions[index]
-                                                  .description),
+                                              SizedBox(
+                                                width: 160,
+                                                child: Text(permissions[index]
+                                                    .description),
+                                              ),
                                             ],
                                           ),
                                         );
@@ -273,7 +276,4 @@ class RoleCard extends StatelessWidget {
       value: index,
     );
   }
-
-  @override
-  List<Object?> get props => [role, index, roleController];
 }
