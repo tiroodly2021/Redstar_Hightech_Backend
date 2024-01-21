@@ -22,7 +22,7 @@ import 'package:intl/intl.dart';
 
 enum Options { Edit, Delete }
 
-class SetPermissionCard extends StatelessWidget {
+class SetSearchPermissionCard extends StatelessWidget {
   Permission permission;
   Role? role;
   final int index;
@@ -32,7 +32,7 @@ class SetPermissionCard extends StatelessWidget {
   //DatabaseService databaseService = DatabaseService();
   /* RoleController roleController; */
 
-  SetPermissionCard({
+  SetSearchPermissionCard({
     Key? key,
     required this.permission,
     required this.index,

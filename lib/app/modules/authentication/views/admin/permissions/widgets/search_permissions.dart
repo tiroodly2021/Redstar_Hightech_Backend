@@ -7,6 +7,7 @@ import 'package:redstar_hightech_backend/app/modules/authentication/controllers/
 import 'package:redstar_hightech_backend/app/modules/authentication/models/permission_model.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/models/role_model.dart';
 import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/widgets/set_perssion_card.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/views/admin/roles/widgets/set_search_perssion_card.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/controllers/account_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/controllers/transaction_controller.dart';
@@ -55,6 +56,7 @@ class PermissionSearchDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     List<Permission> resultList = [];
+
     for (var item in permissions) {
       if (query.isNotEmpty &&
           item.description.toLowerCase().contains(query.toLowerCase())) {
@@ -65,13 +67,15 @@ class PermissionSearchDelegate extends SearchDelegate {
       return const EmptyView(icon: Icons.search, label: 'No Results Found');
     }
 
+    print('resultList ${resultList.length}');
+
     return SlidableAutoCloseBehavior(
       child: ListView.builder(
           padding: const EdgeInsets.symmetric(vertical: 10),
           itemCount: resultList.length,
           itemBuilder: (context, index) {
             Permission currItem = resultList[index];
-            return SetPermissionCard(
+            return SetSearchPermissionCard(
               role: currentRole,
               permission: currItem,
               permissionController: permissionController,
