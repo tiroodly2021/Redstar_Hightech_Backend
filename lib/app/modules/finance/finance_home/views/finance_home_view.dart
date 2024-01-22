@@ -103,7 +103,7 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
                           'See all',
                         ),
                       ),
-                      Container(
+                      const SizedBox(
                           height: 20,
                           child: Text(
                             "|",
@@ -184,7 +184,7 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      '\u{20B9} $totalBalance',
+                      '\u{20B9} ${totalBalance.toStringAsFixed(2)}',
                       style: const TextStyle(
                           fontSize: 20,
                           color: AppTheme.darkGray,
@@ -236,7 +236,7 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          '\u{20B9} $totalIncome',
+                          '\u{20B9} ${totalIncome.toStringAsFixed(2)}',
                           style: const TextStyle(
                               fontSize: 15,
                               color: Color(0xff4EAE51),
@@ -288,7 +288,7 @@ class FinanceHomeView extends GetView<FinanceHomeController> {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          '\u{20B9} $totalExpense',
+                          '\u{20B9} ${totalExpense.toStringAsFixed(2)}',
                           style: const TextStyle(
                               fontSize: 15,
                               color: Color(0xffFF5F5F),
