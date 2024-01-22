@@ -24,9 +24,9 @@ import 'package:toggle_switch/toggle_switch.dart';
 import 'dart:math' as math;
 
 class AddTransactionView extends StatefulWidget {
-  final Transaction? transaction;
+  Transaction? transaction;
 
-  const AddTransactionView({this.transaction, Key? key}) : super(key: key);
+  AddTransactionView({this.transaction, Key? key}) : super(key: key);
 
   @override
   State<AddTransactionView> createState() => _AddTransactionViewState();
@@ -60,7 +60,8 @@ class _AddTransactionViewState extends State<AddTransactionView> {
       date = transaction.date;
       accountController.text = transaction.account.number;
       amountController.text = transaction.amount.toString();
-      descriptionController.text = transaction.description ?? '';
+      descriptionController.text =
+          transaction.description ?? descriptionController.text;
       transactionType = transaction.type;
       accountPrimary = widget.transaction!.account;
     }
@@ -83,6 +84,19 @@ class _AddTransactionViewState extends State<AddTransactionView> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    Transaction tx = ModalRoute.of(context)!.settings.arguments as Transaction;
+
+    widget.transaction = tx != null ? tx : null;
+
+    if (tx != null) {
+      final Transaction transaction = tx;
+      date = tx.date;
+      accountController.text = tx.account.number;
+      amountController.text = tx.amount.toString();
+      descriptionController.text = tx.description ?? descriptionController.text;
+      transactionType = tx.type;
+      accountPrimary = widget.transaction!.account;
+    }
 
     isEdit = widget.transaction != null;
     dateController.text = getFormatedDate(date);
@@ -212,7 +226,7 @@ class _AddTransactionViewState extends State<AddTransactionView> {
                                   : null,
                           decoration: const InputDecoration(
                               prefixIcon: Icon(
-                                Icons.currency_rupee,
+                                Icons.currency_exchange,
                                 color: Colors.blue,
                               ),
                               label: Text('Amount'),

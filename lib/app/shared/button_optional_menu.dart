@@ -135,11 +135,12 @@ class ButtonOptionalMenu extends StatelessWidget {
         break;
       case 2:
         print('Setting selected');
-        Navigator.pushReplacement(
+        Get.toNamed(AppPages.SETTINGS);
+        /*   Navigator.pushReplacement(
             context,
             MaterialPageRoute(
                 builder: (context) => SettingsView(),
-                settings: const RouteSettings(name: AppPages.SETTINGS)));
+                settings: const RouteSettings(name: AppPages.SETTINGS))); */
         break;
       case 3:
         print('Logout selected');

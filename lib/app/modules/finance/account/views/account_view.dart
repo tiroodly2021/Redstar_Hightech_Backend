@@ -85,7 +85,7 @@ class AccountView extends GetView<AccountController> {
                           calculateBalances(transactionByAccount);
 
                           return SizedBox(
-                            height: 200,
+                            height: 230,
                             child: InkWell(
                               onTap: () => Get.toNamed(
                                   AppPages.FINANCE_TRANSACTION,

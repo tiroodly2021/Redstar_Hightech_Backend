@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:get/get.dart';
 //import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:redstar_hightech_backend/app/constants/app_theme.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/authentication_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/authentication/controllers/user_controller.dart';
+import 'package:redstar_hightech_backend/app/modules/finance/finance_home/bindings/finance_home_binding.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/controllers/transaction_controller.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_type_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/views/add_transaction_view.dart';
+import 'package:redstar_hightech_backend/app/modules/middleware/auth_middleware.dart';
+import 'package:redstar_hightech_backend/app/routes/app_pages.dart';
 
 import 'package:redstar_hightech_backend/util.dart';
 
@@ -42,24 +48,43 @@ class TransactionTile extends StatelessWidget {
               flex: 1,
               autoClose: true,
               onPressed: (ctx) {
-                final Transaction transactionCopy = Transaction(
-                    date: transaction.date,
-                    account: transaction.account,
-                    amount: transaction.amount,
-                    type: transaction.type);
-                transactionController.deleteTransaction(transaction);
-                ScaffoldMessenger.of(context)
-                  ..removeCurrentSnackBar()
-                  ..showSnackBar(SnackBar(
-                    backgroundColor: AppTheme.darkGray,
-                    content: const Text('Transaction Deleted'),
-                    duration: const Duration(seconds: 2),
-                    action: SnackBarAction(
-                        label: 'UNDO',
-                        onPressed: () {
-                          transactionController.addTransaction(transactionCopy);
-                        }),
-                  ));
+                if (AuthorizationMiddleware.checkPermission(
+                    Get.find<AuthenticationController>(),
+                    Get.find<UserController>(),
+                    "/finance/transaction/delete")) {
+                  final Transaction transactionCopy = Transaction(
+                      date: transaction.date,
+                      account: transaction.account,
+                      amount: transaction.amount,
+                      type: transaction.type);
+                  transactionController.deleteTransaction(transaction);
+                  ScaffoldMessenger.of(context)
+                    ..removeCurrentSnackBar()
+                    ..showSnackBar(SnackBar(
+                      backgroundColor: AppTheme.darkGray,
+                      content: const Text('Transaction Deleted'),
+                      duration: const Duration(seconds: 2),
+                      action: SnackBarAction(
+                          label: 'UNDO',
+                          onPressed: () {
+                            transactionController
+                                .addTransaction(transactionCopy);
+                          }),
+                    ));
+                  return print("Check Delete route permission valid");
+                }
+                {
+                  Get.snackbar(
+                      "Delete Transaction", "You don't have permission",
+                      icon: const Icon(Icons.warning_amber),
+                      margin: const EdgeInsets.only(
+                          left: 10, right: 10, bottom: 20),
+                      backgroundColor: Colors.red,
+                      snackPosition: SnackPosition.BOTTOM);
+                  print(
+                    "Check Delete route permission not valid",
+                  );
+                }
               },
               backgroundColor: const Color(0xFFFE4A49),
               foregroundColor: Colors.white,
@@ -73,12 +98,20 @@ class TransactionTile extends StatelessWidget {
             border: Border.symmetric(
                 horizontal: BorderSide(color: Color(0x22000000), width: .5))),
         child: InkWell(
-          onTap: () =>
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          onTap: () => Get.toNamed(AppPages.FINANCE_ADD_TRANSACTION,
+              arguments:
+                  transaction) /* Get.to(
+              () => AddTransactionView(
+                    transaction: transaction,
+                  ),
+              binding: FinanceHomeBinding(),
+              routeName: AppPages.FINANCE_ADD_TRANSACTION) */
+          /*   Navigator.of(context).push(MaterialPageRoute(builder: (context) {
             return AddTransactionView(
               transaction: transaction,
             );
-          })),
+          })) */
+          ,
           onLongPress: () {
             if (enableSlide) {
               Util.showSnackbar(context, 'Slide transaction to delete');
@@ -119,7 +152,7 @@ class TransactionTile extends StatelessWidget {
               ),
               Column(
                 children: [
-                  Text('\u{20B9} ${transaction.amount.toString()}',
+                  Text('\u{0024} ${transaction.amount.toString()}',
                       style: TextStyle(
                           color: textColors[transaction.type.index],
                           fontSize: 14,

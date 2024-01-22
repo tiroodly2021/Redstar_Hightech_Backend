@@ -197,7 +197,7 @@ class _PersonalizedTransactionViewViewState
                                   : null,
                           decoration: const InputDecoration(
                               prefixIcon: Icon(
-                                Icons.currency_rupee,
+                                Icons.currency_exchange,
                                 color: Colors.blue,
                               ),
                               label: Text('Amount'),
@@ -620,7 +620,7 @@ class _PersonalizedTransactionViewViewState
                   .accountCashMoney.value, //accountController.text,
               amount: double.parse(amountController.text),
               type: TransactionType.income,
-              description: 'Rentre Cash');
+              description: descriptionController.text);
           transactionController.addTransaction(tx1);
         }
 
@@ -633,7 +633,7 @@ class _PersonalizedTransactionViewViewState
                   .accountCashMoney.value, //accountController.text,
               amount: double.parse(amountController.text),
               type: TransactionType.expense,
-              description: 'Sortie Cash');
+              description: descriptionController.text);
 
           transactionController.addTransaction(tx1);
         }

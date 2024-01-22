@@ -11,7 +11,10 @@ abstract class Routes {
 
   static const FINANCE_TRANSACTION = _Paths.FINANCE_TRANSACTION;
 
+  static const FINANCE_DELETE_TRANSACTION = _Paths.FINANCE_DELETE_TRANSACTION;
+
   static const FINANCE_EDIT_TRANSACTION = _Paths.FINANCE_EDIT_TRANSACTION;
+  static const c = _Paths.FINANCE_DELETE_TRANSACTION;
 
   static const FINANCE_ADD_CATEGORY = _Paths.FINANCE_ADD_CATEGORY;
 
@@ -86,6 +89,8 @@ abstract class _Paths {
   static const FINANCE_TRANSACTION = '/finance/transaction';
 
   static const FINANCE_EDIT_TRANSACTION = '/finance/transaction/edit';
+
+  static const FINANCE_DELETE_TRANSACTION = '/finance/transaction/delete';
 
   static const FINANCE_ADD_CATEGORY = '/finance/category/add';
 

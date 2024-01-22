@@ -29,7 +29,8 @@ class FloatingCircleMenu extends StatelessWidget {
               fabColor: Colors.black,
               fabOpenIcon: const Icon(Icons.menu, color: Colors.white),
               fabCloseIcon: const Icon(Icons.close, color: Colors.white),
-              fabMargin: const EdgeInsets.all(16.0),
+              fabMargin: const EdgeInsets.only(
+                  left: 16.0, right: 16, top: 16, bottom: 48),
               animationDuration: const Duration(milliseconds: 800),
               animationCurve: Curves.easeInOutCirc,
               onDisplayChange: (isOpen) {

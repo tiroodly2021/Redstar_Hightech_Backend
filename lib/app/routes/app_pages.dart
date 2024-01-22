@@ -82,6 +82,7 @@ SetPermissionView(
   static const FINANCE_ADD_TRANSACTION = Routes.FINANCE_ADD_TRANSACTION;
   static const FINANCE_TRANSACTION = Routes.FINANCE_TRANSACTION;
   static const FINANCE_EDIT_TRANSACTION = Routes.FINANCE_EDIT_TRANSACTION;
+  static const FINANCE_DELETE_TRANSACTION = Routes.FINANCE_DELETE_TRANSACTION;
 
   static const FINANCE_ADD_CATEGORY = Routes.FINANCE_ADD_CATEGORY;
   static const FINANCE_CATEGORY = Routes.FINANCE_CATEGORY;
@@ -145,6 +146,9 @@ SetPermissionView(
     GetPage(name: _Paths.DELETE_USER, page: () => const GeneriDeletePage()),
     GetPage(name: _Paths.DELETE_ROLE, page: () => const GeneriDeletePage()),
     GetPage(
+        name: _Paths.FINANCE_DELETE_TRANSACTION,
+        page: () => const GeneriDeletePage()),
+    GetPage(
         name: _Paths.FINANCE_DELETE_ACCOUNT,
         page: () => const GeneriDeletePage()),
     GetPage(
@@ -179,7 +183,7 @@ SetPermissionView(
         middlewares: [AuthorizationMiddleware()]),
     GetPage(
         name: _Paths.FINANCE_ADD_TRANSACTION,
-        page: () => const AddTransactionView(),
+        page: () => AddTransactionView(),
         binding: TransactionBinding(),
         middlewares: [AuthorizationMiddleware()]),
     GetPage(
