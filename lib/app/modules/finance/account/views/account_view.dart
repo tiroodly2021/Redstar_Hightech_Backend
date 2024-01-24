@@ -29,7 +29,7 @@ class AccountView extends GetView<AccountController> {
   double totalIncome = 0;
   double totalExpense = 0;
   final textColor = const Color(0xff324149);
-
+  double total = 0;
   AccountView({Key? key}) : super(key: key);
 
   Future<void> _pullRefresh() async {
@@ -59,56 +59,70 @@ class AccountView extends GetView<AccountController> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(10),
-          child: Column(
-            children: [
-              Expanded(
-                child: Obx(() {
-                  if (controller.accounts.isNotEmpty) {
-                    return ListView.builder(
-                        itemCount: controller.accounts.length,
-                        itemBuilder: ((context, index) {
-                          Account account = controller.accounts[index];
-                          List<Transaction> transactionByAccount = [];
+          child: Obx(() {
+            if (controller.accounts.isNotEmpty) {
+              return Column(
+                children: [
+                  Expanded(
+                      child: ListView.builder(
+                          itemCount: controller.accounts.length,
+                          itemBuilder: ((context, index) {
+                            Account account = controller.accounts[index];
+                            List<Transaction> transactionByAccount = [];
 
-                          /*   List<Transaction> txByAccount = */ transactionController
-                              .allTransactions
-                              .forEach((element) {
-                            if (element.account.id == account.id) {
-                              transactionByAccount.add(element);
-                            }
-                          });
+                            /*   List<Transaction> txByAccount = */ transactionController
+                                .allTransactions
+                                .forEach((element) {
+                              if (element.account.id == account.id) {
+                                transactionByAccount.add(element);
+                                total += element.amount;
+                              }
+                            });
 
-                          /*          .takeWhile((transaction) =>
-                                  transaction.account.id == account.id)
-                              .toList();
- */
-                          calculateBalances(transactionByAccount);
+                            calculateBalances(transactionByAccount);
+                            print('total : ${total}');
 
-                          return SizedBox(
-                            height: 230,
-                            child: InkWell(
-                              onTap: () => Get.toNamed(
-                                  AppPages.FINANCE_TRANSACTION,
-                                  arguments: {'acc': account}),
-                              child: AccountCard(
-                                  account: account,
-                                  totalBalance: totalBalance,
-                                  index: index,
-                                  accountController: controller),
-                            ),
-                          );
-                        }));
-                  }
-
-                  return ListNotFound(
-                      route: AppPages.INITIAL,
-                      message: "There are not account in the list",
-                      info: "Go Back",
-                      imageUrl: "assets/images/empty.png");
-                }),
-              )
-            ],
-          ),
+                            return SizedBox(
+                              height: 230,
+                              child: InkWell(
+                                onTap: () => Get.toNamed(
+                                    AppPages.FINANCE_TRANSACTION,
+                                    arguments: {'acc': account}),
+                                child: AccountCard(
+                                    account: account,
+                                    totalBalance: totalBalance,
+                                    index: index,
+                                    accountController: controller),
+                              ),
+                            );
+                          }))),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        const Text(
+                          "Balance:",
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(width: 10),
+                        Text(total.toStringAsFixed(2),
+                            style: const TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.bold))
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            } else {
+              return ListNotFound(
+                  route: AppPages.INITIAL,
+                  message: "There are not account in the list",
+                  info: "Go Back",
+                  imageUrl: "assets/images/empty.png");
+            }
+          }),
         ));
   }
 
@@ -116,7 +130,9 @@ class AccountView extends GetView<AccountController> {
     totalBalance = 0;
     totalExpense = 0;
     totalIncome = 0;
+    double total = 0;
     for (Transaction transaction in tarnsactions) {
+      total += transaction.amount;
       if (transaction.type == TransactionType.income) {
         totalBalance += transaction.amount;
         totalIncome += transaction.amount;

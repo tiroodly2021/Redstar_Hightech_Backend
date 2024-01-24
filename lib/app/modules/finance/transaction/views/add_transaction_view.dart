@@ -98,7 +98,8 @@ class _AddTransactionViewState extends State<AddTransactionView> {
       accountPrimary = widget.transaction!.account;
     }
 
-    isEdit = widget.transaction != null;
+    isEdit = widget.transaction != null ? true : false;
+
     dateController.text = getFormatedDate(date);
     return Obx(() {
       return Scaffold(

@@ -47,6 +47,8 @@ class AccountController extends GetxController {
 
   RxList<String> accountType = ["", "Mobile Agent", "Loto Agent", "Cash"].obs;
 
+  RxDouble totalAllAccount = 0.00.obs;
+
   AccountController() {
     accountList();
   }

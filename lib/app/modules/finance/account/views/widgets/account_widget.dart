@@ -268,13 +268,13 @@ class AccountCard extends StatelessWidget {
                         ),
                         totalBalance! >= 0
                             ? Text(
-                                '\$${totalBalance!}',
+                                '\$${totalBalance!.toStringAsFixed(2)}',
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.green),
                               )
                             : Text(
-                                '-  \$${-totalBalance!}',
+                                '-  \$${(-totalBalance!).toStringAsFixed(2)}',
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.red),

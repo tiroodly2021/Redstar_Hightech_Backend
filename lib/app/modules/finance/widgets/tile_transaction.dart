@@ -99,19 +99,7 @@ class TransactionTile extends StatelessWidget {
                 horizontal: BorderSide(color: Color(0x22000000), width: .5))),
         child: InkWell(
           onTap: () => Get.toNamed(AppPages.FINANCE_ADD_TRANSACTION,
-              arguments:
-                  transaction) /* Get.to(
-              () => AddTransactionView(
-                    transaction: transaction,
-                  ),
-              binding: FinanceHomeBinding(),
-              routeName: AppPages.FINANCE_ADD_TRANSACTION) */
-          /*   Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-            return AddTransactionView(
-              transaction: transaction,
-            );
-          })) */
-          ,
+              arguments: transaction),
           onLongPress: () {
             if (enableSlide) {
               Util.showSnackbar(context, 'Slide transaction to delete');
@@ -134,12 +122,24 @@ class TransactionTile extends StatelessWidget {
                           .titleMedium!
                           .copyWith(fontWeight: FontWeight.bold),
                     ),
+                    const SizedBox(
+                      height: 6,
+                    ),
+                    Text(
+                      transaction.description!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleSmall!
+                          .copyWith(fontWeight: FontWeight.w400),
+                    ),
                     if (transaction.description != null &&
                         transaction.description!.isNotEmpty)
                       Padding(
                         padding: const EdgeInsets.only(top: 5),
                         child: Text(
-                          DateFormat.yMMMd().format(DateTime.parse(
+                          DateFormat.yMMMEd().format(DateTime.parse(
                               transaction.date.toLocal().toIso8601String())),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,

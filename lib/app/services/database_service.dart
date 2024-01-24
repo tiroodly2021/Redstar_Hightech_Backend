@@ -840,8 +840,11 @@ class DatabaseService {
   }
 
   Stream<List<financeModel.Transaction>> getTransactions() {
-    return _firebaseFirestore.collection('transactions').snapshots().map(
-        (snapshot) => snapshot.docs
+    return _firebaseFirestore
+        .collection('transactions')
+        .orderBy('date', descending: true)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
             .map((doc) => financeModel.Transaction.fromSnapShot(doc))
             .toList());
   }

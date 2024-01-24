@@ -203,7 +203,7 @@ class _TransactionViewState extends State<TransactionView>
                               child: Text(
                                 'All Matches Accounts',
                                 style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
+                                    fontSize: 14, fontWeight: FontWeight.bold),
                               ),
                             ),
                     ],
@@ -268,23 +268,23 @@ class _TransactionViewState extends State<TransactionView>
                       return const Text(
                         'Bal: \$ 0 ',
                         style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                             color: Colors.orange),
                       );
                     } else if (total > 0) {
                       return Text(
-                        'Bal: \$${total}',
+                        'Bal: \$${total.toStringAsFixed(2)}',
                         style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                             color: Colors.green),
                       );
                     } else {
                       return Text(
-                        'Bal: - \$${-total}',
+                        'Bal: - \$${(-total).toStringAsFixed(2)}',
                         style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                             color: Colors.red),
                       );
