@@ -125,7 +125,7 @@ class _TransactionViewState extends State<TransactionView>
               ? FilterBarv(number: widget.account!.number)
               : FilterBarv(),
           Container(
-            height: 60,
+            height: 70,
             decoration: const BoxDecoration(
                 boxShadow: [
                   BoxShadow(
@@ -199,98 +199,244 @@ class _TransactionViewState extends State<TransactionView>
                               ],
                             )
                           : const Padding(
-                              padding: EdgeInsets.only(left: 20.0),
+                              padding: EdgeInsets.only(left: 10.0),
                               child: Text(
-                                'All Matches Accounts',
+                                'Accounts',
                                 style: TextStyle(
                                     fontSize: 14, fontWeight: FontWeight.bold),
                               ),
                             ),
+                      SizedBox(
+                        width: 4,
+                      ),
                     ],
                   ),
                 ),
-                Container(
+                GetBuilder<TransactionController>(builder: (controller) {
+                  List<Transaction> listTrx = [];
+
+                  double total = 0;
+
+                  if (widget.account != null) {
+                    controller.filterdList.forEach((element) {
+                      if (element.account.id.toString().toLowerCase() ==
+                          widget.account!.id.toString().toLowerCase()) {
+                        print(
+                            'el: ${element.account.id} -- widget.account.id: ${widget.account!.id} ');
+                        /*   SchedulerBinding.instance
+                              ?.addPostFrameCallback((timeStamp) { */
+                        listTrx.add(element);
+                        //   });
+                      }
+                    });
+                    print("account hummm ${listTrx.length}");
+
+                    total = calculateBalances(listTrx)[0];
+
+                    print("total ${total}");
+                  } else if (widget.type != null) {
+                    controller.filterdList.forEach((element) {
+                      if (element.type.index == widget.type!.index) {
+                        SchedulerBinding.instance
+                            ?.addPostFrameCallback((timeStamp) {
+                          listTrx.add(element);
+                        });
+                      }
+                    });
+
+                    calculateBalances(controller.filterdList);
+                  } else {
+                    listTrx = controller.filterdList;
+
+                    print("account hummm ${listTrx.length}");
+
+                    total = calculateBalances(listTrx)[0];
+
+                    print("total ${total}");
+                  }
+
+                  if (widget.type == TransactionType.income) {
+                    total = totalIncome;
+                  }
+
+                  if (widget.type == TransactionType.expense) {
+                    total = -totalExpense;
+                  }
+
+                  if (total == 0) {
+                    return Padding(
+                      padding:
+                          const EdgeInsets.only(top: 4, bottom: 4, right: 8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Bal: \$${total.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green),
+                          ),
+                          SizedBox(
+                            width: 2,
+                            height: 4,
+                          ),
+                          Text(
+                            'Inc: \$${totalIncome.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green),
+                          ),
+                          SizedBox(
+                            width: 2,
+                            height: 4,
+                          ),
+                          Text(
+                            'Exp: \$${totalExpense.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red),
+                          ),
+
+                          /* const Text(
+                            'Bal:',
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.orange),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          const Text(
+                            '\$ 0 ',
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.orange),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          const Text(
+                            'Inc: \$ 0 ',
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.orange),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          const Text(
+                            'Exp: \$ 0 ',
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.orange),
+                          ), */
+                        ],
+                      ),
+                    );
+                  } else if (total > 0) {
+                    return Padding(
+                      padding:
+                          const EdgeInsets.only(top: 4, bottom: 4, right: 8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Bal: \$${total.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green),
+                          ),
+                          SizedBox(
+                            width: 2,
+                            height: 4,
+                          ),
+                          Text(
+                            'Inc: \$${totalIncome.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green),
+                          ),
+                          SizedBox(
+                            width: 2,
+                            height: 4,
+                          ),
+                          Text(
+                            'Exp: \$${totalExpense.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red),
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    return Padding(
+                      padding:
+                          const EdgeInsets.only(top: 4, bottom: 4, right: 8.0),
+                      child: Column(
+                        children: [
+                          /*   Text(
+                            'Bal: - \$${(-total).toStringAsFixed(2)}',
+                            style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red),
+                          ), */
+
+                          SizedBox(
+                            width: 2,
+                            height: 4,
+                          ),
+                          Text(
+                            'Bal: - \$${(-total).toStringAsFixed(2)}',
+                            style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red),
+                          ),
+                          SizedBox(
+                            width: 2,
+                            height: 4,
+                          ),
+                          Text(
+                            'Inc: \$${totalIncome.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green),
+                          ),
+                          SizedBox(
+                            width: 2,
+                            height: 4,
+                          ),
+                          Text(
+                            'Exp: \$${totalExpense.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                })
+
+                /*    Container(
                   margin: const EdgeInsets.only(right: 10),
                   width: 100,
                   child:
-                      GetBuilder<TransactionController>(builder: (controller) {
-                    List<Transaction> listTrx = [];
-
-                    double total = 0;
-
-                    if (widget.account != null) {
-                      controller.filterdList.forEach((element) {
-                        if (element.account.id.toString().toLowerCase() ==
-                            widget.account!.id.toString().toLowerCase()) {
-                          print(
-                              'el: ${element.account.id} -- widget.account.id: ${widget.account!.id} ');
-                          /*   SchedulerBinding.instance
-                              ?.addPostFrameCallback((timeStamp) { */
-                          listTrx.add(element);
-                          //   });
-                        }
-                      });
-                      print("account hummm ${listTrx.length}");
-
-                      total = calculateBalances(listTrx)[0];
-
-                      print("total ${total}");
-                    } else if (widget.type != null) {
-                      controller.filterdList.forEach((element) {
-                        if (element.type.index == widget.type!.index) {
-                          SchedulerBinding.instance
-                              ?.addPostFrameCallback((timeStamp) {
-                            listTrx.add(element);
-                          });
-                        }
-                      });
-
-                      calculateBalances(controller.filterdList);
-                    } else {
-                      listTrx = controller.filterdList;
-
-                      print("account hummm ${listTrx.length}");
-
-                      total = calculateBalances(listTrx)[0];
-
-                      print("total ${total}");
-                    }
-
-                    if (widget.type == TransactionType.income) {
-                      total = totalIncome;
-                    }
-
-                    if (widget.type == TransactionType.expense) {
-                      total = -totalExpense;
-                    }
-
-                    if (total == 0) {
-                      return const Text(
-                        'Bal: \$ 0 ',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.orange),
-                      );
-                    } else if (total > 0) {
-                      return Text(
-                        'Bal: \$${total.toStringAsFixed(2)}',
-                        style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.green),
-                      );
-                    } else {
-                      return Text(
-                        'Bal: - \$${(-total).toStringAsFixed(2)}',
-                        style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red),
-                      );
-                    }
-                  }),
-                )
+                      ,
+                ) */
               ],
             ),
           ),
