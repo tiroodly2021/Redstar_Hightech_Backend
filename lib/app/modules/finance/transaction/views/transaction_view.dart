@@ -206,7 +206,7 @@ class _TransactionViewState extends State<TransactionView>
                                     fontSize: 14, fontWeight: FontWeight.bold),
                               ),
                             ),
-                      SizedBox(
+                      const SizedBox(
                         width: 4,
                       ),
                     ],
@@ -270,72 +270,34 @@ class _TransactionViewState extends State<TransactionView>
                       child: Column(
                         children: [
                           Text(
-                            'Bal: \$${total.toStringAsFixed(2)}',
+                            'Bal: \$ ${total.toStringAsFixed(2)}',
                             style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.green),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 2,
                             height: 4,
                           ),
                           Text(
-                            'Inc: \$${totalIncome.toStringAsFixed(2)}',
+                            'Inc: \$ ${totalIncome.toStringAsFixed(2)}',
                             style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.green),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 2,
                             height: 4,
                           ),
                           Text(
-                            'Exp: \$${totalExpense.toStringAsFixed(2)}',
+                            'Exp: \$ ${totalExpense.toStringAsFixed(2)}',
                             style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.red),
                           ),
-
-                          /* const Text(
-                            'Bal:',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.orange),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          const Text(
-                            '\$ 0 ',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.orange),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          const Text(
-                            'Inc: \$ 0 ',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.orange),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          const Text(
-                            'Exp: \$ 0 ',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.orange),
-                          ), */
                         ],
                       ),
                     );
@@ -347,29 +309,29 @@ class _TransactionViewState extends State<TransactionView>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Bal: \$${total.toStringAsFixed(2)}',
+                            'Bal: \$ ${total.toStringAsFixed(2)}',
                             style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.green),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 2,
                             height: 4,
                           ),
                           Text(
-                            'Inc: \$${totalIncome.toStringAsFixed(2)}',
+                            'Inc: \$ ${totalIncome.toStringAsFixed(2)}',
                             style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.green),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 2,
                             height: 4,
                           ),
                           Text(
-                            'Exp: \$${totalExpense.toStringAsFixed(2)}',
+                            'Exp: \$ ${totalExpense.toStringAsFixed(2)}',
                             style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
@@ -384,42 +346,34 @@ class _TransactionViewState extends State<TransactionView>
                           const EdgeInsets.only(top: 4, bottom: 4, right: 8.0),
                       child: Column(
                         children: [
-                          /*   Text(
-                            'Bal: - \$${(-total).toStringAsFixed(2)}',
-                            style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.red),
-                          ), */
-
-                          SizedBox(
+                          const SizedBox(
                             width: 2,
                             height: 4,
                           ),
                           Text(
-                            'Bal: - \$${(-total).toStringAsFixed(2)}',
+                            'Bal: - \$ ${(-total).toStringAsFixed(2)}',
                             style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.red),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 2,
                             height: 4,
                           ),
                           Text(
-                            'Inc: \$${totalIncome.toStringAsFixed(2)}',
+                            'Inc: \$ ${totalIncome.toStringAsFixed(2)}',
                             style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.green),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 2,
                             height: 4,
                           ),
                           Text(
-                            'Exp: \$${totalExpense.toStringAsFixed(2)}',
+                            'Exp: \$ ${totalExpense.toStringAsFixed(2)}',
                             style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
@@ -430,13 +384,6 @@ class _TransactionViewState extends State<TransactionView>
                     );
                   }
                 })
-
-                /*    Container(
-                  margin: const EdgeInsets.only(right: 10),
-                  width: 100,
-                  child:
-                      ,
-                ) */
               ],
             ),
           ),
