@@ -1,10 +1,11 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/account/models/account_model.dart';
 import 'package:redstar_hightech_backend/app/modules/finance/transaction/models/transaction_type_model.dart';
 
-class Transaction {
+class Transaction extends Equatable {
   final String? title;
   final String? description;
   Account account;
@@ -114,6 +115,10 @@ class Transaction {
 
     return transactionType;
   }
+
+  @override
+  List<Object?> get props =>
+      [title, description, account, type, date, amount, id];
 }
 /* 
 List<Transaction> transactionsData = [

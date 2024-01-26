@@ -131,5 +131,5 @@ class Account extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, number, createdAt, name, photoURL];
+  List<Object?> get props => [id, number, createdAt, name, type, photoURL];
 }

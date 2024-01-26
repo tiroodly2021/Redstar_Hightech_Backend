@@ -42,6 +42,7 @@ dependencies:
   confirm_dialog:
   flutter_slidable: 
   toggle_switch: 
+  flutter_text_drawable:
   
   
 
