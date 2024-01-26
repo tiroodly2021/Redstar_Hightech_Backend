@@ -298,6 +298,9 @@ class _PersonalizedTransactionViewViewState
           radiusStyle: true,
           onToggle: (index) {
             if (index != null) {
+              if (index == 1) {
+                transactionController.transactionTypeLotoAgent.value = 1;
+              }
               transactionController.operationType.value = index;
             }
           },
@@ -308,7 +311,8 @@ class _PersonalizedTransactionViewViewState
 
   _buildToggleSwitchMobileAgent(Size size, int itemCount) {
     descriptionController.text = myTransactionTypeToString(
-        transactionController.transactionTypeMobileAgent.value);
+        transactionController.transactionTypeMobileAgent.value,
+        " MonCash currency");
     return Column(
       children: [
         const SizedBox(
@@ -350,7 +354,8 @@ class _PersonalizedTransactionViewViewState
               onToggle: (index) {
                 transactionController.transactionTypeMobileAgent.value = index!;
                 descriptionController.text = myTransactionTypeToString(
-                    transactionController.transactionTypeMobileAgent.value);
+                    transactionController.transactionTypeMobileAgent.value,
+                    " MonCash currency");
               },
             ),
           ],
@@ -361,7 +366,7 @@ class _PersonalizedTransactionViewViewState
 
   _buildToggleSwitchLotoAgent(Size size, int itemCount) {
     descriptionController.text = myTransactionTypeToString(
-        transactionController.transactionTypeLotoAgent.value);
+        transactionController.transactionTypeLotoAgent.value, " Loto");
     return Column(
       children: [
         const SizedBox(
@@ -402,7 +407,8 @@ class _PersonalizedTransactionViewViewState
               onToggle: (index) {
                 transactionController.transactionTypeLotoAgent.value = index!;
                 descriptionController.text = myTransactionTypeToString(
-                    transactionController.transactionTypeLotoAgent.value);
+                    transactionController.transactionTypeLotoAgent.value,
+                    " Loto");
               },
             ),
           ],
@@ -413,7 +419,7 @@ class _PersonalizedTransactionViewViewState
 
   _buildToggleSwitchCashMoney(Size size, int itemCount) {
     descriptionController.text = myTransactionTypeToString(
-        transactionController.transactionTypeCashMoney.value);
+        transactionController.transactionTypeCashMoney.value, " CASH");
     return Column(
       children: [
         const SizedBox(
@@ -454,7 +460,8 @@ class _PersonalizedTransactionViewViewState
               onToggle: (index) {
                 transactionController.transactionTypeCashMoney.value = index!;
                 descriptionController.text = myTransactionTypeToString(
-                    transactionController.transactionTypeCashMoney.value);
+                    transactionController.transactionTypeCashMoney.value,
+                    " CASH");
               },
             ),
           ],
@@ -463,17 +470,17 @@ class _PersonalizedTransactionViewViewState
     );
   }
 
-  String myTransactionTypeToString(int i) {
+  String myTransactionTypeToString(int i, String description) {
     String out = '';
     if (i == 0) {
-      out = "Entree";
+      out = "Entree " + description;
     }
     if (i == 1) {
-      out = "Sortie";
+      out = "Sortie " + description;
     }
 
     if (i == 2) {
-      out = "Transfert";
+      out = "Transfert " + description;
     }
 
     return out;

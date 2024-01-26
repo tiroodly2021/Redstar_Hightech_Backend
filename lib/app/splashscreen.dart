@@ -115,7 +115,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     authController.checkUserRolePermission().then(
       (role) {
-        Timer(const Duration(seconds: 5), () {
+        Timer(const Duration(seconds: 1), () {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
