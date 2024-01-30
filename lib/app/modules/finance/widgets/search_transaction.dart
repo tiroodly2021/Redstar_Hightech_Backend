@@ -166,12 +166,12 @@ class TransactionSearchDelegate extends SearchDelegate {
       child: Column(
         children: [
           MyFilterBarv(),
-          Padding(
+          /* Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Row(
               children: [Text('Selected information show')],
             ),
-          ),
+          ), */
           SizedBox(
             height: MediaQuery.of(context).size.height * .60,
             child:
@@ -257,16 +257,18 @@ class TransactionSearchDelegate extends SearchDelegate {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Total",
+                              const Text("Total",
                                   style:
                                       TextStyle(fontWeight: FontWeight.bold)),
                               Text(
-                                  totalBalance > 0
+                                  totalBalance >= 0
                                       ? "\$ ${totalBalance.toStringAsFixed(2)}"
-                                      : "- \$ ${(-totalBalance).toStringAsFixed(2)}",
+                                      : (totalBalance == 0)
+                                          ? "\$ 0.00"
+                                          : "- \$ ${(-totalBalance).toStringAsFixed(2)}",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: totalBalance > 0
+                                      color: totalBalance >= 0
                                           ? Colors.black
                                           : Colors.red)),
                             ],
