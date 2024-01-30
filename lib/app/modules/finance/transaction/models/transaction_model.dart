@@ -119,6 +119,24 @@ class Transaction extends Equatable {
   @override
   List<Object?> get props =>
       [title, description, account, type, date, amount, id];
+
+  static TransactionType transactionStringToTransactionType(String str) {
+    TransactionType transactionType = TransactionType.income;
+
+    if (str == "Credit") {
+      transactionType = TransactionType.income;
+    }
+
+    if (str == "Debit") {
+      transactionType = TransactionType.expense;
+    }
+
+    /*  if (index == 2) {
+      transactionType = TransactionType.transfert;
+    } */
+
+    return transactionType;
+  }
 }
 /* 
 List<Transaction> transactionsData = [
